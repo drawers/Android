@@ -5,6 +5,7 @@ plugins {
     id 'kotlin-kapt'
     id 'com.google.devtools.ksp' version "$ksp_version"
     id 'com.squareup.anvil'
+    id 'ollama'
 }
 apply from: '../versioning.gradle'
 apply from: "$rootDir/code-formatting.gradle"
