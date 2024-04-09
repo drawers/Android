@@ -1,0 +1,10 @@
+CREATE TABLE incident(
+    id INTEGER PRIMARY KEY NOT NULL,
+    file TEXT NOT NULL,
+    startLine INTEGER NOT NULL,
+    functionName TEXT NOT NULL,
+    source TEXT NOT NULL,
+    suggestion TEXT
+);
+
+CREATE INDEX incident_file_start ON incident(file, startLine);

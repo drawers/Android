@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+plugins {
+    id "app.cash.sqldelight" version "2.0.2"
+}
 apply plugin: 'java-library'
 apply plugin: 'kotlin'
 
@@ -21,6 +23,7 @@ dependencies {
     compileOnly Kotlin.stdlib.jdk7
     compileOnly "com.android.tools.lint:lint-api:$lint_version"
     compileOnly "com.android.tools.lint:lint-checks:$lint_version"
+    compileOnly "app.cash.sqldelight:sqlite-driver:2.0.2"
 
     testImplementation Testing.junit4
     testImplementation "com.android.tools.lint:lint-api:$lint_version"
@@ -38,4 +41,12 @@ kotlin {
 
 tasks.register('jvm_checks') {
     dependsOn 'test'
+}
+
+sqldelight {
+    databases {
+        Database { // This will be the name of the generated database class.
+            packageName = "com.duckduckgo.lint"
+        }
+    }
 }

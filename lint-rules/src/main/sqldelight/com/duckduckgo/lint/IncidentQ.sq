@@ -1,0 +1,7 @@
+
+insert:
+INSERT INTO incident(file, startLine, functionName, source)
+VALUES (?, ?, ?, ?);
+
+select:
+SELECT * FROM incident WHERE file = ? AND startLine = ?;

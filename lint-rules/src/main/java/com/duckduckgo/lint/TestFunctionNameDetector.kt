@@ -16,12 +16,16 @@
 
 package com.duckduckgo.lint
 
+import app.cash.sqldelight.db.SqlDriver
+import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
 import com.android.tools.lint.detector.api.AnnotationInfo
 import com.android.tools.lint.detector.api.AnnotationUsageInfo
 import com.android.tools.lint.detector.api.AnnotationUsageType
 import com.android.tools.lint.detector.api.Category
+import com.android.tools.lint.detector.api.Context
 import com.android.tools.lint.detector.api.Detector
 import com.android.tools.lint.detector.api.Implementation
+import com.android.tools.lint.detector.api.Incident
 import com.android.tools.lint.detector.api.Issue
 import com.android.tools.lint.detector.api.JavaContext
 import com.android.tools.lint.detector.api.Scope.JAVA_FILE
@@ -30,6 +34,8 @@ import com.android.tools.lint.detector.api.Severity
 import com.android.tools.lint.detector.api.SourceCodeScanner
 import org.jetbrains.kotlin.psi.KtNamedDeclaration
 import org.jetbrains.uast.UElement
+import org.jetbrains.uast.getContainingUFile
+import org.jetbrains.uast.getIoFile
 import org.jetbrains.uast.kotlin.KotlinUMethod
 import java.util.EnumSet
 import kotlin.io.path.Path
@@ -39,6 +45,23 @@ class TestFunctionNameDetector : Detector(), SourceCodeScanner {
     override fun isApplicableAnnotationUsage(type: AnnotationUsageType) = true
 
     override fun applicableAnnotations() = listOf("org.junit.Test")
+
+    private lateinit var driver: SqlDriver
+
+    override fun beforeCheckEachProject(context: Context) {
+        super.beforeCheckEachProject(context)
+        if (context.isGlobalAnalysis()) {
+            driver = JdbcSqliteDriver("jdbc:sqlite:incident.db")
+            Database.Schema.create(driver)
+        }
+    }
+
+    override fun afterCheckEachProject(context: Context) {
+        super.afterCheckEachProject(context)
+        if (context.isGlobalAnalysis()) {
+            driver.close()
+        }
+    }
 
     override fun visitAnnotationUsage(
         context: JavaContext,
@@ -52,13 +75,26 @@ class TestFunctionNameDetector : Detector(), SourceCodeScanner {
         // make sure to retain backticks
         val functionName = (method.sourcePsi as? KtNamedDeclaration)?.nameIdentifier?.text ?: return
 
-        val error = functionName.backticksErrorOrNull() ?: functionName.partsErrorOrNull() ?: functionName.capitalizationErrorOrNull() ?: return
+        functionName.backticksErrorOrNull() ?: functionName.partsErrorOrNull() ?: functionName.capitalizationErrorOrNull() ?: return
 
-        context.report(
-            ISSUE,
-            context.getNameLocation(method),
-            "Test name does not follow convention",
-        )
+        val location = context.getNameLocation(method)
+
+        if (context.isGlobalAnalysis()) {
+            Database(driver)
+                .incidentQQueries
+                .insert(
+                    element.getContainingUFile()?.getIoFile()?.name!!,
+                    location.start!!.line.toLong(),
+                    functionName,
+                    method.sourcePsi?.text ?: "",
+                )
+        } else {
+            context.report(
+                ISSUE,
+                context.getNameLocation(method),
+                "Test name does not follow convention",
+            )
+        }
     }
 
     private fun String.backticksErrorOrNull(): Error? {
