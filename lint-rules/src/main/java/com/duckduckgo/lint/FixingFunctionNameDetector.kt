@@ -79,7 +79,7 @@ class FixingFunctionNameDetector : TestFunctionNameDetector() {
     }
 
     private fun Context.responseData(): File {
-        return File(buildDir().path + "/ollama/responses")
+        return File(buildDir().path + "/${Folders.RESPONSE_DATA}")
     }
 
     companion object {
