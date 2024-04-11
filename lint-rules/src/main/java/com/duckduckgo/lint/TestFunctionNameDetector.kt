@@ -19,9 +19,13 @@ package com.duckduckgo.lint
 import com.android.tools.lint.detector.api.AnnotationInfo
 import com.android.tools.lint.detector.api.AnnotationUsageInfo
 import com.android.tools.lint.detector.api.AnnotationUsageType
+import com.android.tools.lint.detector.api.Category
 import com.android.tools.lint.detector.api.Detector
+import com.android.tools.lint.detector.api.Implementation
+import com.android.tools.lint.detector.api.Issue
 import com.android.tools.lint.detector.api.JavaContext
 import com.android.tools.lint.detector.api.Location
+import com.android.tools.lint.detector.api.Severity
 import com.android.tools.lint.detector.api.SourceCodeScanner
 import org.jetbrains.kotlin.psi.KtNamedDeclaration
 import org.jetbrains.uast.UElement
@@ -31,7 +35,7 @@ import org.jetbrains.uast.kotlin.KotlinUMethod
 import kotlin.io.path.Path
 
 @Suppress("UnstableApiUsage")
-abstract class AbstractTestFunctionNameDetector : Detector(), SourceCodeScanner {
+abstract class TestFunctionNameDetector : Detector(), SourceCodeScanner {
 
     final override fun isApplicableAnnotationUsage(type: AnnotationUsageType) = true
 
@@ -109,8 +113,29 @@ abstract class AbstractTestFunctionNameDetector : Detector(), SourceCodeScanner 
     ): String {
         return element.containingFileName.replace(".", "").plus('.').plus(location.start!!.line)
     }
+
     protected val UElement.containingFileName
         get() = getContainingUFile()?.getIoFile()?.name!!
 
+    companion object {
+        fun issue(
+            id: String,
+            briefDescription: String,
+            explanation: String,
+            implementation: Implementation,
+        ): Issue = Issue.create(
+            id = id,
+            briefDescription = briefDescription,
+            category = Category.TESTING,
+            explanation = explanation,
+            severity = Severity.WARNING,
+            implementation = implementation,
+        )
+    }
 
+    object Folders {
+        const val OLLINTA = "ollinta"
+        const val PROMPT_DATA = "$OLLINTA/promptData"
+        const val RESPONSE_DATA = "$OLLINTA/responseData"
+    }
 }

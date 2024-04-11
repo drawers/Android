@@ -16,16 +16,11 @@
 
 package com.duckduckgo.lint
 
-import com.android.tools.lint.detector.api.Category
 import com.android.tools.lint.detector.api.Context
 import com.android.tools.lint.detector.api.Implementation
-import com.android.tools.lint.detector.api.Issue
 import com.android.tools.lint.detector.api.JavaContext
 import com.android.tools.lint.detector.api.Location
 import com.android.tools.lint.detector.api.Scope
-import com.android.tools.lint.detector.api.Scope.JAVA_FILE
-import com.android.tools.lint.detector.api.Scope.TEST_SOURCES
-import com.android.tools.lint.detector.api.Severity
 import org.jetbrains.kotlin.incremental.createDirectory
 import org.jetbrains.uast.UElement
 import org.jetbrains.uast.kotlin.KotlinUMethod
@@ -33,7 +28,7 @@ import java.io.File
 import java.util.EnumSet
 
 @Suppress("UnstableApiUsage")
-class PromptWritingFunctionNameDetector : AbstractTestFunctionNameDetector() {
+class PromptWritingFunctionNameDetector : TestFunctionNameDetector() {
 
     override fun isApplicable(context: JavaContext): Boolean = (Scope.ALL_JAVA_FILES in context.scope)
 
@@ -68,27 +63,19 @@ class PromptWritingFunctionNameDetector : AbstractTestFunctionNameDetector() {
         return project.buildModule.buildFolder
     }
 
-    /**
-     * We're writing prompts/input for Ollama
-     *
-     * Let's put them in the correct directory
-     */
     private fun Context.outputDir(): File {
-        return File(buildDir().path + "/ollama/promptData")
+        return File(buildDir().path + "/${Folders.PROMPT_DATA}")
     }
 
     companion object {
 
-        @JvmField val TEST_FUNCTION_NAME: Issue = Issue.create(
+        val TEST_FUNCTION_NAME = issue(
             id = "PromptWritingTestFunctionName",
             briefDescription = "Prompt writing test function name",
-            category = Category.TESTING,
-            priority = 5,
-            severity = Severity.ERROR,
-            explanation = "An issue to represent writing prompts with information suitable for an AI agent to suggest a rename",
+            "An issue to represent writing prompts with information suitable for an AI agent to suggest a rename",
             implementation = Implementation(
                 PromptWritingFunctionNameDetector::class.java,
-                EnumSet.of(JAVA_FILE, TEST_SOURCES),
+                EnumSet.of(Scope.JAVA_FILE, Scope.TEST_SOURCES),
             ),
         )
     }

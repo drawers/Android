@@ -16,21 +16,18 @@
 
 package com.duckduckgo.lint
 
-import com.android.tools.lint.detector.api.Category
 import com.android.tools.lint.detector.api.Implementation
-import com.android.tools.lint.detector.api.Issue
 import com.android.tools.lint.detector.api.JavaContext
 import com.android.tools.lint.detector.api.Location
 import com.android.tools.lint.detector.api.Scope
 import com.android.tools.lint.detector.api.Scope.JAVA_FILE
 import com.android.tools.lint.detector.api.Scope.TEST_SOURCES
-import com.android.tools.lint.detector.api.Severity
 import org.jetbrains.uast.UElement
 import org.jetbrains.uast.kotlin.KotlinUMethod
 import java.util.EnumSet
 
 @Suppress("UnstableApiUsage")
-class IdeFunctionNameDetector : AbstractTestFunctionNameDetector() {
+class IdeFunctionNameDetector : TestFunctionNameDetector() {
 
     override fun isApplicable(context: JavaContext): Boolean {
         return (Scope.ALL_JAVA_FILES !in context.scope)
@@ -52,13 +49,10 @@ class IdeFunctionNameDetector : AbstractTestFunctionNameDetector() {
 
     companion object {
 
-        @JvmField val TEST_FUNCTION_NAME: Issue = Issue.create(
+        val TEST_FUNCTION_NAME = issue(
             id = "TestFunctionName",
             briefDescription = "Test function name",
-            category = Category.TESTING,
-            priority = 5,
-            severity = Severity.ERROR,
-            explanation = "The test function name should be enclosed in backticks. It should have either two or three parts, separated by hyphens. Each part should, where possible, start in lowercase",
+            "The test function name should be enclosed in backticks. It should have either two or three parts, separated by hyphens. Each part should, where possible, start in lowercase",
             implementation = Implementation(
                 IdeFunctionNameDetector::class.java,
                 EnumSet.of(JAVA_FILE, TEST_SOURCES),

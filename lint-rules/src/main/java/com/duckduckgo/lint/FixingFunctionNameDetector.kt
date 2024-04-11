@@ -16,23 +16,19 @@
 
 package com.duckduckgo.lint
 
-import com.android.tools.lint.detector.api.Category
 import com.android.tools.lint.detector.api.Context
 import com.android.tools.lint.detector.api.Implementation
-import com.android.tools.lint.detector.api.Issue
 import com.android.tools.lint.detector.api.JavaContext
 import com.android.tools.lint.detector.api.LintFix
 import com.android.tools.lint.detector.api.Location
-import com.android.tools.lint.detector.api.Scope.JAVA_FILE
-import com.android.tools.lint.detector.api.Scope.TEST_SOURCES
-import com.android.tools.lint.detector.api.Severity
+import com.android.tools.lint.detector.api.Scope
 import org.jetbrains.uast.UElement
 import org.jetbrains.uast.kotlin.KotlinUMethod
 import java.io.File
 import java.util.EnumSet
 
 @Suppress("UnstableApiUsage")
-class FixingFunctionNameDetector : AbstractTestFunctionNameDetector() {
+class FixingFunctionNameDetector : TestFunctionNameDetector() {
 
     override fun isApplicable(context: JavaContext): Boolean {
         return false // disable for now, we'll test this later
@@ -56,9 +52,16 @@ class FixingFunctionNameDetector : AbstractTestFunctionNameDetector() {
         val response = responseFile.readText()
         val firstBackTick = response.indexOfFirst { it == '`' }
         val secondBackTick = response.indexOfLast { it == '`' }
+        if (firstBackTick == -1 || secondBackTick == -1) return
+
         val proposedFunctionName = "`${response.substring(firstBackTick..secondBackTick)}`"
+
+        if (proposedFunctionName.isEmpty()) {
+            return
+        }
+
         context.report(
-            TODO(),
+            TEST_FUNCTION_NAME,
             location,
             "Test name does not follow convention",
             LintFix.create()
@@ -81,17 +84,13 @@ class FixingFunctionNameDetector : AbstractTestFunctionNameDetector() {
 
     companion object {
 
-        @JvmField
-        val TEST_FUNCTION_NAME: Issue = Issue.create(
+        val TEST_FUNCTION_NAME = issue(
             id = "FixingTestFunctionName",
-            briefDescription = "Fixing test function name",
-            category = Category.TESTING,
-            priority = 5,
-            severity = Severity.ERROR,
-            explanation = "An issue for fixing a function name given a response from an LM",
+            briefDescription = "Prompt writing test function name",
+            "An issue to represent autofixing a broken function name based a response from a language model",
             implementation = Implementation(
-                FixingFunctionNameDetector::class.java,
-                EnumSet.of(JAVA_FILE, TEST_SOURCES),
+                PromptWritingFunctionNameDetector::class.java,
+                EnumSet.of(Scope.JAVA_FILE, Scope.TEST_SOURCES),
             ),
         )
     }
