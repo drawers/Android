@@ -16,13 +16,11 @@
 
 package com.duckduckgo.lint.registry
 
-import com.duckduckgo.lint.NonCancellableDetector.Companion.ISSUE_NON_CANCELLABLE
 import com.android.tools.lint.client.api.IssueRegistry
 import com.android.tools.lint.client.api.Vendor
 import com.android.tools.lint.detector.api.CURRENT_API
 import com.android.tools.lint.detector.api.Issue
 import com.duckduckgo.lint.NoDispatcherComputation.Companion.ISSUE_AVOID_COMPUTATION
-import com.duckduckgo.lint.strings.MissingSmartlingRequiredDirectivesDetector.Companion.MISSING_SMARTLING_REQUIRED_DIRECTIVES
 import com.duckduckgo.lint.NoFragmentDetector.Companion.NO_FRAGMENT_ISSUE
 import com.duckduckgo.lint.NoHardcodedCoroutineDispatcherDetector.Companion.NO_HARCODED_COROUTINE_DISPATCHER
 import com.duckduckgo.lint.NoLifecycleObserverDetector.Companion.NO_LIFECYCLE_OBSERVER_ISSUE
@@ -30,7 +28,9 @@ import com.duckduckgo.lint.NoRetrofitCreateMethodCallDetector.Companion.NO_RETRO
 import com.duckduckgo.lint.NoRobolectricTestRunnerDetector.Companion.NO_ROBOLECTRIC_TEST_RUNNER_ISSUE
 import com.duckduckgo.lint.NoSingletonDetector.Companion.NO_SINGLETON_ISSUE
 import com.duckduckgo.lint.NoSystemLoadLibraryDetector.Companion.NO_SYSTEM_LOAD_LIBRARY
+import com.duckduckgo.lint.NonCancellableDetector.Companion.ISSUE_NON_CANCELLABLE
 import com.duckduckgo.lint.strings.MissingInstructionDetector.Companion.MISSING_INSTRUCTION
+import com.duckduckgo.lint.strings.MissingSmartlingRequiredDirectivesDetector.Companion.MISSING_SMARTLING_REQUIRED_DIRECTIVES
 import com.duckduckgo.lint.strings.PlaceholderDetector.Companion.PLACEHOLDER_MISSING_POSITION
 import com.duckduckgo.lint.ui.ColorAttributeInXmlDetector.Companion.INVALID_COLOR_ATTRIBUTE
 import com.duckduckgo.lint.ui.DaxButtonStylingDetector.Companion.INVALID_DAX_BUTTON_PROPERTY
@@ -74,8 +74,8 @@ class DuckDuckGoIssueRegistry : IssueRegistry() {
             INVALID_SKELETON_VIEW_BACKGROUND,
             WRONG_STYLE_PARAMETER,
             WRONG_STYLE_NAME,
-            INVALID_COLOR_ATTRIBUTE
-
+            INVALID_COLOR_ATTRIBUTE,
+            com.duckduckgo.lint.PromptWritingFunctionNameDetector.Companion.TEST_FUNCTION_NAME, // prompt writing
         )
 
     override val api: Int
@@ -85,6 +85,6 @@ class DuckDuckGoIssueRegistry : IssueRegistry() {
         vendorName = "DuckDuckGo",
         identifier = "com.duckduckgo:lint",
         feedbackUrl = "https://github.com/duckduckgo/android/issues",
-        contact = "https://github.com/duckduckgo/android"
+        contact = "https://github.com/duckduckgo/android",
     )
 }

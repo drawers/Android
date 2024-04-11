@@ -16,59 +16,36 @@
 
 package com.duckduckgo.lint
 
-import app.cash.sqldelight.db.SqlDriver
-import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
 import com.android.tools.lint.detector.api.AnnotationInfo
 import com.android.tools.lint.detector.api.AnnotationUsageInfo
 import com.android.tools.lint.detector.api.AnnotationUsageType
-import com.android.tools.lint.detector.api.Category
-import com.android.tools.lint.detector.api.Context
 import com.android.tools.lint.detector.api.Detector
-import com.android.tools.lint.detector.api.Implementation
-import com.android.tools.lint.detector.api.Incident
-import com.android.tools.lint.detector.api.Issue
 import com.android.tools.lint.detector.api.JavaContext
-import com.android.tools.lint.detector.api.Scope.JAVA_FILE
-import com.android.tools.lint.detector.api.Scope.TEST_SOURCES
-import com.android.tools.lint.detector.api.Severity
+import com.android.tools.lint.detector.api.Location
 import com.android.tools.lint.detector.api.SourceCodeScanner
 import org.jetbrains.kotlin.psi.KtNamedDeclaration
 import org.jetbrains.uast.UElement
 import org.jetbrains.uast.getContainingUFile
 import org.jetbrains.uast.getIoFile
 import org.jetbrains.uast.kotlin.KotlinUMethod
-import java.util.EnumSet
 import kotlin.io.path.Path
 
 @Suppress("UnstableApiUsage")
-class TestFunctionNameDetector : Detector(), SourceCodeScanner {
-    override fun isApplicableAnnotationUsage(type: AnnotationUsageType) = true
+abstract class AbstractTestFunctionNameDetector : Detector(), SourceCodeScanner {
 
-    override fun applicableAnnotations() = listOf("org.junit.Test")
+    final override fun isApplicableAnnotationUsage(type: AnnotationUsageType) = true
 
-    private lateinit var driver: SqlDriver
+    final override fun applicableAnnotations() = listOf("org.junit.Test")
 
-    override fun beforeCheckEachProject(context: Context) {
-        super.beforeCheckEachProject(context)
-        if (context.isGlobalAnalysis()) {
-            driver = JdbcSqliteDriver("jdbc:sqlite:incident.db")
-            Database.Schema.create(driver)
-        }
-    }
+    abstract fun isApplicable(context: JavaContext): Boolean
 
-    override fun afterCheckEachProject(context: Context) {
-        super.afterCheckEachProject(context)
-        if (context.isGlobalAnalysis()) {
-            driver.close()
-        }
-    }
-
-    override fun visitAnnotationUsage(
+    final override fun visitAnnotationUsage(
         context: JavaContext,
         element: UElement,
         annotationInfo: AnnotationInfo,
         usageInfo: AnnotationUsageInfo,
     ) {
+        if (!isApplicable(context)) return
         if (context.isAndroidTest()) return
 
         val method = element.uastParent as? KotlinUMethod ?: return
@@ -79,23 +56,22 @@ class TestFunctionNameDetector : Detector(), SourceCodeScanner {
 
         val location = context.getNameLocation(method)
 
-        if (context.isGlobalAnalysis()) {
-            Database(driver)
-                .incidentQQueries
-                .insert(
-                    element.getContainingUFile()?.getIoFile()?.name!!,
-                    location.start!!.line.toLong(),
-                    functionName,
-                    method.sourcePsi?.text ?: "",
-                )
-        } else {
-            context.report(
-                ISSUE,
-                context.getNameLocation(method),
-                "Test name does not follow convention",
-            )
-        }
+        performAction(
+            context,
+            element,
+            method,
+            functionName,
+            location,
+        )
     }
+
+    abstract fun performAction(
+        context: JavaContext,
+        element: UElement,
+        method: KotlinUMethod,
+        functionName: String,
+        location: Location,
+    )
 
     private fun String.backticksErrorOrNull(): Error? {
         if (this.startsWith('`') && this.endsWith('`')) return null
@@ -127,19 +103,14 @@ class TestFunctionNameDetector : Detector(), SourceCodeScanner {
 
     private fun JavaContext.isAndroidTest() = Path("androidTest") in file.toPath()
 
-    companion object {
-
-        @JvmField val ISSUE: Issue = Issue.create(
-            id = "TestFunctionName",
-            briefDescription = "Test function name",
-            category = Category.TESTING,
-            priority = 5,
-            severity = Severity.ERROR,
-            explanation = "The test function name should be enclosed in backticks. It should have either two or three parts, separated by hyphens. Each part should, where possible, start in lowercase",
-            implementation = Implementation(
-                TestFunctionNameDetector::class.java,
-                EnumSet.of(JAVA_FILE, TEST_SOURCES),
-            ),
-        )
+    protected fun getSanitizedFileName(
+        element: UElement,
+        location: Location
+    ): String {
+        return element.containingFileName.replace(".", "").plus('.').plus(location.start!!.line)
     }
+    protected val UElement.containingFileName
+        get() = getContainingUFile()?.getIoFile()?.name!!
+
+
 }

@@ -17,9 +17,16 @@
 package com.duckduckgo.gradle
 
 import org.gradle.api.DefaultTask
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.services.ServiceReference
+import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity.RELATIVE
+import org.gradle.api.tasks.SkipWhenEmpty
 import org.gradle.api.tasks.TaskAction
+import java.io.File
 
 @Suppress("UnstableApiUsage")
 abstract class OllamaTask : DefaultTask() {
@@ -27,20 +34,25 @@ abstract class OllamaTask : DefaultTask() {
     @get:ServiceReference("ollama")
     abstract val ollamaBuildService: Property<OllamaBuildService>
 
+    @get:OutputDirectory
+    val outputDir: DirectoryProperty = project.objects.directoryProperty()
+
+    @get:InputDirectory
+    @PathSensitive(RELATIVE)
+    val inputDir: DirectoryProperty = project.objects.directoryProperty()
+
     @TaskAction
     fun performAction() {
-
-        // read from database
-
-        // for each entry, call the ollama service and write the result
-
-        // terminate
-
-        // Example usage
-        val answer = ollamaBuildService.get()
-            .model
-            .generate("Provide 3 short bullet points explaining why Kotlin is awesome")
-
-        println(answer)
+        val model = ollamaBuildService.get().model
+        println("inputDir: " + inputDir.files())
+        inputDir.files().forEach {
+            val input = it.readText()
+            val response = model.generate(input)
+            println(response)
+            val outputFile = File(outputDir.asFile.get(), it.name)
+            outputFile.writer().use { writer ->
+                writer.appendLine(response)
+            }
+        }
     }
 }

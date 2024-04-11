@@ -21,13 +21,13 @@ import com.android.tools.lint.checks.infrastructure.TestLintTask.lint
 import org.junit.Test
 import java.io.File
 
-class TestFunctionNameDetectorTest {
+class TestFunctionNameDetectorIde {
 
     @Test
     fun `name has no backticks - reports error`() {
         lint()
             .sdkHome(File("/Users/davidrawson/Library/Android/sdk"))
-            .issues(TestFunctionNameDetector.ISSUE)
+            .issues(IdeFunctionNameDetector.TEST_FUNCTION_NAME)
             .files(
                 JUNIT_STUB,
                 kt(
@@ -53,7 +53,7 @@ class TestFunctionNameDetectorTest {
     fun `name no parts - reports error`() {
         lint()
             .sdkHome(File("/Users/davidrawson/Library/Android/sdk"))
-            .issues(TestFunctionNameDetector.ISSUE)
+            .issues(IdeFunctionNameDetector.TEST_FUNCTION_NAME)
             .files(
                 JUNIT_STUB,
                 kt(
@@ -79,7 +79,7 @@ class TestFunctionNameDetectorTest {
     fun `name not enough parts - reports error`() {
         lint()
             .sdkHome(File("/Users/davidrawson/Library/Android/sdk"))
-            .issues(TestFunctionNameDetector.ISSUE)
+            .issues(IdeFunctionNameDetector.TEST_FUNCTION_NAME)
             .files(
                 JUNIT_STUB,
                 kt(
@@ -105,7 +105,7 @@ class TestFunctionNameDetectorTest {
     fun `name capitalization - reports error`() {
         lint()
             .sdkHome(File("/Users/davidrawson/Library/Android/sdk"))
-            .issues(TestFunctionNameDetector.ISSUE)
+            .issues(IdeFunctionNameDetector.TEST_FUNCTION_NAME)
             .files(
                 JUNIT_STUB,
                 kt(
@@ -131,7 +131,7 @@ class TestFunctionNameDetectorTest {
     fun `name parts - clean`() {
         lint()
             .sdkHome(File("/Users/davidrawson/Library/Android/sdk"))
-            .issues(TestFunctionNameDetector.ISSUE)
+            .issues(IdeFunctionNameDetector.TEST_FUNCTION_NAME)
             .files(
                 JUNIT_STUB,
                 kt(

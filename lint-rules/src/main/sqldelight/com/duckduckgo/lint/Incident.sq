@@ -1,4 +1,4 @@
-CREATE TABLE incident(
+CREATE TABLE IF NOT EXISTS incident(
     id INTEGER PRIMARY KEY NOT NULL,
     file TEXT NOT NULL,
     startLine INTEGER NOT NULL,
@@ -7,4 +7,4 @@ CREATE TABLE incident(
     suggestion TEXT
 );
 
-CREATE INDEX incident_file_start ON incident(file, startLine);
+CREATE INDEX IF NOT EXISTS incident_file_start ON incident(file, startLine);

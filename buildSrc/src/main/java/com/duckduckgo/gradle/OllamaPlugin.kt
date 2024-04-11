@@ -19,6 +19,7 @@ package com.duckduckgo.gradle
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
+import java.io.File
 
 class OllamaPlugin : Plugin<Project> {
     override fun apply(project: Project) {
@@ -31,6 +32,8 @@ class OllamaPlugin : Plugin<Project> {
 
         project.tasks.register("ollama", OllamaTask::class.java) { task ->
             task.ollamaBuildService.set(serviceProvider)
+            task.inputDir.set(File(project.buildDir, "ollama/lintOutput"))
+            task.outputDir.set(File(project.buildDir, "ollama/responses"))
         }
     }
 }
