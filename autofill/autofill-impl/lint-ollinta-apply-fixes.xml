@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!-- Don't write prompts when we just want to apply the fixes from the prompts -->
+    <issue id="PromptWritingTestFunctionName" severity="ignore" />
+</lint>

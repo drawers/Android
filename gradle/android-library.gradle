@@ -30,6 +30,7 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
+
     lint {
         abortOnError true
         ignoreTestSources false

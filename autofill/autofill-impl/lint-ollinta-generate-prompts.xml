@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!-- Don't fix when we don't yet have the prompts  -->
+    <issue id="FixingTestFunctionName" severity="ignore" />
+</lint>
