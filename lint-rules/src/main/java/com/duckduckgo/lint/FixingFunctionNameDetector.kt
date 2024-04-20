@@ -89,7 +89,7 @@ class FixingFunctionNameDetector : TestFunctionNameDetector() {
             briefDescription = "Prompt writing test function name",
             "An issue to represent autofixing a broken function name based a response from a language model",
             implementation = Implementation(
-                PromptWritingFunctionNameDetector::class.java,
+                FixingFunctionNameDetector::class.java,
                 EnumSet.of(Scope.JAVA_FILE, Scope.TEST_SOURCES),
             ),
         )
