@@ -16,14 +16,9 @@
 
 package com.duckduckgo.gradle
 
-import com.android.build.api.dsl.ApplicationExtension
-import com.android.build.api.dsl.LibraryExtension
-import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
-import org.gradle.api.tasks.Copy
-import org.gradle.api.tasks.TaskProvider
 import java.io.File
 
 class OllintaPlugin : Plugin<Project> {
@@ -36,72 +31,13 @@ class OllintaPlugin : Plugin<Project> {
             project.gradle
                 .sharedServices
                 .registerIfAbsent("ollama", OllamaBuildService::class.java) { spec ->
-                    spec.parameters.modelName.set("orca-mini")
+                    spec.parameters.modelName.set("codellama")
                 }
 
-        // val dependencies = mutableListOf<TaskProvider<*>>()
-
-        val backupLintXml = project.tasks.register("ollintaBackupLintXml", Copy::class.java) { copy ->
-            copy.from("lint.xml")
-            copy.into("lint-backup.xml")
+        project.tasks.register("ollinta", Ollinta::class.java) { task ->
+            task.ollamaBuildService.set(serviceProvider)
+            task.inputDir.set(File(project.buildDir, "ollinta/promptData"))
+            task.outputDir.set(File(project.buildDir, "ollinta/responseData"))
         }
-
-        val overwriteLintXmlForGeneratePrompts = project.tasks.register("ollintaOverwriteLintXmlForGeneratePrompts", Copy::class.java) { copy ->
-            copy.mustRunAfter(backupLintXml)
-            copy.from("ollinta-generate-prompts.xml")
-            copy.into("lint.xml")
-        }
-
-        val restoreLintXml = project.tasks.register("ollintaRestoreLintXml", Copy::class.java) { copy ->
-            copy.from("lint-backup.xml")
-            copy.into("lint.xml")
-        } // don't add this to dependencies, it's a finalizedBy ;-)
-
-        val lintToGeneratePrompts = project.tasks.register("ollintaLintToGeneratePrompts") { task ->
-            task.dependsOn(backupLintXml)
-            task.dependsOn(overwriteLintXmlForGeneratePrompts)
-            task.dependsOn("lint")
-            task.finalizedBy(restoreLintXml)
-        }
-
-        project.tasks.named("lint").configure { task ->
-            task.mustRunAfter(backupLintXml)
-            task.mustRunAfter(overwriteLintXmlForGeneratePrompts)
-        }
-
-        project.extensions.configure(LibraryAndroidComponentsExtension::class.java) { ext ->
-            ext.onVariants {
-                project.tasks.named("lintAnalyzeDebug").configure { task ->
-                    task.mustRunAfter(overwriteLintXmlForGeneratePrompts)
-                }
-            }
-        }
-
-        // val generateResponses = project.tasks.register("ollintaGenerateResponses", Ollinta::class.java) { task ->
-        //     task.ollamaBuildService.set(serviceProvider)
-        //     task.inputDir.set(File(project.buildDir, "ollinta/promptData"))
-        //     task.outputDir.set(File(project.buildDir, "ollinta/responseData"))
-        // }.also {
-        //     dependencies.add(it)
-        // }
-        //
-        // val overwriteLintXmlForFix = project.tasks.register("ollintaOverwriteLintXmlForFix", Copy::class.java) { copy ->
-        //     copy.mustRunAfter(generateResponses)
-        //     copy.from("ollinta-apply-fixes.xml")
-        //     copy.into("lint.xml")
-        // }.also {
-        //     dependencies.add(it)
-        // }
-        //
-        //
-        // project.tasks.register("ollintaFix") { task ->
-        //     task.mustRunAfter(overwriteLintXmlForFix)
-        //     task.dependsOn(*dependencies.toTypedArray(), "lintFix")
-        //     task.finalizedBy(restoreLintXml)
-        // }
-        //
-        // project.tasks.named("lintFix").configure { task ->
-        //     task.mustRunAfter(generateResponses)
-        // }
     }
 }

@@ -54,8 +54,9 @@ abstract class OllamaBuildService : BuildService<OllamaBuildService.Params>, Aut
     }
 
     val model: ChatLanguageModel by lazy(SYNCHRONIZED) {
-        OllamaChatModel.builder().baseUrl(baseUrl(ollama)).modelName(modelName).build()
+        OllamaChatModel.builder().baseUrl(baseUrl(ollama)).modelName(modelName).seed(0).temperature(0.0).build()
     }
+
 
     override fun close() {
         ollama.close()
