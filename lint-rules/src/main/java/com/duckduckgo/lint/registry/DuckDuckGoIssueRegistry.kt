@@ -20,6 +20,7 @@ import com.android.tools.lint.client.api.IssueRegistry
 import com.android.tools.lint.client.api.Vendor
 import com.android.tools.lint.detector.api.CURRENT_API
 import com.android.tools.lint.detector.api.Issue
+import com.duckduckgo.lint.FixingFunctionNameDetector
 import com.duckduckgo.lint.IdeFunctionNameDetector
 import com.duckduckgo.lint.NoDispatcherComputation.Companion.ISSUE_AVOID_COMPUTATION
 import com.duckduckgo.lint.NoFragmentDetector.Companion.NO_FRAGMENT_ISSUE
@@ -78,7 +79,8 @@ class DuckDuckGoIssueRegistry : IssueRegistry() {
             WRONG_STYLE_NAME,
             INVALID_COLOR_ATTRIBUTE,
             IdeFunctionNameDetector.TEST_FUNCTION_NAME,
-            PromptWritingFunctionNameDetector.TEST_FUNCTION_NAME, // prompt writing
+            // PromptWritingFunctionNameDetector.TEST_FUNCTION_NAME, // prompt writing
+            FixingFunctionNameDetector.TEST_FUNCTION_NAME,
         )
 
     override val api: Int

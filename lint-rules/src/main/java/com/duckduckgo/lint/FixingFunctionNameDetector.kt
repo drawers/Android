@@ -31,8 +31,8 @@ import java.util.EnumSet
 class FixingFunctionNameDetector : TestFunctionNameDetector() {
 
     override fun isApplicable(context: JavaContext): Boolean {
-        return false // disable for now, we'll test this later
-        // return (Scope.ALL_JAVA_FILES in context.scope)
+        // return false // disable for now, we'll test this later
+        return (Scope.ALL_JAVA_FILES in context.scope)
     }
 
     override fun performAction(
