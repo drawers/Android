@@ -75,7 +75,7 @@ internal class CredentialsLastModifiedWinsStrategyTest {
         dispatchers = coroutineRule.testDispatcherProvider,
     )
 
-    @Test fun `processEntries - no local entities - all remote entities stored`() = runTest {
+    @Test fun whenNoLocalEntitiesThenAllRemoteEntitiesStored() = runTest {
         givenLocalCredentials()
         val remoteCredentials = credentialsSyncEntries(
             entries = listOf(
@@ -94,7 +94,7 @@ internal class CredentialsLastModifiedWinsStrategyTest {
         assertTrue(credentialsSyncMetadata.getLocalId("2") == spotifyCredentials.id)
     }
 
-    @Test fun `processEntries - remote are more recent then remote wins`() = runTest {
+    @Test fun whenRemoteAreMoreRecentThenRemoteWins() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,
@@ -118,7 +118,7 @@ internal class CredentialsLastModifiedWinsStrategyTest {
         assertTrue(credentialsSync.getCredentialWithSyncId("2")!!.domainTitle == "NewTitle")
     }
 
-    @Test fun `whenCredentialUpdatedAfterChangesTimeStampThenLocalWins - local wins after changes timestamp`() = runTest {
+    @Test fun whenCredentialUpdatedAfterChangesTimeStampThenLocalWins() = runTest {
         givenLocalCredentials(
             twitterCredentials.copy(lastUpdatedMillis = DatabaseDateFormatter.parseIso8601ToMillis("2022-08-30T00:01:00Z")),
             spotifyCredentials.copy(lastUpdatedMillis = DatabaseDateFormatter.parseIso8601ToMillis("2022-08-30T00:01:00Z")),
@@ -142,7 +142,7 @@ internal class CredentialsLastModifiedWinsStrategyTest {
         assertTrue(credentialsSync.getCredentialWithSyncId("2")!!.domainTitle == spotifyCredentials.domainTitle)
     }
 
-    @Test fun `processEntries - local is more recent then local wins`() = runTest {
+    @Test fun whenLocalIsMoreRecentThenLocalWins() = runTest {
         givenLocalCredentials(
             twitterCredentials.copy(lastUpdatedMillis = 1689592358516),
             spotifyCredentials.copy(lastUpdatedMillis = 1689592358516),
@@ -166,7 +166,7 @@ internal class CredentialsLastModifiedWinsStrategyTest {
         assertTrue(credentialsSync.getCredentialWithSyncId("2")!!.domainTitle == spotifyCredentials.domainTitle)
     }
 
-    @Test fun `whenLocalHasMoreCredentialsThenUpdateWithMoreRecentAndKeepOthers - update with more recent and keep others`() = runTest {
+    @Test fun whenLocalHasMoreCredentialsThenUpdateWithMoreRecentAndKeepOthers() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,
@@ -190,7 +190,7 @@ internal class CredentialsLastModifiedWinsStrategyTest {
         assertTrue(credentialsSyncMetadata.getLocalId("3") == 3L)
     }
 
-    @Test fun `processEntries - remote has more credentials - keep existing and add new credentials`() = runTest {
+    @Test fun whenRemoteHasMoreCredentialsThenKeepExistingAndAddNewCredentials() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,
@@ -214,7 +214,7 @@ internal class CredentialsLastModifiedWinsStrategyTest {
         assertTrue(credentialsSyncMetadata.getLocalId("3") == 3L)
     }
 
-    @Test fun `processEntries - remote is empty - no changes`() = runTest {
+    @Test fun whenRemoteIsEmptyThenNoChanges() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,
@@ -233,7 +233,7 @@ internal class CredentialsLastModifiedWinsStrategyTest {
         assertTrue(credentialsSyncMetadata.getLocalId("2") == 2L)
     }
 
-    @Test fun `whenRemoteMoreRecentAndDeletedThenRemoteWins - remote more recent and deleted then remote wins`() = runTest {
+    @Test fun whenRemoteMoreRecentAndDeletedThenRemoteWins() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,

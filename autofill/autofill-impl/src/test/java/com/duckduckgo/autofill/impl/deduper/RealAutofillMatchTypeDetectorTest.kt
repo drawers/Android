@@ -14,31 +14,31 @@ class RealAutofillMatchTypeDetectorTest {
     private val testee = RealAutofillDeduplicationMatchTypeDetector(AutofillDomainNameUrlMatcher(TestUrlUnicodeNormalizer()))
 
     @Test
-    fun `whenExactUrlMatchThenTypeIsPerfectMatch - type is perfect match`() {
+    fun whenExactUrlMatchThenTypeIsPerfectMatch() {
         val result = testee.detectMatchType("example.com", creds("example.com"))
         result.assertIsPerfectMatch()
     }
 
     @Test
-    fun `whenSubdomainMatchOnSavedSiteThenTypeIsPartialMatch - subdomain match on saved site - type is partial match`() {
+    fun whenSubdomainMatchOnSavedSiteThenTypeIsPartialMatch() {
         val result = testee.detectMatchType("example.com", creds("subdomain.example.com"))
         result.assertIsPartialMatch()
     }
 
     @Test
-    fun `whenSubdomainMatchOnVisitedSiteThenTypeIsPartialMatch - subdomain match on visited site - type is partial match`() {
+    fun whenSubdomainMatchOnVisitedSiteThenTypeIsPartialMatch() {
         val result = testee.detectMatchType("subdomain.example.com", creds("example.com"))
         result.assertIsPartialMatch()
     }
 
     @Test
-    fun `whenSubdomainMatchOnBothVisitedAndSavedSiteThenTypeIsPerfectMatch - subdomain match on both visited and saved site - perfect match`() {
+    fun whenSubdomainMatchOnBothVisitedAndSavedSiteThenTypeIsPerfectMatch() {
         val result = testee.detectMatchType("subdomain.example.com", creds("subdomain.example.com"))
         result.assertIsPerfectMatch()
     }
 
     @Test
-    fun `whenNoETldPlusOneMatchNotAMatch - no ETLD+1 match - not a match`() {
+    fun whenNoETldPlusOneMatchNotAMatch() {
         val result = testee.detectMatchType("foo.com", creds("example.com"))
         result.assertNotAMatch()
     }

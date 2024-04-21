@@ -93,35 +93,35 @@ class RealSecureStorageTest {
     }
 
     @Test
-    fun `whenCredentialsAddedThenAddEntityToRepositoryWithEncryptedPasswordAndIv - add entity to repository with encrypted password and IV`() = runTest {
+    fun whenCredentialsAddedThenAddEntityToRepositoryWithEncryptedPasswordAndIv() = runTest {
         testee.addWebsiteLoginDetailsWithCredentials(testCredentials)
 
         verify(secureStorageRepository).addWebsiteLoginCredential(testEntity)
     }
 
     @Test
-    fun `whenCanAccessSecureStorageThenReturnCanProcessDataValue - can process data - true`() {
+    fun whenCanAccessSecureStorageThenReturnCanProcessDataValue() {
         whenever(l2DataTransformer.canProcessData()).thenReturn(true)
 
         assertTrue(testee.canAccessSecureStorage())
     }
 
     @Test
-    fun `whenCredentialsDeletedThenDeleteEntityWithIdFromSecureStorageRepository - delete entity with Id from secure storage repository`() = runTest {
+    fun whenCredentialsDeletedThenDeleteEntityWithIdFromSecureStorageRepository() = runTest {
         testee.deleteWebsiteLoginDetailsWithCredentials(1)
 
         verify(secureStorageRepository).deleteWebsiteLoginCredentials(1)
     }
 
     @Test
-    fun `whenCredentialsUpdatedThenUpdateEntityInSecureStorageRepository - update credentials - update entity in secure storage repository`() = runTest {
+    fun whenCredentialsUpdatedThenUpdateEntityInSecureStorageRepository() = runTest {
         testee.updateWebsiteLoginDetailsWithCredentials(testCredentials)
 
         verify(secureStorageRepository).updateWebsiteLoginCredentials(testEntity)
     }
 
     @Test
-    fun `whenGetCredentialsWIthIdThenGetEntityWithIdFromSecureStorageRepository - get entity with Id from secure storage repository`() = runTest {
+    fun whenGetCredentialsWIthIdThenGetEntityWithIdFromSecureStorageRepository() = runTest {
         whenever(secureStorageRepository.getWebsiteLoginCredentialsForId(1)).thenReturn(testEntity)
 
         val result = testee.getWebsiteLoginDetailsWithCredentials(1)
@@ -130,7 +130,7 @@ class RealSecureStorageTest {
     }
 
     @Test
-    fun `whenAllWebsiteLoginDetailsRequestedThenGetAllEntitiesAndReturnAllDetailsOnly - get all entities and return all details only`() = runTest {
+    fun whenAllWebsiteLoginDetailsRequestedThenGetAllEntitiesAndReturnAllDetailsOnly() = runTest {
         whenever(secureStorageRepository.websiteLoginCredentials()).thenReturn(
             MutableStateFlow(listOf(testEntity)),
         )
@@ -141,7 +141,7 @@ class RealSecureStorageTest {
     }
 
     @Test
-    fun `whenWebsiteLoginDetailsForDomainRequestedThenGetEntityForDomainAndReturnDetailsOnly - get entity for domain and return details only`() = runTest {
+    fun whenWebsiteLoginDetailsForDomainRequestedThenGetEntityForDomainAndReturnDetailsOnly() = runTest {
         whenever(secureStorageRepository.websiteLoginCredentialsForDomain("test.com")).thenReturn(
             MutableStateFlow(listOf(testEntity)),
         )
@@ -152,7 +152,7 @@ class RealSecureStorageTest {
     }
 
     @Test
-    fun `whenAllWebsiteLoginCredentialsRequestedThenGetAllEntitiesAndReturnIncludingDecryptedPassword - get all entities and return including decrypted password`() = runTest {
+    fun whenAllWebsiteLoginCredentialsRequestedThenGetAllEntitiesAndReturnIncludingDecryptedPassword() = runTest {
         whenever(secureStorageRepository.websiteLoginCredentials()).thenReturn(
             MutableStateFlow(listOf(testEntity)),
         )
@@ -163,7 +163,7 @@ class RealSecureStorageTest {
     }
 
     @Test
-    fun `whenWebsiteLoginCredentialsForDomainRequestedThenGetEntityForDomainAndReturnIncludingDecryptedPassword - get entity for domain and return including decrypted password`() = runTest {
+    fun whenWebsiteLoginCredentialsForDomainRequestedThenGetEntityForDomainAndReturnIncludingDecryptedPassword() = runTest {
         whenever(secureStorageRepository.websiteLoginCredentialsForDomain("test.com")).thenReturn(
             MutableStateFlow(listOf(testEntity)),
         )
@@ -174,14 +174,14 @@ class RealSecureStorageTest {
     }
 
     @Test
-    fun `whenNoSecureStorageRepositoryThenCanAccessSecureStorageFalse - can access secure storage false`() {
+    fun whenNoSecureStorageRepositoryThenCanAccessSecureStorageFalse() {
         setUpNoSecureStorageRepository()
 
         assertFalse(testee.canAccessSecureStorage())
     }
 
     @Test
-    fun `whenNoSecureStorageRepositoryAddCredentialsThenDoNothing - no secure storage repository - do nothing`() = runTest {
+    fun whenNoSecureStorageRepositoryAddCredentialsThenDoNothing() = runTest {
         setUpNoSecureStorageRepository()
 
         testee.addWebsiteLoginDetailsWithCredentials(testCredentials)
@@ -190,14 +190,14 @@ class RealSecureStorageTest {
     }
 
     @Test
-    fun `whenNoSecureStorageRepositoryGetCredentialsThenReturnNull - no secure storage repository - null`() = runTest {
+    fun whenNoSecureStorageRepositoryGetCredentialsThenReturnNull() = runTest {
         setUpNoSecureStorageRepository()
 
         assertNull(testee.getWebsiteLoginDetailsWithCredentials(1))
     }
 
     @Test
-    fun `whenNoSecureStorageRepositoryUpdateCredentialsThenDoNothing - no secure storage repository - do nothing`() = runTest {
+    fun whenNoSecureStorageRepositoryUpdateCredentialsThenDoNothing() = runTest {
         setUpNoSecureStorageRepository()
 
         testee.updateWebsiteLoginDetailsWithCredentials(testCredentials)
@@ -206,7 +206,7 @@ class RealSecureStorageTest {
     }
 
     @Test
-    fun `whenNoSecureStorageRepositoryDeleteCredentialsThenDoNothing - no secure storage repository - do nothing`() = runTest {
+    fun whenNoSecureStorageRepositoryDeleteCredentialsThenDoNothing() = runTest {
         setUpNoSecureStorageRepository()
 
         testee.deleteWebsiteLoginDetailsWithCredentials(1)
@@ -215,7 +215,7 @@ class RealSecureStorageTest {
     }
 
     @Test
-    fun `whenNoSecureStorageRepositoryGetWebsiteLoginDetailsForDomainThenFlowReturnsNothing - no secure storage repository - returns nothing`() = runTest {
+    fun whenNoSecureStorageRepositoryGetWebsiteLoginDetailsForDomainThenFlowReturnsNothing() = runTest {
         setUpNoSecureStorageRepository()
 
         testee.websiteLoginDetailsForDomain("test").test {
@@ -224,7 +224,7 @@ class RealSecureStorageTest {
     }
 
     @Test
-    fun `whenNoSecureStorageRepositoryGetWebsiteLoginDetailsThenFlowReturnsNothing - no secure storage repository - flow returns nothing`() = runTest {
+    fun whenNoSecureStorageRepositoryGetWebsiteLoginDetailsThenFlowReturnsNothing() = runTest {
         setUpNoSecureStorageRepository()
 
         testee.websiteLoginDetails().test {
@@ -233,7 +233,7 @@ class RealSecureStorageTest {
     }
 
     @Test
-    fun `whenNoSecureStorageRepositoryGetWebsiteCredentialsForDomainThenFlowReturnsEmptyList - no secure storage repository - empty list`() = runTest {
+    fun whenNoSecureStorageRepositoryGetWebsiteCredentialsForDomainThenFlowReturnsEmptyList() = runTest {
         setUpNoSecureStorageRepository()
 
         testee.websiteLoginDetailsWithCredentialsForDomain("test").test {
@@ -243,7 +243,7 @@ class RealSecureStorageTest {
     }
 
     @Test
-    fun `whenNoSecureStorageRepositoryGetWebsiteCredentialsThenFlowReturnsEmptyList - no secure storage repository - empty list`() = runTest {
+    fun whenNoSecureStorageRepositoryGetWebsiteCredentialsThenFlowReturnsEmptyList() = runTest {
         setUpNoSecureStorageRepository()
 
         testee.websiteLoginDetailsWithCredentials().test {
@@ -253,7 +253,7 @@ class RealSecureStorageTest {
     }
 
     @Test
-    fun `deleteWebSiteLoginDetailsWithCredentials - bulk deletion function on secure storage repo used`() = runTest {
+    fun whenMassDeletingCredentialsBulkDeletionFunctionOnSecureStorageRepoUsed() = runTest {
         val idsToDelete = listOf(1L, 2L, 3L)
         testee.deleteWebSiteLoginDetailsWithCredentials(idsToDelete)
         verify(secureStorageRepository).deleteWebsiteLoginCredentials(idsToDelete)

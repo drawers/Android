@@ -65,7 +65,7 @@ class RealDeviceAuthenticatorTest {
     }
 
     @Test
-    fun `whenSdkIs28ThenValidAuthenticationShouldCheckLegacy - legacy authentication check - sdk 28`() {
+    fun whenSdkIs28ThenValidAuthenticationShouldCheckLegacy() {
         whenever(appBuildConfig.sdkInt).thenReturn(28)
 
         testee.hasValidDeviceAuthentication()
@@ -74,7 +74,7 @@ class RealDeviceAuthenticatorTest {
     }
 
     @Test
-    fun `whenSdkIs29ThenValidAuthenticationShouldCheckLegacy - legacy authentication check - sdk 29`() {
+    fun whenSdkIs29ThenValidAuthenticationShouldCheckLegacy() {
         whenever(appBuildConfig.sdkInt).thenReturn(29)
 
         testee.hasValidDeviceAuthentication()
@@ -83,7 +83,7 @@ class RealDeviceAuthenticatorTest {
     }
 
     @Test
-    fun `whenSdkIsNot28Or29ThenValidAuthenticationShouldCheckLegacy - sdk int not 28 or 29 - checks legacy authentication`() {
+    fun whenSdkIsNot28Or29ThenValidAuthenticationShouldCheckLegacy() {
         whenever(appBuildConfig.sdkInt).thenReturn(30)
 
         testee.hasValidDeviceAuthentication()
@@ -92,13 +92,13 @@ class RealDeviceAuthenticatorTest {
     }
 
     @Test
-    fun `whenAuthenticateToAccessCredentialsIsCalledWithFragmentThenLaunchAuthLauncher - launch auth launcher`() {
+    fun whenAuthenticateToAccessCredentialsIsCalledWithFragmentThenLaunchAuthLauncher() {
         testee.authenticate(fragment) {}
         verifyAuthDialogLaunched()
     }
 
     @Test
-    fun `whenAuthenticateToAccessCredentialsIsCalledWithActivityThenLaunchAuthLauncher - launch auth launcher`() {
+    fun whenAuthenticateToAccessCredentialsIsCalledWithActivityThenLaunchAuthLauncher() {
         testee.authenticate(fragment) {}
         verifyAuthDialogLaunched()
     }
@@ -113,7 +113,7 @@ class RealDeviceAuthenticatorTest {
     }
 
     @Test
-    fun `whenAuthGracePeriodActiveThenNoDeviceAuthLaunchedWhenAccessingCredentials - auth grace period active - no device auth launched when accessing credentials`() {
+    fun whenAuthGracePeriodActiveThenNoDeviceAuthLaunchedWhenAccessingCredentials() {
         whenever(autofillAuthorizationGracePeriod.isAuthRequired()).thenReturn(false)
         testee.authenticate(fragmentActivity) {}
         verifyAuthNotLaunched()

@@ -31,25 +31,25 @@ class RealNeverSavedSiteRepositoryTest {
     )
 
     @Test
-    fun `whenDomainAddedToNeverSaveListThenETldPlus1IsUsed - add to never save list - etld plus 1 is used`() = runTest {
+    fun whenDomainAddedToNeverSaveListThenETldPlus1IsUsed() = runTest {
         testee.addToNeverSaveList("foo.example.com")
         verify(secureStorage).addToNeverSaveList("example.com")
     }
 
     @Test
-    fun `whenDomainAddedToNeverSaveListContainsQueryParamsThenOnlyETldPlus1IsUsed - adds domain to never save list with query params - only ETLD+1 is used`() = runTest {
+    fun whenDomainAddedToNeverSaveListContainsQueryParamsThenOnlyETldPlus1IsUsed() = runTest {
         testee.addToNeverSaveList("https://foo.example.com/?q=123")
         verify(secureStorage).addToNeverSaveList("example.com")
     }
 
     @Test
-    fun `whenDomainAddedThenQueryingForThatExactDomainReturnsTrue - is in never save list - true`() = runTest {
+    fun whenDomainAddedThenQueryingForThatExactDomainReturnsTrue() = runTest {
         whenever(secureStorage.isInNeverSaveList("example.com")).thenReturn(true)
         assertTrue(testee.isInNeverSaveList("example.com"))
     }
 
     @Test
-    fun `whenDomainAddedThenQueryingUsesEtldPlusOne - etld plus one - true`() = runTest {
+    fun whenDomainAddedThenQueryingUsesEtldPlusOne() = runTest {
         whenever(secureStorage.isInNeverSaveList("example.com")).thenReturn(true)
         assertTrue(testee.isInNeverSaveList("foo.example.com"))
     }

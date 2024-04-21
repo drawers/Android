@@ -23,7 +23,7 @@ class InMemoryAutoSavedLoginsMonitorTest {
     private val testee = InMemoryAutoSavedLoginsMonitor()
 
     @Test
-    fun `setAutoSavedLoginId - value set - returned from get function`() {
+    fun whenValueSetThenReturnedFromGetFunction() {
         val loginId: Long = 1
         val tabId = "abc"
         testee.setAutoSavedLoginId(loginId, tabId)
@@ -31,7 +31,7 @@ class InMemoryAutoSavedLoginsMonitorTest {
     }
 
     @Test
-    fun `whenValueSetThenClearedThenNotReturnedFromGetFunction - cleared - not returned from get function`() {
+    fun whenValueSetThenClearedThenNotReturnedFromGetFunction() {
         val loginId: Long = 1
         val tabId = "abc"
         testee.setAutoSavedLoginId(loginId, tabId)

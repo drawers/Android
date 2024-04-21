@@ -43,14 +43,14 @@ class CredentialGrouperTest {
     )
 
     @Test
-    fun `whenEmptyListInThenEmptyListOut - empty list in - empty list out`() {
+    fun whenEmptyListInThenEmptyListOut() {
         val credentials = emptyList<LoginCredentials>()
         val grouped = testee.group(credentials)
         assertTrue(grouped.isEmpty())
     }
 
     @Test
-    fun `whenSingleCredentialThenInitialAdded - initial added`() {
+    fun whenSingleCredentialThenInitialAdded() {
         val credentials = listOf(
             creds("example.com"),
         )
@@ -63,7 +63,7 @@ class CredentialGrouperTest {
     }
 
     @Test
-    fun `whenMultipleCredentialsWithSameInitialThenOnlyOneGroupAdded - multiple credentials with same initial - only one group added`() {
+    fun whenMultipleCredentialsWithSameInitialThenOnlyOneGroupAdded() {
         val credentials = listOf(
             creds("example.com"),
             creds("energy.com"),
@@ -77,7 +77,7 @@ class CredentialGrouperTest {
     }
 
     @Test
-    fun `whenCredentialsWithDifferentInitialsThenMultipleGroupsAdded - different initials - multiple groups added`() {
+    fun whenCredentialsWithDifferentInitialsThenMultipleGroupsAdded() {
         val credentials = listOf(
             creds("example.com"),
             creds("foo.com"),
@@ -94,7 +94,7 @@ class CredentialGrouperTest {
     }
 
     @Test
-    fun `whenCombinationOfDomainsAndTitlesThenGroupsTakenFromTitlesWhenTheyExist - groups taken from titles when they exist`() {
+    fun whenCombinationOfDomainsAndTitlesThenGroupsTakenFromTitlesWhenTheyExist() {
         val credentials = listOf(
             creds(domain = "energy.com"),
             creds(domain = "amazon.com", title = "Smile Amazon"),
@@ -114,7 +114,7 @@ class CredentialGrouperTest {
     }
 
     @Test
-    fun `whenListContainsAnEntryWithAMissingDomainAndTitleThenGroupedIntoPlaceholder - missing domain and title - placeholder`() {
+    fun whenListContainsAnEntryWithAMissingDomainAndTitleThenGroupedIntoPlaceholder() {
         val credentials = listOf(
             creds(domain = "amazon.com", title = "Smile Amazon"),
             creds(domain = "example.com"),
@@ -133,7 +133,7 @@ class CredentialGrouperTest {
     }
 
     @Test
-    fun `whenCharactersCanBeDeconstructedThenTheyDoNotGetTheirOwnGroup - characters cannot be deconstructed into their own group`() {
+    fun whenCharactersCanBeDeconstructedThenTheyDoNotGetTheirOwnGroup() {
         val credentials = listOf(
             creds(title = "ä"),
             creds(title = "A"),
@@ -151,7 +151,7 @@ class CredentialGrouperTest {
     }
 
     @Test
-    fun `whenNonEnglishAlphabetCharactersThenTheyDoGetTheirOwnGroup - non-english alphabet characters - their own group`() {
+    fun whenNonEnglishAlphabetCharactersThenTheyDoGetTheirOwnGroup() {
         val credentials = listOf(
             creds(title = "ß"),
         )
@@ -164,7 +164,7 @@ class CredentialGrouperTest {
     }
 
     @Test
-    fun `whenEmojiThenTheTheyAreInPlaceholder - the they are in placeholder`() {
+    fun whenEmojiThenTheTheyAreInPlaceholder() {
         val credentials = listOf(
             creds(title = "😅"),
         )
@@ -177,7 +177,7 @@ class CredentialGrouperTest {
     }
 
     @Test
-    fun `whenNumberThenGroupedIntoPlaceholder - grouped into placeholder`() {
+    fun whenNumberThenGroupedIntoPlaceholder() {
         val credentials = listOf(
             creds(title = "8"),
             creds(title = "5"),
@@ -193,7 +193,7 @@ class CredentialGrouperTest {
     }
 
     @Test
-    fun `group - mixture of accented characters do not get their own groups`() {
+    fun whenListMixtureOfAccentedCharactersThenAccentedCharactersDoNotGetTheirOwnGroups() {
         val credentials = listOf(
             creds(title = "A"),
             creds(title = "Ab"),

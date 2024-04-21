@@ -31,13 +31,13 @@ class CredentialTextExtractorTest {
     private val testee = CredentialTextExtractor(context)
 
     @Test
-    fun `whenMissingUsernameWithDomainPresentThenDomainUsedInString - missing username with domain present - domain used in string`() {
+    fun whenMissingUsernameWithDomainPresentThenDomainUsedInString() {
         val result = testee.usernameOrPlaceholder(missingUsername())
         assertEquals("Password for example.com", result)
     }
 
     @Test
-    fun `whenMissingUsernameAndMissingDomainThenPlaceholderUsedString - missing username and domain - placeholder used string`() {
+    fun whenMissingUsernameAndMissingDomainThenPlaceholderUsedString() {
         val result = testee.usernameOrPlaceholder(missingUsernameAndDomain())
         assertEquals("Password for site", result)
     }

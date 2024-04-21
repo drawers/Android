@@ -29,13 +29,13 @@ class EmailProtectionInContextSignUpPromptViewModelTest {
     )
 
     @Test
-    fun `whenUserPressesToProtectEmailThenCorrectPixelSent - onProtectEmailButtonPressed - correct pixel sent`() {
+    fun whenUserPressesToProtectEmailThenCorrectPixelSent() {
         testee.onProtectEmailButtonPressed()
         verify(pixel).fire(EMAIL_PROTECTION_IN_CONTEXT_PROMPT_CONFIRMED)
     }
 
     @Test
-    fun `whenUserPressesToProtectEmailThenCorrectResultTypeReturned - on protect email button pressed - correct result type returned`() = runTest {
+    fun whenUserPressesToProtectEmailThenCorrectResultTypeReturned() = runTest {
         testee.onProtectEmailButtonPressed()
         testee.commands.test {
             assertTrue((awaitItem() as FinishWithResult).result is SignUp)
@@ -44,13 +44,13 @@ class EmailProtectionInContextSignUpPromptViewModelTest {
     }
 
     @Test
-    fun `whenUserPressesToDismissPromptThenCorrectPixelSent - dismissed prompt - pixel sent`() {
+    fun whenUserPressesToDismissPromptThenCorrectPixelSent() {
         testee.onCloseButtonPressed()
         verify(pixel).fire(EMAIL_PROTECTION_IN_CONTEXT_PROMPT_DISMISSED)
     }
 
     @Test
-    fun `whenUserPressesToDismissPromptThenCorrectResultTypeReturned - onCloseButtonPressed - finish with result of type Cancel`() = runTest {
+    fun whenUserPressesToDismissPromptThenCorrectResultTypeReturned() = runTest {
         testee.onCloseButtonPressed()
         testee.commands.test {
             assertTrue((awaitItem() as FinishWithResult).result is Cancel)
@@ -59,13 +59,13 @@ class EmailProtectionInContextSignUpPromptViewModelTest {
     }
 
     @Test
-    fun `whenUserPressesToDismissPromptPermanentlyThenCorrectPixelSent - do not show again button pressed - pixel sent`() {
+    fun whenUserPressesToDismissPromptPermanentlyThenCorrectPixelSent() {
         testee.onDoNotShowAgainButtonPressed()
         verify(pixel).fire(EMAIL_PROTECTION_IN_CONTEXT_PROMPT_NEVER_AGAIN)
     }
 
     @Test
-    fun `whenUserPressesToDismissPromptPermanentlyThenCorrectResultTypeReturned - onDoNotShowAgainButtonPressed - correct result type returned`() = runTest {
+    fun whenUserPressesToDismissPromptPermanentlyThenCorrectResultTypeReturned() = runTest {
         testee.onDoNotShowAgainButtonPressed()
         testee.commands.test {
             assertTrue((awaitItem() as FinishWithResult).result is DoNotShowAgain)

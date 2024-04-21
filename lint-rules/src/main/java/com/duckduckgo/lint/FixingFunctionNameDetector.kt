@@ -54,7 +54,7 @@ class FixingFunctionNameDetector : TestFunctionNameDetector() {
         val secondBackTick = response.indexOfLast { it == '`' }
         if (firstBackTick == -1 || secondBackTick == -1) return
 
-        val proposedFunctionName = response.substring(firstBackTick..secondBackTick)
+        val proposedFunctionName = "`${response.substring(firstBackTick..secondBackTick)}`"
 
         if (proposedFunctionName.isEmpty()) {
             return

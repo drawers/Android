@@ -50,7 +50,7 @@ class SyncCredentialsListenerTest {
     }
 
     @Test
-    fun `whenOnCredentialAddedThenNotifySyncMetadata - notify sync metadata - local Id 1 - deleted at null - modified at not null`() {
+    fun whenOnCredentialAddedThenNotifySyncMetadata() {
         testee.onCredentialAdded(1)
 
         syncMetatadaDao.getSyncMetadata(1)?.let {
@@ -61,7 +61,7 @@ class SyncCredentialsListenerTest {
     }
 
     @Test
-    fun `onCredentialAdded - recently removed - cancel delete operation and do not update metadata`() = runTest {
+    fun whenAddingCredentialRecentlyRemovedThenCancelDeleteOperationAndDoNotUpdateMetadata() = runTest {
         testee.onCredentialAdded(1)
         val credential = syncMetatadaDao.getSyncMetadata(1)
         testee.onCredentialRemoved(1)
@@ -74,7 +74,7 @@ class SyncCredentialsListenerTest {
     }
 
     @Test
-    fun `whenCredentialNotReinsertedThenNotifySyncMetadata - credential deleted - sync metadata updated`() = runTest {
+    fun whenCredentialNotReinsertedThenNotifySyncMetadata() = runTest {
         testee.onCredentialAdded(1)
         testee.onCredentialRemoved(1)
         this.advanceTimeBy(SYNC_CREDENTIALS_DELETE_DELAY + 1)
@@ -85,7 +85,7 @@ class SyncCredentialsListenerTest {
     }
 
     @Test
-    fun `whenMultipleCredentialsAddedThenNotifySyncMetadata - notify sync metadata - multiple credentials added`() {
+    fun whenMultipleCredentialsAddedThenNotifySyncMetadata() {
         testee.onCredentialsAdded(listOf(1, 2, 3, 4, 5))
 
         assertEquals(5, syncMetatadaDao.getAll().size)
@@ -97,7 +97,7 @@ class SyncCredentialsListenerTest {
     }
 
     @Test
-    fun `whenReinsertingCredentialsRecentlyRemovedThenCancelDeleteOperationAndDoNotUpdateMetadata - cancel delete operation and do not update metadata`() = runTest {
+    fun whenReinsertingCredentialsRecentlyRemovedThenCancelDeleteOperationAndDoNotUpdateMetadata() = runTest {
         testee.onCredentialsAdded(listOf(1, 2, 3, 4, 5))
         val credentials = syncMetatadaDao.getAll()
         assertEquals(5, credentials.size)
@@ -113,7 +113,7 @@ class SyncCredentialsListenerTest {
     }
 
     @Test
-    fun `onCredentialRemoved - notify sync metadata`() = runTest {
+    fun whenCredentialsNotReinsertedThenNotifySyncMetadata() = runTest {
         testee.onCredentialsAdded(listOf(1, 2, 3, 4, 5))
 
         testee.onCredentialRemoved(listOf(1, 2, 3, 4, 5))

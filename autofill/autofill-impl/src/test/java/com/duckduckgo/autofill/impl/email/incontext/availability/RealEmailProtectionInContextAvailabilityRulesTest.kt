@@ -58,37 +58,37 @@ class RealEmailProtectionInContextAvailabilityRulesTest {
     }
 
     @Test
-    fun `whenLocaleNotEnglishThenNotPermitted - not permitted`() = runTest {
+    fun whenLocaleNotEnglishThenNotPermitted() = runTest {
         configureNonEnglishLocale()
         assertFalse(testee.permittedToShow(ALLOWED_URL))
     }
 
     @Test
-    fun `whenInstalledALongTimeAgoThenNotPermitted - not recent install - false`() = runTest {
+    fun whenInstalledALongTimeAgoThenNotPermitted() = runTest {
         configureAsNotRecentInstall()
         assertFalse(testee.permittedToShow(ALLOWED_URL))
     }
 
     @Test
-    fun `whenInstalledRecentlyThenPermitted - permitted to show allowed URL`() = runTest {
+    fun whenInstalledRecentlyThenPermitted() = runTest {
         configureAsRecentInstall()
         assertTrue(testee.permittedToShow(ALLOWED_URL))
     }
 
     @Test
-    fun `whenSecureAutofillUnavailableThenNotPermitted - not permitted to show - false`() = runTest {
+    fun whenSecureAutofillUnavailableThenNotPermitted() = runTest {
         whenever(autofillGlobalCapabilityChecker.isSecureAutofillAvailable()).thenReturn(false)
         assertFalse(testee.permittedToShow(ALLOWED_URL))
     }
 
     @Test
-    fun `whenFeatureDisabledInRemoteConfigThenNotPermitted - disabled in remote config - not permitted`() = runTest {
+    fun whenFeatureDisabledInRemoteConfigThenNotPermitted() = runTest {
         emailProtectionInContextSignupFeature.enabled = false
         assertFalse(testee.permittedToShow(ALLOWED_URL))
     }
 
     @Test
-    fun `whenUrlOnExceptionListThenNotPermitted - not permitted to show - false`() = runTest {
+    fun whenUrlOnExceptionListThenNotPermitted() = runTest {
         assertFalse(testee.permittedToShow(DISALLOWED_URL))
     }
 

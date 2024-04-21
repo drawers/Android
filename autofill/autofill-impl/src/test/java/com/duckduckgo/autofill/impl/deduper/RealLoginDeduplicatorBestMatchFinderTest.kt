@@ -19,12 +19,12 @@ class RealLoginDeduplicatorBestMatchFinderTest {
     )
 
     @Test
-    fun `whenEmptyListThenNoBestMatchFound - no best match found`() {
+    fun whenEmptyListThenNoBestMatchFound() {
         assertNull(testee.findBestMatch("", emptyList()))
     }
 
     @Test
-    fun `whenSinglePerfectMatchThenThatIsReturnedAsBestMatch - single perfect match - that is returned as best match`() {
+    fun whenSinglePerfectMatchThenThatIsReturnedAsBestMatch() {
         val input = listOf(
             LoginCredentials(id = 0, domain = "example.com", username = "username", password = "password"),
         )
@@ -33,7 +33,7 @@ class RealLoginDeduplicatorBestMatchFinderTest {
     }
 
     @Test
-    fun `whenMultiplePerfectMatchesMostRecentlyModifiedIsReturned - multiple perfect matches - most recently modified is returned`() {
+    fun whenMultiplePerfectMatchesMostRecentlyModifiedIsReturned() {
         val input = listOf(
             creds("example.com", 1000),
             creds("example.com", 2000),
@@ -43,7 +43,7 @@ class RealLoginDeduplicatorBestMatchFinderTest {
     }
 
     @Test
-    fun `whenMultiplePartialMatchesWithSameTimestampThenDomainAlphabeticallyFirstReturned - same timestamp - domain alphabetically first returned`() {
+    fun whenMultiplePartialMatchesWithSameTimestampThenDomainAlphabeticallyFirstReturned() {
         val input = listOf(
             creds("a.example.com", 2000),
             creds("b.example.com", 2000),
@@ -53,7 +53,7 @@ class RealLoginDeduplicatorBestMatchFinderTest {
     }
 
     @Test
-    fun `whenSingleNonMatchThenReturnedAsBestMatch - single non match - returned as best match`() {
+    fun whenSingleNonMatchThenReturnedAsBestMatch() {
         val input = listOf(
             creds("not-a-match.com", 2000),
         )
@@ -62,7 +62,7 @@ class RealLoginDeduplicatorBestMatchFinderTest {
     }
 
     @Test
-    fun `whenMultipleNonMatchesThenMostRecentlyModifiedIsReturned - most recently modified is returned`() {
+    fun whenMultipleNonMatchesThenMostRecentlyModifiedIsReturned() {
         val input = listOf(
             creds("not-a-match.com", 2000),
             creds("also-not-a-match.com", 1000),
@@ -72,7 +72,7 @@ class RealLoginDeduplicatorBestMatchFinderTest {
     }
 
     @Test
-    fun `whenMatchesFromAllTypesThenMatchInPerfectReturnedRegardlessOfTimestamps - perfect match regardless of timestamps`() {
+    fun whenMatchesFromAllTypesThenMatchInPerfectReturnedRegardlessOfTimestamps() {
         val input = listOf(
             creds("perfect-match.com", 1000),
             creds("imperfect-match.com", 3000),

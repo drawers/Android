@@ -44,14 +44,14 @@ class AppleSharedCredentialsParserTest {
     )
 
     @Test
-    fun `whenJsonNotReadThenRulesAreEmpty - null json read - empty rules`() = runTest {
+    fun whenJsonNotReadThenRulesAreEmpty() = runTest {
         whenever(jsonReader.read()).thenReturn(null)
         val rules = testee.read()
         rules.assertRulesAreEmpty()
     }
 
     @Test
-    fun `whenJsonIsCorruptNotReadThenRulesAreEmpty - read fails - empty rules`() = runTest {
+    fun whenJsonIsCorruptNotReadThenRulesAreEmpty() = runTest {
         whenever(jsonReader.read()).thenReturn("not valid json")
         val rules = testee.read()
         rules.assertRulesAreEmpty()

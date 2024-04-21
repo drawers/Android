@@ -27,22 +27,22 @@ class UrlUnicodeNormalizerImplTest {
     private val testee = UrlUnicodeNormalizerImpl()
 
     @Test
-    fun `whenNormalizingToAsciiAndContainsNonAsciiThenOutputIdnaEncoded - normalize ascii and contains non ascii - idna encoded`() {
+    fun whenNormalizingToAsciiAndContainsNonAsciiThenOutputIdnaEncoded() {
         assertEquals("xn--7ca.com", testee.normalizeAscii("ç.com"))
     }
 
     @Test
-    fun `whenNormalizingToAsciiAndOnlyContainsAsciiThenThenInputAndOutputIdentical - input and output identical`() {
+    fun whenNormalizingToAsciiAndOnlyContainsAsciiThenThenInputAndOutputIdentical() {
         assertEquals("c.com", testee.normalizeAscii("c.com"))
     }
 
     @Test
-    fun `whenNormalizingToUnicodeAndContainsNonAsciiThenOutputContainsNonAscii - non-ascii characters in input - output contains non-ascii characters`() {
+    fun whenNormalizingToUnicodeAndContainsNonAsciiThenOutputContainsNonAscii() {
         assertEquals("ç.com", testee.normalizeUnicode("xn--7ca.com"))
     }
 
     @Test
-    fun `whenNormalizingToUnicodeAndOnlyContainsAsciiThenThenInputAndOutputIdentical - input identical - output identical`() {
+    fun whenNormalizingToUnicodeAndOnlyContainsAsciiThenThenInputAndOutputIdentical() {
         assertEquals("c.com", testee.normalizeUnicode("c.com"))
     }
 }

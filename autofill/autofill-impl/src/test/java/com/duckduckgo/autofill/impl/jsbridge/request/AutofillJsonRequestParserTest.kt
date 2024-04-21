@@ -28,61 +28,61 @@ class AutofillJsonRequestParserTest {
     private val testee = AutofillJsonRequestParser(moshi)
 
     @Test
-    fun `whenUsernameAndPasswordBothProvidedThenBothInResponse - store form data - both in response`() = runTest {
+    fun whenUsernameAndPasswordBothProvidedThenBothInResponse() = runTest {
         val parsed = "storeFormData_usernameAndPasswordProvided".parseStoreFormDataJson()
         assertEquals("dax@duck.com", parsed.credentials!!.username)
         assertEquals("123456", parsed.credentials!!.password)
     }
 
     @Test
-    fun `whenUsernameAndPasswordBothMissingThenBothAreNull - both are null`() = runTest {
+    fun whenUsernameAndPasswordBothMissingThenBothAreNull() = runTest {
         val parsed = "storeFormData_usernameAndPasswordMissing".parseStoreFormDataJson()
         assertNull(parsed.credentials!!.username)
         assertNull(parsed.credentials!!.password)
     }
 
     @Test
-    fun `whenUsernameAndPasswordBothNullThenBothAreNullInParsedObject - null username and password - parsed object`() = runTest {
+    fun whenUsernameAndPasswordBothNullThenBothAreNullInParsedObject() = runTest {
         val parsed = "storeFormData_usernameAndPasswordNull".parseStoreFormDataJson()
         assertNull(parsed.credentials!!.username)
         assertNull(parsed.credentials!!.password)
     }
 
     @Test
-    fun `whenAdditionalUnknownPropertiesInRequestThenStillParses - additional unknown properties included - still parses`() = runTest {
+    fun whenAdditionalUnknownPropertiesInRequestThenStillParses() = runTest {
         val parsed = "storeFormData_additionalUnknownPropertiesIncluded".parseStoreFormDataJson()
         assertEquals("dax@duck.com", parsed.credentials!!.username)
         assertEquals("123456", parsed.credentials!!.password)
     }
 
     @Test
-    fun `whenUsernameMissingThenPasswordPopulated - password populated`() = runTest {
+    fun whenUsernameMissingThenPasswordPopulated() = runTest {
         val parsed = "storeFormData_usernameMissing".parseStoreFormDataJson()
         assertNull(parsed.credentials!!.username)
         assertEquals("123456", parsed.credentials!!.password)
     }
 
     @Test
-    fun `whenPasswordMissingThenUsernamePopulated - store form data password missing - username populated`() = runTest {
+    fun whenPasswordMissingThenUsernamePopulated() = runTest {
         val parsed = "storeFormData_passwordMissing".parseStoreFormDataJson()
         assertEquals("dax@duck.com", parsed.credentials!!.username)
         assertNull(parsed.credentials!!.password)
     }
 
     @Test
-    fun `whenTopLevelCredentialsObjectMissingThenParsesWithoutError - top level data missing - parses without error`() = runTest {
+    fun whenTopLevelCredentialsObjectMissingThenParsesWithoutError() = runTest {
         val parsed = "storeFormData_topLevelDataMissing".parseStoreFormDataJson()
         assertNull(parsed.credentials)
     }
 
     @Test
-    fun `whenStoreFormDataRequestIsEmptyThenExceptionThrown - empty request - exception thrown`() = runTest {
+    fun whenStoreFormDataRequestIsEmptyThenExceptionThrown() = runTest {
         val result = testee.parseStoreFormDataRequest("")
         assertTrue(result.isFailure)
     }
 
     @Test
-    fun `whenStoreFormDataRequestIsMalformedJSONThenExceptionThrown - malformed JSON - exception thrown`() = runTest {
+    fun whenStoreFormDataRequestIsMalformedJSONThenExceptionThrown() = runTest {
         val result = testee.parseStoreFormDataRequest("invalid json")
         assertTrue(result.isFailure)
     }

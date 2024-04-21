@@ -28,26 +28,26 @@ class AutofillTimeBasedAuthorizationGracePeriodTest {
     private val testee = AutofillTimeBasedAuthorizationGracePeriod(timeProvider)
 
     @Test
-    fun `whenNoInteractionsThenAuthRequired - no interactions - auth required`() {
+    fun whenNoInteractionsThenAuthRequired() {
         assertTrue(testee.isAuthRequired())
     }
 
     @Test
-    fun `whenLastSuccessfulAuthWasBeforeGracePeriodThenAuthRequired - last successful auth was before grace period - auth required`() {
+    fun whenLastSuccessfulAuthWasBeforeGracePeriodThenAuthRequired() {
         recordAuthorizationInDistantPast()
         timeProvider.reset()
         assertTrue(testee.isAuthRequired())
     }
 
     @Test
-    fun `whenLastSuccessfulAuthWasWithinGracePeriodThenAuthNotRequired - within grace period - auth not required`() {
+    fun whenLastSuccessfulAuthWasWithinGracePeriodThenAuthNotRequired() {
         recordAuthorizationWithinGracePeriod()
         timeProvider.reset()
         assertFalse(testee.isAuthRequired())
     }
 
     @Test
-    fun `whenLastSuccessfulAuthWasWithinGracePeriodButInvalidatedThenAuthRequired - within grace period but invalidated - auth required`() {
+    fun whenLastSuccessfulAuthWasWithinGracePeriodButInvalidatedThenAuthRequired() {
         recordAuthorizationWithinGracePeriod()
         timeProvider.reset()
         testee.invalidate()

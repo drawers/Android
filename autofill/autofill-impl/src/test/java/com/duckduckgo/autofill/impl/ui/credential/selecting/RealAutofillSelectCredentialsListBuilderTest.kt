@@ -35,10 +35,7 @@ class RealAutofillSelectCredentialsListBuilderTest {
     private val testee = RealAutofillSelectCredentialsListBuilder(context)
 
     @Test
-    fun `whenEmptyInputThenEmptyListOut - state - expected outcome`
-
-Expected output:
-`empty input - empty list out`() {
+    fun whenEmptyInputThenEmptyListOut() {
         val sortedGroup = Groups(
             perfectMatches = listOf(),
             partialMatches = mapOf(),
@@ -48,7 +45,7 @@ Expected output:
     }
 
     @Test
-    fun `whenPerfectMatchAndNoPartialMatchThenFromThisWebsiteLabelOmitted - no partial matches - from this website label omitted`() {
+    fun whenPerfectMatchAndNoPartialMatchThenFromThisWebsiteLabelOmitted() {
         val sortedGroup = Groups(
             perfectMatches = listOf(creds()),
             partialMatches = mapOf(),
@@ -59,7 +56,7 @@ Expected output:
     }
 
     @Test
-    fun `whenOnePerfectMatchThenButtonIsPrimaryType - sorted group has perfect matches - button is primary type`() {
+    fun whenOnePerfectMatchThenButtonIsPrimaryType() {
         val sortedGroup = Groups(
             perfectMatches = listOf(creds()),
             partialMatches = mapOf(),
@@ -70,7 +67,7 @@ Expected output:
     }
 
     @Test
-    fun `whenMultiplePerfectMatchesThenFirstButtonOnlyIsPrimaryType - sorted group of perfect matches - first button only is primary type`() {
+    fun whenMultiplePerfectMatchesThenFirstButtonOnlyIsPrimaryType() {
         val sortedGroup = Groups(
             perfectMatches = listOf(creds(), creds(), creds()),
             partialMatches = mapOf(),
@@ -83,7 +80,7 @@ Expected output:
     }
 
     @Test
-    fun `whenNoPerfectMatchesAndOnePartialMatchThenGroupHeaderAdded - sorted group - domain grouping heading added`() {
+    fun whenNoPerfectMatchesAndOnePartialMatchThenGroupHeaderAdded() {
         val sortedGroup = Groups(
             perfectMatches = emptyList(),
             partialMatches = mapOf(
@@ -96,7 +93,7 @@ Expected output:
     }
 
     @Test
-    fun `whenNoPerfectMatchesAndOnePartialMatchThenPartialMatchAddedAsPrimaryButton - sorted group - partial match added as primary button`() {
+    fun whenNoPerfectMatchesAndOnePartialMatchThenPartialMatchAddedAsPrimaryButton() {
         val sortedGroup = Groups(
             perfectMatches = emptyList(),
             partialMatches = mapOf(
@@ -109,7 +106,7 @@ Expected output:
     }
 
     @Test
-    fun `whenNoPerfectMatchesAndTwoPartialMatchesInSameDomainThenFirstPartialMatchAddedAsPrimaryButton - sorted group - first partial match added as primary button`() {
+    fun whenNoPerfectMatchesAndTwoPartialMatchesInSameDomainThenFirstPartialMatchAddedAsPrimaryButton() {
         val sortedGroup = Groups(
             perfectMatches = emptyList(),
             partialMatches = mapOf(
@@ -123,7 +120,7 @@ Expected output:
     }
 
     @Test
-    fun `whenPerfectMatchesAndPartialMatchesThenFromThisWebsiteLabelShown - sorted group - from this website label shown`() {
+    fun whenPerfectMatchesAndPartialMatchesThenFromThisWebsiteLabelShown() {
         val sortedGroup = Groups(
             perfectMatches = listOf(creds()),
             partialMatches = mapOf(
@@ -137,7 +134,7 @@ Expected output:
     }
 
     @Test
-    fun `whenPerfectMatchesAndOnePartialMatchThenPartialMatchAddedAsSecondaryButton - sorted group - partial match added as secondary button`() {
+    fun whenPerfectMatchesAndOnePartialMatchThenPartialMatchAddedAsSecondaryButton() {
         val sortedGroup = Groups(
             perfectMatches = listOf(creds()),
             partialMatches = mapOf(
@@ -150,7 +147,7 @@ Expected output:
     }
 
     @Test
-    fun `buildFlatList - no perfect matches and multiple partial matches across sites - first partial match added as primary button`() {
+    fun whenNoPerfectMatchesAndMultiplePartialMatchesAcrossSitesThenFirstPartialMatchAddedAsPrimaryButton() {
         val sortedGroup = Groups(
             perfectMatches = emptyList(),
             partialMatches = mapOf(
@@ -167,7 +164,7 @@ Expected output:
     }
 
     @Test
-    fun `whenPerfectMatchesAndMultiplePartialMatchesThenListOutputAsExpected - sorted group - list output as expected`() {
+    fun whenPerfectMatchesAndMultiplePartialMatchesThenListOutputAsExpected() {
         val sortedGroup = Groups(
             perfectMatches = listOf(creds(), creds()),
             partialMatches = mapOf(
