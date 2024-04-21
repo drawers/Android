@@ -37,21 +37,21 @@ class AppleShareableCredentialsTest {
     )
 
     @Test
-    fun whenNoMatchingShareableCredentialsFoundThenEmptyListReturned() = runTest {
+    fun `whenNoMatchingShareableCredentialsFoundThenEmptyListReturned - no matching shareable credentials found - empty list returned`() = runTest {
         configureMatchingLogins(emptyList())
         val list = testee.shareableCredentials("example.com")
         assertTrue(list.isEmpty())
     }
 
     @Test
-    fun whenSingleMatchingShareableCredentialFoundThenReturned() = runTest {
+    fun `whenSingleMatchingShareableCredentialFoundThenReturned - single matching shareable credential found - returned`() = runTest {
         configureMatchingLogins(listOf("example.com"))
         val list = testee.shareableCredentials("example.com")
         assertEquals(1, list.size)
     }
 
     @Test
-    fun whenMultipleDifferentMatchingShareableCredentialsFoundThenAllReturned() = runTest {
+    fun `whenMultipleDifferentMatchingShareableCredentialsFoundThenAllReturned - multiple different matching shareable credentials found - all returned`() = runTest {
         configureMatchingLogins(
             listOf(
                 "example.com",
@@ -64,7 +64,7 @@ class AppleShareableCredentialsTest {
     }
 
     @Test
-    fun whenSameLoginFoundMultipleTimesThenOnlyIncludedOnce() = runTest {
+    fun `whenSameLoginFoundMultipleTimesThenOnlyIncludedOnce - same login found multiple times - only included once`() = runTest {
         configureMatchingLogins(
             listOf(
                 "example.com",

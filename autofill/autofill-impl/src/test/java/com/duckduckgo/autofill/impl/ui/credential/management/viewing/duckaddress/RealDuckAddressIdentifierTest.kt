@@ -23,32 +23,32 @@ class RealDuckAddressIdentifierTest {
     private val testee = RealDuckAddressIdentifier()
 
     @Test
-    fun whenInputIsOnlySuffixThenNotAPrivateAddress() {
+    fun `whenInputIsOnlySuffixThenNotAPrivateAddress - not a private address`() {
         assertFalse(testee.isPrivateDuckAddress("@duck.com", MAIN_ADDRESS))
     }
 
     @Test
-    fun whenInputMatchesMainAddressThenNotAPrivateAddress() {
+    fun `whenInputMatchesMainAddressThenNotAPrivateAddress - main address not private address`() {
         assertFalse(testee.isPrivateDuckAddress(MAIN_ADDRESS, MAIN_ADDRESS))
     }
 
     @Test
-    fun whenInputMatchesMainAddressGivenWithSuffixThenNotAPrivateAddress() {
+    fun `whenInputMatchesMainAddressGivenWithSuffixThenNotAPrivateAddress - not a private address`() {
         assertFalse(testee.isPrivateDuckAddress(MAIN_ADDRESS, "test@duck.com"))
     }
 
     @Test
-    fun whenInputDoesNotEndWithSuffixThenNotAPrivateAddress() {
+    fun `whenInputDoesNotEndWithSuffixThenNotAPrivateAddress - not a private address`() {
         assertFalse(testee.isPrivateDuckAddress("test@gmail.com", MAIN_ADDRESS))
     }
 
     @Test
-    fun whenMatchesMainAddressExceptInputHasFullAddressAndMainAddressMissingSuffixThenNotAPrivateAddress() {
+    fun `whenMatchesMainAddressExceptInputHasFullAddressAndMainAddressMissingSuffixThenNotAPrivateAddress - input has full address and main address missing suffix - not a private address`() {
         assertFalse(testee.isPrivateDuckAddress("test@duck.com", MAIN_ADDRESS))
     }
 
     @Test
-    fun whenInputHasDifferentDuckAddressFromMainAddressThenIsAPrivateAddress() {
+    fun `whenInputHasDifferentDuckAddressFromMainAddressThenIsAPrivateAddress - is private address - different duck address from main address`() {
         assertTrue(testee.isPrivateDuckAddress("foo@duck.com", MAIN_ADDRESS))
     }
 

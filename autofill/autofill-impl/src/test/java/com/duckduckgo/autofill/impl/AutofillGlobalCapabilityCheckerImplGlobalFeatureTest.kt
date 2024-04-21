@@ -56,7 +56,7 @@ class AutofillGlobalCapabilityCheckerImplGlobalFeatureTest(
     )
 
     @Test
-    fun runParameterizedTests() = runTest {
+    fun `runParameterizedTests - configuration - feature enabled`() = runTest {
         configureAsInternalTester(testCase.scenario.isInternalTester)
         configureGlobalAutofillFeatureState(testCase.scenario.isRemotelyEnabled)
         configureIfUrlIsException(testCase.scenario.urlIsInExceptionList)

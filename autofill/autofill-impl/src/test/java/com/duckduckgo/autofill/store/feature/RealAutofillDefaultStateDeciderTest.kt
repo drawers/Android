@@ -20,7 +20,7 @@ class RealAutofillDefaultStateDeciderTest {
     )
 
     @Test
-    fun whenRemoteFeatureDisabledThenNumberOfDaysInstalledIsIrrelevant() {
+    fun `whenRemoteFeatureDisabledThenNumberOfDaysInstalledIsIrrelevant - default state irrelevant`() {
         configureRemoteFeatureEnabled(false)
 
         configureDaysInstalled(0)
@@ -31,7 +31,7 @@ class RealAutofillDefaultStateDeciderTest {
     }
 
     @Test
-    fun whenNumberOfDaysInstalledIsNotZeroThenFeatureFlagIsIrrelevant() {
+    fun `whenNumberOfDaysInstalledIsNotZeroThenFeatureFlagIsIrrelevant - default state irrelevant`() {
         configureDaysInstalled(0)
 
         configureRemoteFeatureEnabled(false)
@@ -42,7 +42,7 @@ class RealAutofillDefaultStateDeciderTest {
     }
 
     @Test
-    fun whenInternalTesterThenAlwaysEnabledByDefault() {
+    fun `whenInternalTesterThenAlwaysEnabledByDefault - default state - always enabled by default`() {
         configureDaysInstalled(100)
         configureRemoteFeatureEnabled(false)
         configureAsInternalTester()
@@ -50,7 +50,7 @@ class RealAutofillDefaultStateDeciderTest {
     }
 
     @Test
-    fun whenInstalledSameDayAndFeatureFlagEnabledThenEnabledByDefault() {
+    fun `whenInstalledSameDayAndFeatureFlagEnabledThenEnabledByDefault - default state enabled by feature flag`() {
         configureDaysInstalled(0)
         configureRemoteFeatureEnabled(true)
         assertTrue(testee.defaultState())

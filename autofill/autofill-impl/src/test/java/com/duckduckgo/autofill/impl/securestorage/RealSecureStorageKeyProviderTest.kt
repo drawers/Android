@@ -53,12 +53,12 @@ class RealSecureStorageKeyProviderTest {
     }
 
     @Test
-    fun whenCanAccessKeyStoreIsCheckedThenReturnRepositoryCanUseEncryption() {
+    fun `whenCanAccessKeyStoreIsCheckedThenReturnRepositoryCanUseEncryption - returns true if repository can use encryption`() {
         assertTrue(testee.canAccessKeyStore())
     }
 
     @Test
-    fun whenNoL1KeySetThenGenerateAndStoreL1Key() {
+    fun `whenNoL1KeySetThenGenerateAndStoreL1Key - initial state incorrect - null`() {
         whenever(randomBytesGenerator.generateBytes(32)).thenReturn(testRandomBytes)
         assertNull("Initial state is incorrect since L1key is not null", secureStorageKeyRepository.l1Key)
 
@@ -69,7 +69,7 @@ class RealSecureStorageKeyProviderTest {
     }
 
     @Test
-    fun whenL1KeySetThenReturnStoredL1Key() {
+    fun `whenL1KeySetThenReturnStoredL1Key - set L1 key - stored L1 key`() {
         secureStorageKeyRepository.l1Key = testRandomBytes
 
         val result = testee.getl1Key()
@@ -78,7 +78,7 @@ class RealSecureStorageKeyProviderTest {
     }
 
     @Test
-    fun whenNoValueStoredInKeyRepositoryThenReturnKeyAndGenerateAndStoreKeyValues() {
+    fun `getl2Key - no value stored in key repository - generate and store key values`() {
         whenever(mockKey.encoded).thenReturn(testRandomBytes)
         whenever(randomBytesGenerator.generateBytes(32)).thenReturn(testRandomBytes)
         assertNull("Initial state is incorrect since password is not null", secureStorageKeyRepository.password)
@@ -96,7 +96,7 @@ class RealSecureStorageKeyProviderTest {
     }
 
     @Test
-    fun whenAllKeysStoredInKeyRepositoryThenUseKeysWhenConstructingL2Key() {
+    fun `whenAllKeysStoredInKeyRepositoryThenUseKeysWhenConstructingL2Key - use keys when constructing L2 key`() {
         secureStorageKeyRepository.password = testRandomBytes
         secureStorageKeyRepository.passwordSalt = testRandomBytes
         secureStorageKeyRepository.encryptedL2Key = testRandomBytes

@@ -8,14 +8,14 @@ class RealLoginDeduplicatorUsernameAndPasswordMatcherTest {
     private val testee = RealAutofillDeduplicationUsernameAndPasswordMatcher()
 
     @Test
-    fun whenEmptyListInThenEmptyListOut() {
+    fun `whenEmptyListInThenEmptyListOut - empty list in - empty list out`() {
         val input = emptyList<LoginCredentials>()
         val output = testee.groupDuplicateCredentials(input)
         assertTrue(output.isEmpty())
     }
 
     @Test
-    fun whenSingleEntryInThenSingleEntryOut() {
+    fun `whenSingleEntryInThenSingleEntryOut - single entry in - single entry out`() {
         val input = listOf(
             creds("username", "password"),
         )
@@ -24,7 +24,7 @@ class RealLoginDeduplicatorUsernameAndPasswordMatcherTest {
     }
 
     @Test
-    fun whenMultipleEntriesWithNoDuplicationAtAllThenNumberOfGroupsReturnedMatchesNumberOfEntriesInputted() {
+    fun `whenMultipleEntriesWithNoDuplicationAtAllThenNumberOfGroupsReturnedMatchesNumberOfEntriesInputted - no duplication - 3 groups`() {
         val input = listOf(
             creds("username_a", "password_x"),
             creds("username_b", "password_y"),
@@ -35,7 +35,7 @@ class RealLoginDeduplicatorUsernameAndPasswordMatcherTest {
     }
 
     @Test
-    fun whenEntriesMatchOnUsernameButNotPasswordThenNotGrouped() {
+    fun `whenEntriesMatchOnUsernameButNotPasswordThenNotGrouped - not grouped`() {
         val input = listOf(
             creds("username", "password_x"),
             creds("username", "password_y"),
@@ -45,7 +45,7 @@ class RealLoginDeduplicatorUsernameAndPasswordMatcherTest {
     }
 
     @Test
-    fun whenEntriesMatchOnPasswordButNotUsernameThenNotGrouped() {
+    fun `whenEntriesMatchOnPasswordButNotUsernameThenNotGrouped - not grouped`() {
         val input = listOf(
             creds("username_a", "password"),
             creds("username_b", "password"),
@@ -55,7 +55,7 @@ class RealLoginDeduplicatorUsernameAndPasswordMatcherTest {
     }
 
     @Test
-    fun whenEntriesMatchOnUsernameAndPasswordThenGrouped() {
+    fun `whenEntriesMatchOnUsernameAndPasswordThenGrouped - grouped`() {
         val input = listOf(
             creds("username", "password"),
             creds("username", "password"),

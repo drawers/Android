@@ -33,76 +33,76 @@ class CredentialInitialExtractorTest {
     private val testee = CredentialInitialExtractor(autofillUrlMatcher = AutofillDomainNameUrlMatcher(unicodeNormalizer))
 
     @Test
-    fun whenMissingTitleAndDomainThenPlaceholderChar() {
+    fun `whenMissingTitleAndDomainThenPlaceholderChar - placeholder char`() {
         val result = testee.extractInitial(creds(title = null, domain = null))
         result.assertIsPlaceholder()
     }
 
     @Test
-    fun whenEmptyStringTitleAndEmptyStringDomainThenPlaceholderChar() {
+    fun `whenEmptyStringTitleAndEmptyStringDomainThenPlaceholderChar - placeholder char`() {
         val result = testee.extractInitial(creds(title = "", domain = ""))
         result.assertIsPlaceholder()
     }
 
     @Test
-    fun whenMissingTitleThenDomainInitialUsed() {
+    fun `whenMissingTitleThenDomainInitialUsed - missing title - E`() {
         val loginCredentials = creds(title = null, domain = "example.com")
         val result = testee.extractInitial(loginCredentials)
         assertEquals("E", result)
     }
 
     @Test
-    fun whenTitleIsPresentThenTitleInitialIsUsedAndDomainIsIgnored() {
+    fun `whenTitleIsPresentThenTitleInitialIsUsedAndDomainIsIgnored - title present - initial used and domain ignored`() {
         val loginCredentials = creds(title = "A website", domain = "example.com")
         val result = testee.extractInitial(loginCredentials)
         assertEquals("A", result)
     }
 
     @Test
-    fun whenTitleStartsWithANumberThenPlaceholderUsed() {
+    fun `whenTitleStartsWithANumberThenPlaceholderUsed - placeholder used`() {
         val loginCredentials = creds(title = "123 website")
         testee.extractInitial(loginCredentials).assertIsPlaceholder()
     }
 
     @Test
-    fun whenTitleStartsWithASpecialCharacterThenPlaceholderUsed() {
+    fun `whenTitleStartsWithASpecialCharacterThenPlaceholderUsed - placeholder used`() {
         val loginCredentials = creds(title = "$123 website")
         testee.extractInitial(loginCredentials).assertIsPlaceholder()
     }
 
     @Test
-    fun whenTitleStartsWithANonLatinLetterThatCannotBeDecomposedThenOriginalLetterIsUsed() {
+    fun `whenTitleStartsWithANonLatinLetterThatCannotBeDecomposedThenOriginalLetterIsUsed - extract initial - ß`() {
         val loginCredentials = creds(title = "ß website")
         assertEquals("ß", testee.extractInitial(loginCredentials))
     }
 
     @Test
-    fun whenDomainStartsWithANonLatinLetterThatCannotBeDecomposedThenOriginalLetterIsUsed() {
+    fun `whenDomainStartsWithANonLatinLetterThatCannotBeDecomposedThenOriginalLetterIsUsed - extract initial - ß`() {
         val loginCredentials = creds(title = "ß.com")
         assertEquals("ß", testee.extractInitial(loginCredentials))
     }
 
     @Test
-    fun whenTitleStartsWithAnAccentedLetterThenThatBaseLetterIsUsed() {
+    fun `whenTitleStartsWithAnAccentedLetterThenThatBaseLetterIsUsed - extract initial - base letter used`() {
         val loginCredentials = creds(title = "Ça va website")
         assertEquals("C", testee.extractInitial(loginCredentials))
     }
 
     @Test
-    fun whenDomainStartsWithAnAccentedLetterThenThatBaseLetterIsUsed() {
+    fun `whenDomainStartsWithAnAccentedLetterThenThatBaseLetterIsUsed - extract initial - C`() {
         unicodeNormalizer.overrides["ça.com"] = "ca.com"
         val loginCredentials = creds(domain = "ça.com")
         assertEquals("C", testee.extractInitial(loginCredentials))
     }
 
     @Test
-    fun whenTitleStartsWithANonLatinLetterThenThatLetterIsUsed() {
+    fun `whenTitleStartsWithANonLatinLetterThenThatLetterIsUsed - extract initial - non Latin letter used`() {
         val loginCredentials = creds(title = "あ")
         assertEquals("あ", testee.extractInitial(loginCredentials))
     }
 
     @Test
-    fun whenSubdomainIsPresentThenNotUsedForInitialExtraction() {
+    fun `whenSubdomainIsPresentThenNotUsedForInitialExtraction - not used for initial extraction`() {
         val loginCredentials = creds(domain = "a.example.com")
         assertEquals("E", testee.extractInitial(loginCredentials))
     }

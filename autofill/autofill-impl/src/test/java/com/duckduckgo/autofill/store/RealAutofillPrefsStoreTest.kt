@@ -26,27 +26,27 @@ class RealAutofillPrefsStoreTest {
     )
 
     @Test
-    fun whenAutofillStateNeverSetManuallyThenDefaultStateDeciderUsed() {
+    fun `whenAutofillStateNeverSetManuallyThenDefaultStateDeciderUsed - default state decider used`() {
         testee.isEnabled
         verify(defaultStateDecider).defaultState()
     }
 
     @Test
-    fun whenAutofillStateWasManuallySetToEnabledThenDefaultStateDeciderNotUsed() {
+    fun `whenAutofillStateWasManuallySetToEnabledThenDefaultStateDeciderNotUsed - is enabled - default state decider not used`() {
         testee.isEnabled = true
         testee.isEnabled
         verify(defaultStateDecider, never()).defaultState()
     }
 
     @Test
-    fun whenAutofillStateWasManuallySetToDisabledThenDefaultStateDeciderNotUsed() {
+    fun `whenAutofillStateWasManuallySetToDisabledThenDefaultStateDeciderNotUsed - is enabled set to false - default state decider not used`() {
         testee.isEnabled = false
         testee.isEnabled
         verify(defaultStateDecider, never()).defaultState()
     }
 
     @Test
-    fun whenDeterminedEnabledByDefaultOnceThenNotDecidedAgain() {
+    fun `whenDeterminedEnabledByDefaultOnceThenNotDecidedAgain - default state determined - not decided again`() {
         // first call will decide default state should be enabled
         whenever(defaultStateDecider.defaultState()).thenReturn(true)
         assertTrue(testee.isEnabled)
@@ -58,7 +58,7 @@ class RealAutofillPrefsStoreTest {
     }
 
     @Test
-    fun whenDeterminedNotEnabledByDefaultOnceThenWillCallToDeciderAgain() {
+    fun `whenDeterminedNotEnabledByDefaultOnceThenWillCallToDeciderAgain - default state not enabled - will call decider again`() {
         // first call will decide default state should not be enabled
         whenever(defaultStateDecider.defaultState()).thenReturn(false)
         assertFalse(testee.isEnabled)

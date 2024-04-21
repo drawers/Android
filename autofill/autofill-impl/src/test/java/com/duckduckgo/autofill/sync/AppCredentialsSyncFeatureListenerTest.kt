@@ -55,12 +55,12 @@ class AppCredentialsSyncFeatureListenerTest {
     )
 
     @Test
-    fun whenNoValuesThenIsSyncPausedIsFalse() {
+    fun `whenNoValuesThenIsSyncPausedIsFalse - no values - is sync paused is false`() {
         assertFalse(credentialsSyncStore.isSyncPaused)
     }
 
     @Test
-    fun whenSyncPausedAndOnSuccessWithChangesThenIsSyncPausedIsFalse() {
+    fun `whenSyncPausedAndOnSuccessWithChangesThenIsSyncPausedIsFalse - is sync paused - false`() {
         credentialsSyncStore.isSyncPaused = true
         val updatesJSON = FileUtilities.loadText(javaClass.classLoader!!, "json/sync/merger_first_get.json")
         val validChanges = SyncChangesResponse(CREDENTIALS, updatesJSON)
@@ -71,7 +71,7 @@ class AppCredentialsSyncFeatureListenerTest {
     }
 
     @Test
-    fun whenSyncPausedAndOnSuccessWithoutChangesThenSyncPaused() {
+    fun `whenSyncPausedAndOnSuccessWithoutChangesThenSyncPaused - sync paused and on success without changes - sync paused`() {
         credentialsSyncStore.isSyncPaused = true
         val validChanges = SyncChangesResponse.empty(BOOKMARKS)
 
@@ -81,7 +81,7 @@ class AppCredentialsSyncFeatureListenerTest {
     }
 
     @Test
-    fun whenSyncPausedAndOnErrorThenSyncPaused() {
+    fun `whenSyncPausedAndOnErrorThenSyncPaused - sync paused and error - sync paused`() {
         credentialsSyncStore.isSyncPaused = true
 
         testee.onError(FeatureSyncError.COLLECTION_LIMIT_REACHED)
@@ -90,7 +90,7 @@ class AppCredentialsSyncFeatureListenerTest {
     }
 
     @Test
-    fun whenSyncActiveAndOnErrorThenSyncPaused() {
+    fun `whenSyncActiveAndOnErrorThenSyncPaused - sync paused`() {
         credentialsSyncStore.isSyncPaused = false
 
         testee.onError(FeatureSyncError.COLLECTION_LIMIT_REACHED)
@@ -99,7 +99,7 @@ class AppCredentialsSyncFeatureListenerTest {
     }
 
     @Test
-    fun whenOnSyncDisabledThenSyncPausedFalse() {
+    fun `whenOnSyncDisabledThenSyncPausedFalse - sync paused false`() {
         credentialsSyncStore.isSyncPaused = true
 
         testee.onSyncDisabled()

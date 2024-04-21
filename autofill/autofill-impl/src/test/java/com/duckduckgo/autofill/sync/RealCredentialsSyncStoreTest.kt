@@ -42,12 +42,12 @@ class RealCredentialsSyncStoreTest {
     val testee = RealCredentialsSyncStore(mockContext, coroutineRule.testScope, coroutineRule.testDispatcherProvider)
 
     @Test
-    fun whenNoValueIsSyncPausedThenReturnFalse() {
+    fun `whenNoValueIsSyncPausedThenReturnFalse - no value is sync paused - false`() {
         assertFalse(testee.isSyncPaused)
     }
 
     @Test
-    fun whenIsSyncPausedUpdatedThenEmitNewValue() = runTest {
+    fun `whenIsSyncPausedUpdatedThenEmitNewValue - is sync paused updated - new value`() = runTest {
         testee.isSyncPausedFlow().test {
             awaitItem()
             testee.isSyncPaused = true

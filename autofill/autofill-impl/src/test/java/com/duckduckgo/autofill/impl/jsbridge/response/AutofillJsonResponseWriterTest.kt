@@ -25,7 +25,7 @@ class AutofillJsonResponseWriterTest {
     private val testee = AutofillJsonResponseWriter(Moshi.Builder().build())
 
     @Test
-    fun whenGenerateResponseGetAutofillDataTheReturnAutofillDataJson() {
+    fun `whenGenerateResponseGetAutofillDataTheReturnAutofillDataJson - returns autofill data json`() {
         val expectedJson = "{\n" +
             "  \"success\": {\n" +
             "    \"action\": \"fill\",\n" +
@@ -48,7 +48,7 @@ class AutofillJsonResponseWriterTest {
     }
 
     @Test
-    fun whenGenerateEmptyResponseGetAutofillDataThenReturnEmptyResponseJson() {
+    fun `whenGenerateEmptyResponseGetAutofillDataThenReturnEmptyResponseJson - empty response - json`() {
         val expectedJson = "{\n" +
             "  \"success\": {\n" +
             "    \"action\": \"none\"\n" +

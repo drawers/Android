@@ -75,7 +75,7 @@ internal class CredentialsRemoteWinsStrategyTest {
     )
 
     @Test
-    fun whenNoLocalEntitiesThenAllRemoteEntitiesStored() = runTest {
+    fun `processEntries - no local entities - all remote entities stored`() = runTest {
         givenLocalCredentials()
         val remoteCredentials = credentialsSyncEntries(
             entries = listOf(
@@ -95,7 +95,7 @@ internal class CredentialsRemoteWinsStrategyTest {
     }
 
     @Test
-    fun whenRemoteAreMoreRecentThenRemoteWins() = runTest {
+    fun `processEntries - remote are more recent then remote wins`() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,
@@ -120,7 +120,7 @@ internal class CredentialsRemoteWinsStrategyTest {
     }
 
     @Test
-    fun whenLocalIsMoreRecentThenRemoteWins() = runTest {
+    fun `processEntries - local is more recent then remote wins`() = runTest {
         givenLocalCredentials(
             twitterCredentials.copy(lastUpdatedMillis = 1689592358516),
             spotifyCredentials.copy(lastUpdatedMillis = 1689592358516),
@@ -145,7 +145,7 @@ internal class CredentialsRemoteWinsStrategyTest {
     }
 
     @Test
-    fun whenLocalHasMoreCredentialsThenOnlyUpdateWithRemoteInfo() = runTest {
+    fun `whenLocalHasMoreCredentialsThenOnlyUpdateWithRemoteInfo - local Id not found - null`() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,
@@ -170,7 +170,7 @@ internal class CredentialsRemoteWinsStrategyTest {
     }
 
     @Test
-    fun whenRemoteHasMoreCredentialsThenKeepExistingAndAddNewCredentials() = runTest {
+    fun `processEntries - remote has more credentials - keep existing and add new credentials`() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,
@@ -195,7 +195,7 @@ internal class CredentialsRemoteWinsStrategyTest {
     }
 
     @Test
-    fun whenRemoteIsEmptyThenNoChanges() = runTest {
+    fun `processEntries - remote is empty - no changes`() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,
@@ -215,7 +215,7 @@ internal class CredentialsRemoteWinsStrategyTest {
     }
 
     @Test
-    fun whenRemoteMoreRecentAndDeletedThenRemoteWins() = runTest {
+    fun `whenRemoteMoreRecentAndDeletedThenRemoteWins - remote credentials deleted - local values cleared`() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,

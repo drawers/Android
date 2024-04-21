@@ -35,7 +35,10 @@ class RealAutofillSelectCredentialsListBuilderTest {
     private val testee = RealAutofillSelectCredentialsListBuilder(context)
 
     @Test
-    fun whenEmptyInputThenEmptyListOut() {
+    fun `whenEmptyInputThenEmptyListOut - state - expected outcome`
+
+Expected output:
+`empty input - empty list out`() {
         val sortedGroup = Groups(
             perfectMatches = listOf(),
             partialMatches = mapOf(),
@@ -45,7 +48,7 @@ class RealAutofillSelectCredentialsListBuilderTest {
     }
 
     @Test
-    fun whenPerfectMatchAndNoPartialMatchThenFromThisWebsiteLabelOmitted() {
+    fun `whenPerfectMatchAndNoPartialMatchThenFromThisWebsiteLabelOmitted - no partial matches - from this website label omitted`() {
         val sortedGroup = Groups(
             perfectMatches = listOf(creds()),
             partialMatches = mapOf(),
@@ -56,7 +59,7 @@ class RealAutofillSelectCredentialsListBuilderTest {
     }
 
     @Test
-    fun whenOnePerfectMatchThenButtonIsPrimaryType() {
+    fun `whenOnePerfectMatchThenButtonIsPrimaryType - sorted group has perfect matches - button is primary type`() {
         val sortedGroup = Groups(
             perfectMatches = listOf(creds()),
             partialMatches = mapOf(),
@@ -67,7 +70,7 @@ class RealAutofillSelectCredentialsListBuilderTest {
     }
 
     @Test
-    fun whenMultiplePerfectMatchesThenFirstButtonOnlyIsPrimaryType() {
+    fun `whenMultiplePerfectMatchesThenFirstButtonOnlyIsPrimaryType - sorted group of perfect matches - first button only is primary type`() {
         val sortedGroup = Groups(
             perfectMatches = listOf(creds(), creds(), creds()),
             partialMatches = mapOf(),
@@ -80,7 +83,7 @@ class RealAutofillSelectCredentialsListBuilderTest {
     }
 
     @Test
-    fun whenNoPerfectMatchesAndOnePartialMatchThenGroupHeaderAdded() {
+    fun `whenNoPerfectMatchesAndOnePartialMatchThenGroupHeaderAdded - sorted group - domain grouping heading added`() {
         val sortedGroup = Groups(
             perfectMatches = emptyList(),
             partialMatches = mapOf(
@@ -93,7 +96,7 @@ class RealAutofillSelectCredentialsListBuilderTest {
     }
 
     @Test
-    fun whenNoPerfectMatchesAndOnePartialMatchThenPartialMatchAddedAsPrimaryButton() {
+    fun `whenNoPerfectMatchesAndOnePartialMatchThenPartialMatchAddedAsPrimaryButton - sorted group - partial match added as primary button`() {
         val sortedGroup = Groups(
             perfectMatches = emptyList(),
             partialMatches = mapOf(
@@ -106,7 +109,7 @@ class RealAutofillSelectCredentialsListBuilderTest {
     }
 
     @Test
-    fun whenNoPerfectMatchesAndTwoPartialMatchesInSameDomainThenFirstPartialMatchAddedAsPrimaryButton() {
+    fun `whenNoPerfectMatchesAndTwoPartialMatchesInSameDomainThenFirstPartialMatchAddedAsPrimaryButton - sorted group - first partial match added as primary button`() {
         val sortedGroup = Groups(
             perfectMatches = emptyList(),
             partialMatches = mapOf(
@@ -120,7 +123,7 @@ class RealAutofillSelectCredentialsListBuilderTest {
     }
 
     @Test
-    fun whenPerfectMatchesAndPartialMatchesThenFromThisWebsiteLabelShown() {
+    fun `whenPerfectMatchesAndPartialMatchesThenFromThisWebsiteLabelShown - sorted group - from this website label shown`() {
         val sortedGroup = Groups(
             perfectMatches = listOf(creds()),
             partialMatches = mapOf(
@@ -134,7 +137,7 @@ class RealAutofillSelectCredentialsListBuilderTest {
     }
 
     @Test
-    fun whenPerfectMatchesAndOnePartialMatchThenPartialMatchAddedAsSecondaryButton() {
+    fun `whenPerfectMatchesAndOnePartialMatchThenPartialMatchAddedAsSecondaryButton - sorted group - partial match added as secondary button`() {
         val sortedGroup = Groups(
             perfectMatches = listOf(creds()),
             partialMatches = mapOf(
@@ -147,7 +150,7 @@ class RealAutofillSelectCredentialsListBuilderTest {
     }
 
     @Test
-    fun whenNoPerfectMatchesAndMultiplePartialMatchesAcrossSitesThenFirstPartialMatchAddedAsPrimaryButton() {
+    fun `buildFlatList - no perfect matches and multiple partial matches across sites - first partial match added as primary button`() {
         val sortedGroup = Groups(
             perfectMatches = emptyList(),
             partialMatches = mapOf(
@@ -164,7 +167,7 @@ class RealAutofillSelectCredentialsListBuilderTest {
     }
 
     @Test
-    fun whenPerfectMatchesAndMultiplePartialMatchesThenListOutputAsExpected() {
+    fun `whenPerfectMatchesAndMultiplePartialMatchesThenListOutputAsExpected - sorted group - list output as expected`() {
         val sortedGroup = Groups(
             perfectMatches = listOf(creds(), creds()),
             partialMatches = mapOf(

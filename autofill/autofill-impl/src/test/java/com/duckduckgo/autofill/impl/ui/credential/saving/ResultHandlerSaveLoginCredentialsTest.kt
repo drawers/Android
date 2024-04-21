@@ -55,7 +55,7 @@ class ResultHandlerSaveLoginCredentialsTest {
     )
 
     @Test
-    fun whenSaveBundleMissingUrlThenNoAttemptToSaveMade() = runTest {
+    fun `whenSaveBundleMissingUrlThenNoAttemptToSaveMade - no attempt to save made`() = runTest {
         val bundle = bundle(url = null, credentials = someLoginCredentials())
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
         verifySaveNeverCalled()
@@ -63,7 +63,7 @@ class ResultHandlerSaveLoginCredentialsTest {
     }
 
     @Test
-    fun whenSaveBundleMissingCredentialsThenNoAttemptToSaveMade() = runTest {
+    fun `saveBundleMissingCredentials - no attempt to save made`() = runTest {
         val bundle = bundle(url = "example.com", credentials = null)
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
         verifySaveNeverCalled()
@@ -71,7 +71,7 @@ class ResultHandlerSaveLoginCredentialsTest {
     }
 
     @Test
-    fun whenSaveBundleWellFormedThenCredentialsAreSaved() = runTest {
+    fun `whenSaveBundleWellFormedThenCredentialsAreSaved - save credentials - saved`() = runTest {
         val loginCredentials = LoginCredentials(domain = "example.com", username = "foo", password = "bar")
         val bundle = bundle("example.com", loginCredentials)
         whenever(autofillStore.saveCredentials(any(), any())).thenReturn(loginCredentials)
@@ -81,7 +81,7 @@ class ResultHandlerSaveLoginCredentialsTest {
     }
 
     @Test
-    fun whenSaveCredentialsForFirstTimeThenDisableDeclineCountMonitoringFlag() = runTest {
+    fun `whenSaveCredentialsForFirstTimeThenDisableDeclineCountMonitoringFlag - save credentials for first time - disable decline count monitoring flag`() = runTest {
         val loginCredentials = LoginCredentials(domain = "example.com", username = "foo", password = "bar")
         val bundle = bundle("example.com", loginCredentials)
         whenever(autofillStore.saveCredentials(any(), any())).thenReturn(loginCredentials)
@@ -90,7 +90,7 @@ class ResultHandlerSaveLoginCredentialsTest {
     }
 
     @Test
-    fun whenSaveCredentialsUnsuccessfulThenDoesNotDisableDeclineCountMonitoringFlag() = runTest {
+    fun `saveCredentials - unsuccessful save - does not disable decline count monitoring flag`() = runTest {
         val bundle = bundle("example.com", someLoginCredentials())
         whenever(autofillStore.saveCredentials(any(), any())).thenReturn(null)
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
