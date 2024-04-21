@@ -26,12 +26,12 @@ class ManagementScreenAutofillCredentialMatcherTest {
     private val testee = ManagementScreenAutofillCredentialMatcher()
 
     @Test
-    fun `matches - empty query - matches credential`() = runTest {
+    fun whenEmptyQueryThenMatchesCredential() = runTest {
         assertTrue(testee.matches(creds(), ""))
     }
 
     @Test
-    fun `matches - query matches username - matches credential`() {
+    fun whenQueryMatchesUsernameThenMatchesCredential() {
         val creds = creds(username = "username")
         assertTrue(testee.matches(creds, "username"))
         assertTrue(EXPECT_PREFIXES, testee.matches(creds, "user"))
@@ -41,13 +41,13 @@ class ManagementScreenAutofillCredentialMatcherTest {
     }
 
     @Test
-    fun `matches - query matches password - not a match`() {
+    fun whenQueryMatchesPasswordThenNotAMatch() {
         val creds = creds(password = "password")
         assertFalse(testee.matches(creds, "password"))
     }
 
     @Test
-    fun `matches - query matches title - matches credential`() {
+    fun whenQueryMatchesTitleThenMatchesCredential() {
         val creds = creds(title = "title")
         assertTrue(testee.matches(creds, "title"))
         assertTrue(EXPECT_PREFIXES, testee.matches(creds, "ti"))
@@ -57,7 +57,7 @@ class ManagementScreenAutofillCredentialMatcherTest {
     }
 
     @Test
-    fun `matches - query matches notes - matches credential`() {
+    fun whenQueryMatchesNotesThenMatchesCredential() {
         val creds = creds(notes = "notes")
         assertTrue(testee.matches(creds, "notes"))
         assertTrue(EXPECT_PREFIXES, testee.matches(creds, "no"))
@@ -67,7 +67,7 @@ class ManagementScreenAutofillCredentialMatcherTest {
     }
 
     @Test
-    fun `matches - query matches domain - matches credential`() {
+    fun whenQueryMatchesDomainThenMatchesCredential() {
         val creds = creds(domain = "example.com")
         assertTrue(testee.matches(creds, "example.com"))
         assertTrue(EXPECT_PREFIXES, testee.matches(creds, "exa"))
@@ -77,7 +77,7 @@ class ManagementScreenAutofillCredentialMatcherTest {
     }
 
     @Test
-    fun `matches - query matches multiple fields - matches credential`() {
+    fun whenQueryMatchesMultipleFieldsThenMatchesCredential() {
         val creds = creds(domain = "example.com", username = "example", title = "example", notes = "example")
         assertTrue(testee.matches(creds, "example"))
     }

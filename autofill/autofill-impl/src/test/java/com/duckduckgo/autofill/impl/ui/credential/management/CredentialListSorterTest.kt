@@ -36,13 +36,13 @@ class CredentialListSorterTest {
     private val list = mutableListOf<LoginCredentials>()
 
     @Test
-    fun `sort - list is empty - empty list`() {
+    fun whenListIsEmptyThenReturnEmptyList() {
         val result = testee.sort(emptyList())
         assertTrue(result.isEmpty())
     }
 
     @Test
-    fun `sort - case is ignored`() {
+    fun whenComparingTitlesCaseIsIgnored() {
         val sorted = testee.sort(
             list.also {
                 it.add(credsWithTitle("C"))
@@ -54,7 +54,7 @@ class CredentialListSorterTest {
     }
 
     @Test
-    fun `sort - case ignored`() {
+    fun whenComparingDomainsCaseIsIgnored() {
         val sorted = testee.sort(
             list.also {
                 it.add(credsWithDomain("C.COM"))
@@ -66,7 +66,7 @@ class CredentialListSorterTest {
     }
 
     @Test
-    fun `sort - subdomains case ignored`() {
+    fun whenComparingSubdomainsCaseIsIgnored() {
         val sorted = testee.sort(
             list.also {
                 it.add(credsWithDomain("C.example.COM"))
@@ -78,7 +78,7 @@ class CredentialListSorterTest {
     }
 
     @Test
-    fun `sort - title starts with a number - sorted before letters`() {
+    fun whenTitleStartsWithANumberThenSortedBeforeLetters() {
         val sorted = testee.sort(
             list.also {
                 it.add(credsWithTitle("1"))
@@ -91,7 +91,7 @@ class CredentialListSorterTest {
     }
 
     @Test
-    fun `sort - title starts with character - sorted before letters`() {
+    fun whenTitleStartsWithACharacterThenSortedBeforeLetters() {
         val sorted = testee.sort(
             list.also {
                 it.add(credsWithTitle("1"))
@@ -104,7 +104,7 @@ class CredentialListSorterTest {
     }
 
     @Test
-    fun `sort - title missing - sorted before letters`() {
+    fun whenTitleMissingThenSortedBeforeLetters() {
         val sorted = testee.sort(
             list.also {
                 it.add(credsWithTitle("A"))
@@ -117,7 +117,7 @@ class CredentialListSorterTest {
     }
 
     @Test
-    fun `sort - titles all missing - domain used instead`() {
+    fun whenTitlesAllMissingThenDomainUsedInstead() {
         val sorted = testee.sort(
             list.also {
                 it.add(credsWithDomain("a.com"))
@@ -129,7 +129,7 @@ class CredentialListSorterTest {
     }
 
     @Test
-    fun `sort - titles equal - domain used as secondary sort`() {
+    fun whenTitlesEqualThenDomainUsedAsSecondarySort() {
         val sorted = testee.sort(
             list.also {
                 it.add(creds("a.com", "Website"))
@@ -141,7 +141,7 @@ class CredentialListSorterTest {
     }
 
     @Test
-    fun `sort - titles differ - domain sorting not used`() {
+    fun whenTitlesDifferThenDomainSortingNotUsed() {
         val sorted = testee.sort(
             list.also {
                 it.add(creds("a.com", "2. Website"))
@@ -154,7 +154,7 @@ class CredentialListSorterTest {
     }
 
     @Test
-    fun `sort - http schema ignored`() {
+    fun whenComparingDomainsThenHttpSchemaIgnored() {
         val sorted = testee.sort(
             list.also {
                 it.add(credsWithDomain("http://b.com"))
@@ -165,7 +165,7 @@ class CredentialListSorterTest {
     }
 
     @Test
-    fun `sort - comparing domains - HTTPS schema ignored`() {
+    fun whenComparingDomainsThenHttpsSchemaIgnored() {
         val sorted = testee.sort(
             list.also {
                 it.add(credsWithDomain("https://b.com"))
@@ -176,7 +176,7 @@ class CredentialListSorterTest {
     }
 
     @Test
-    fun `sort - www not treated as special for sorting`() {
+    fun whenComparingSubdomainsThenWwwNotTreatedAsSpecialForSorting() {
         val sorted = testee.sort(
             list.also {
                 it.add(credsWithDomain(id = 0, domain = "www.example.com"))
@@ -188,7 +188,7 @@ class CredentialListSorterTest {
     }
 
     @Test
-    fun `sort - missing domain sorted first`() {
+    fun whenComparingDomainsThenMissingDomainSortedFirst() {
         val sorted = testee.sort(
             list.also {
                 it.add(credsWithDomain("http://b.com"))
@@ -200,7 +200,7 @@ class CredentialListSorterTest {
     }
 
     @Test
-    fun `sort - comparing domains - invalid domain initial used for sort`() {
+    fun whenComparingDomainsThenInvalidDomainInitialUsedForSort() {
         val sorted = testee.sort(
             list.also {
                 it.add(credsWithDomain("http://b.com"))
@@ -213,7 +213,7 @@ class CredentialListSorterTest {
     }
 
     @Test
-    fun `sort - combination of domains and titles - titles take preference when they exist`() {
+    fun whenCombinationOfDomainsAndTitlesThenTitlesTakePreferenceWhenTheyExist() {
         val credentials = listOf(
             creds(domain = "energy.com"),
             creds(domain = "amazon.co.uk", title = "Smile Amazon"),
@@ -228,7 +228,7 @@ class CredentialListSorterTest {
     }
 
     @Test
-    fun `sort - special characters in domain - sorted among letters`() {
+    fun whenSpecialCharactersInDomainThenSortedAmongLetters() {
         val sorted = testee.sort(
             list.also {
                 it.add(credsWithDomain("a.com"))
@@ -241,7 +241,7 @@ class CredentialListSorterTest {
     }
 
     @Test
-    fun `sort - special characters in title - sorted among letters`() {
+    fun whenSpecialCharactersInTitleThenSortedAmongLetters() {
         val sorted = testee.sort(
             list.also {
                 it.add(credsWithTitle("a"))
@@ -254,7 +254,7 @@ class CredentialListSorterTest {
     }
 
     @Test
-    fun `sort - multiple similar characters in title - sorting correct`() {
+    fun whenMultipleSimilarCharactersInTitleThenSortingCorrect() {
         val sorted = testee.sort(
             list.also {
                 it.add(credsWithTitle("a"))
@@ -269,7 +269,7 @@ class CredentialListSorterTest {
     }
 
     @Test
-    fun `sort - multiple similar characters in domain - sorting correct`() {
+    fun whenMultipleSimilarCharactersInDomainThenSortingCorrect() {
         val sorted = testee.sort(
             list.also {
                 it.add(credsWithDomain("a"))
@@ -284,7 +284,7 @@ class CredentialListSorterTest {
     }
 
     @Test
-    fun `sort - sites from same domain without subdomain - top site sorted first`() {
+    fun whenComparingSubdomainsWithSitesFromSameDomainWithoutSubdomainThenTopSiteSortedFirst() {
         val sorted = testee.sort(
             list.also {
                 it.add(credsWithDomain(id = 0, domain = "www.example.com"))
@@ -296,7 +296,7 @@ class CredentialListSorterTest {
     }
 
     @Test
-    fun `sort - mixture of titles sites with subdomains and some without - correct order`() {
+    fun whenComparingMixtureOfTitlesSitesWithSubdomainsAndSomeWithoutThenCorrectOrder() {
         val sorted = testee.sort(
             list.also {
                 it.add(creds(id = 0, domain = "www.exaaaaample.com"))
@@ -311,7 +311,7 @@ class CredentialListSorterTest {
     }
 
     @Test
-    fun `sort - domains start with decomposable letter - decomposed in ordering`() {
+    fun whenDomainsStartWithDecomposableLetterThenIsDecomposedInOrdering() {
         unicodeNormalizer.overrides["ç.com"] = "c.com"
         val sorted = testee.sort(
             list.also {

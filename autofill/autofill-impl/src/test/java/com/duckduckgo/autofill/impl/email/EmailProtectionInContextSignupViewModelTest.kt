@@ -30,7 +30,7 @@ class EmailProtectionInContextSignupViewModelTest {
     private val testee = EmailProtectionInContextSignupViewModel(pixel = pixel)
 
     @Test
-    fun `viewState - initial state - can exit without confirmation`() = runTest {
+    fun whenInitialStateThenCanExitWithoutConfirmation() = runTest {
         testee.viewState.test {
             (awaitItem() as ShowingWebContent).verifyCanExitWithoutConfirmation()
             cancelAndConsumeRemainingEvents()
@@ -38,7 +38,7 @@ class EmailProtectionInContextSignupViewModelTest {
     }
 
     @Test
-    fun `viewState - initial state - can navigate backwards`() = runTest {
+    fun whenInitialStateThenCanNavigateBackwards() = runTest {
         testee.viewState.test {
             assertTrue((awaitItem() as ShowingWebContent).urlActions.backButton == NavigateBack)
             cancelAndConsumeRemainingEvents()
@@ -46,7 +46,7 @@ class EmailProtectionInContextSignupViewModelTest {
     }
 
     @Test
-    fun `onBackButtonPressed - web view cannot go back - cancel in context sign up state`() = runTest {
+    fun whenBackButtonPressedAndWebViewCannotGoBackThenCancelInContextSignUpState() = runTest {
         testee.onBackButtonPressed("", false)
         testee.viewState.test {
             awaitItem() as CancellingInContextSignUp
@@ -55,7 +55,7 @@ class EmailProtectionInContextSignupViewModelTest {
     }
 
     @Test
-    fun `onBackButtonPressed - url not known and back button pressed - default back action taken`() = runTest {
+    fun whenUrlNotKnownAndBackButtonPressedThenDefaultBackActionTaken() = runTest {
         testee.onBackButtonPressed("", true)
         testee.viewState.test {
             awaitItem() as NavigatingBack
@@ -64,7 +64,7 @@ class EmailProtectionInContextSignupViewModelTest {
     }
 
     @Test
-    fun `onPageFinished - unknown URL - default exit action taken`() = runTest {
+    fun whenPageFinishedIsUnknownUrlThenDefaultExitActionTaken() = runTest {
         testee.onPageFinished(UNKNOWN_URL)
         testee.viewState.test {
             (awaitItem() as ShowingWebContent).verifyCanExitWithoutConfirmation()
@@ -73,7 +73,7 @@ class EmailProtectionInContextSignupViewModelTest {
     }
 
     @Test
-    fun `onBackButtonPressed - web view can go back and URL in allowable back list - navigate back state`() = runTest {
+    fun whenBackButtonPressedWebViewCanGoBackAndUrlInAllowableBackListThenNavigateBackState() = runTest {
         testee.onBackButtonPressed(URL_IN_ALLOWED_BACK_NAVIGATION_LIST, true)
         testee.viewState.test {
             awaitItem() as NavigatingBack
@@ -82,7 +82,7 @@ class EmailProtectionInContextSignupViewModelTest {
     }
 
     @Test
-    fun `onBackButtonPressed - consumed - state returns to viewing web content`() = runTest {
+    fun whenBackNavigationConsumedThenStateReturnsToViewingWebContent() = runTest {
         testee.onBackButtonPressed(URL_IN_ALLOWED_BACK_NAVIGATION_LIST, true)
         testee.viewState.test {
             awaitItem() as NavigatingBack
@@ -95,7 +95,7 @@ class EmailProtectionInContextSignupViewModelTest {
     }
 
     @Test
-    fun `onPageFinished - url on allowed back list - can exit without confirmation`() = runTest {
+    fun whenPageFinishedIsUrlOnAllowedBackListThenCanExitWithoutConfirmation() = runTest {
         testee.onPageFinished(URL_IN_ALLOWED_BACK_NAVIGATION_LIST)
         testee.viewState.test {
             (awaitItem() as ShowingWebContent).verifyCanExitWithoutConfirmation()
@@ -104,7 +104,7 @@ class EmailProtectionInContextSignupViewModelTest {
     }
 
     @Test
-    fun `onPageFinished - url requires exit confirmation - confirmation required`() = runTest {
+    fun whenPageFinishedIsUrlThatRequiresExitConfirmationThenConfirmationRequired() = runTest {
         testee.onPageFinished(URL_REQUIRES_EXIT_CONFIRMATION)
         testee.viewState.test {
             (awaitItem() as ShowingWebContent).verifyCanExitWithConfirmation()
@@ -113,7 +113,7 @@ class EmailProtectionInContextSignupViewModelTest {
     }
 
     @Test
-    fun `signedInStateUpdated - landing page and not signed in - does not exit`() = runTest {
+    fun whenUrlIsLandingPageAndNotSignedInThenDoesNotExit() = runTest {
         testee.signedInStateUpdated(signedIn = false, url = "https://duckduckgo.com/email/")
         testee.viewState.test {
             assertTrue(awaitItem() is ShowingWebContent)
@@ -122,25 +122,25 @@ class EmailProtectionInContextSignupViewModelTest {
     }
 
     @Test
-    fun `onUserDecidedNotToCancelInContextSignUp - pixel fired`() {
+    fun whenUserCancelsEarlyExitThenPixelFired() {
         testee.onUserDecidedNotToCancelInContextSignUp()
         verify(pixel).fire(EMAIL_PROTECTION_IN_CONTEXT_MODAL_EXIT_EARLY_CANCEL)
     }
 
     @Test
-    fun `onUserConfirmedCancellationOfInContextSignUp - pixel fired`() {
+    fun whenUserConfirmsEarlyExitThenPixelFired() {
         testee.onUserConfirmedCancellationOfInContextSignUp()
         verify(pixel).fire(EMAIL_PROTECTION_IN_CONTEXT_MODAL_EXIT_EARLY_CONFIRM)
     }
 
     @Test
-    fun `userCancelledSignupWithoutConfirmation - pixel fired`() {
+    fun whenUserCancelsWithoutConfirmationThenPixelFired() {
         testee.userCancelledSignupWithoutConfirmation()
         verify(pixel).fire(EMAIL_PROTECTION_IN_CONTEXT_MODAL_DISMISSED)
     }
 
     @Test
-    fun `userCancelledSignupWithoutConfirmation - cancellation view state sent`() = runTest {
+    fun whenUserCancelsWithoutConfirmationThenCancellationViewStateSent() = runTest {
         testee.userCancelledSignupWithoutConfirmation()
         testee.viewState.test {
             assertTrue(awaitItem() is CancellingInContextSignUp)
@@ -149,7 +149,7 @@ class EmailProtectionInContextSignupViewModelTest {
     }
 
     @Test
-    fun `loadedStartingUrl - pixel fired`() {
+    fun whenLoadedStartingUrlThenPixelFired() {
         testee.loadedStartingUrl()
         verify(pixel).fire(EMAIL_PROTECTION_IN_CONTEXT_MODAL_DISPLAYED)
     }

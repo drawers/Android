@@ -40,28 +40,28 @@ class RealAutofillTest {
     }
 
     @Test
-    fun `isAnException - domain listed in exceptions list - return true`() {
+    fun whenIsAnExceptionAndDomainIsListedInTheExceptionsListThenReturnTrue() {
         givenThereAreExceptions()
 
         assertTrue(testee.isAnException("http://www.example.com"))
     }
 
     @Test
-    fun `isAnException - with subdomain and domain listed in exceptions list - return true`() {
+    fun whenIsAnExceptionWithSubdomainAndDomainIsListedInTheExceptionsListThenReturnTrue() {
         givenThereAreExceptions()
 
         assertTrue(testee.isAnException("http://test.example.com"))
     }
 
     @Test
-    fun `isAnException - domain not listed in exceptions list - return false`() {
+    fun whenIsAnExceptionAndDomainIsNotListedInTheExceptionsListThenReturnFalse() {
         whenever(mockAutofillRepository.exceptions).thenReturn(CopyOnWriteArrayList())
 
         assertFalse(testee.isAnException("http://test.example.com"))
     }
 
     @Test
-    fun `isAnException - domain listed in unprotected temporary list - return true`() {
+    fun whenIsAnExceptionAndDomainIsListedInTheUnprotectedTemporaryListThenReturnTrue() {
         val url = "http://example.com"
         whenever(mockUnprotectedTemporary.isAnException(url)).thenReturn(true)
         whenever(mockAutofillRepository.exceptions).thenReturn(CopyOnWriteArrayList())

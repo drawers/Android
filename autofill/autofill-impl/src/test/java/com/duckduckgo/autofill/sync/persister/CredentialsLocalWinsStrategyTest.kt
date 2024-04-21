@@ -75,7 +75,7 @@ internal class CredentialsLocalWinsStrategyTest {
     )
 
     @Test
-    fun `processEntries - no local entities - all remote entities stored`() = runTest {
+    fun whenNoLocalEntitiesThenAllRemoteEntitiesStored() = runTest {
         givenLocalCredentials()
         val remoteCredentials = credentialsSyncEntries(
             entries = listOf(
@@ -95,7 +95,7 @@ internal class CredentialsLocalWinsStrategyTest {
     }
 
     @Test
-    fun `processEntries - remote are more recent - local wins`() = runTest {
+    fun whenRemoteAreMoreRecentThenLocalWins() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,
@@ -120,7 +120,7 @@ internal class CredentialsLocalWinsStrategyTest {
     }
 
     @Test
-    fun `processEntries - local is more recent - local wins`() = runTest {
+    fun whenLocalIsMoreRecentThenLocalWins() = runTest {
         givenLocalCredentials(
             twitterCredentials.copy(lastUpdatedMillis = 1689592358516),
             spotifyCredentials.copy(lastUpdatedMillis = 1689592358516),
@@ -145,7 +145,7 @@ internal class CredentialsLocalWinsStrategyTest {
     }
 
     @Test
-    fun `processEntries - local has more credentials - no changes`() = runTest {
+    fun whenLocalHasMoreCredentialsThenNoChanges() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,
@@ -170,7 +170,7 @@ internal class CredentialsLocalWinsStrategyTest {
     }
 
     @Test
-    fun `processEntries - remote has more credentials - keep existing and add new credentials`() = runTest {
+    fun whenRemoteHasMoreCredentialsThenKeepExistingAndAddNewCredentials() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,
@@ -195,7 +195,7 @@ internal class CredentialsLocalWinsStrategyTest {
     }
 
     @Test
-    fun `processEntries - remote is empty - no changes`() = runTest {
+    fun whenRemoteIsEmptyThenNoChanges() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,
@@ -215,7 +215,7 @@ internal class CredentialsLocalWinsStrategyTest {
     }
 
     @Test
-    fun `processEntries - remote more recent and deleted - no changes`() = runTest {
+    fun whenRemoteMoreRecentAndDeletedThenNoChanges() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,
@@ -238,7 +238,7 @@ internal class CredentialsLocalWinsStrategyTest {
     }
 
     @Test
-    fun `processEntries - server returns deleted entity - do not save credentials`() = runTest {
+    fun whenServerReturnsDeletedEntityThenDoNotSavecredentials() = runTest {
         val remoteCredentials = credentialsSyncEntries(
             entries = listOf(
                 twitterCredentials.toLoginCredentialEntryResponse().copy(deleted = "1"),

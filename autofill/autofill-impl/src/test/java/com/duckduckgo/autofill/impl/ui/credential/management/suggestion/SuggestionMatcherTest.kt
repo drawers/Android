@@ -41,21 +41,21 @@ class SuggestionMatcherTest {
     )
 
     @Test
-    fun `getDirectSuggestions - url is null - no suggestions`() = runTest {
+    fun whenUrlIsNullThenNoSuggestions() = runTest {
         configureNoShareableCredentials()
         val suggestions = testee.getDirectSuggestions(null, listOf())
         assertTrue(suggestions.isEmpty())
     }
 
     @Test
-    fun `getDirectSuggestions - url is not null and no credentials - no suggestions`() = runTest {
+    fun whenUrlIsNotNullAndNoCredentialsThenNoSuggestions() = runTest {
         configureNoShareableCredentials()
         val suggestions = testee.getDirectSuggestions("https://duckduckgo.com", listOf())
         assertTrue(suggestions.isEmpty())
     }
 
     @Test
-    fun `getDirectSuggestions - available but not a match - no suggestions`() = runTest {
+    fun whenCredentialsAvailableButNotAMatchThenNoSuggestions() = runTest {
         configureNoShareableCredentials()
         val creds = listOf(creds("https://example.com"))
         val suggestions = testee.getDirectSuggestions("https://duckduckgo.com", creds)
@@ -63,7 +63,7 @@ class SuggestionMatcherTest {
     }
 
     @Test
-    fun `getDirectSuggestions - single match - one suggestion`() = runTest {
+    fun whenCredentialsAvailableWithASingleMatchThenOneSuggestion() = runTest {
         configureNoShareableCredentials()
         val creds = listOf(
             creds("https://example.com"),
@@ -75,7 +75,7 @@ class SuggestionMatcherTest {
     }
 
     @Test
-    fun `getDirectSuggestions - multiple matches - multiple suggestions`() = runTest {
+    fun whenCredentialsAvailableWithMultipleMatchesThenMultipleSuggestions() = runTest {
         configureNoShareableCredentials()
         val creds = listOf(
             creds("https://example.com"),
@@ -88,7 +88,7 @@ class SuggestionMatcherTest {
     }
 
     @Test
-    fun `getDirectSuggestions - subdomain included in saved site - suggestion offered`() = runTest {
+    fun whenSubdomainIncludedInSavedSiteAndVisitingRootSiteThenSuggestionOffered() = runTest {
         configureNoShareableCredentials()
         val creds = listOf(creds("https://duckduckgo.com"))
         val suggestions = testee.getDirectSuggestions("https://test.duckduckgo.com", creds)
@@ -96,7 +96,7 @@ class SuggestionMatcherTest {
     }
 
     @Test
-    fun `getDirectSuggestions - port included in saved site and not in visited site - not a suggestion`() = runTest {
+    fun whenPortIncludedInSavedSiteAndNotInVisitedSiteThenNotASuggestion() = runTest {
         configureNoShareableCredentials()
         val creds = listOf(creds("example.com:8080"))
         val suggestions = testee.getDirectSuggestions("example.com", creds)
@@ -104,7 +104,7 @@ class SuggestionMatcherTest {
     }
 
     @Test
-    fun `getDirectSuggestions - port included in visited site and not in saved site - not a suggestion`() = runTest {
+    fun whenPortIncludedInVisitedSiteAndNotInSavedSiteThenNotASuggestion() = runTest {
         configureNoShareableCredentials()
         val creds = listOf(creds("example.com"))
         val suggestions = testee.getDirectSuggestions("example.com:8080", creds)
@@ -112,7 +112,7 @@ class SuggestionMatcherTest {
     }
 
     @Test
-    fun `getDirectSuggestions - port included in visited site differs from port in saved site - not a suggestion`() = runTest {
+    fun whenPortIncludedInVisitedSiteDiffersFromPortInSavedSiteThenNotASuggestion() = runTest {
         configureNoShareableCredentials()
         val creds = listOf(creds("example.com:9000"))
         val suggestions = testee.getDirectSuggestions("example.com:8080", creds)
@@ -120,7 +120,7 @@ class SuggestionMatcherTest {
     }
 
     @Test
-    fun `getDirectSuggestions - port included in visited site matches port in saved site - not a suggestion`() = runTest {
+    fun whenPortIncludedInVisitedSiteMatchesPortInSavedSiteThenNotASuggestion() = runTest {
         configureNoShareableCredentials()
         val creds = listOf(creds("example.com:9000"))
         val suggestions = testee.getDirectSuggestions("example.com:9000", creds)

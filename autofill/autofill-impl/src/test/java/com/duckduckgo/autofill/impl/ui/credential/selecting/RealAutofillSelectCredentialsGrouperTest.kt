@@ -42,7 +42,7 @@ class RealAutofillSelectCredentialsGrouperTest {
     )
 
     @Test
-    fun `group - only one perfect match - correctly grouped into perfect match`() {
+    fun whenOnlyOnePerfectMatchThenCorrectlyGroupedIntoPerfectMatch() {
         val creds = listOf(creds("example.com"))
         val grouped = testee.group("example.com", unsortedCredentials = creds)
         grouped.assertNoPartialMatches()
@@ -50,7 +50,7 @@ class RealAutofillSelectCredentialsGrouperTest {
     }
 
     @Test
-    fun `group - multiple perfect matches - all correctly grouped into perfect match`() {
+    fun whenMultiplePerfectMatchesThenAllCorrectlyGroupedIntoPerfectMatch() {
         val creds = listOf(creds("example.com"), creds("example.com"))
         val grouped = testee.group("example.com", unsortedCredentials = creds)
         grouped.assertNoPartialMatches()
@@ -58,7 +58,7 @@ class RealAutofillSelectCredentialsGrouperTest {
     }
 
     @Test
-    fun `group - not a match - not included in groups`() {
+    fun whenNotAMatchThenNotIncludedInGroups() {
         val creds = listOf(creds("differentDomain.com"))
         val grouped = testee.group("example.com", unsortedCredentials = creds)
         grouped.assertNoPartialMatches()
@@ -66,7 +66,7 @@ class RealAutofillSelectCredentialsGrouperTest {
     }
 
     @Test
-    fun `group - single partial match - gets own group`() {
+    fun whenSinglePartialMatchThenGetsItsOwnGroup() {
         val creds = listOf(creds("foo.example.com"))
         val grouped = testee.group("example.com", unsortedCredentials = creds)
         grouped.assertNoPerfectMatches()
@@ -76,7 +76,7 @@ class RealAutofillSelectCredentialsGrouperTest {
     }
 
     @Test
-    fun `group - multiple partial matches with same subdomain - all share a group`() {
+    fun whenMultiplePartialMatchesWithSameSubdomainThenAllShareAGroup() {
         val creds = listOf(creds("foo.example.com"), creds("foo.example.com"))
         val grouped = testee.group("example.com", unsortedCredentials = creds)
         grouped.assertNoPerfectMatches()
@@ -86,7 +86,7 @@ class RealAutofillSelectCredentialsGrouperTest {
     }
 
     @Test
-    fun `group - multiple different partial matches - each gets their own group`() {
+    fun whenMultipleDifferentPartialMatchesThenEachGetsTheirOwnGroup() {
         val creds = listOf(creds("foo.example.com"), creds("bar.example.com"), creds("bar.example.com"))
         val grouped = testee.group("example.com", unsortedCredentials = creds)
         grouped.assertNoPerfectMatches()
@@ -104,7 +104,7 @@ class RealAutofillSelectCredentialsGrouperTest {
     }
 
     @Test
-    fun `group - no last used - last updated sorted first`() {
+    fun whenSortingPerfectMatchesWithNoLastUsedThenLastUpdatedSortedFirst() {
         val creds = listOf(
             creds(lastUpdated = 100, domain = "example.com"),
             creds(lastUpdated = 300, domain = "example.com"),
@@ -117,7 +117,7 @@ class RealAutofillSelectCredentialsGrouperTest {
     }
 
     @Test
-    fun `group - perfect matches sorted by last used - last used sorted first`() {
+    fun whenSortingPerfectMatchesThenLastUsedSortedFirst() {
         val creds = listOf(
             creds(lastUsed = 100, domain = "example.com"),
             creds(lastUsed = 300, domain = "example.com"),
@@ -130,7 +130,7 @@ class RealAutofillSelectCredentialsGrouperTest {
     }
 
     @Test
-    fun `group - no last used - last updated sorted first`() {
+    fun whenSortingPartialMatchesWithNoLastUsedThenLastUpdatedSortedFirst() {
         val creds = listOf(
             creds(lastUpdated = 100, domain = "foo.example.com"),
             creds(lastUpdated = 300, domain = "foo.example.com"),
@@ -144,7 +144,7 @@ class RealAutofillSelectCredentialsGrouperTest {
     }
 
     @Test
-    fun `group - sorting partial matches - last updated sorted first`() {
+    fun whenSortingPartialMatchesThenLastUpdatedSortedFirst() {
         val creds = listOf(
             creds(lastUsed = 100, domain = "foo.example.com"),
             creds(lastUsed = 300, domain = "foo.example.com"),
@@ -158,7 +158,7 @@ class RealAutofillSelectCredentialsGrouperTest {
     }
 
     @Test
-    fun `group - no last used - last updated sorted first`() {
+    fun whenSortingOtherMatchesWithNoLastUsedThenLastUpdatedSortedFirst() {
         val creds = listOf(
             creds(lastUpdated = 100, domain = "other.site"),
             creds(lastUpdated = 300, domain = "other.site"),
@@ -172,7 +172,7 @@ class RealAutofillSelectCredentialsGrouperTest {
     }
 
     @Test
-    fun `group - other matches sorted - last used sorted first`() {
+    fun whenSortingOtherMatchesThenLastUsedSortedFirst() {
         val creds = listOf(
             creds(lastUsed = 100, domain = "other.site"),
             creds(lastUsed = 300, domain = "other.site"),
@@ -186,7 +186,7 @@ class RealAutofillSelectCredentialsGrouperTest {
     }
 
     @Test
-    fun `group - shareable credentials - grouped by domain like partial matches`() {
+    fun whenThereShareableCredentialsThenTheyAreGroupedByDomainLikePartialMatches() {
         val creds = listOf(
             creds(domain = "fill.dev"), // sharable credential
             creds(domain = "fill.dev"), // sharable credential in the same group as the above

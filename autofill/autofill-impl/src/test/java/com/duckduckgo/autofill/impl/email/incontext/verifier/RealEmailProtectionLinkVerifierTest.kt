@@ -7,27 +7,27 @@ class RealEmailProtectionLinkVerifierTest {
     private val testee = RealEmailProtectionLinkVerifier()
 
     @Test
-    fun `testUrl - url null - do not consume link`() {
+    fun whenUrlIsNullThenDoNotConsumeLink() {
         assertFalse(null.testUrl())
     }
 
     @Test
-    fun `testUrl - url does not contain verification link - do not consume link`() {
+    fun whenUrlDoesNotContainVerificationLinkThenDoNotConsumeLink() {
         assertFalse(NOT_VERIFICATION_URL.testUrl())
     }
 
     @Test
-    fun `testUrl - begins with verification link - consume link`() {
+    fun whenUrlBeginsWithVerificationLinkThenConsumeLink() {
         assertTrue(VERIFICATION_URL.testUrl())
     }
 
     @Test
-    fun `testUrl - contains verification link - consume link`() {
+    fun whenUrlContainsVerificationLinkThenConsumeLink() {
         assertTrue(VERIFICATION_PREPENDED_WITH_ANOTHER_DOMAIN.testUrl())
     }
 
     @Test
-    fun `shouldDelegateToInContextView - in context view not showing - never consume link`() {
+    fun whenInContextViewNotShowingThenNeverConsumeLink() {
         assertFalse(testee.shouldDelegateToInContextView(VERIFICATION_URL, inContextViewAlreadyShowing = false))
         assertFalse(testee.shouldDelegateToInContextView(VERIFICATION_PREPENDED_WITH_ANOTHER_DOMAIN, inContextViewAlreadyShowing = false))
         assertFalse(testee.shouldDelegateToInContextView(NOT_VERIFICATION_URL, inContextViewAlreadyShowing = false))

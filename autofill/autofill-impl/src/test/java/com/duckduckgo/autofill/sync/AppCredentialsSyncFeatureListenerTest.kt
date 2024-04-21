@@ -55,12 +55,12 @@ class AppCredentialsSyncFeatureListenerTest {
     )
 
     @Test
-    fun `isSyncPaused - no values - false`() {
+    fun whenNoValuesThenIsSyncPausedIsFalse() {
         assertFalse(credentialsSyncStore.isSyncPaused)
     }
 
     @Test
-    fun `onSuccess - sync paused and on success with changes - is sync paused is false`() {
+    fun whenSyncPausedAndOnSuccessWithChangesThenIsSyncPausedIsFalse() {
         credentialsSyncStore.isSyncPaused = true
         val updatesJSON = FileUtilities.loadText(javaClass.classLoader!!, "json/sync/merger_first_get.json")
         val validChanges = SyncChangesResponse(CREDENTIALS, updatesJSON)
@@ -71,7 +71,7 @@ class AppCredentialsSyncFeatureListenerTest {
     }
 
     @Test
-    fun `onSuccess - sync paused and on success without changes - sync paused`() {
+    fun whenSyncPausedAndOnSuccessWithoutChangesThenSyncPaused() {
         credentialsSyncStore.isSyncPaused = true
         val validChanges = SyncChangesResponse.empty(BOOKMARKS)
 
@@ -81,7 +81,7 @@ class AppCredentialsSyncFeatureListenerTest {
     }
 
     @Test
-    fun `onError - sync paused - sync paused`() {
+    fun whenSyncPausedAndOnErrorThenSyncPaused() {
         credentialsSyncStore.isSyncPaused = true
 
         testee.onError(FeatureSyncError.COLLECTION_LIMIT_REACHED)
@@ -90,7 +90,7 @@ class AppCredentialsSyncFeatureListenerTest {
     }
 
     @Test
-    fun `onError - sync active and on error - sync paused`() {
+    fun whenSyncActiveAndOnErrorThenSyncPaused() {
         credentialsSyncStore.isSyncPaused = false
 
         testee.onError(FeatureSyncError.COLLECTION_LIMIT_REACHED)
@@ -99,7 +99,7 @@ class AppCredentialsSyncFeatureListenerTest {
     }
 
     @Test
-    fun `onSyncDisabled - sync paused false`() {
+    fun whenOnSyncDisabledThenSyncPausedFalse() {
         credentialsSyncStore.isSyncPaused = true
 
         testee.onSyncDisabled()

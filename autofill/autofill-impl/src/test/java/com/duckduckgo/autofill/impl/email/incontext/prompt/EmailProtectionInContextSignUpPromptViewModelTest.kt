@@ -29,13 +29,13 @@ class EmailProtectionInContextSignUpPromptViewModelTest {
     )
 
     @Test
-    fun `onProtectEmailButtonPressed - correct pixel sent`() {
+    fun whenUserPressesToProtectEmailThenCorrectPixelSent() {
         testee.onProtectEmailButtonPressed()
         verify(pixel).fire(EMAIL_PROTECTION_IN_CONTEXT_PROMPT_CONFIRMED)
     }
 
     @Test
-    fun `onProtectEmailButtonPressed - correct result type returned`() = runTest {
+    fun whenUserPressesToProtectEmailThenCorrectResultTypeReturned() = runTest {
         testee.onProtectEmailButtonPressed()
         testee.commands.test {
             assertTrue((awaitItem() as FinishWithResult).result is SignUp)
@@ -44,13 +44,13 @@ class EmailProtectionInContextSignUpPromptViewModelTest {
     }
 
     @Test
-    fun `onCloseButtonPressed - correct pixel sent`() {
+    fun whenUserPressesToDismissPromptThenCorrectPixelSent() {
         testee.onCloseButtonPressed()
         verify(pixel).fire(EMAIL_PROTECTION_IN_CONTEXT_PROMPT_DISMISSED)
     }
 
     @Test
-    fun `onCloseButtonPressed - correct result type returned`() = runTest {
+    fun whenUserPressesToDismissPromptThenCorrectResultTypeReturned() = runTest {
         testee.onCloseButtonPressed()
         testee.commands.test {
             assertTrue((awaitItem() as FinishWithResult).result is Cancel)
@@ -59,13 +59,13 @@ class EmailProtectionInContextSignUpPromptViewModelTest {
     }
 
     @Test
-    fun `onDoNotShowAgainButtonPressed - correct pixel sent`() {
+    fun whenUserPressesToDismissPromptPermanentlyThenCorrectPixelSent() {
         testee.onDoNotShowAgainButtonPressed()
         verify(pixel).fire(EMAIL_PROTECTION_IN_CONTEXT_PROMPT_NEVER_AGAIN)
     }
 
     @Test
-    fun `onDoNotShowAgainButtonPressed - correct result type returned`() = runTest {
+    fun whenUserPressesToDismissPromptPermanentlyThenCorrectResultTypeReturned() = runTest {
         testee.onDoNotShowAgainButtonPressed()
         testee.commands.test {
             assertTrue((awaitItem() as FinishWithResult).result is DoNotShowAgain)

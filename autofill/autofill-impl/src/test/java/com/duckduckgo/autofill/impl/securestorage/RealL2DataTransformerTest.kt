@@ -46,21 +46,21 @@ class RealL2DataTransformerTest {
     }
 
     @Test
-    fun `canProcessData - return can access key store true`() {
+    fun whenCanProcessDataThenReturnCanAccessKeyStoreTrue() {
         whenever(secureStorageKeyProvider.canAccessKeyStore()).thenReturn(true)
 
         assertTrue(testee.canProcessData())
     }
 
     @Test
-    fun `canProcessData - false - can access key store false`() {
+    fun whenCanProcessDataFalseThenReturnCanAccessKeyStoreFalse() {
         whenever(secureStorageKeyProvider.canAccessKeyStore()).thenReturn(false)
 
         assertFalse(testee.canProcessData())
     }
 
     @Test
-    fun `encrypt - data is encrypted - delegate encryption to encryption helper`() {
+    fun whenDataIsEncryptedThenDelegateEncryptionToEncryptionHelper() {
         val result = testee.encrypt("test123")
 
         assertEquals(expectedEncryptedData, result.data)
@@ -68,7 +68,7 @@ class RealL2DataTransformerTest {
     }
 
     @Test
-    fun `decrypt - delegate decryption to encryption helper`() {
+    fun whenDataIsDecryptedThenDelegateDecryptionToEncryptionHelper() {
         val result = testee.decrypt("test123", "iv")
 
         assertEquals(decodedDecryptedData, result)

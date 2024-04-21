@@ -41,13 +41,13 @@ class InternalAutofillCapabilityCheckerImplTest {
     private lateinit var testee: AutofillCapabilityCheckerImpl
 
     @Test
-    fun `setUpConfig - top level feature disabled and disabled by user - cannot access sub features`() = runTest {
+    fun whenTopLevelFeatureDisabledAndDisabledByUserThenCannotAccessAnySubFeatures() = runTest {
         setupConfig(topLevelFeatureEnabled = false, autofillEnabledByUser = false)
         assertAllSubFeaturesDisabled()
     }
 
     @Test
-    fun `setUpConfig - top level feature disabled but enabled by user - cannot access sub features`() = runTest {
+    fun whenTopLevelFeatureDisabledButEnabledByUserThenCannotAccessAnySubFeatures() = runTest {
         setupConfig(topLevelFeatureEnabled = false, autofillEnabledByUser = true)
         assertAllSubFeaturesDisabled()
     }
@@ -57,7 +57,7 @@ class InternalAutofillCapabilityCheckerImplTest {
      */
 
     @Test
-    fun `canInjectCredentialsToWebView - user has autofill enabled - dictated by config`() = runTest {
+    fun whenUserHasAutofillEnabledThenCanInjectCredentialsDictatedByConfig() = runTest {
         setupConfig(topLevelFeatureEnabled = true, autofillEnabledByUser = true, canInjectCredentials = true)
         assertTrue(testee.canInjectCredentialsToWebView(URL))
 
@@ -66,7 +66,7 @@ class InternalAutofillCapabilityCheckerImplTest {
     }
 
     @Test
-    fun `canSaveCredentialsFromWebView - user has autofill enabled - dictated by config`() = runTest {
+    fun whenUserHasAutofillEnabledThenCanSaveCredentialsDictatedByConfig() = runTest {
         setupConfig(topLevelFeatureEnabled = true, autofillEnabledByUser = true, canSaveCredentials = true)
         assertTrue(testee.canSaveCredentialsFromWebView(URL))
 
@@ -75,7 +75,7 @@ class InternalAutofillCapabilityCheckerImplTest {
     }
 
     @Test
-    fun `canAccessCredentialManagementScreen - dictated by config`() = runTest {
+    fun whenUserHasAutofillEnabledThenCanAccessCredentialManagementScreenDictatedByConfig() = runTest {
         setupConfig(topLevelFeatureEnabled = true, autofillEnabledByUser = true, canAccessCredentialManagement = true)
         assertTrue(testee.canAccessCredentialManagementScreen())
 
@@ -84,7 +84,7 @@ class InternalAutofillCapabilityCheckerImplTest {
     }
 
     @Test
-    fun `setUpConfig - user has autofill enabled - can generate password from web view dictated by config`() = runTest {
+    fun whenUserHasAutofillEnabledThenCanGeneratePasswordFromWebViewDictatedByConfig() = runTest {
         setupConfig(topLevelFeatureEnabled = true, autofillEnabledByUser = true, canGeneratePassword = true)
         assertTrue(testee.canGeneratePasswordFromWebView(URL))
 
@@ -97,25 +97,25 @@ class InternalAutofillCapabilityCheckerImplTest {
      */
 
     @Test
-    fun `setUpConfig - top level feature disabled and autofill enabled by user - cannot inject credentials`() = runTest {
+    fun whenUserHasAutofillEnabledButTopLevelFeatureDisabledThenCanInjectCredentialsIsFalse() = runTest {
         setupConfig(topLevelFeatureEnabled = false, autofillEnabledByUser = true)
         assertFalse(testee.canInjectCredentialsToWebView(URL))
     }
 
     @Test
-    fun `setupConfig - autofill enabled - can save credentials is false`() = runTest {
+    fun whenUserHasAutofillEnabledThenCanSaveCredentialsIsFalse() = runTest {
         setupConfig(topLevelFeatureEnabled = false, autofillEnabledByUser = true)
         assertFalse(testee.canSaveCredentialsFromWebView(URL))
     }
 
     @Test
-    fun `setUpConfig - autofill enabled - cannot access credential management screen`() = runTest {
+    fun whenUserHasAutofillEnabledThenCanAccessCredentialManagementScreenIsFalse() = runTest {
         setupConfig(topLevelFeatureEnabled = false, autofillEnabledByUser = true)
         assertFalse(testee.canAccessCredentialManagementScreen())
     }
 
     @Test
-    fun `canGeneratePasswordFromWebView - user has autofill enabled - is false`() = runTest {
+    fun whenUserHasAutofillEnabledThenCanGeneratePasswordFromWebViewIsFalse() = runTest {
         setupConfig(topLevelFeatureEnabled = false, autofillEnabledByUser = true)
         assertFalse(testee.canGeneratePasswordFromWebView(URL))
     }

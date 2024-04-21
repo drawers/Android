@@ -9,63 +9,63 @@ class RealLoginSorterForDeduplicationTest {
     private val testee = AutofillDeduplicationLoginComparator()
 
     @Test
-    fun `compare - first login is newer - return negative`() {
+    fun whenFirstLoginIsNewerThenReturnNegative() {
         val login1 = creds(lastUpdated = 2000, domain = null)
         val login2 = creds(lastUpdated = 1000, domain = null)
         assertTrue(testee.compare(login1, login2) < 0)
     }
 
     @Test
-    fun `compare - second login newer - positive`() {
+    fun whenSecondLoginIsNewerThenReturnPositive() {
         val login1 = creds(lastUpdated = 1000, domain = null)
         val login2 = creds(lastUpdated = 2000, domain = null)
         assertTrue(testee.compare(login1, login2) > 0)
     }
 
     @Test
-    fun `compare - first login has no last modified timestamp - returns negative`() {
+    fun whenFirstLoginHasNoLastModifiedTimestampThenReturnsNegative() {
         val login1 = creds(lastUpdated = null, domain = null)
         val login2 = creds(lastUpdated = 2000, domain = null)
         assertTrue(testee.compare(login1, login2) < 0)
     }
 
     @Test
-    fun `compare - second login has no last modified timestamp - returns positive`() {
+    fun whenSecondLoginHasNoLastModifiedTimestampThenReturnsPositive() {
         val login1 = creds(lastUpdated = 1000, domain = null)
         val login2 = creds(lastUpdated = null, domain = null)
         assertTrue(testee.compare(login1, login2) > 0)
     }
 
     @Test
-    fun `compare - last modified times equal and first login domain should be sorted first - returns negative`() {
+    fun whenLastModifiedTimesEqualAndFirstLoginDomainShouldBeSortedFirstThenReturnsNegative() {
         val login1 = creds(lastUpdated = 1000, domain = "example.com")
         val login2 = creds(lastUpdated = 1000, domain = "site.com")
         assertTrue(testee.compare(login1, login2) < 0)
     }
 
     @Test
-    fun `compare - last modified times equal and second login domain should be sorted first - returns negative`() {
+    fun whenLastModifiedTimesEqualAndSecondLoginDomainShouldBeSortedFirstThenReturnsNegative() {
         val login1 = creds(lastUpdated = 1000, domain = "site.com")
         val login2 = creds(lastUpdated = 1000, domain = "example.com")
         assertTrue(testee.compare(login1, login2) > 0)
     }
 
     @Test
-    fun `compare - last modified times equal and domains equal - returns 0`() {
+    fun whenLastModifiedTimesEqualAndDomainsEqualThenReturns0() {
         val login1 = creds(lastUpdated = 1000, domain = "example.com")
         val login2 = creds(lastUpdated = 1000, domain = "example.com")
         assertEquals(0, testee.compare(login1, login2))
     }
 
     @Test
-    fun `compare - last modified dates missing and domain missing - returns 0`() {
+    fun whenLastModifiedDatesMissingAndDomainMissingThenReturns0() {
         val login1 = creds(lastUpdated = null, domain = null)
         val login2 = creds(lastUpdated = null, domain = null)
         assertEquals(0, testee.compare(login1, login2))
     }
 
     @Test
-    fun `compare - same last updated time - return 0`() {
+    fun whenLoginsSameLastUpdatedTimeThenReturn0() {
         val login1 = creds(lastUpdated = 1000, domain = null)
         val login2 = creds(lastUpdated = 1000, domain = null)
         assertEquals(0, testee.compare(login1, login2))

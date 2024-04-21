@@ -58,37 +58,37 @@ class RealEmailProtectionInContextAvailabilityRulesTest {
     }
 
     @Test
-    fun `localeNotEnglish - not permitted`() = runTest {
+    fun whenLocaleNotEnglishThenNotPermitted() = runTest {
         configureNonEnglishLocale()
         assertFalse(testee.permittedToShow(ALLOWED_URL))
     }
 
     @Test
-    fun `configureAsNotRecentInstall - not permitted`() = runTest {
+    fun whenInstalledALongTimeAgoThenNotPermitted() = runTest {
         configureAsNotRecentInstall()
         assertFalse(testee.permittedToShow(ALLOWED_URL))
     }
 
     @Test
-    fun `configureAsRecentInstall - permitted`() = runTest {
+    fun whenInstalledRecentlyThenPermitted() = runTest {
         configureAsRecentInstall()
         assertTrue(testee.permittedToShow(ALLOWED_URL))
     }
 
     @Test
-    fun `secureAutofillUnavailable - not permitted`() = runTest {
+    fun whenSecureAutofillUnavailableThenNotPermitted() = runTest {
         whenever(autofillGlobalCapabilityChecker.isSecureAutofillAvailable()).thenReturn(false)
         assertFalse(testee.permittedToShow(ALLOWED_URL))
     }
 
     @Test
-    fun `featureDisabledInRemoteConfig - not permitted`() = runTest {
+    fun whenFeatureDisabledInRemoteConfigThenNotPermitted() = runTest {
         emailProtectionInContextSignupFeature.enabled = false
         assertFalse(testee.permittedToShow(ALLOWED_URL))
     }
 
     @Test
-    fun `permittedToShow - url on exception list - not permitted`() = runTest {
+    fun whenUrlOnExceptionListThenNotPermitted() = runTest {
         assertFalse(testee.permittedToShow(DISALLOWED_URL))
     }
 
