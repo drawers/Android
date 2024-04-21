@@ -55,7 +55,7 @@ class AutofillGlobalCapabilityCheckerImplUserPreferenceTest(
     )
 
     @Test
-    fun runParameterizedTests() = runTest {
+    fun `configureUserEnabledAutofill - parameterized tests - check feature enabled by user`() = runTest {
         configureUserEnabledAutofill(testCase.scenario.isUserEnabled)
 
         assertEquals("${testCase.scenario}", testCase.expectFeatureEnabled, testee.isAutofillEnabledByUser())

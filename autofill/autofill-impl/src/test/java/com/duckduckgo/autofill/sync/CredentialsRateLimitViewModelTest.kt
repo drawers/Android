@@ -41,7 +41,7 @@ class CredentialsRateLimitViewModelTest {
     )
 
     @Test
-    fun whenSyncPausedThenWarningVisible() = runTest {
+    fun `syncPaused - warning visible`() = runTest {
         credentialsSyncStore.isSyncPaused = true
         testee.viewState().test {
             assertTrue(awaitItem().warningVisible)
@@ -50,7 +50,7 @@ class CredentialsRateLimitViewModelTest {
     }
 
     @Test
-    fun whenUserClicksWarningActionThenNavigateToBookmarks() = runTest {
+    fun `onWarningActionClicked - navigate to bookmarks`() = runTest {
         testee.commands().test {
             testee.onWarningActionClicked()
             assertEquals(NavigateToCredentials, awaitItem())

@@ -55,18 +55,18 @@ class RealSecureStorageKeyGeneratorTest {
     }
 
     @Test
-    fun whenKeyIsGeneratedThenAlgorithmShouldBeAES() {
+    fun `generateKey - algorithm should be AES`() {
         assertEquals("AES", testee.generateKey().algorithm)
     }
 
     @Test
-    fun whenKeyIsGeneratedFromKeyMaterialThenAlgorithmShouldBeAES() {
+    fun `generateKeyFromKeyMaterial - algorithm should be AES`() {
         val keyMaterial = randomBytes
         assertEquals("AES", testee.generateKeyFromKeyMaterial(keyMaterial).algorithm)
     }
 
     @Test
-    fun whenKeyIsGeneratedFromPasswordForSDK26MaterialThenUseDerivedKeySecretFactoryAndAlgorithmShouldBeAES() {
+    fun `generateKeyFromPassword - sdk26 material - should use derived key secret factory and algorithm should be AES`() {
         whenever(appBuildConfig.sdkInt).thenReturn(26)
 
         val result = testee.generateKeyFromPassword("password", randomBytes)

@@ -55,7 +55,7 @@ class AutofillGlobalCapabilityCheckerImplSecureStorageAvailableTest(
     )
 
     @Test
-    fun runParameterizedTests() = runTest {
+    fun `configureDeviceAuthValid - configure device capable of autofill - expect feature enabled`() = runTest {
         configureDeviceAuthValid(testCase.scenario.isDeviceAuthValid)
         configureDeviceCapableOfAutofill(testCase.scenario.isDeviceCapable)
 

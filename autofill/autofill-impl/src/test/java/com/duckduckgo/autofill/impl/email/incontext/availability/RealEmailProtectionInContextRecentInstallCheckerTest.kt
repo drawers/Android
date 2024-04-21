@@ -21,25 +21,25 @@ class RealEmailProtectionInContextRecentInstallCheckerTest {
     private val testee = RealEmailProtectionInContextRecentInstallChecker(userBrowserProperties, dataStore, coroutineTestRule.testDispatcherProvider)
 
     @Test
-    fun whenInstalledForLessTimeThanMaxDaysAllowsIsRecentInstall() = runTest {
+    fun `configureInstallationDaysLessThanMaximum - allows recent install`() = runTest {
         configureInstallationDaysLessThanMaximum()
         assertTrue(testee.isRecentInstall())
     }
 
     @Test
-    fun whenInstalledForSameTimeAsMaxDaysAllowsThenIsRecentInstall() = runTest {
+    fun `configureInstallationDayToMatchMaximum - is recent install`() = runTest {
         configureInstallationDayToMatchMaximum()
         assertTrue(testee.isRecentInstall())
     }
 
     @Test
-    fun whenInstalledForMoreTimeThanMaxDaysAllowsThenIsRecentInstall() = runTest {
+    fun `configureInstallationDays - more time than max days allows - is recent install`() = runTest {
         configureInstallationDaysMoreThanMaximum()
         assertFalse(testee.isRecentInstall())
     }
 
     @Test
-    fun whenInstallRulesMissingThenNotPermitted() = runTest {
+    fun `configureMaxInstallDaysRule - missing - not permitted`() = runTest {
         configureMaxInstallDaysRuleNotSet()
         assertFalse(testee.isRecentInstall())
     }

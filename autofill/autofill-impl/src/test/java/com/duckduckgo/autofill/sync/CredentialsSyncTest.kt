@@ -57,7 +57,7 @@ internal class CredentialsSyncTest {
     }
 
     @Test
-    fun whenInitMetadataThenSetServerModifiedSinceToZero() = runTest {
+    fun `initMetadata - set server modified since to zero`() = runTest {
         credentialsSync.initMetadata()
 
         assertEquals("0", credentialsSyncStore.serverModifiedSince)
@@ -65,7 +65,7 @@ internal class CredentialsSyncTest {
     }
 
     @Test
-    fun whenInitMetadataThenCreateMetadataForAllEntitiesWithModifiedSince() = runTest {
+    fun `initMetadata - create metadata for all entities with modified since`() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,
@@ -80,14 +80,14 @@ internal class CredentialsSyncTest {
     }
 
     @Test
-    fun whenGetUpdatesThenStartTimeUpdates() = runTest {
+    fun `getUpdatesSince - start time updates`() = runTest {
         credentialsSync.getUpdatesSince("0")
 
         assertNotNull(credentialsSyncStore.startTimeStamp)
     }
 
     @Test
-    fun whenGetUpdatesSinceZeroTimeThenReturnAllContent() = runTest {
+    fun `getUpdatesSince - zero time - return all content`() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,
@@ -106,7 +106,7 @@ internal class CredentialsSyncTest {
     }
 
     @Test
-    fun whenGetUpdatesSinceDateThenReturnRecentUpdates() = runTest {
+    fun `getUpdatesSince - return recent updates`() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials.copy(lastUpdatedMillis = 1689592358516),
@@ -122,7 +122,7 @@ internal class CredentialsSyncTest {
     }
 
     @Test
-    fun whenGetUpdatesSinceDateThenEntitiesWithModifiedAtNullNotReturned() = runTest {
+    fun `getUpdatesSince - entities with modified at null not returned`() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,
@@ -134,7 +134,7 @@ internal class CredentialsSyncTest {
     }
 
     @Test
-    fun whenUpdatesContainDeletedItemsThenReturnIncludeDeletedItemsInUpdate() = runTest {
+    fun `getUpdatesSince - contain deleted items - include deleted items in update`() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials.copy(lastUpdatedMillis = 1689592358516),
@@ -153,7 +153,7 @@ internal class CredentialsSyncTest {
     }
 
     @Test
-    fun whenOnFirstWithInvalidCredentialsThenChangesDoesNotContainInvalidEntities() = runTest {
+    fun `onFirst - invalid credentials - changes do not contain invalid entities`() = runTest {
         givenLocalCredentials(
             invalidCredentials,
         )
@@ -165,7 +165,7 @@ internal class CredentialsSyncTest {
     }
 
     @Test
-    fun whenNewCredentialsIsInvalidThenChangesDoesNotContainInvalidEntity() = runTest {
+    fun `getUpdatesSince - new credentials is invalid - changes does not contain invalid entity`() = runTest {
         givenLocalCredentials(
             spotifyCredentials,
             invalidCredentials.copy(lastUpdatedMillis = 1689592358516),
@@ -178,7 +178,7 @@ internal class CredentialsSyncTest {
     }
 
     @Test
-    fun whenInvalidCredentialsPresentThenAlwaysRetryItemsAndUpdateInvalidList() = runTest {
+    fun `invalidCredentialsPresent - always retry items and update invalid list`() = runTest {
         givenLocalCredentials(
             invalidCredentials,
             spotifyCredentials.copy(lastUpdatedMillis = 1689592358516),
@@ -193,7 +193,7 @@ internal class CredentialsSyncTest {
     }
 
     @Test
-    fun whenInvalidCredentialsThenReturnInvalidCredentials() = runTest {
+    fun `getInvalidCredentials - invalid credentials - returns invalid credentials`() = runTest {
         givenLocalCredentials(
             invalidCredentials,
         )
@@ -206,7 +206,7 @@ internal class CredentialsSyncTest {
     }
 
     @Test
-    fun whenGetCredentialWithSyncIdThenReturnCredentials() = runTest {
+    fun `getCredentialWithSyncId - return credentials`() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,
@@ -218,7 +218,7 @@ internal class CredentialsSyncTest {
     }
 
     @Test
-    fun whenGetCredentialsWithSyncIdNotFoundThenReturnNull() = runTest {
+    fun `getCredentialWithSyncId - sync Id not found - null`() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,
@@ -230,7 +230,7 @@ internal class CredentialsSyncTest {
     }
 
     @Test
-    fun whenGetCredentialsWithLocalIdThenReturnCredentials() = runTest {
+    fun `getCredentialWithId - return credentials`() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,
@@ -242,7 +242,7 @@ internal class CredentialsSyncTest {
     }
 
     @Test
-    fun whenGetCredentialsWithLocalIdNotFoundThenReturnNull() = runTest {
+    fun `getCredentialWithId - local id not found - null`() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,
@@ -254,7 +254,7 @@ internal class CredentialsSyncTest {
     }
 
     @Test
-    fun whenGetCredentialsForDomainThenReturnCredentials() = runTest {
+    fun `getCredentialsForDomain - return credentials`() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,
@@ -266,7 +266,7 @@ internal class CredentialsSyncTest {
     }
 
     @Test
-    fun whenSaveCredentialsThenSaveCredentialAndSyncMetadata() = runTest {
+    fun `saveCredential - saves credential and sync metadata`() = runTest {
         credentialsSync.saveCredential(twitterCredentials, "123")
 
         secureStorage.getWebsiteLoginDetailsWithCredentials(twitterCredentials.id!!)!!.toLoginCredentials().let {
@@ -279,7 +279,7 @@ internal class CredentialsSyncTest {
     }
 
     @Test
-    fun whenSaveCredentialsToExistingSyncIdThenSaveToAutofillStoreAndOverrideSyncId() = runTest {
+    fun `saveCredential - existing sync id - save to autofill store and override sync id`() = runTest {
         credentialsSyncMetadata.addOrUpdate(CredentialsSyncMetadataEntity("321", twitterCredentials.id!!, null, null))
 
         credentialsSync.saveCredential(twitterCredentials, "123")
@@ -295,7 +295,7 @@ internal class CredentialsSyncTest {
     }
 
     @Test
-    fun whenUpdateCredentialsThenUpdateAndSyncMetadata() = runTest {
+    fun `updateCredentials - update and sync metadata`() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,
@@ -313,7 +313,7 @@ internal class CredentialsSyncTest {
     }
 
     @Test
-    fun whenDeleteCredentialThenDeleteFromAutofillStoreAndSyncMetadata() = runTest {
+    fun `deleteCredential - delete from autofill store and sync metadata`() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,

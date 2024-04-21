@@ -45,14 +45,14 @@ class RemoteDuckAddressStatusRepositoryTest {
     private val testee = RemoteDuckAddressStatusRepository(service, emailManager, coroutineTestRule.testDispatcherProvider)
 
     @Test
-    fun whenNotSignedIntoEmailProtectionThenReturnTypeIsNotSignedIn() = runTest {
+    fun `getActivationStatus - not signed in - type is not signed in`() = runTest {
         configureEmailProtectionNotSignedIn()
         val status = testee.getActivationStatus("foo@example.com")
         assertTrue(status is NotSignedIn)
     }
 
     @Test
-    fun whenStatusIsDeactivatedThenReturnTypeIsDeactivated() = runTest {
+    fun `getActivationStatus - deactivated - type is deactivated`() = runTest {
         configureEmailProtectionSignedIn()
         configureNetworkResponseActivatedIsFalse()
         val status = testee.getActivationStatus("foo@example.com")
@@ -60,7 +60,7 @@ class RemoteDuckAddressStatusRepositoryTest {
     }
 
     @Test
-    fun whenStatusIsActivatedThenReturnTypeIsActivated() = runTest {
+    fun `getActivationStatus - activated - type is activated`() = runTest {
         configureEmailProtectionSignedIn()
         configureNetworkResponseActivatedIsTrue()
         val status = testee.getActivationStatus("foo@example.com")
@@ -68,7 +68,7 @@ class RemoteDuckAddressStatusRepositoryTest {
     }
 
     @Test
-    fun whenStatusRequestFailsGeneralErrorActivatedThenReturnTypeIsError() = runTest {
+    fun `getActivationStatus - general error activated - type is error`() = runTest {
         configureEmailProtectionSignedIn()
         configureNetworkResponseActivatedIsGeneralError()
         val status = testee.getActivationStatus("foo@example.com")
@@ -76,7 +76,7 @@ class RemoteDuckAddressStatusRepositoryTest {
     }
 
     @Test
-    fun whenStatusRequestFails404ActivatedThenReturnTypeIsUnmanageable() = runTest {
+    fun `getActivationStatus - request fails 404 activated - return type is unmanageable`() = runTest {
         configureEmailProtectionSignedIn()
         configureNetworkResponseDuckAddressUnmanageable()
         val status = testee.getActivationStatus("foo@example.com")
@@ -84,41 +84,41 @@ class RemoteDuckAddressStatusRepositoryTest {
     }
 
     @Test
-    fun whenNotSignedAndTryingToUpdateStatusThenReturnFalse() = runTest {
+    fun `setActivationStatus - not signed and trying to update status - return false`() = runTest {
         configureEmailProtectionNotSignedIn()
         assertFalse(testee.setActivationStatus("foo@example.com", true))
     }
 
     @Test
-    fun whenUpdatingStatusToActivatedAndNewUpdateMatchesThenReturnTrue() = runTest {
+    fun `setActivationStatus - activated status and new update matches - return true`() = runTest {
         configureEmailProtectionSignedIn()
         configureNetworkResponseAfterSettingStatusToBeActivated()
         assertTrue(testee.setActivationStatus("foo@example.com", true))
     }
 
     @Test
-    fun whenUpdatingStatusToActivatedAndNewUpdateDoesNotMatchThenReturnFalse() = runTest {
+    fun `setActivationStatus - activated and new update does not match - return false`() = runTest {
         configureEmailProtectionSignedIn()
         configureNetworkResponseAfterSettingStatusToBeDeactivated()
         assertFalse(testee.setActivationStatus("foo@example.com", true))
     }
 
     @Test
-    fun whenUpdatingStatusToDeactivatedAndNewUpdateMatchesThenReturnTrue() = runTest {
+    fun `setActivationStatus - deactivated and new update matches - returns true`() = runTest {
         configureEmailProtectionSignedIn()
         configureNetworkResponseAfterSettingStatusToBeDeactivated()
         assertTrue(testee.setActivationStatus("foo@example.com", false))
     }
 
     @Test
-    fun whenUpdatingStatusAndNewUpdateDoesNotMatchThenReturnFalse() = runTest {
+    fun `setActivationStatus - new update does not match - return false`() = runTest {
         configureEmailProtectionSignedIn()
         configureNetworkResponseAfterSettingStatusToBeActivated()
         assertFalse(testee.setActivationStatus("foo@example.com", false))
     }
 
     @Test
-    fun whenUpdatingStatusErrorsThenReturnFalse() = runTest {
+    fun `setActivationStatus - errors - return false`() = runTest {
         configureEmailProtectionSignedIn()
         configureNetworkResponseToUpdatingSettingsToError()
         assertFalse(testee.setActivationStatus("foo@example.com", false))
