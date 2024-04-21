@@ -20,6 +20,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
 import java.io.File
+import java.util.Properties
 
 class OllintaPlugin : Plugin<Project> {
     override fun apply(project: Project) {
@@ -34,8 +35,25 @@ class OllintaPlugin : Plugin<Project> {
                     spec.parameters.modelName.set("codellama")
                 }
 
+        val localProps = Properties()
+        localProps.load(project.rootProject.file("local.properties").inputStream())
+
+        val openAiServiceProvider: Provider<OpenAiBuildService> =
+            project.gradle
+                .sharedServices
+                .registerIfAbsent("openai", OpenAiBuildService::class.java) {
+                    spec -> spec.parameters.modelName.set("GPT_3_5_TURBO")
+                    spec.parameters.apiKey.set(localProps.getProperty("openapi.key"))
+                }
+
         project.tasks.register("ollinta", Ollinta::class.java) { task ->
             task.ollamaBuildService.set(serviceProvider)
+            task.inputDir.set(File(project.buildDir, "ollinta/promptData"))
+            task.outputDir.set(File(project.buildDir, "ollinta/responseData"))
+        }
+
+        project.tasks.register("lintAi", LintAi::class.java) { task ->
+            task.openAiBuildService.set(openAiServiceProvider)
             task.inputDir.set(File(project.buildDir, "ollinta/promptData"))
             task.outputDir.set(File(project.buildDir, "ollinta/responseData"))
         }
