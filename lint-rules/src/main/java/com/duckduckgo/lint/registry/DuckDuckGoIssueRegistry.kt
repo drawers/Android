@@ -79,7 +79,7 @@ class DuckDuckGoIssueRegistry : IssueRegistry() {
             WRONG_STYLE_NAME,
             INVALID_COLOR_ATTRIBUTE,
             IdeFunctionNameDetector.TEST_FUNCTION_NAME,
-            // PromptWritingFunctionNameDetector.TEST_FUNCTION_NAME, // prompt writing
+            PromptWritingFunctionNameDetector.TEST_FUNCTION_NAME,
             FixingFunctionNameDetector.TEST_FUNCTION_NAME,
         )
 
