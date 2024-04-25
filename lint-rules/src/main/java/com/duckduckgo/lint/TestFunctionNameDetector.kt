@@ -115,7 +115,7 @@ abstract class TestFunctionNameDetector : Detector(), SourceCodeScanner {
         element: UElement,
         location: Location
     ): String {
-        return element.containingFileName.replace(".", "").plus('.').plus(location.start!!.line)
+        return element.containingFileName.replace(".", "_").plus('_').plus(location.start!!.line)
     }
 
     protected val UElement.containingFileName

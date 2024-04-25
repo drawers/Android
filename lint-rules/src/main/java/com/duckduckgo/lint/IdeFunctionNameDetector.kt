@@ -16,6 +16,7 @@
 
 package com.duckduckgo.lint
 
+import com.android.tools.lint.client.api.LintClient
 import com.android.tools.lint.detector.api.Implementation
 import com.android.tools.lint.detector.api.JavaContext
 import com.android.tools.lint.detector.api.Location
