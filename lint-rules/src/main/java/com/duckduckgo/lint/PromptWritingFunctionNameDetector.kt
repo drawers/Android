@@ -37,7 +37,8 @@ class PromptWritingFunctionNameDetector : TestFunctionNameDetector() {
         element: UElement,
         method: KotlinUMethod,
         functionName: String,
-        location: Location
+        location: Location,
+        error: Error
     ) {
         try {
             val outputDir = context.outputDir()

@@ -18,15 +18,18 @@ package com.duckduckgo.lint
 
 import com.android.tools.lint.checks.infrastructure.TestFiles.kt
 import com.android.tools.lint.checks.infrastructure.TestLintTask.lint
+import com.android.tools.lint.detector.api.Scope
 import org.junit.Test
 import java.io.File
+import java.util.EnumSet
 
-class TestFunctionNameDetectorIde {
+class IdeFunctionNameDetectorTest {
 
     @Test
     fun `name has no backticks - reports error`() {
         lint()
-            .sdkHome(File("/Users/davidrawson/Library/Android/sdk"))
+            .allowMissingSdk()
+            .customScope(EnumSet.of(Scope.JAVA_FILE))
             .issues(IdeFunctionNameDetector.TEST_FUNCTION_NAME)
             .files(
                 JUNIT_STUB,
@@ -45,14 +48,15 @@ class TestFunctionNameDetectorIde {
             )
 
             .run()
-            .expectErrorCount(1)
-            .expectContains("Test name does not follow convention")
+            .expectWarningCount(1)
+            .expectContains("Test name should be in backticks")
     }
 
     @Test
     fun `name no parts - reports error`() {
         lint()
-            .sdkHome(File("/Users/davidrawson/Library/Android/sdk"))
+            .allowMissingSdk()
+            .customScope(EnumSet.of(Scope.JAVA_FILE))
             .issues(IdeFunctionNameDetector.TEST_FUNCTION_NAME)
             .files(
                 JUNIT_STUB,
@@ -71,14 +75,15 @@ class TestFunctionNameDetectorIde {
             )
 
             .run()
-            .expectErrorCount(1)
-            .expectContains("Test name does not follow convention")
+            .expectWarningCount(1)
+            .expectContains("Test name should have two or three parts")
     }
 
     @Test
     fun `name not enough parts - reports error`() {
         lint()
-            .sdkHome(File("/Users/davidrawson/Library/Android/sdk"))
+            .allowMissingSdk()
+            .customScope(EnumSet.of(Scope.JAVA_FILE))
             .issues(IdeFunctionNameDetector.TEST_FUNCTION_NAME)
             .files(
                 JUNIT_STUB,
@@ -97,14 +102,15 @@ class TestFunctionNameDetectorIde {
             )
 
             .run()
-            .expectErrorCount(1)
-            .expectContains("Test name does not follow convention")
+            .expectWarningCount(1)
+            .expectContains("Test name should have two or three parts")
     }
 
     @Test
     fun `name capitalization - reports error`() {
         lint()
-            .sdkHome(File("/Users/davidrawson/Library/Android/sdk"))
+            .allowMissingSdk()
+            .customScope(EnumSet.of(Scope.JAVA_FILE))
             .issues(IdeFunctionNameDetector.TEST_FUNCTION_NAME)
             .files(
                 JUNIT_STUB,
@@ -123,14 +129,15 @@ class TestFunctionNameDetectorIde {
             )
 
             .run()
-            .expectErrorCount(1)
-            .expectContains("Test name does not follow convention")
+            .expectWarningCount(1)
+            .expectContains("Test name parts should not be capitalized")
     }
 
     @Test
     fun `name parts - clean`() {
         lint()
-            .sdkHome(File("/Users/davidrawson/Library/Android/sdk"))
+            .allowMissingSdk()
+            .customScope(EnumSet.of(Scope.JAVA_FILE))
             .issues(IdeFunctionNameDetector.TEST_FUNCTION_NAME)
             .files(
                 JUNIT_STUB,

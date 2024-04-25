@@ -38,12 +38,13 @@ class IdeFunctionNameDetector : TestFunctionNameDetector() {
         element: UElement,
         method: KotlinUMethod,
         functionName: String,
-        location: Location
+        location: Location,
+        error: Error
     ) {
         context.report(
             TEST_FUNCTION_NAME,
             context.getNameLocation(method),
-            "Test name does not follow convention",
+            error.message,
         )
     }
 

@@ -53,10 +53,12 @@ abstract class TestFunctionNameDetector : Detector(), SourceCodeScanner {
         if (context.isAndroidTest()) return
 
         val method = element.uastParent as? KotlinUMethod ?: return
+
         // make sure to retain backticks
         val functionName = (method.sourcePsi as? KtNamedDeclaration)?.nameIdentifier?.text ?: return
 
-        functionName.backticksErrorOrNull() ?: functionName.partsErrorOrNull() ?: functionName.capitalizationErrorOrNull() ?: return
+        // look for errors
+        val error = functionName.backticksErrorOrNull() ?: functionName.partsErrorOrNull() ?: functionName.capitalizationErrorOrNull() ?: return
 
         val location = context.getNameLocation(method)
 
@@ -66,6 +68,7 @@ abstract class TestFunctionNameDetector : Detector(), SourceCodeScanner {
             method,
             functionName,
             location,
+            error,
         )
     }
 
@@ -75,6 +78,7 @@ abstract class TestFunctionNameDetector : Detector(), SourceCodeScanner {
         method: KotlinUMethod,
         functionName: String,
         location: Location,
+        error: Error,
     )
 
     private fun String.backticksErrorOrNull(): Error? {
@@ -99,10 +103,10 @@ abstract class TestFunctionNameDetector : Detector(), SourceCodeScanner {
         }
     }
 
-    enum class Error {
-        BACKTICKS,
-        PARTS,
-        CAPITALIZATION
+    enum class Error(val message: String) {
+        BACKTICKS("Test name should be in backticks."),
+        PARTS("Test name should have two or three parts separated by a spaced hyphen in the form `functionUnderTest - state - expected outcome`"),
+        CAPITALIZATION("Test name parts should not be capitalized")
     }
 
     private fun JavaContext.isAndroidTest() = Path("androidTest") in file.toPath()

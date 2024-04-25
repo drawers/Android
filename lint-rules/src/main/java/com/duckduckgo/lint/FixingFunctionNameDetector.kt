@@ -40,7 +40,8 @@ class FixingFunctionNameDetector : TestFunctionNameDetector() {
         element: UElement,
         method: KotlinUMethod,
         functionName: String,
-        location: Location
+        location: Location,
+        error: Error
     ) {
 
         val sanitizedFileName = getSanitizedFileName(element, location)
