@@ -30,6 +30,7 @@ import java.util.Properties
  * together with the prompt for performing a migration.
  *
  */
+@Suppress("UnstableApiUsage")
 class FixTestFunctionNamesPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
@@ -52,6 +53,13 @@ class FixTestFunctionNamesPlugin : Plugin<Project> {
         }
 
         val androidComponents = project.extensions.getByType(AndroidComponentsExtension::class.java)
+
+        androidComponents.finalizeDsl { commonExtension ->
+            commonExtension.lint {
+                checkOnly.addAll(setOf("PromptWritingTestFunctionName", "FixingTestFunctionName"))
+            }
+        }
+
         androidComponents.onVariants { _: Variant ->
             prepareForLintFix.configure {
                 it.mustRunAfter("lint")
