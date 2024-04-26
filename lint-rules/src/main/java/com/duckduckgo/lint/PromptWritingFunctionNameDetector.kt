@@ -33,8 +33,6 @@ import java.util.EnumSet
 @Suppress("UnstableApiUsage")
 class PromptWritingFunctionNameDetector : TestFunctionNameDetector() {
 
-    override fun isApplicable(context: JavaContext): Boolean = true
-
     override fun performAction(
         context: JavaContext,
         element: UElement,

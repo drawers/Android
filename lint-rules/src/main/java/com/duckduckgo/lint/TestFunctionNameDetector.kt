@@ -135,8 +135,8 @@ abstract class TestFunctionNameDetector : Detector(), SourceCodeScanner {
     }
 
     object Folders {
-        const val OLLINTA = "ollinta"
-        const val PROMPT_DATA = "$OLLINTA/promptData"
-        const val RESPONSE_DATA = "$OLLINTA/responseData"
+        const val LINT_FIX = "lintFix"
+        const val PROMPT_DATA = "$LINT_FIX/promptData"
+        const val RESPONSE_DATA = "$LINT_FIX/responseData"
     }
 }

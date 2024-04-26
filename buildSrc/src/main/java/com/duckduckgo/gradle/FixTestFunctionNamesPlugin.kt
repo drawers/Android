@@ -49,7 +49,7 @@ class FixTestFunctionNamesPlugin : Plugin<Project> {
             task.openAiBuildService.set(openAiServiceProvider)
             task.inputDir.set(File(project.buildDir, "lintFix/promptData"))
             task.outputDir.set(File(project.buildDir, "lintFix/responseData"))
-            task.prompt.set(fixTestFunctionName)
+            task.prompt.set(prompt)
         }
 
         val androidComponents = project.extensions.getByType(AndroidComponentsExtension::class.java)
@@ -71,7 +71,7 @@ class FixTestFunctionNamesPlugin : Plugin<Project> {
         }
     }
 
-    private val fixTestFunctionName: String =
+    private val prompt: String =
         """
             There is a Kotlin project with unit tests. The unit test functions currently have various non-standard names.
             
@@ -83,7 +83,7 @@ class FixTestFunctionNamesPlugin : Plugin<Project> {
             
             Note that to meet the standard, the test names must have the following:
             * They must be in backticks (``)
-            * They must have a minimium of two parts separated by a spaced hyphen " - "
+            * They must have a minimum of two parts separated by a spaced hyphen " - "
             * The "state" is optional - it can be omitted
             * The parts must start with lowercase if possible
             
