@@ -6,8 +6,8 @@ plugins {
 gradlePlugin {
     plugins {
         myPlugins {
-            id = 'ollinta'
-            implementationClass = 'com.duckduckgo.gradle.OllintaPlugin'
+            id = 'fix-test-function-names'
+            implementationClass = 'com.duckduckgo.gradle.FixTestFunctionNamesPlugin'
         }
     }
 }

@@ -22,6 +22,7 @@ import com.android.tools.lint.detector.api.JavaContext
 import com.android.tools.lint.detector.api.LintFix
 import com.android.tools.lint.detector.api.Location
 import com.android.tools.lint.detector.api.Scope
+import com.android.tools.lint.detector.api.Severity.WARNING
 import org.jetbrains.uast.UElement
 import org.jetbrains.uast.kotlin.KotlinUMethod
 import java.io.File
@@ -31,8 +32,7 @@ import java.util.EnumSet
 class FixingFunctionNameDetector : TestFunctionNameDetector() {
 
     override fun isApplicable(context: JavaContext): Boolean {
-        // return false // disable for now, we'll test this later
-        return (Scope.ALL_JAVA_FILES in context.scope)
+        return true
     }
 
     override fun performAction(
@@ -43,6 +43,7 @@ class FixingFunctionNameDetector : TestFunctionNameDetector() {
         location: Location,
         error: Error
     ) {
+        context.client.log(WARNING, null, "Running ${this::class.simpleName}")
 
         val sanitizedFileName = getSanitizedFileName(element, location)
         val responseFile = File(context.responseData().path + "/$sanitizedFileName")
@@ -88,10 +89,10 @@ class FixingFunctionNameDetector : TestFunctionNameDetector() {
         val TEST_FUNCTION_NAME = issue(
             id = "FixingTestFunctionName",
             briefDescription = "Prompt writing test function name",
-            "An issue to represent autofixing a broken function name based a response from a language model",
+            "An issue to represent auto-fixing a broken function name based a response from a language model",
             implementation = Implementation(
                 FixingFunctionNameDetector::class.java,
-                EnumSet.of(Scope.JAVA_FILE, Scope.TEST_SOURCES),
+                EnumSet.of(Scope.ALL_JAVA_FILES),
             ),
         )
     }

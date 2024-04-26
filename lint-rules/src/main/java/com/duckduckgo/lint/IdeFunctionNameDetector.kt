@@ -16,13 +16,13 @@
 
 package com.duckduckgo.lint
 
-import com.android.tools.lint.client.api.LintClient
 import com.android.tools.lint.detector.api.Implementation
 import com.android.tools.lint.detector.api.JavaContext
 import com.android.tools.lint.detector.api.Location
 import com.android.tools.lint.detector.api.Scope
 import com.android.tools.lint.detector.api.Scope.JAVA_FILE
 import com.android.tools.lint.detector.api.Scope.TEST_SOURCES
+import com.android.tools.lint.detector.api.Severity.WARNING
 import org.jetbrains.uast.UElement
 import org.jetbrains.uast.kotlin.KotlinUMethod
 import java.util.EnumSet
@@ -31,7 +31,7 @@ import java.util.EnumSet
 class IdeFunctionNameDetector : TestFunctionNameDetector() {
 
     override fun isApplicable(context: JavaContext): Boolean {
-        return (Scope.ALL_JAVA_FILES !in context.scope)
+        return true
     }
 
     override fun performAction(
@@ -57,9 +57,7 @@ class IdeFunctionNameDetector : TestFunctionNameDetector() {
             "The test function name should be enclosed in backticks. It should have either two or three parts, separated by hyphens. Each part should, where possible, start in lowercase",
             implementation = Implementation(
                 IdeFunctionNameDetector::class.java,
-                EnumSet.of(JAVA_FILE, TEST_SOURCES),
-                EnumSet.of(TEST_SOURCES),
-                EnumSet.of(JAVA_FILE),
+                EnumSet.of(JAVA_FILE)
             ),
         )
     }

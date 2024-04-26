@@ -16,11 +16,14 @@
 
 package com.duckduckgo.lint
 
+import com.android.tools.lint.client.api.LintClient
 import com.android.tools.lint.detector.api.Context
 import com.android.tools.lint.detector.api.Implementation
 import com.android.tools.lint.detector.api.JavaContext
 import com.android.tools.lint.detector.api.Location
 import com.android.tools.lint.detector.api.Scope
+import com.android.tools.lint.detector.api.Severity.WARNING
+import com.intellij.openapi.diagnostic.thisLogger
 import org.jetbrains.kotlin.incremental.createDirectory
 import org.jetbrains.uast.UElement
 import org.jetbrains.uast.kotlin.KotlinUMethod
@@ -30,7 +33,7 @@ import java.util.EnumSet
 @Suppress("UnstableApiUsage")
 class PromptWritingFunctionNameDetector : TestFunctionNameDetector() {
 
-    override fun isApplicable(context: JavaContext): Boolean = (Scope.ALL_JAVA_FILES in context.scope)
+    override fun isApplicable(context: JavaContext): Boolean = true
 
     override fun performAction(
         context: JavaContext,
@@ -40,6 +43,7 @@ class PromptWritingFunctionNameDetector : TestFunctionNameDetector() {
         location: Location,
         error: Error
     ) {
+        context.client.log(WARNING, null, "Running ${this::class.simpleName}")
         try {
             val outputDir = context.outputDir()
             outputDir.createDirectory()
@@ -48,8 +52,6 @@ class PromptWritingFunctionNameDetector : TestFunctionNameDetector() {
             val writeFile = File(outputDir.path + "/$sanitizedFileName")
 
             writeFile.writer().use {
-                it.appendLine(element.containingFileName)
-                it.appendLine(location.start?.line!!.toString())
                 it.appendLine(functionName)
                 it.appendLine("###")
                 it.appendLine(method.sourcePsi?.text!!)
@@ -76,7 +78,7 @@ class PromptWritingFunctionNameDetector : TestFunctionNameDetector() {
             "An issue to represent writing prompts with information suitable for an AI agent to suggest a rename",
             implementation = Implementation(
                 PromptWritingFunctionNameDetector::class.java,
-                EnumSet.of(Scope.JAVA_FILE, Scope.TEST_SOURCES),
+                EnumSet.of(Scope.ALL_JAVA_FILES),
             ),
         )
     }
