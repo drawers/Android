@@ -41,15 +41,12 @@ abstract class TestFunctionNameDetector : Detector(), SourceCodeScanner {
 
     final override fun applicableAnnotations() = listOf("org.junit.Test")
 
-    abstract fun isApplicable(context: JavaContext): Boolean
-
     final override fun visitAnnotationUsage(
         context: JavaContext,
         element: UElement,
         annotationInfo: AnnotationInfo,
         usageInfo: AnnotationUsageInfo,
     ) {
-        if (!isApplicable(context)) return
         if (context.isAndroidTest()) return
 
         val method = element.uastParent as? KotlinUMethod ?: return

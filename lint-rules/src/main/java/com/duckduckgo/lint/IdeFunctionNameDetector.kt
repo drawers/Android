@@ -30,10 +30,6 @@ import java.util.EnumSet
 @Suppress("UnstableApiUsage")
 class IdeFunctionNameDetector : TestFunctionNameDetector() {
 
-    override fun isApplicable(context: JavaContext): Boolean {
-        return true
-    }
-
     override fun performAction(
         context: JavaContext,
         element: UElement,
