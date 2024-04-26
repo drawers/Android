@@ -56,6 +56,7 @@ class FixTestFunctionNamesPlugin : Plugin<Project> {
 
         androidComponents.finalizeDsl { commonExtension ->
             commonExtension.lint {
+                checkOnly.clear()
                 checkOnly.addAll(setOf("PromptWritingTestFunctionName", "FixingTestFunctionName"))
             }
         }
