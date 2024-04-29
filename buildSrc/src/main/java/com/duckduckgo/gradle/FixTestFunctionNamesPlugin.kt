@@ -45,19 +45,31 @@ class FixTestFunctionNamesPlugin : Plugin<Project> {
                     spec.parameters.apiKey.set(localProps.getProperty("openapi.key"))
                 }
 
+        val createLintFixDirectory = project.tasks.register("createLintFixDirectory") { task ->
+            task.doLast {
+                val lintFixDir = File(project.buildDir, "lintFix")
+                lintFixDir.mkdir()
+                val lintFixPromptDataDir = File(lintFixDir, "promptData")
+                lintFixPromptDataDir.mkdir()
+            }
+        }
+
         val prepareForLintFix = project.tasks.register("prepareForLintFix", ProcessPrompts::class.java) { task ->
             task.openAiBuildService.set(openAiServiceProvider)
             task.inputDir.set(File(project.buildDir, "lintFix/promptData"))
             task.outputDir.set(File(project.buildDir, "lintFix/responseData"))
             task.prompt.set(prompt)
+            task.mustRunAfter(createLintFixDirectory)
+            task.dependsOn(createLintFixDirectory)
         }
 
         val androidComponents = project.extensions.getByType(AndroidComponentsExtension::class.java)
 
         androidComponents.finalizeDsl { commonExtension ->
             commonExtension.lint {
-                checkOnly.clear()
-                checkOnly.addAll(setOf("PromptWritingTestFunctionName", "FixingTestFunctionName"))
+                // checkOnly.clear()
+                // checkOnly.add("PromptWritingTestFunctionName")
+                checkOnly.add("TestFunctionName")
             }
         }
 

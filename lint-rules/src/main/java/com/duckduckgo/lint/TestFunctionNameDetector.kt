@@ -129,7 +129,7 @@ abstract class TestFunctionNameDetector : Detector(), SourceCodeScanner {
             briefDescription = briefDescription,
             category = Category.TESTING,
             explanation = explanation,
-            severity = Severity.WARNING,
+            severity = Severity.ERROR,
             implementation = implementation,
         )
     }

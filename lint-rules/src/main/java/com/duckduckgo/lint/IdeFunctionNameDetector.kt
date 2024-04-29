@@ -40,20 +40,23 @@ class IdeFunctionNameDetector : TestFunctionNameDetector() {
     ) {
         context.report(
             TEST_FUNCTION_NAME,
-            context.getNameLocation(method),
+            location,
             error.message,
         )
     }
 
     companion object {
 
+        @JvmField
         val TEST_FUNCTION_NAME = issue(
-            id = "TestFunctionName",
+            id = "IdeTestFunctionName",
             briefDescription = "Test function name",
             "The test function name should be enclosed in backticks. It should have either two or three parts, separated by hyphens. Each part should, where possible, start in lowercase",
             implementation = Implementation(
                 IdeFunctionNameDetector::class.java,
-                EnumSet.of(JAVA_FILE)
+                EnumSet.of(JAVA_FILE),
+                EnumSet.of(JAVA_FILE, TEST_SOURCES),
+                EnumSet.of(TEST_SOURCES),
             ),
         )
     }

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<lint>
-    <!-- When we're running in the IDE, don't use the LM   -->
-    <issue id="PromptWritingTestFunctionName" severity="ignore" />
-    <issue id="FixingTestFunctionName" severity="ignore" />
-</lint>

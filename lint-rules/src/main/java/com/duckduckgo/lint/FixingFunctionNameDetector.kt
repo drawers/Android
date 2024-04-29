@@ -39,6 +39,7 @@ class FixingFunctionNameDetector : TestFunctionNameDetector() {
         location: Location,
         error: Error
     ) {
+        return
         context.client.log(WARNING, null, "Running ${this::class.simpleName}")
 
         val sanitizedFileName = getSanitizedFileName(element, location)
@@ -82,6 +83,7 @@ class FixingFunctionNameDetector : TestFunctionNameDetector() {
 
     companion object {
 
+        @JvmField
         val TEST_FUNCTION_NAME = issue(
             id = "FixingTestFunctionName",
             briefDescription = "Prompt writing test function name",
