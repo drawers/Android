@@ -68,8 +68,8 @@ class FixTestFunctionNamesPlugin : Plugin<Project> {
         androidComponents.finalizeDsl { commonExtension ->
             commonExtension.lint {
                 // checkOnly.clear()
-                // checkOnly.add("PromptWritingTestFunctionName")
-                checkOnly.add("TestFunctionName")
+                checkOnly.add("PromptWritingTestFunctionName")
+                // checkOnly.add("TestFunctionName")
             }
         }
 

@@ -22,7 +22,7 @@ import com.android.tools.lint.detector.api.JavaContext
 import com.android.tools.lint.detector.api.LintFix
 import com.android.tools.lint.detector.api.Location
 import com.android.tools.lint.detector.api.Scope
-import com.android.tools.lint.detector.api.Severity.WARNING
+import org.jetbrains.kotlin.incremental.createDirectory
 import org.jetbrains.uast.UElement
 import org.jetbrains.uast.kotlin.KotlinUMethod
 import java.io.File
@@ -39,11 +39,8 @@ class FixingFunctionNameDetector : TestFunctionNameDetector() {
         location: Location,
         error: Error
     ) {
-        return
-        context.client.log(WARNING, null, "Running ${this::class.simpleName}")
-
         val sanitizedFileName = getSanitizedFileName(element, location)
-        val responseFile = File(context.responseData().path + "/$sanitizedFileName")
+        val responseFile = File(context.responseDir(), sanitizedFileName)
         if (!responseFile.exists()) {
             return
         }
@@ -73,12 +70,8 @@ class FixingFunctionNameDetector : TestFunctionNameDetector() {
         )
     }
 
-    private fun Context.buildDir(): File {
-        return project.buildModule.buildFolder
-    }
-
-    private fun Context.responseData(): File {
-        return File(buildDir().path + "/${Folders.RESPONSE_DATA}")
+    private fun Context.responseDir(): File {
+        return File(File(buildDir(), Folders.LINT_FIX), Folders.RESPONSE_DATA)
     }
 
     companion object {
@@ -90,7 +83,9 @@ class FixingFunctionNameDetector : TestFunctionNameDetector() {
             "An issue to represent auto-fixing a broken function name based a response from a language model",
             implementation = Implementation(
                 FixingFunctionNameDetector::class.java,
-                EnumSet.of(Scope.ALL_JAVA_FILES),
+                EnumSet.of(Scope.JAVA_FILE, Scope.TEST_SOURCES),
+                EnumSet.of(Scope.JAVA_FILE),
+                EnumSet.of(Scope.TEST_SOURCES),
             ),
         )
     }

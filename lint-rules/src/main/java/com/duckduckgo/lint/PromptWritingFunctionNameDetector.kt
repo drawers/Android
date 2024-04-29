@@ -16,15 +16,11 @@
 
 package com.duckduckgo.lint
 
-import com.android.tools.lint.client.api.LintClient
 import com.android.tools.lint.detector.api.Context
 import com.android.tools.lint.detector.api.Implementation
 import com.android.tools.lint.detector.api.JavaContext
 import com.android.tools.lint.detector.api.Location
 import com.android.tools.lint.detector.api.Scope
-import com.android.tools.lint.detector.api.Severity.ERROR
-import com.android.tools.lint.detector.api.Severity.WARNING
-import com.intellij.openapi.diagnostic.thisLogger
 import org.jetbrains.kotlin.incremental.createDirectory
 import org.jetbrains.uast.UElement
 import org.jetbrains.uast.kotlin.KotlinUMethod
@@ -42,16 +38,12 @@ class PromptWritingFunctionNameDetector : TestFunctionNameDetector() {
         location: Location,
         error: Error
     ) {
-        context.report(TEST_FUNCTION_NAME, location, "BAD!")
-        return
-        // context.client.log(ERROR, null, "Running ${this::class.simpleName}")
         try {
-            // val outputDir = context.outputDir()
-            // outputDir.createDirectory()
+            val outputDir = context.outputDir()
 
-            // val sanitizedFileName = getSanitizedFileName(element, location)
-            val sanitizedFileName = "asdf.kt"
-            val writeFile = File(context.buildDir() , sanitizedFileName)
+            val sanitizedFileName = getSanitizedFileName(element, location)
+
+            val writeFile = File(outputDir, sanitizedFileName)
 
             writeFile.writer().use {
                 it.appendLine(functionName)
@@ -64,13 +56,16 @@ class PromptWritingFunctionNameDetector : TestFunctionNameDetector() {
         }
     }
 
-    private fun Context.buildDir(): File {
-        return project.buildModule.buildFolder
-    }
-
     private fun Context.outputDir(): File {
-        return File(buildDir(), "lintFix")
-        // return File(buildDir().path + "/${Folders.PROMPT_DATA}")
+        val lintFix = File(buildDir(), Folders.LINT_FIX).apply {
+            createDirectory()
+        }
+
+        val promptData = File(lintFix, Folders.PROMPT_DATA).apply {
+            createDirectory()
+        }
+
+        return promptData
     }
 
     companion object {
@@ -81,9 +76,9 @@ class PromptWritingFunctionNameDetector : TestFunctionNameDetector() {
             "An issue to represent writing prompts with information suitable for an AI agent to suggest a rename",
             implementation = Implementation(
                 PromptWritingFunctionNameDetector::class.java,
-                EnumSet.of(Scope.JAVA_FILE),
                 EnumSet.of(Scope.JAVA_FILE, Scope.TEST_SOURCES),
-                EnumSet.of(Scope.TEST_SOURCES)
+                EnumSet.of(Scope.JAVA_FILE),
+                EnumSet.of(Scope.TEST_SOURCES),
             ),
         )
     }

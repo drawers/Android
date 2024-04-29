@@ -54,9 +54,9 @@ class IdeFunctionNameDetector : TestFunctionNameDetector() {
             "The test function name should be enclosed in backticks. It should have either two or three parts, separated by hyphens. Each part should, where possible, start in lowercase",
             implementation = Implementation(
                 IdeFunctionNameDetector::class.java,
-                EnumSet.of(JAVA_FILE),
-                EnumSet.of(JAVA_FILE, TEST_SOURCES),
-                EnumSet.of(TEST_SOURCES),
+                EnumSet.of(Scope.JAVA_FILE, Scope.TEST_SOURCES),
+                EnumSet.of(Scope.JAVA_FILE),
+                EnumSet.of(Scope.TEST_SOURCES),
             ),
         )
     }

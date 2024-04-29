@@ -20,6 +20,7 @@ import com.android.tools.lint.detector.api.AnnotationInfo
 import com.android.tools.lint.detector.api.AnnotationUsageInfo
 import com.android.tools.lint.detector.api.AnnotationUsageType
 import com.android.tools.lint.detector.api.Category
+import com.android.tools.lint.detector.api.Context
 import com.android.tools.lint.detector.api.Detector
 import com.android.tools.lint.detector.api.Implementation
 import com.android.tools.lint.detector.api.Issue
@@ -32,6 +33,7 @@ import org.jetbrains.uast.UElement
 import org.jetbrains.uast.getContainingUFile
 import org.jetbrains.uast.getIoFile
 import org.jetbrains.uast.kotlin.KotlinUMethod
+import java.io.File
 import kotlin.io.path.Path
 
 @Suppress("UnstableApiUsage")
@@ -118,6 +120,10 @@ abstract class TestFunctionNameDetector : Detector(), SourceCodeScanner {
     protected val UElement.containingFileName
         get() = getContainingUFile()?.getIoFile()?.name!!
 
+    protected fun Context.buildDir(): File {
+        return project.buildModule.buildFolder
+    }
+
     companion object {
         fun issue(
             id: String,
@@ -136,7 +142,7 @@ abstract class TestFunctionNameDetector : Detector(), SourceCodeScanner {
 
     object Folders {
         const val LINT_FIX = "lintFix"
-        const val PROMPT_DATA = "$LINT_FIX/promptData"
-        const val RESPONSE_DATA = "$LINT_FIX/responseData"
+        const val PROMPT_DATA = "promptData"
+        const val RESPONSE_DATA = "responseData"
     }
 }
