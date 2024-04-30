@@ -27,12 +27,11 @@ import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity.RELATIVE
-import org.gradle.api.tasks.SkipWhenEmpty
 import org.gradle.api.tasks.TaskAction
 import java.io.File
 
 @Suppress("UnstableApiUsage")
-abstract class ProcessPrompts : DefaultTask() {
+abstract class ProcessPromptsTask : DefaultTask() {
 
     @get:ServiceReference("openai")
     abstract val openAiBuildService: Property<OpenAiBuildService>

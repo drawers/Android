@@ -26,8 +26,7 @@ import java.io.File
 import java.util.Properties
 
 /**
- * Configures a [ProcessPrompts] task for a project and wires it up so it runs after lint but before lintFix
- * together with the prompt for performing a migration.
+ * Configures a [ProcessPromptsTask] task for a project and wires it up so it runs after lint but before lintFix
  *
  */
 @Suppress("UnstableApiUsage")
@@ -54,7 +53,7 @@ class FixTestFunctionNamesPlugin : Plugin<Project> {
             }
         }
 
-        val prepareForLintFix = project.tasks.register("prepareForLintFix", ProcessPrompts::class.java) { task ->
+        val prepareForLintFix = project.tasks.register("prepareForLintFix", ProcessPromptsTask::class.java) { task ->
             task.openAiBuildService.set(openAiServiceProvider)
             task.inputDir.set(File(project.buildDir, "lintFix/promptData"))
             task.outputDir.set(File(project.buildDir, "lintFix/responseData"))
