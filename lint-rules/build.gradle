@@ -26,7 +26,6 @@ dependencies {
     compileOnly Kotlin.stdlib.jdk7
     compileOnly "com.android.tools.lint:lint-api:$lint_version"
     compileOnly "com.android.tools.lint:lint-checks:$lint_version"
-    compileOnly "app.cash.sqldelight:sqlite-driver:2.0.2"
 
     compileShaded('org.json:json:20240303')
 
