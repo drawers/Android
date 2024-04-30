@@ -32,6 +32,7 @@ dependencies {
     testImplementation Testing.junit4
     testImplementation "com.android.tools.lint:lint-api:$lint_version"
     testImplementation "com.android.tools.lint:lint-tests:$lint_version"
+    testImplementation('org.json:json:20240303')
 }
 
 

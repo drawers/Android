@@ -24,6 +24,7 @@ import com.android.tools.lint.detector.api.Scope
 import org.jetbrains.kotlin.incremental.createDirectory
 import org.jetbrains.uast.UElement
 import org.jetbrains.uast.kotlin.KotlinUMethod
+import org.json.JSONObject
 import java.io.File
 import java.util.EnumSet
 
@@ -45,11 +46,12 @@ class PromptWritingFunctionNameDetector : TestFunctionNameDetector() {
 
             val writeFile = File(outputDir, sanitizedFileName)
 
+            val json = JSONObject()
+                .put("functionName", functionName)
+                .put("body", method.sourcePsi?.text!!)
+
             writeFile.writer().use {
-                it.appendLine(functionName)
-                it.appendLine("###")
-                it.appendLine(method.sourcePsi?.text!!)
-                it.appendLine("###")
+                it.append(json.toString(2))
             }
         } catch (t: Throwable) {
             context.log(t, "Could not write prompt for $functionName")

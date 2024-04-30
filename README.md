@@ -1,9 +1,18 @@
 # DuckDuckGo Android
 
-Welcome to our android application. We are excited to engage the community in development, see [CONTRIBUTING.md](CONTRIBUTING.md).
+This is a fork of the DuckDuckGo Android project which is merely being used as an example of a large Android codebase.
 
-## We are hiring!
-DuckDuckGo is growing fast and we continue to expand our fully distributed team. We embrace diverse perspectives, and seek out passionate, self-motivated people, committed to our shared vision of raising the standard of trust online. If you are a senior software engineer capable in either iOS or Android, visit our [careers](https://duckduckgo.com/hiring/#open) page to find out more about our openings!
+I am experimenting with performing an automated refactor using a combination of a language model and lint.
+
+The refactor is a renaming of test cases. It doesn't reflect my personal preference for test names, it's merely
+an example of some automated refactor that would not have been achievable prior to the general availability of 
+language models like GPT-3.
+
+Here, we're using lint (rule based) to focus in on just the data we want to change. Then we're using the fuzziness of an LLM
+to achieve something that is not possible using rule-based engines - formulation of meaning.
+
+This isn't a new concept - Moderne and OpenRewrite are thinking in this way too and there are talks at DroidCon SF 2024 in this vein
+as well.
 
 ## Building the Project
 We use git submodules and so when you are checking out the app, you'll need to ensure the submodules are initialized properly. You can use the `--recursive` flag when cloning the project to do this.
@@ -13,18 +22,10 @@ We use git submodules and so when you are checking out the app, you'll need to e
 Alternatively, if you already have the project checked out, you can initialize the submodules manually.
 
     git submodule update --init
-    
-## Terminology
-
-We have taken steps to update our terminology and remove words with problematic racial connotations, most notably the change to `main` branches, `allow lists`, and `blocklists`. Closed issues or PRs may contain deprecated terminology that should not be used going forward.
 
 ## Contribute
 
 Please refer to [contributing](CONTRIBUTING.md).
-
-## Discuss
-
-Contact us at https://duckduckgo.com/feedback if you have feedback, questions or want to chat. You can also use the feedback form embedded within our Mobile App - to do so please navigate to Settings and select "Leave Feedback".
 
 ## License
 DuckDuckGo android is distributed under the Apache 2.0 [license](LICENSE).

@@ -24,6 +24,7 @@ dependencies {
     implementation('org.testcontainers:testcontainers')
     implementation("com.android.tools.build:gradle:8.1.2")
     implementation("com.android.tools:common:31.1.2")
+    implementation('org.json:json:20240303')
 
     implementation('dev.langchain4j:langchain4j-open-ai:0.30.0')
     implementation('dev.langchain4j:langchain4j-ollama:0.29.1')
