@@ -62,6 +62,11 @@ class FixTestFunctionNamesPlugin : Plugin<Project> {
             }
         }
 
+        project.tasks.register("fixTestFunctionNames") {
+            it.dependsOn("lint")
+            it.dependsOn("lintFix")
+        }
+
         val processPromptsForLintFix = project.tasks.register("processPromptsForLintFix", ProcessPromptsTask::class.java) { task ->
             task.openAiBuildService.set(openAiServiceProvider)
             task.inputDir.set(File(project.buildDir, "lintFix/promptData"))
@@ -89,10 +94,12 @@ class FixTestFunctionNamesPlugin : Plugin<Project> {
 
             project.tasks.named("lintFix").configure {
                 it.dependsOn(cleanLintFix)
-                it.mustRunAfter(cleanLintFix)
+                 it.mustRunAfter(cleanLintFix)
                 it.dependsOn(processPromptsForLintFix)
                 it.mustRunAfter(processPromptsForLintFix)
             }
+
+
         }
     }
 
