@@ -61,7 +61,7 @@ class FixingFunctionNameDetector : TestFunctionNameDetector() {
             location,
             "Test name does not follow convention",
             LintFix.create()
-                .name("Use AI-suggested name")
+                .name("Use name suggested by language model")
                 .replace()
                 .all()
                 .with(proposedFunctionName)
@@ -83,9 +83,7 @@ class FixingFunctionNameDetector : TestFunctionNameDetector() {
             "An issue to represent auto-fixing a broken function name based a response from a language model",
             implementation = Implementation(
                 FixingFunctionNameDetector::class.java,
-                EnumSet.of(Scope.JAVA_FILE, Scope.TEST_SOURCES),
-                EnumSet.of(Scope.JAVA_FILE),
-                EnumSet.of(Scope.TEST_SOURCES),
+                EnumSet.of(Scope.ALL_JAVA_FILES, Scope.TEST_SOURCES),
             ),
         )
     }

@@ -22,6 +22,7 @@ import dev.langchain4j.model.openai.OpenAiChatModelName
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
+import org.gradle.api.tasks.Delete
 import java.io.File
 import java.util.Properties
 
@@ -44,38 +45,53 @@ class FixTestFunctionNamesPlugin : Plugin<Project> {
                     spec.parameters.apiKey.set(localProps.getProperty("openapi.key"))
                 }
 
-        val createLintFixDirectory = project.tasks.register("createLintFixDirectory") { task ->
+        val cleanLintFix = project.tasks.register("cleanLintFix", Delete::class.java) { task ->
+            task.delete(setOf(File(project.buildDir, "lintFix")))
+
             task.doLast {
-                val lintFixDir = File(project.buildDir, "lintFix")
-                lintFixDir.mkdir()
-                val lintFixPromptDataDir = File(lintFixDir, "promptData")
-                lintFixPromptDataDir.mkdir()
+                val lintFix = File(project.buildDir, "lintFix").apply {
+                    mkdir()
+                }
+                // we only need to make the input dir
+                // for downstream tasks
+                // don't worry about making the output dir
+                // as Gradle will handle this for us
+                File(lintFix, "promptData").apply {
+                    mkdir()
+                }
             }
         }
 
-        val prepareForLintFix = project.tasks.register("prepareForLintFix", ProcessPromptsTask::class.java) { task ->
+        val processPromptsForLintFix = project.tasks.register("processPromptsForLintFix", ProcessPromptsTask::class.java) { task ->
             task.openAiBuildService.set(openAiServiceProvider)
             task.inputDir.set(File(project.buildDir, "lintFix/promptData"))
             task.outputDir.set(File(project.buildDir, "lintFix/responseData"))
             task.prompt.set(prompt)
-            task.mustRunAfter(createLintFixDirectory)
-            task.dependsOn(createLintFixDirectory)
+            task.mustRunAfter("lint")
         }
 
         val androidComponents = project.extensions.getByType(AndroidComponentsExtension::class.java)
 
         androidComponents.finalizeDsl { commonExtension ->
             commonExtension.lint {
-                checkOnly.addAll(listOf("FixingTestFunctionName", "PromptWritingTestFunctionName"))
+                checkOnly.addAll(listOf("IdeTestFunctionName", "FixingTestFunctionName", "PromptWritingTestFunctionName"))
             }
         }
 
         androidComponents.onVariants { _: Variant ->
-            prepareForLintFix.configure {
-                it.mustRunAfter("lint")
+            project.tasks.named("lint").configure {
+                // clean first so we do everything as one shot
+                // we don't want previous prompts to generate
+                // auto-fixes before we run the lintFix task
+                it.dependsOn(cleanLintFix)
+                it.mustRunAfter(cleanLintFix)
             }
+
             project.tasks.named("lintFix").configure {
-                it.dependsOn(prepareForLintFix)
+                it.dependsOn(cleanLintFix)
+                it.mustRunAfter(cleanLintFix)
+                it.dependsOn(processPromptsForLintFix)
+                it.mustRunAfter(processPromptsForLintFix)
             }
         }
     }

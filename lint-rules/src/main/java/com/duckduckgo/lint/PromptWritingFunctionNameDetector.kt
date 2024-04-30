@@ -21,10 +21,8 @@ import com.android.tools.lint.detector.api.Implementation
 import com.android.tools.lint.detector.api.JavaContext
 import com.android.tools.lint.detector.api.Location
 import com.android.tools.lint.detector.api.Scope
-import org.jetbrains.kotlin.incremental.createDirectory
 import org.jetbrains.uast.UElement
 import org.jetbrains.uast.kotlin.KotlinUMethod
-import org.json.JSONObject
 import java.io.File
 import java.util.EnumSet
 
@@ -46,12 +44,8 @@ class PromptWritingFunctionNameDetector : TestFunctionNameDetector() {
 
             val writeFile = File(outputDir, sanitizedFileName)
 
-            val json = JSONObject()
-                .put("functionName", functionName)
-                .put("body", method.sourcePsi?.text!!)
-
             writeFile.writer().use {
-                it.append(json.toString(2))
+                it.appendLine(method.sourcePsi!!.text)
             }
         } catch (t: Throwable) {
             context.log(t, "Could not write prompt for $functionName")
@@ -59,15 +53,7 @@ class PromptWritingFunctionNameDetector : TestFunctionNameDetector() {
     }
 
     private fun Context.outputDir(): File {
-        val lintFix = File(buildDir(), Folders.LINT_FIX).apply {
-            createDirectory()
-        }
-
-        val promptData = File(lintFix, Folders.PROMPT_DATA).apply {
-            createDirectory()
-        }
-
-        return promptData
+        return File(File(buildDir(), Folders.LINT_FIX), Folders.PROMPT_DATA)
     }
 
     companion object {
@@ -78,9 +64,7 @@ class PromptWritingFunctionNameDetector : TestFunctionNameDetector() {
             "An issue to represent writing prompts with information suitable for an AI agent to suggest a rename",
             implementation = Implementation(
                 PromptWritingFunctionNameDetector::class.java,
-                EnumSet.of(Scope.JAVA_FILE, Scope.TEST_SOURCES),
-                EnumSet.of(Scope.JAVA_FILE),
-                EnumSet.of(Scope.TEST_SOURCES),
+                EnumSet.of(Scope.ALL_JAVA_FILES, Scope.TEST_SOURCES),
             ),
         )
     }
