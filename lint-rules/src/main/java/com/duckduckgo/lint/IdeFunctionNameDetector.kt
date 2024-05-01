@@ -18,6 +18,7 @@ package com.duckduckgo.lint
 
 import com.android.tools.lint.detector.api.Implementation
 import com.android.tools.lint.detector.api.JavaContext
+import com.android.tools.lint.detector.api.LintFix
 import com.android.tools.lint.detector.api.Location
 import com.android.tools.lint.detector.api.Scope
 import com.android.tools.lint.detector.api.Scope.JAVA_FILE
@@ -42,6 +43,13 @@ class IdeFunctionNameDetector : TestFunctionNameDetector() {
             TEST_FUNCTION_NAME,
             location,
             error.message,
+            LintFix.create()
+                .name("Use name suggested by language model")
+                .replace()
+                .all()
+                .with("asdf")
+                .autoFix()
+                .build()
         )
     }
 

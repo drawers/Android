@@ -27,8 +27,10 @@ import java.io.File
 import java.util.Properties
 
 /**
- * Configures a [ProcessPromptsTask] task for a project and wires it up so it runs after lint but before lintFix
- *
+ * Wires up a "fixTestFunctionNames" task for a project. This task will run two rounds of lint, one to
+ * generate data to feed to a language model, and a subsequent round that will use the responses from the language
+ * model to perform a fix. Note that this relies on having your lint rules set up correctly so that there are rules that
+ * operate in different rounds.
  */
 @Suppress("UnstableApiUsage")
 class FixTestFunctionNamesPlugin : Plugin<Project> {
@@ -79,14 +81,19 @@ class FixTestFunctionNamesPlugin : Plugin<Project> {
 
         androidComponents.finalizeDsl { commonExtension ->
             commonExtension.lint {
-                checkOnly.addAll(listOf("IdeTestFunctionName", "FixingTestFunctionName", "PromptWritingTestFunctionName"))
+                checkOnly.addAll(listOf(
+                    // We need the IDE-facing rule so we don't end up with an empty lint report
+                    // which would cause the `lintFix` round to skip.
+                    "IdeTestFunctionName",
+                    "FixingTestFunctionName",
+                    "PromptWritingTestFunctionName"))
             }
         }
 
         androidComponents.onVariants { _: Variant ->
             project.tasks.named("lint").configure {
-                // clean first so we do everything as one shot
-                // we don't want previous prompts to generate
+                // Clean first so we do everything as one shot.
+                // We don't want previous prompts to generate
                 // auto-fixes before we run the lintFix task
                 it.dependsOn(cleanLintFix)
                 it.mustRunAfter(cleanLintFix)
@@ -94,12 +101,10 @@ class FixTestFunctionNamesPlugin : Plugin<Project> {
 
             project.tasks.named("lintFix").configure {
                 it.dependsOn(cleanLintFix)
-                 it.mustRunAfter(cleanLintFix)
+                it.mustRunAfter(cleanLintFix)
                 it.dependsOn(processPromptsForLintFix)
                 it.mustRunAfter(processPromptsForLintFix)
             }
-
-
         }
     }
 

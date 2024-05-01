@@ -66,6 +66,8 @@ abstract class ProcessPromptsTask : DefaultTask() {
                 writer.appendLine(response.content().text())
             }
             println("Finished writing response file ${it.name}")
+
+            Thread.sleep(50) // avoid rate limiting
         }
     }
 }

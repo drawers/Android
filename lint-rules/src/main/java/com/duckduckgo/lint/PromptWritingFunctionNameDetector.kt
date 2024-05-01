@@ -37,6 +37,7 @@ class PromptWritingFunctionNameDetector : TestFunctionNameDetector() {
         location: Location,
         error: Error
     ) {
+        return
         try {
             val outputDir = context.outputDir()
 

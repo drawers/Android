@@ -22,6 +22,7 @@ import com.android.tools.lint.detector.api.JavaContext
 import com.android.tools.lint.detector.api.LintFix
 import com.android.tools.lint.detector.api.Location
 import com.android.tools.lint.detector.api.Scope
+import com.duckduckgo.lint.IdeFunctionNameDetector.Companion
 import org.jetbrains.kotlin.incremental.createDirectory
 import org.jetbrains.uast.UElement
 import org.jetbrains.uast.kotlin.KotlinUMethod
@@ -39,39 +40,45 @@ class FixingFunctionNameDetector : TestFunctionNameDetector() {
         location: Location,
         error: Error
     ) {
-        val sanitizedFileName = getSanitizedFileName(element, location)
-        val responseFile = File(context.responseDir(), sanitizedFileName)
-        if (!responseFile.exists()) {
-            return
-        }
-
-        val response = responseFile.readText()
-        val firstBackTick = response.indexOfFirst { it == '`' }
-        val secondBackTick = response.indexOfLast { it == '`' }
-        if (firstBackTick == -1 || secondBackTick == -1) return
-
-        val proposedFunctionName = response.substring(firstBackTick..secondBackTick)
-
-        if (proposedFunctionName.isEmpty()) {
-            return
-        }
-
+        return
+        val quickFixData = getQuickFixData(context, element, location)
         context.report(
-            TEST_FUNCTION_NAME,
+            IdeFunctionNameDetector.TEST_FUNCTION_NAME,
             location,
-            "Test name does not follow convention",
-            LintFix.create()
-                .name("Use name suggested by language model")
-                .replace()
-                .all()
-                .with(proposedFunctionName)
-                .autoFix()
-                .build(),
+            "FixingFunctionNameDetector, $quickFixData, " + error.message,
+            quickfixData = getQuickFixData(context, element, location)
         )
     }
 
     private fun Context.responseDir(): File {
         return File(File(buildDir(), Folders.LINT_FIX), Folders.RESPONSE_DATA)
+    }
+
+    private fun getQuickFixData(context: Context, element: UElement, location: Location): LintFix? {
+        val sanitizedFileName = getSanitizedFileName(element, location)
+        val responseFile = File(context.responseDir(), sanitizedFileName)
+        if (!responseFile.exists()) {
+            return null
+        }
+
+        val response = responseFile.readText()
+        val firstBackTick = response.indexOfFirst { it == '`' }
+        val secondBackTick = response.indexOfLast { it == '`' }
+        if (firstBackTick == -1 || secondBackTick == -1) return null
+
+        val proposedFunctionName = response.substring(firstBackTick..secondBackTick)
+
+        if (proposedFunctionName.isEmpty()) {
+            return null
+        }
+
+        return LintFix.create()
+            .name("Use name suggested by language model")
+            .replace()
+            .all()
+            .with(proposedFunctionName)
+            .autoFix()
+            .build()
     }
 
     companion object {
