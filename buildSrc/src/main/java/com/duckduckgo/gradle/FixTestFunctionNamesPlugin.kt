@@ -108,8 +108,10 @@ class FixTestFunctionNamesPlugin : Plugin<Project> {
         }
     }
 
-    private val prompt: String =
-        """
+}
+
+private val prompt: String =
+    """
             There is a Kotlin project with unit tests. The unit test functions currently have various non-standard names.
             
             We are performing a migration from non-standard names to a new standard.
@@ -185,4 +187,3 @@ class FixTestFunctionNamesPlugin : Plugin<Project> {
             Please answer with the expected output. Please DO NOT embellish the answer with extra information. Please DO NOT add three backticks
             to make a code block. Please ONLY answer with the proposed name of the function.
            """.trimIndent()
-}
