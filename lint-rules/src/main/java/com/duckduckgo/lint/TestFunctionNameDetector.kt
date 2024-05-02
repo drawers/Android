@@ -136,7 +136,7 @@ class TestFunctionNameDetector : Detector(), SourceCodeScanner {
     companion object {
 
         @JvmField val TEST_FUNCTION_NAME = Issue.create(
-            id = "IdeTestFunctionName",
+            id = "TestFunctionName",
             briefDescription = "Test function name",
             category = Category.TESTING,
             explanation = "The test function name should be enclosed in backticks. It should have either two or three parts, separated by hyphens. Each part should, where possible, start in lowercase",
