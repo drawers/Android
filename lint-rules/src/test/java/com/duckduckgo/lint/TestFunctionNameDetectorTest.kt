@@ -20,17 +20,16 @@ import com.android.tools.lint.checks.infrastructure.TestFiles.kt
 import com.android.tools.lint.checks.infrastructure.TestLintTask.lint
 import com.android.tools.lint.detector.api.Scope
 import org.junit.Test
-import java.io.File
 import java.util.EnumSet
 
-class IdeFunctionNameDetectorTest {
+class TestFunctionNameDetectorTest {
 
     @Test
     fun `name has no backticks - reports error`() {
         lint()
             .allowMissingSdk()
             .customScope(EnumSet.of(Scope.JAVA_FILE))
-            .issues(IdeFunctionNameDetector.TEST_FUNCTION_NAME)
+            .issues(TestFunctionNameDetector.TEST_FUNCTION_NAME)
             .files(
                 JUNIT_STUB,
                 kt(
@@ -57,7 +56,7 @@ class IdeFunctionNameDetectorTest {
         lint()
             .allowMissingSdk()
             .customScope(EnumSet.of(Scope.JAVA_FILE))
-            .issues(IdeFunctionNameDetector.TEST_FUNCTION_NAME)
+            .issues(TestFunctionNameDetector.TEST_FUNCTION_NAME)
             .files(
                 JUNIT_STUB,
                 kt(
@@ -84,7 +83,7 @@ class IdeFunctionNameDetectorTest {
         lint()
             .allowMissingSdk()
             .customScope(EnumSet.of(Scope.JAVA_FILE))
-            .issues(IdeFunctionNameDetector.TEST_FUNCTION_NAME)
+            .issues(TestFunctionNameDetector.TEST_FUNCTION_NAME)
             .files(
                 JUNIT_STUB,
                 kt(
@@ -111,7 +110,7 @@ class IdeFunctionNameDetectorTest {
         lint()
             .allowMissingSdk()
             .customScope(EnumSet.of(Scope.JAVA_FILE))
-            .issues(IdeFunctionNameDetector.TEST_FUNCTION_NAME)
+            .issues(TestFunctionNameDetector.TEST_FUNCTION_NAME)
             .files(
                 JUNIT_STUB,
                 kt(
@@ -138,7 +137,7 @@ class IdeFunctionNameDetectorTest {
         lint()
             .allowMissingSdk()
             .customScope(EnumSet.of(Scope.JAVA_FILE))
-            .issues(IdeFunctionNameDetector.TEST_FUNCTION_NAME)
+            .issues(TestFunctionNameDetector.TEST_FUNCTION_NAME)
             .files(
                 JUNIT_STUB,
                 kt(

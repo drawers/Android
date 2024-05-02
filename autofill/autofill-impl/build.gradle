@@ -92,7 +92,7 @@ android {
         generateDaggerFactories = true // default is false
     }
     lint {
-        checkOnly ["IdeFunctionNameDetector"]
+        checkOnly 'IdeTestFunctionName'
         baseline file("lint-baseline.xml")
     }
     testOptions {

@@ -26,13 +26,16 @@ dependencies {
     compileOnly Kotlin.stdlib.jdk7
     compileOnly "com.android.tools.lint:lint-api:$lint_version"
     compileOnly "com.android.tools.lint:lint-checks:$lint_version"
-    compileOnly "app.cash.sqldelight:sqlite-driver:2.0.2"
 
-    compileShaded('dev.langchain4j:langchain4j-open-ai:0.30.0')
+    compileShaded 'dev.langchain4j:langchain4j-ollama:0.30.0'
 
     testImplementation Testing.junit4
+
     testImplementation "com.android.tools.lint:lint-api:$lint_version"
     testImplementation "com.android.tools.lint:lint-tests:$lint_version"
+
+    // Dupe the dependency as compileShaded is effectively compileOnly
+    testImplementation 'dev.langchain4j:langchain4j-ollama:0.30.0'
 }
 
 
@@ -53,7 +56,6 @@ def shadowJar = tasks.shadowJar
 shadowJar.configure {
     archiveClassifier.set("")
     configurations = [shade]
-    relocate("org.json", "com.duckduckgo.shaded.org.json")
     transformers.add(new ServiceFileTransformer())
 }
 

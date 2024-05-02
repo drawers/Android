@@ -20,8 +20,7 @@ import com.android.tools.lint.client.api.IssueRegistry
 import com.android.tools.lint.client.api.Vendor
 import com.android.tools.lint.detector.api.CURRENT_API
 import com.android.tools.lint.detector.api.Issue
-import com.duckduckgo.lint.FixingFunctionNameDetector
-import com.duckduckgo.lint.IdeFunctionNameDetector
+import com.duckduckgo.lint.TestFunctionNameDetector
 import com.duckduckgo.lint.NoDispatcherComputation.Companion.ISSUE_AVOID_COMPUTATION
 import com.duckduckgo.lint.NoFragmentDetector.Companion.NO_FRAGMENT_ISSUE
 import com.duckduckgo.lint.NoHardcodedCoroutineDispatcherDetector.Companion.NO_HARCODED_COROUTINE_DISPATCHER
@@ -31,7 +30,6 @@ import com.duckduckgo.lint.NoRobolectricTestRunnerDetector.Companion.NO_ROBOLECT
 import com.duckduckgo.lint.NoSingletonDetector.Companion.NO_SINGLETON_ISSUE
 import com.duckduckgo.lint.NoSystemLoadLibraryDetector.Companion.NO_SYSTEM_LOAD_LIBRARY
 import com.duckduckgo.lint.NonCancellableDetector.Companion.ISSUE_NON_CANCELLABLE
-import com.duckduckgo.lint.PromptWritingFunctionNameDetector
 import com.duckduckgo.lint.strings.MissingInstructionDetector.Companion.MISSING_INSTRUCTION
 import com.duckduckgo.lint.strings.MissingSmartlingRequiredDirectivesDetector.Companion.MISSING_SMARTLING_REQUIRED_DIRECTIVES
 import com.duckduckgo.lint.strings.PlaceholderDetector.Companion.PLACEHOLDER_MISSING_POSITION
@@ -78,9 +76,7 @@ class DuckDuckGoIssueRegistry : IssueRegistry() {
             WRONG_STYLE_PARAMETER,
             WRONG_STYLE_NAME,
             INVALID_COLOR_ATTRIBUTE,
-            IdeFunctionNameDetector.TEST_FUNCTION_NAME,
-            PromptWritingFunctionNameDetector.TEST_FUNCTION_NAME,
-            FixingFunctionNameDetector.TEST_FUNCTION_NAME,
+            TestFunctionNameDetector.TEST_FUNCTION_NAME,
         )
 
     override val api: Int

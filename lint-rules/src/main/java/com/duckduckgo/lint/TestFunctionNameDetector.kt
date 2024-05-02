@@ -25,25 +25,33 @@ import com.android.tools.lint.detector.api.Detector
 import com.android.tools.lint.detector.api.Implementation
 import com.android.tools.lint.detector.api.Issue
 import com.android.tools.lint.detector.api.JavaContext
-import com.android.tools.lint.detector.api.Location
-import com.android.tools.lint.detector.api.Severity
+import com.android.tools.lint.detector.api.LintFix
+import com.android.tools.lint.detector.api.Scope
+import com.android.tools.lint.detector.api.Severity.WARNING
 import com.android.tools.lint.detector.api.SourceCodeScanner
+import dev.langchain4j.data.message.SystemMessage
+import dev.langchain4j.data.message.UserMessage
+import dev.langchain4j.model.chat.ChatLanguageModel
+import dev.langchain4j.model.ollama.OllamaChatModel
 import org.jetbrains.kotlin.psi.KtNamedDeclaration
 import org.jetbrains.uast.UElement
-import org.jetbrains.uast.getContainingUFile
-import org.jetbrains.uast.getIoFile
 import org.jetbrains.uast.kotlin.KotlinUMethod
-import java.io.File
+import java.util.EnumSet
+import kotlin.LazyThreadSafetyMode.SYNCHRONIZED
 import kotlin.io.path.Path
 
 @Suppress("UnstableApiUsage")
-abstract class TestFunctionNameDetector : Detector(), SourceCodeScanner {
+class TestFunctionNameDetector : Detector(), SourceCodeScanner {
 
-    final override fun isApplicableAnnotationUsage(type: AnnotationUsageType) = true
+    override fun beforeCheckRootProject(context: Context) {
+        super.beforeCheckRootProject(context)
+    }
 
-    final override fun applicableAnnotations() = listOf("org.junit.Test")
+    override fun applicableAnnotations() = listOf("org.junit.Test")
 
-    final override fun visitAnnotationUsage(
+    override fun isApplicableAnnotationUsage(type: AnnotationUsageType) = true
+
+    override fun visitAnnotationUsage(
         context: JavaContext,
         element: UElement,
         annotationInfo: AnnotationInfo,
@@ -53,32 +61,21 @@ abstract class TestFunctionNameDetector : Detector(), SourceCodeScanner {
 
         val method = element.uastParent as? KotlinUMethod ?: return
 
-        // make sure to retain backticks
+        // Get the name in a way that is certain to retain the backticks.
         val functionName = (method.sourcePsi as? KtNamedDeclaration)?.nameIdentifier?.text ?: return
 
-        // look for errors
         val error = functionName.backticksErrorOrNull() ?: functionName.partsErrorOrNull() ?: functionName.capitalizationErrorOrNull() ?: return
 
-        val location = context.getNameLocation(method)
-
-        performAction(
-            context,
-            element,
-            method,
-            functionName,
-            location,
-            error,
+        context.report(
+            TEST_FUNCTION_NAME,
+            context.getNameLocation(method),
+            error.message,
+            getLintFix(
+                method,
+                context,
+            ),
         )
     }
-
-    abstract fun performAction(
-        context: JavaContext,
-        element: UElement,
-        method: KotlinUMethod,
-        functionName: String,
-        location: Location,
-        error: Error,
-    )
 
     private fun String.backticksErrorOrNull(): Error? {
         if (this.startsWith('`') && this.endsWith('`')) return null
@@ -110,39 +107,134 @@ abstract class TestFunctionNameDetector : Detector(), SourceCodeScanner {
 
     private fun JavaContext.isAndroidTest() = Path("androidTest") in file.toPath()
 
-    protected fun getSanitizedFileName(
-        element: UElement,
-        location: Location
-    ): String {
-        return element.containingFileName.replace(".", "_").plus('_').plus(location.start!!.line)
-    }
+    private fun getLintFix(
+        method: KotlinUMethod,
+        context: JavaContext
+    ): LintFix? {
+        if (Scope.ALL_JAVA_FILES !in context.scope) {
+            // We're in the IDE so don't try and use the LLM to generate a LintFix.
+            return null
+        }
 
-    protected val UElement.containingFileName
-        get() = getContainingUFile()?.getIoFile()?.name!!
+        val response = model.generate(prompt, UserMessage.from(method.sourcePsi!!.text)).content().text()
+        context.log(null, "Response from LM: ")
+        context.log(null, response)
 
-    protected fun Context.buildDir(): File {
-        return project.buildModule.buildFolder
+        val firstBackTick = response.indexOfFirst { it == '`' }
+        val secondBackTick = response.indexOfLast { it == '`' }
+        if (firstBackTick == -1 || secondBackTick == -1) return null
+
+        val proposedFunctionName = response.substring(firstBackTick..secondBackTick)
+
+        if (proposedFunctionName.isEmpty()) {
+            return null
+        }
+
+        return LintFix.create().name("Use name suggested by language model").replace().all().with(proposedFunctionName).autoFix().build()
     }
 
     companion object {
-        fun issue(
-            id: String,
-            briefDescription: String,
-            explanation: String,
-            implementation: Implementation,
-        ): Issue = Issue.create(
-            id = id,
-            briefDescription = briefDescription,
-            category = Category.TESTING,
-            explanation = explanation,
-            severity = Severity.WARNING,
-            implementation = implementation,
-        )
-    }
 
-    object Folders {
-        const val LINT_FIX = "lintFix"
-        const val PROMPT_DATA = "promptData"
-        const val RESPONSE_DATA = "responseData"
+        @JvmField val TEST_FUNCTION_NAME = Issue.create(
+            id = "IdeTestFunctionName",
+            briefDescription = "Test function name",
+            category = Category.TESTING,
+            explanation = "The test function name should be enclosed in backticks. It should have either two or three parts, separated by hyphens. Each part should, where possible, start in lowercase",
+            severity = WARNING,
+            implementation = Implementation(
+                TestFunctionNameDetector::class.java,
+                EnumSet.of(Scope.JAVA_FILE, Scope.TEST_SOURCES),
+                EnumSet.of(Scope.JAVA_FILE),
+                EnumSet.of(Scope.TEST_SOURCES),
+            ),
+        )
+
+        private val model: ChatLanguageModel by lazy(SYNCHRONIZED) {
+            OllamaChatModel.builder().modelName("llama3").temperature(0.0).seed(0)
+                /**
+                 * Ollama binds 127.0.0.1 port 11434 by default. Change the bind address with the OLLAMA_HOST environment variable
+                 * See https://github.com/ollama/ollama/blob/main/docs/faq.md
+                 */
+                .baseUrl("http://127.0.0.1:11434").build()
+        }
+
+        private val prompt: SystemMessage = SystemMessage.from(
+            """
+            There is a Kotlin project with unit tests. The unit test functions currently have various non-standard names.
+            
+            We are performing a migration from non-standard names to a new standard.
+            
+            The new standard for the names is:
+            
+            `methodUnderTest - state - expected outcome`
+            
+            Here:
+            * "methodUnderTest" means the method that the test intends to exercise being exercised. If we're thinking of "arrange/act/assert"
+            then the method under test is normally exercised in the "act" part of the test body i.e., the middle.
+            * "state" means the setup or situation for the test. Thinking of "arrange/act/assert" the state would normally be the first part.
+            Note that not all tests have state. For instance, tests with no set up or tests of pure functions.
+            * "expected outcome" means what we are hoping to measure in the test. Thinking of "arrange/act/assert" this would be the "assert" part 
+            (the last part of the test)
+            
+            Note that to meet the standard, the test names must have the following:
+            * They must be in backticks (``)
+            * They must have a minimum of two parts separated by a spaced hyphen " - "
+            * The "state" (second part) is optional - it can be omitted to allow for tests with only two parts
+            * The parts must start with lowercase if possible
+            
+            I am going to give you a Kotlin function to consider. You must propose a new name for the function that meets the convention. 
+            Your answer MUST only contain the new proposed function name.
+            
+            Please omit any filler in your answers like "Certainly!"
+             
+            Here is a sample input and output to help you.             
+      
+            Example input:
+            
+            @Test
+            fun whenUserEnablesAutofillThenViewStateUpdatedToReflectChange() = runTest {
+                testee.onEnableAutofill()
+                testee.viewState.test {
+                    assertTrue(this.awaitItem().autofillEnabled)
+                    cancelAndIgnoreRemainingEvents()
+                }
+            }
+            
+            Expected output:
+            `onEnableAutofill - viewState updated`
+            
+            Example input:
+            
+            @Test
+            fun whenNotSignedIntoEmailProtectionThenReturnTypeIsNotSignedIn() = runTest {
+                configureEmailProtectionNotSignedIn()
+                val status = testee.getActivationStatus("foo@example.com")
+                assertTrue(status is NotSignedIn)
+            }
+            
+            Expected output:            
+            `getActivationStatus - email protection not signed in - not signed in`
+
+            Example input:
+            
+            @Test
+            fun whenSaveCredentialsUnsuccessfulThenDoesNotDisableDeclineCountMonitoringFlag() = runTest {
+                val bundle = bundle("example.com", someLoginCredentials())
+                whenever(autofillStore.saveCredentials(any(), any())).thenReturn(null)
+                testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
+                verify(declineCounter, never()).disableDeclineCounter()
+            }
+            
+            Expected output:
+            `processResult - save credentials unsuccessful - does not disable decline count monitoring flag`
+
+            I have given you three examples to follow.
+            
+            From now on, in this conversation I am going to give you the function body so you can devise a new name for it following the convention and examples. 
+            
+            Please answer with the expected output. Please DO NOT embellish the answer with extra information. Please DO NOT add three backticks
+            to make a code block. Please ONLY answer with the proposed name of the function.
+           """.trimIndent(),
+        )
     }
 }
