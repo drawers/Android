@@ -8,14 +8,14 @@ class RealLoginDeduplicatorUsernameAndPasswordMatcherTest {
     private val testee = RealAutofillDeduplicationUsernameAndPasswordMatcher()
 
     @Test
-    fun whenEmptyListInThenEmptyListOut() {
+    fun `groupDuplicateCredentials - empty list in - empty list out`() {
         val input = emptyList<LoginCredentials>()
         val output = testee.groupDuplicateCredentials(input)
         assertTrue(output.isEmpty())
     }
 
     @Test
-    fun whenSingleEntryInThenSingleEntryOut() {
+    fun `groupDuplicateCredentials - single entry in - single entry out`() {
         val input = listOf(
             creds("username", "password"),
         )
@@ -24,7 +24,7 @@ class RealLoginDeduplicatorUsernameAndPasswordMatcherTest {
     }
 
     @Test
-    fun whenMultipleEntriesWithNoDuplicationAtAllThenNumberOfGroupsReturnedMatchesNumberOfEntriesInputted() {
+    fun `groupDuplicateCredentials - no duplication at all - matches number of entries inputted`() {
         val input = listOf(
             creds("username_a", "password_x"),
             creds("username_b", "password_y"),
@@ -35,7 +35,7 @@ class RealLoginDeduplicatorUsernameAndPasswordMatcherTest {
     }
 
     @Test
-    fun whenEntriesMatchOnUsernameButNotPasswordThenNotGrouped() {
+    fun `groupDuplicateCredentials - entries match on username but not password - not grouped`() {
         val input = listOf(
             creds("username", "password_x"),
             creds("username", "password_y"),
@@ -45,7 +45,7 @@ class RealLoginDeduplicatorUsernameAndPasswordMatcherTest {
     }
 
     @Test
-    fun whenEntriesMatchOnPasswordButNotUsernameThenNotGrouped() {
+    fun `groupDuplicateCredentials - entries match on password but not username - not grouped`() {
         val input = listOf(
             creds("username_a", "password"),
             creds("username_b", "password"),
@@ -55,7 +55,7 @@ class RealLoginDeduplicatorUsernameAndPasswordMatcherTest {
     }
 
     @Test
-    fun whenEntriesMatchOnUsernameAndPasswordThenGrouped() {
+    fun `groupDuplicateCredentials - entries match on username and password - grouped`() {
         val input = listOf(
             creds("username", "password"),
             creds("username", "password"),

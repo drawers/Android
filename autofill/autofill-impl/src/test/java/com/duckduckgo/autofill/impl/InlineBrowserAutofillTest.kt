@@ -60,34 +60,34 @@ class InlineBrowserAutofillTest {
     }
 
     @Test
-    fun whenAutofillFeatureFlagDisabledThenDoNotAddJsInterface() = runTest {
+    fun `addJsInterface - autofill feature flag disabled - do not add js interface`() = runTest {
         autofillFeature.topLevelFeatureEnabled = false
         testee.addJsInterface()
         verifyJavascriptNotAdded()
     }
 
     @Test
-    fun whenWebViewDoesNotSupportIntegrationThenDoNotAddJsInterface() = runTest {
+    fun `addJsInterface - web view does not support integration - do not add js interface`() = runTest {
         whenever(capabilityChecker.webViewSupportsAutofill()).thenReturn(false)
         testee.addJsInterface()
         verifyJavascriptNotAdded()
     }
 
     @Test
-    fun whenWebViewSupportsIntegrationAndFeatureEnabledThenJsInterfaceIsAdded() = runTest {
+    fun `addJsInterface - supports integration and feature enabled - js interface added`() = runTest {
         testee.addJsInterface()
         verifyJavascriptIsAdded()
     }
 
     @Test
-    fun whenPluginsIsEmptyThenJsInterfaceIsAdded() = runTest {
+    fun `addJsInterface - plugins empty - js interface added`() = runTest {
         webMessageListeners.clear()
         testee.addJsInterface()
         verifyJavascriptIsAdded()
     }
 
     @Test
-    fun whenPluginsIsNotEmptyThenIsRegisteredWithWebView() = runTest {
+    fun `addJsInterface - plugins is not empty - registered with web view`() = runTest {
         val mockMessageListener: AutofillWebMessageListener = mock()
         webMessageListeners.add(mockMessageListener)
         testee.addJsInterface()
@@ -95,7 +95,7 @@ class InlineBrowserAutofillTest {
     }
 
     @Test
-    fun whenPluginsIsNotEmptyThenIsDeregisteredWithWebView() = runTest {
+    fun `removeJsInterface - plugins is not empty - deregistered with web view`() = runTest {
         val mockMessageListener: AutofillWebMessageListener = mock()
         webMessageListeners.add(mockMessageListener)
         testee.removeJsInterface()

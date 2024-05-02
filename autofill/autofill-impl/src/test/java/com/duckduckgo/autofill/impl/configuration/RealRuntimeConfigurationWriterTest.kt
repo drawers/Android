@@ -25,7 +25,7 @@ class RealRuntimeConfigurationWriterTest {
     private val testee = RealRuntimeConfigurationWriter(Builder().build())
 
     @Test
-    fun whenGenerateResponseGetAvailableInputTypesThenReturnAvailableInputTypesJson() {
+    fun `generateResponse - get available input types - return available input types json`() {
         val expectedJson = """
             {
               "credentials": {
@@ -46,7 +46,7 @@ class RealRuntimeConfigurationWriterTest {
     }
 
     @Test
-    fun whenGenerateContentScopeTheReturnContentScopeString() {
+    fun `generateContentScope - returns content scope string`() {
         val expectedJson = """
             "contentScope" : {
               "features": {
@@ -65,7 +65,7 @@ class RealRuntimeConfigurationWriterTest {
     }
 
     @Test
-    fun whenGenerateUserUnprotectedDomainsThenReturnUserUnprotectedDomainsString() {
+    fun `generateUserUnprotectedDomains - returns user unprotected domains string`() {
         val expectedJson = """
             "userUnprotectedDomains" : []
         """.trimIndent()
@@ -76,7 +76,7 @@ class RealRuntimeConfigurationWriterTest {
     }
 
     @Test
-    fun whenGenerateUserPreferencesThenReturnUserPreferencesString() {
+    fun `generateUserPreferences - return user preferences string`() {
         val expectedJson = """
             "userPreferences" : {
               "debug": false,

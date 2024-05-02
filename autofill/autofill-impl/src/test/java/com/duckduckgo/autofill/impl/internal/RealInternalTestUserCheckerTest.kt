@@ -47,7 +47,7 @@ class RealInternalTestUserCheckerTest {
     }
 
     @Test
-    fun whenErrorReceivedForInvalidUrlThenisNotInternalTestUser() {
+    fun `verifyVerificationErrorReceived - is not internal test user - not internal test user`() {
         testee.verifyVerificationErrorReceived(INVALID_TEST_URL)
         testee.verifyVerificationCompleted(INVALID_TEST_URL)
 
@@ -55,14 +55,14 @@ class RealInternalTestUserCheckerTest {
     }
 
     @Test
-    fun whenCompletedForInvalidUrlThenisNotInternalTestUser() {
+    fun `verifyVerificationCompleted - is not internal test user - not internal test user`() {
         testee.verifyVerificationCompleted(INVALID_TEST_URL)
 
         assertFalse(testee.isInternalTestUser)
     }
 
     @Test
-    fun whenErrorForValidButHttpUrlThenisNotInternalTestUser() {
+    fun `verifyVerificationError - http url - is not internal test user`() {
         testee.verifyVerificationErrorReceived(VALID_TEST_HTTP_URL)
         testee.verifyVerificationCompleted(VALID_TEST_HTTPS_URL)
 
@@ -70,7 +70,7 @@ class RealInternalTestUserCheckerTest {
     }
 
     @Test
-    fun whenErrorReceivedForValidUrlThenisNotInternalTestUser() {
+    fun `verifyVerificationErrorReceived - is not internal test user`() {
         testee.verifyVerificationErrorReceived(VALID_TEST_HTTPS_URL)
         testee.verifyVerificationCompleted(VALID_TEST_HTTPS_URL)
 
@@ -78,28 +78,28 @@ class RealInternalTestUserCheckerTest {
     }
 
     @Test
-    fun whenCompletedForValidUrlThenisInternalTestUser() {
+    fun `verifyVerificationCompleted - is internal test user - true`() {
         testee.verifyVerificationCompleted(VALID_TEST_HTTPS_URL)
 
         assertTrue(testee.isInternalTestUser)
     }
 
     @Test
-    fun whenCompletedForValidButHttpUrlThenisInternalTestUser() {
+    fun `verifyVerificationCompleted - http url - is internal test user`() {
         testee.verifyVerificationCompleted(VALID_TEST_HTTP_URL)
 
         assertTrue(testee.isInternalTestUser)
     }
 
     @Test
-    fun whenUserBuildIsInternalNoValidationThenIsInternalTestUser() {
+    fun `whenUserBuildIsInternalNoValidation - is internal test user`() {
         whenever(appBuildConfig.flavor).thenReturn(INTERNAL)
 
         assertTrue(testee.isInternalTestUser)
     }
 
     @Test
-    fun whenUserBuildIsInternalAndErrorReceivedWhenValidatingThenIsInternalTestUser() {
+    fun `verifyVerificationErrorReceived - internal build and error received - is internal test user`() {
         whenever(appBuildConfig.flavor).thenReturn(INTERNAL)
 
         testee.verifyVerificationErrorReceived(VALID_TEST_HTTPS_URL)

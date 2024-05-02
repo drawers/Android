@@ -70,7 +70,7 @@ class WebMessageListenerGetAutofillDataTest {
     }
 
     @Test
-    fun whenGettingSavedPasswordsNoCredentialsAvailableThenNoCredentialsCallbackInvoked() = runTest {
+    fun `getAutofillData - no credentials available - no credentials callback invoked`() = runTest {
         setupRequestForSubTypeUsername()
         whenever(autofillStore.getCredentials(any())).thenReturn(emptyList())
         initiateGetAutofillDataRequest()
@@ -78,7 +78,7 @@ class WebMessageListenerGetAutofillDataTest {
     }
 
     @Test
-    fun whenGettingSavedPasswordsWithCredentialsAvailableThenCredentialsAvailableCallbackInvoked() = runTest {
+    fun `getSavedPasswords - credentials available - credentials available callback invoked`() = runTest {
         setupRequestForSubTypeUsername()
         whenever(autofillStore.getCredentials(any())).thenReturn(listOf(LoginCredentials(0, "example.com", "username", "password")))
         initiateGetAutofillDataRequest()
@@ -86,7 +86,7 @@ class WebMessageListenerGetAutofillDataTest {
     }
 
     @Test
-    fun whenGettingSavedPasswordsWithCredentialsAvailableWithNullUsernameUsernameConvertedToEmptyString() = runTest {
+    fun `getSavedPasswords - credentials available - username converted to empty string`() = runTest {
         setupRequestForSubTypePassword()
         whenever(autofillStore.getCredentials(any())).thenReturn(
             listOf(
@@ -103,7 +103,7 @@ class WebMessageListenerGetAutofillDataTest {
     }
 
     @Test
-    fun whenGettingSavedPasswordsAndRequestSpecifiesSubtypeUsernameAndNoEntriesThenNoCredentialsCallbackInvoked() = runTest {
+    fun `getAutofillData - request specifies subtype username and no entries - no credentials callback invoked`() = runTest {
         setupRequestForSubTypeUsername()
         whenever(autofillStore.getCredentials(any())).thenReturn(emptyList())
         initiateGetAutofillDataRequest()
@@ -111,7 +111,7 @@ class WebMessageListenerGetAutofillDataTest {
     }
 
     @Test
-    fun whenGettingSavedPasswordsAndRequestSpecifiesSubtypeUsernameAndNoEntriesWithAUsernameThenNoCredentialsCallbackInvoked() = runTest {
+    fun `getAutofillData - request specifies subtype username and no entries with a username - no credentials callback invoked`() = runTest {
         setupRequestForSubTypeUsername()
         whenever(autofillStore.getCredentials(any())).thenReturn(
             listOf(
@@ -124,7 +124,7 @@ class WebMessageListenerGetAutofillDataTest {
     }
 
     @Test
-    fun whenGettingSavedPasswordsAndRequestSpecifiesSubtypeUsernameAndSingleEntryWithAUsernameThenCredentialsAvailableCallbackInvoked() = runTest {
+    fun `getSavedPasswords - request specifies subtype username and single entry with a username - credentials available callback invoked`() = runTest {
         setupRequestForSubTypeUsername()
         whenever(autofillStore.getCredentials(any())).thenReturn(
             listOf(
@@ -139,7 +139,7 @@ class WebMessageListenerGetAutofillDataTest {
     }
 
     @Test
-    fun whenGettingSavedPasswordsAndRequestSpecifiesSubtypeUsernameAndMultipleEntriesWithAUsernameThenCorrectCallbackInvoked() = runTest {
+    fun `getAutofillData - request specifies subtype username and multiple entries with a username - correct callback invoked`() = runTest {
         setupRequestForSubTypeUsername()
         whenever(autofillStore.getCredentials(any())).thenReturn(
             listOf(
@@ -156,7 +156,7 @@ class WebMessageListenerGetAutofillDataTest {
     }
 
     @Test
-    fun whenGettingSavedPasswordsAndRequestSpecifiesSubtypePasswordAndNoEntriesThenNoCredentialsCallbackInvoked() = runTest {
+    fun `getAutofillData - request specifies subtype password and no entries - no credentials callback invoked`() = runTest {
         setupRequestForSubTypePassword()
         whenever(autofillStore.getCredentials(any())).thenReturn(emptyList())
         initiateGetAutofillDataRequest()
@@ -164,7 +164,7 @@ class WebMessageListenerGetAutofillDataTest {
     }
 
     @Test
-    fun whenGettingSavedPasswordsAndRequestSpecifiesSubtypePasswordAndNoEntriesWithAPasswordThenNoCredentialsCallbackInvoked() = runTest {
+    fun `getAutofillData - request specifies subtype password and no entries with a password - no credentials callback invoked`() = runTest {
         setupRequestForSubTypePassword()
         whenever(autofillStore.getCredentials(any())).thenReturn(
             listOf(
@@ -177,7 +177,7 @@ class WebMessageListenerGetAutofillDataTest {
     }
 
     @Test
-    fun whenGettingSavedPasswordsAndRequestSpecifiesSubtypePasswordAndSingleEntryWithAPasswordThenCredentialsAvailableCallbackInvoked() = runTest {
+    fun `getSavedPasswords - subtype password and single entry with a password - credentials available callback invoked`() = runTest {
         setupRequestForSubTypePassword()
         whenever(autofillStore.getCredentials(any())).thenReturn(
             listOf(
@@ -192,7 +192,7 @@ class WebMessageListenerGetAutofillDataTest {
     }
 
     @Test
-    fun whenGettingSavedPasswordsAndRequestSpecifiesSubtypePasswordAndMultipleEntriesWithAPasswordThenCorrectCallbackInvoked() = runTest {
+    fun `getAutofillData - request specifies subtype password and multiple entries with a password - correct callback invoked`() = runTest {
         setupRequestForSubTypePassword()
         whenever(autofillStore.getCredentials(any())).thenReturn(
             listOf(

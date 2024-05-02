@@ -42,13 +42,13 @@ class AutofillSavingCredentialsViewModelTest {
     ).also { it.autofillStore = mockStore }
 
     @Test
-    fun whenUserPromptedToSaveThenFlagSet() = runTest {
+    fun `userPromptedToSave - store has ever been prompted to save login - true`() = runTest {
         testee.userPromptedToSaveCredentials()
         verify(mockStore).hasEverBeenPromptedToSaveLogin = true
     }
 
     @Test
-    fun whenUserSpecifiesNeverToSaveCurrentSiteThenSitePersisted() = runTest {
+    fun `addSiteToNeverSaveList - site persisted`() = runTest {
         val url = "https://example.com"
         testee.addSiteToNeverSaveList(url)
         verify(neverSavedSiteRepository).addToNeverSaveList(eq(url))

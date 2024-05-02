@@ -19,12 +19,12 @@ class RealLoginDeduplicatorBestMatchFinderTest {
     )
 
     @Test
-    fun whenEmptyListThenNoBestMatchFound() {
+    fun `findBestMatch - empty list - no best match found`() {
         assertNull(testee.findBestMatch("", emptyList()))
     }
 
     @Test
-    fun whenSinglePerfectMatchThenThatIsReturnedAsBestMatch() {
+    fun `findBestMatch - single perfect match - that is returned as best match`() {
         val input = listOf(
             LoginCredentials(id = 0, domain = "example.com", username = "username", password = "password"),
         )
@@ -33,7 +33,7 @@ class RealLoginDeduplicatorBestMatchFinderTest {
     }
 
     @Test
-    fun whenMultiplePerfectMatchesMostRecentlyModifiedIsReturned() {
+    fun `findBestMatch - multiple perfect matches most recently modified is returned`() {
         val input = listOf(
             creds("example.com", 1000),
             creds("example.com", 2000),
@@ -43,7 +43,7 @@ class RealLoginDeduplicatorBestMatchFinderTest {
     }
 
     @Test
-    fun whenMultiplePartialMatchesWithSameTimestampThenDomainAlphabeticallyFirstReturned() {
+    fun `findBestMatch - multiple partial matches with same timestamp - domain alphabetically first returned`() {
         val input = listOf(
             creds("a.example.com", 2000),
             creds("b.example.com", 2000),
@@ -53,7 +53,7 @@ class RealLoginDeduplicatorBestMatchFinderTest {
     }
 
     @Test
-    fun whenSingleNonMatchThenReturnedAsBestMatch() {
+    fun `findBestMatch - single non match - returned as best match`() {
         val input = listOf(
             creds("not-a-match.com", 2000),
         )
@@ -62,7 +62,7 @@ class RealLoginDeduplicatorBestMatchFinderTest {
     }
 
     @Test
-    fun whenMultipleNonMatchesThenMostRecentlyModifiedIsReturned() {
+    fun `findBestMatch - multiple non matches - most recently modified is returned`() {
         val input = listOf(
             creds("not-a-match.com", 2000),
             creds("also-not-a-match.com", 1000),
@@ -72,7 +72,7 @@ class RealLoginDeduplicatorBestMatchFinderTest {
     }
 
     @Test
-    fun whenMatchesFromAllTypesThenMatchInPerfectReturnedRegardlessOfTimestamps() {
+    fun `findBestMatch - matches from all types - match in perfect returned regardless of timestamps`() {
         val input = listOf(
             creds("perfect-match.com", 1000),
             creds("imperfect-match.com", 3000),

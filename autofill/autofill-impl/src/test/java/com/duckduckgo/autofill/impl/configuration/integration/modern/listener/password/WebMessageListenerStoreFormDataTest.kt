@@ -71,7 +71,7 @@ class WebMessageListenerStoreFormDataTest {
     }
 
     @Test
-    fun whenStoreFormDataCalledWithNoPasswordThenCallbackInvoked() = runTest {
+    fun `storeFormData - no password - callback invoked`() = runTest {
         configureRequestParserToReturnSaveCredentialRequestType(username = "dax@duck.com", password = null)
         simulateWebMessage()
         assertNotNull(testCallback.credentialsToSave)
@@ -79,14 +79,14 @@ class WebMessageListenerStoreFormDataTest {
     }
 
     @Test
-    fun whenStoreFormDataCalledWithNullUsernameAndPasswordThenCallbackNotInvoked() = runTest {
+    fun `storeFormData - callback not invoked - credentials to save null`() = runTest {
         configureRequestParserToReturnSaveCredentialRequestType(username = null, password = null)
         simulateWebMessage()
         assertNull(testCallback.credentialsToSave)
     }
 
     @Test
-    fun whenStoreFormDataCalledWithBlankUsernameThenCallbackInvoked() = runTest {
+    fun `storeFormData - blank username - callback invoked`() = runTest {
         configureRequestParserToReturnSaveCredentialRequestType(username = " ", password = "password")
         simulateWebMessage()
         assertEquals(" ", testCallback.credentialsToSave!!.username)
@@ -94,7 +94,7 @@ class WebMessageListenerStoreFormDataTest {
     }
 
     @Test
-    fun whenStoreFormDataCalledWithBlankPasswordThenCallbackInvoked() = runTest {
+    fun `storeFormData - blank password - callback invoked`() = runTest {
         configureRequestParserToReturnSaveCredentialRequestType(username = "username", password = " ")
         simulateWebMessage()
         assertEquals("username", testCallback.credentialsToSave!!.username)
@@ -102,7 +102,7 @@ class WebMessageListenerStoreFormDataTest {
     }
 
     @Test
-    fun whenStoreFormDataCalledButSiteInNeverSaveListThenCallbackNotInvoked() = runTest {
+    fun `storeFormData - site in never save list - callback not invoked`() = runTest {
         configureRequestParserToReturnSaveCredentialRequestType(username = "username", password = "password")
         whenever(neverSavedSiteRepository.isInNeverSaveList(any())).thenReturn(true)
         simulateWebMessage()
@@ -110,14 +110,14 @@ class WebMessageListenerStoreFormDataTest {
     }
 
     @Test
-    fun whenStoreFormDataCalledWithBlankUsernameAndBlankPasswordThenCallbackNotInvoked() = runTest {
+    fun `storeFormData - blank username and password - callback not invoked`() = runTest {
         configureRequestParserToReturnSaveCredentialRequestType(username = " ", password = " ")
         simulateWebMessage()
         assertNull(testCallback.credentialsToSave)
     }
 
     @Test
-    fun whenStoreFormDataCalledAndParsingErrorThenExceptionIsContained() = runTest {
+    fun `storeFormData - parsing error - exception contained`() = runTest {
         configureRequestParserToReturnSaveCredentialRequestType(username = "username", password = "password")
         whenever(requestParser.parseStoreFormDataRequest(any())).thenReturn(Result.failure(RuntimeException("Parsing error")))
         simulateWebMessage()
@@ -125,7 +125,7 @@ class WebMessageListenerStoreFormDataTest {
     }
 
     @Test
-    fun whenStoreFormDataCalledWithNoUsernameThenCallbackInvoked() = runTest {
+    fun `storeFormData - no username - callback invoked`() = runTest {
         configureRequestParserToReturnSaveCredentialRequestType(username = null, password = "password")
         simulateWebMessage()
         assertNotNull(testCallback.credentialsToSave)

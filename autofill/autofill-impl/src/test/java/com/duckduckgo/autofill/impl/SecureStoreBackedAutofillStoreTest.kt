@@ -80,14 +80,14 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenAutofillUnavailableAndPrefsAreAllTrueThenReturnTrueForAutofillEnabled() {
+    fun `canAccessSecureStorage - autofill unavailable and prefs are all true - return true for autofill enabled`() {
         setupTestee(canAccessSecureStorage = false)
 
         assertTrue(testee.autofillEnabled)
     }
 
     @Test
-    fun whenAutofillAvailableAndPrefsAreAllFalseThenReturnFalseForAutofillEnabled() = runTest {
+    fun `whenAutofillAvailableAndPrefsAreAllFalse - return false for autofill enabled`() = runTest {
         setupTesteeWithAutofillAvailable()
         whenever(autofillPrefsStore.isEnabled).thenReturn(false)
 
@@ -95,19 +95,19 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenSecureStorageAvailableThenReturnAutofillAvailable() = runTest {
+    fun `setupTestee - secure storage available - autofill available`() = runTest {
         setupTesteeWithAutofillAvailable()
         assertTrue(testee.autofillAvailable)
     }
 
     @Test
-    fun whenSecureStorageNotAvailableThenReturnAutofillAvailableFalse() {
+    fun `whenSecureStorageNotAvailable - return autofill available false`() {
         setupTestee(canAccessSecureStorage = false)
         assertFalse(testee.autofillAvailable)
     }
 
     @Test
-    fun whenAutofillEnabledButCannotAccessSecureStorageThenGetCredentialsWithDomainReturnsEmpty() = runTest {
+    fun `getCredentials - autofill enabled but cannot access secure storage - returns empty`() = runTest {
         setupTestee(canAccessSecureStorage = false)
         val url = "example.com"
         storeCredentials(1, url, "username", "password")
@@ -116,14 +116,14 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenStoreEmptyThenNoMatch() = runTest {
+    fun `containsCredentials - store empty - no match`() = runTest {
         setupTesteeWithAutofillAvailable()
         val result = testee.containsCredentials("example.com", "username", "password")
         assertNotMatch(result)
     }
 
     @Test
-    fun whenStoreContainsMatchingUsernameEntriesButNoneMatchingUrlThenNoMatch() = runTest {
+    fun `containsCredentials - store contains matching username entries but none matching url - no match`() = runTest {
         setupTesteeWithAutofillAvailable()
         storeCredentials(1, "https://example.com", "username", "password")
         val result = testee.containsCredentials("foo.com", "username", "password")
@@ -131,7 +131,7 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenStoreContainsDomainButDifferentCredentialsThenUrlMatch() = runTest {
+    fun `containsCredentials - store contains domain but different credentials - url match`() = runTest {
         setupTesteeWithAutofillAvailable()
         storeCredentials(1, "https://example.com", "username", "password")
         val result = testee.containsCredentials("example.com", "differentUsername", "differentPassword")
@@ -139,7 +139,7 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenPasswordExistsForSiteWithNoUsernameThenReturnUsernameMissing() = runTest {
+    fun `containsCredentials - password exists for site with no username - return username missing`() = runTest {
         setupTesteeWithAutofillAvailable()
         storeCredentials(id = 1, domain = "https://example.com", username = null, password = "password")
         val result = testee.containsCredentials("example.com", "username", "password")
@@ -147,7 +147,7 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenDifferentPasswordExistsForSiteWithNoUsernameThenReturnUrlMatch() = runTest {
+    fun `containsCredentials - different password exists - return url match`() = runTest {
         setupTesteeWithAutofillAvailable()
         storeCredentials(id = 1, domain = "https://example.com", username = null, password = "password")
         val result = testee.containsCredentials("example.com", "username", "not-the-same-password")
@@ -155,7 +155,7 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenStoreContainsDomainAndUsernameButDifferentPassword() = runTest {
+    fun `containsCredentials - different password - true`() = runTest {
         setupTesteeWithAutofillAvailable()
         storeCredentials(1, "https://example.com", "username", "password")
         val result = testee.containsCredentials("example.com", "username", "differentPassword")
@@ -163,7 +163,7 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenStoreContainsMatchingDomainAndUsernameAndPassword() = runTest {
+    fun `containsCredentials - store contains matching domain and username and password - true`() = runTest {
         setupTesteeWithAutofillAvailable()
         storeCredentials(1, "https://example.com", "username", "password")
         val result = testee.containsCredentials("example.com", "username", "password")
@@ -171,7 +171,7 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenNoCredentialsForUrlStoredThenGetCredentialsReturnNothing() = runTest {
+    fun `getCredentials - no credentials stored for url - returns nothing`() = runTest {
         setupTesteeWithAutofillAvailable()
         storeCredentials(1, "url.com", "username1", "password123")
 
@@ -179,13 +179,13 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenNoCredentialsSavedThenGetAllCredentialsReturnNothing() = runTest {
+    fun `getAllCredentials - no credentials saved - returns nothing`() = runTest {
         setupTesteeWithAutofillAvailable()
         assertEquals(0, testee.getAllCredentials().first().size)
     }
 
     @Test
-    fun whenStoredCredentialMissingUsernameAndStoringACredentialWithNoUsernameThenUrlOnlyMatch() = runTest {
+    fun `storeCredential - missing username and storing credential with no username - url only match`() = runTest {
         setupTesteeWithAutofillAvailable()
         storeCredentials(1, "https://example.com", username = null, password = "password")
         val result = testee.containsCredentials("example.com", username = null, password = "differentPassword")
@@ -193,7 +193,7 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenPasswordIsUpdatedForUrlThenUpdatedOnlyMatchingCredential() = runTest {
+    fun `updateCredentials - password updated for url - only matching credential updated`() = runTest {
         setupTesteeWithAutofillAvailable()
         val url = "https://example.com"
         storeCredentials(1, url, "username1", "password123")
@@ -216,7 +216,7 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenPasswordIsUpdatedThenUpdatedOnlyMatchingCredential() = runTest {
+    fun `updateCredentials - password updated - only matching credential updated`() = runTest {
         setupTesteeWithAutofillAvailable()
         val url = "example.com"
         storeCredentials(1, url, "username1", "password123")
@@ -239,7 +239,7 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenDomainIsUpdatedTheCleanRawUrl() = runTest {
+    fun `updateDomain - clean raw URL`() = runTest {
         setupTesteeWithAutofillAvailable()
         val url = "https://example.com"
         storeCredentials(1, url, "username1", "password123")
@@ -258,7 +258,7 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenUsernameIsUpdatedForUrlThenUpdatedOnlyMatchingCredential() = runTest {
+    fun `updateUsernameForUrl - credentials updated`() = runTest {
         setupTesteeWithAutofillAvailable()
         val url = "example.com"
         storeCredentials(1, url, null, "password123")
@@ -281,7 +281,7 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenUsernameMissingForAnotherUrlThenNoUpdatesMade() = runTest {
+    fun `updateCredentials - username missing for another url - no updates made`() = runTest {
         setupTesteeWithAutofillAvailable()
         val urlStored = "example.com"
         val newDomain = "test.com"
@@ -297,7 +297,7 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenSaveCredentialsThenReturnSavedOnGetCredentials() = runTest {
+    fun `saveCredentials - get credentials returned`() = runTest {
         setupTesteeWithAutofillAvailable()
         val url = "example.com"
         val credentials = LoginCredentials(
@@ -312,7 +312,7 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenPasswordIsDeletedThenRemoveCredentialFromStore() = runTest {
+    fun `deleteCredentials - remove credential from store`() = runTest {
         setupTesteeWithAutofillAvailable()
         val url = "example.com"
         storeCredentials(1, url, "username1", "password123")
@@ -328,7 +328,7 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenCredentialWithIdIsStoredTheReturnCredentialsOnGetCredentialsWithId() = runTest {
+    fun `getCredentialsWithId - credential with id stored - returns credentials on get credentials with id`() = runTest {
         setupTesteeWithAutofillAvailable()
         val url = "example.com"
         storeCredentials(1, url, "username1", "password123")
@@ -348,13 +348,13 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenNoCredentialStoredTheReturnNullOnGetCredentialsWithId() = runTest {
+    fun `getCredentialsWithId - no credential stored - returns null`() = runTest {
         setupTesteeWithAutofillAvailable()
         assertNull(testee.getCredentialsWithId(1))
     }
 
     @Test
-    fun whenExactUrlMatchesThenCredentialsReturned() = runTest {
+    fun `getCredentials - exact url matches - credentials returned`() = runTest {
         setupTesteeWithAutofillAvailable()
         val savedUrl = "https://example.com"
         val visitedSite = "https://example.com"
@@ -366,7 +366,7 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenExactSubdomainMatchesThenCredentialsReturned() = runTest {
+    fun `getCredentials - exact subdomain matches - credentials returned`() = runTest {
         setupTesteeWithAutofillAvailable()
         val savedUrl = "https://subdomain.example.com"
         val visitedSite = "https://subdomain.example.com"
@@ -378,7 +378,7 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenExactWwwSubdomainMatchesThenCredentialsReturned() = runTest {
+    fun `getCredentials - exact www subdomain matches - credentials returned`() = runTest {
         setupTesteeWithAutofillAvailable()
         val savedUrl = "https://www.example.com"
         val visitedSite = "https://www.example.com"
@@ -390,7 +390,7 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenSavedCredentialHasSubdomainAndVisitedPageDoesNotThenCredentialMatched() = runTest {
+    fun `getCredentials - saved credential has subdomain and visited page does not match - no match`() = runTest {
         setupTesteeWithAutofillAvailable()
         val savedUrl = "https://test.example.com"
         val visitedSite = "https://example.com"
@@ -401,7 +401,7 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenSavedCredentialHasNoSubdomainAndVisitedPageDoesThenCredentialNotMatched() = runTest {
+    fun `getCredentials - no subdomain and visited page does not match - credential not matched`() = runTest {
         setupTesteeWithAutofillAvailable()
         val savedUrl = "https://example.com"
         val visitedSite = "https://test.example.com"
@@ -412,7 +412,7 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenSavedCredentialHasDifferentSubdomainToVisitedPageSubdomainThenCredentialMatched() = runTest {
+    fun `getCredentials - saved credential has different subdomain to visited page subdomain - credential matched`() = runTest {
         setupTesteeWithAutofillAvailable()
         val savedUrl = "https://test.example.com"
         val visitedSite = "https://different.example.com"
@@ -423,7 +423,7 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenReinsertingLoginCredentialsThenAllFieldsPreserved() = runTest {
+    fun `reinsertCredentials - all fields preserved`() = runTest {
         setupTesteeWithAutofillAvailable()
         val originalCredentials = LoginCredentials(
             id = 123,
@@ -448,7 +448,7 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenUpdatingCredentialsByDefaultLastUpdatedTimestampGetsUpdated() = runTest {
+    fun `updateCredentials - last updated timestamp gets updated`() = runTest {
         setupTesteeWithAutofillAvailable()
         val saved = storeCredentials(id = 1, domain = "example.com", username = "username", password = "password")
         val updated = testee.updateCredentials(saved)!!
@@ -456,7 +456,7 @@ class SecureStoreBackedAutofillStoreTest {
     }
 
     @Test
-    fun whenUpdatingCredentialsAndSpecifyNotToUpdateLastUpdatedTimestampThenNotUpdated() = runTest {
+    fun `updateCredentials - not update last updated timestamp - not updated`() = runTest {
         setupTesteeWithAutofillAvailable()
         val saved = storeCredentials(id = 1, domain = "example.com", username = "username", password = "password")
         val updated = testee.updateCredentials(saved, refreshLastUpdatedTimestamp = false)!!

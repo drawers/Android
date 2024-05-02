@@ -79,56 +79,56 @@ class ResultHandlerEmailProtectionChooseEmailTest {
     }
 
     @Test
-    fun whenUserSelectedToUsePersonalAddressThenCorrectResponsePosted() = runTest {
+    fun `processResult - user selected personal address - correct response posted`() = runTest {
         val bundle = bundle(result = UsePersonalEmailAddress)
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
         verify(messagePoster).postMessage(argWhere { it.contains(""""alias": "personal-example""") }, any())
     }
 
     @Test
-    fun whenUserSelectedToUsePrivateAliasAddressThenCorrectResponsePosted() = runTest {
+    fun `processResult - user selected private alias address - correct response posted`() = runTest {
         val bundle = bundle(result = UsePrivateAliasAddress)
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
         verify(messagePoster).postMessage(argWhere { it.contains(""""alias": "private-example""") }, any())
     }
 
     @Test
-    fun whenUrlMissingFromBundleThenExceptionThrown() = runTest {
+    fun `processResult - url missing from bundle - exception thrown`() = runTest {
         val bundle = bundle(url = null, result = UsePersonalEmailAddress)
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
         verifyNoInteractions(callback)
     }
 
     @Test
-    fun whenResultTypeMissingFromBundleThenExceptionThrown() = runTest {
+    fun `processResult - result type missing from bundle - exception thrown`() = runTest {
         val bundle = bundle(result = null)
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
         verifyNoInteractions(callback)
     }
 
     @Test
-    fun whenUserSelectedToUsePrivateAliasAddressThenSetNewLastUsedDateCalled() = runTest {
+    fun `processResult - user selected private alias address - set new last used date called`() = runTest {
         val bundle = bundle(result = UsePrivateAliasAddress)
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
         verify(emailManager).setNewLastUsedDate()
     }
 
     @Test
-    fun whenUserSelectedToUsePersonalDuckAddressThenSetNewLastUsedDateCalled() = runTest {
+    fun `processResult - user selected personal duck address - set new last used date called`() = runTest {
         val bundle = bundle(result = UsePersonalEmailAddress)
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
         verify(emailManager).setNewLastUsedDate()
     }
 
     @Test
-    fun whenUserSelectedNotToUseEmailProtectionThenPixelSent() = runTest {
+    fun `processResult - user selected not to use email protection - pixel sent`() = runTest {
         val bundle = bundle(result = DoNotUseEmailProtection)
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
         verify(pixel).enqueueFire(EMAIL_TOOLTIP_DISMISSED, mapOf(COHORT to "cohort"))
     }
 
     @Test
-    fun whenUserSelectedToUsePersonalDuckAddressThenPixelSent() = runTest {
+    fun `processResult - user selected personal duck address - pixel sent`() = runTest {
         val bundle = bundle(result = UsePersonalEmailAddress)
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
         verify(pixel).enqueueFire(
@@ -138,7 +138,7 @@ class ResultHandlerEmailProtectionChooseEmailTest {
     }
 
     @Test
-    fun whenUserSelectedToUsePrivateAliasThenPixelSent() = runTest {
+    fun `processResult - user selected private alias - pixel sent`() = runTest {
         val bundle = bundle(result = UsePrivateAliasAddress)
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
         verify(pixel).enqueueFire(

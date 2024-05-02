@@ -31,30 +31,30 @@ class AutofillWebMessageListenerTest {
     }
 
     @Test
-    fun whenStoreReplyThenGetBackNonNullId() {
+    fun `testStoreReply - store reply - not null id`() {
         assertNotNull(testee.testStoreReply(mockReply))
     }
 
     @Test
-    fun whenAttemptResponseWithNoAssociatedReplyThenMessageNotHandled() {
+    fun `onResponse - no associated reply - message not handled`() {
         assertFalse(testee.onResponse("message", "unknown-request-id"))
     }
 
     @Test
-    fun whenAttemptResponseWithAnAssociatedReplyThenMessageIsHandled() {
+    fun `onResponse - attempt response with associated reply - message handled`() {
         val requestId = testee.testStoreReply(mockReply)
         assertTrue(testee.onResponse("message", requestId))
     }
 
     @Test
-    fun whenReplyIsUsedThenItIsCleanedUp() {
+    fun `onResponse - reply used - cleaned up`() {
         val requestId = testee.testStoreReply(mockReply)
         assertTrue(testee.onResponse("message", requestId))
         assertFalse(testee.onResponse("message", requestId))
     }
 
     @Test
-    fun whenMaxConcurrentRepliesInUseThenAllStillUsable() {
+    fun `onResponse - max concurrent replies in use - all still usable`() {
         val requestIds = mutableListOf<String>()
         repeat(10) { requestIds.add(it, testee.testStoreReply(mockReply)) }
         requestIds.forEach {
@@ -63,7 +63,7 @@ class AutofillWebMessageListenerTest {
     }
 
     @Test
-    fun whenMaxConcurrentRepliesPlusOneInUseThenAllButFirstIsStillUsable() {
+    fun `onResponse - max concurrent replies plus one in use - all but first is still usable`() {
         val requestIds = mutableListOf<String>()
         repeat(11) { requestIds.add(it, testee.testStoreReply(mockReply)) }
         assertFalse(testee.onResponse("message", requestIds.first()))

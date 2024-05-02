@@ -77,7 +77,7 @@ class ResultHandlerUseGeneratedPasswordTest {
     }
 
     @Test
-    fun whenUserRejectedToUsePasswordThenCorrectResponsePosted() = runTest {
+    fun `processResult - user rejected to use password - correct response posted`() = runTest {
         val bundle = bundle("example.com", acceptedGeneratedPassword = false)
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
         verify(responseWriter).generateResponseForRejectingGeneratedPassword()
@@ -85,7 +85,7 @@ class ResultHandlerUseGeneratedPasswordTest {
     }
 
     @Test
-    fun whenUserAcceptedToUsePasswordNoAutoLoginInThenCorrectResponsePosted() = runTest {
+    fun `processResult - user accepted to use password no auto login in - correct response posted`() = runTest {
         whenever(autoSavedLoginsMonitor.getAutoSavedLoginId(any())).thenReturn(null)
         val bundle = bundle("example.com", acceptedGeneratedPassword = true, password = "pw")
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
@@ -94,7 +94,7 @@ class ResultHandlerUseGeneratedPasswordTest {
     }
 
     @Test
-    fun whenUserAcceptedToUsePasswordNoAutoLoginInThenCredentialIsSaved() = runTest {
+    fun `processResult - user accepted to use password no auto login in - credential is saved`() = runTest {
         whenever(autoSavedLoginsMonitor.getAutoSavedLoginId(any())).thenReturn(null)
         val bundle = bundle("example.com", acceptedGeneratedPassword = true, password = "pw")
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
@@ -102,7 +102,7 @@ class ResultHandlerUseGeneratedPasswordTest {
     }
 
     @Test
-    fun whenUserAcceptedToUsePasswordNoAutoLoginInThenAutoLoginIdUpdated() = runTest {
+    fun `processResult - user accepted to use password no auto login in - auto login id updated`() = runTest {
         whenever(autoSavedLoginsMonitor.getAutoSavedLoginId(any())).thenReturn(null)
         whenever(autofillStore.saveCredentials(any(), any())).thenReturn(aLogin(1))
 
@@ -112,7 +112,7 @@ class ResultHandlerUseGeneratedPasswordTest {
     }
 
     @Test
-    fun whenUserAcceptedToUsePasswordAutoLoginIdNotFoundThenLoginSaved() = runTest {
+    fun `processResult - user accepted to use password auto login id not found - login saved`() = runTest {
         whenever(autoSavedLoginsMonitor.getAutoSavedLoginId(any())).thenReturn(1)
         whenever(autofillStore.getCredentialsWithId(1)).thenReturn(null)
 
@@ -122,7 +122,7 @@ class ResultHandlerUseGeneratedPasswordTest {
     }
 
     @Test
-    fun whenUserAcceptedToUsePasswordAutoLoginIdFoundAndAlreadyMatchesThenNothingSavedOrUpdated() = runTest {
+    fun `processResult - user accepted to use password auto login id found and already matches - nothing saved or updated`() = runTest {
         val testLogin = aLogin(id = 1)
         whenever(autoSavedLoginsMonitor.getAutoSavedLoginId(any())).thenReturn(1)
         whenever(autofillStore.getCredentialsWithId(1)).thenReturn(testLogin)
@@ -139,7 +139,7 @@ class ResultHandlerUseGeneratedPasswordTest {
     }
 
     @Test
-    fun whenUserAcceptedToUsePasswordAutoLoginIdFoundAndDoesNotMatchUsernameThenUpdated() = runTest {
+    fun `processResult - user accepted password auto login id found and does not match username - updated`() = runTest {
         val testLogin = aLogin(id = 1)
         whenever(autoSavedLoginsMonitor.getAutoSavedLoginId(any())).thenReturn(1)
         whenever(autofillStore.getCredentialsWithId(1)).thenReturn(testLogin)
@@ -156,7 +156,7 @@ class ResultHandlerUseGeneratedPasswordTest {
     }
 
     @Test
-    fun whenUserAcceptedToUsePasswordAutoLoginIdFoundAndDoesNotMatchPasswordThenUpdated() = runTest {
+    fun `processResult - user accepted password auto login id found and does not match password - updated`() = runTest {
         val testLogin = aLogin(id = 1)
         whenever(autoSavedLoginsMonitor.getAutoSavedLoginId(any())).thenReturn(1)
         whenever(autofillStore.getCredentialsWithId(1)).thenReturn(testLogin)
@@ -173,7 +173,7 @@ class ResultHandlerUseGeneratedPasswordTest {
     }
 
     @Test
-    fun whenUserAcceptedToUsePasswordButPasswordIsNullThen() = runTest {
+    fun `processResult - user accepted password but password is null - does not generate response or post message`() = runTest {
         val bundle = bundle("example.com", acceptedGeneratedPassword = true, password = null)
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
 
@@ -182,7 +182,7 @@ class ResultHandlerUseGeneratedPasswordTest {
     }
 
     @Test
-    fun whenBundleMissingUrlThenCallbackNotInvoked() = runTest {
+    fun `processResult - bundle missing url - callback not invoked`() = runTest {
         val bundle = bundle(url = null, acceptedGeneratedPassword = true)
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
         verifyNoInteractions(callback)

@@ -54,7 +54,7 @@ class ResultHandlerUpdateLoginCredentialsTest {
     )
 
     @Test
-    fun whenUpdateBundleMissingUrlThenNoAttemptToUpdateMade() = runTest {
+    fun `processBundle - update bundle missing URL - no attempt to update made`() = runTest {
         val bundle = bundleForUpdateDialog(
             url = null,
             credentials = someLoginCredentials(),
@@ -65,7 +65,7 @@ class ResultHandlerUpdateLoginCredentialsTest {
     }
 
     @Test
-    fun whenUpdateBundleMissingCredentialsThenNoAttemptToSaveMade() = runTest {
+    fun `processBundle - update bundle missing credentials - no attempt to save made`() = runTest {
         val bundle =
             bundleForUpdateDialog(url = "example.com", credentials = null, Password)
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
@@ -73,7 +73,7 @@ class ResultHandlerUpdateLoginCredentialsTest {
     }
 
     @Test
-    fun whenUpdateBundleWellFormedThenCredentialsAreUpdated() = runTest {
+    fun `processResult - update bundle well formed - credentials updated`() = runTest {
         val loginCredentials = LoginCredentials(domain = "example.com", username = "foo", password = "bar")
         val bundle = bundleForUpdateDialog("example.com", loginCredentials, Password)
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)

@@ -30,7 +30,7 @@ import org.mockito.kotlin.verify
 internal class CredentialsSyncMapperTest {
 
     @Test
-    fun whenMapRemoteLoginCredentialThenLoginCredentials() {
+    fun `mapRemoteLoginCredential - toLoginCredential - login credentials`() {
         val syncCrypto = FakeCrypto()
         val credentialsSyncMapper = CredentialsSyncMapper(syncCrypto)
         val toLoginCredentialEntryResponse = twitterCredentials.toLoginCredentialEntryResponse()
@@ -53,7 +53,7 @@ internal class CredentialsSyncMapperTest {
     }
 
     @Test
-    fun whenMapRemoteLoginCredentialThenEnsureFieldsDecrypted() {
+    fun `whenMapRemoteLoginCredential - ensure fields decrypted`() {
         val syncCrypto = mock<SyncCrypto>()
         val credentialsSyncMapper = CredentialsSyncMapper(syncCrypto)
         val toLoginCredentialEntryResponse = twitterCredentials.toLoginCredentialEntryResponse()
