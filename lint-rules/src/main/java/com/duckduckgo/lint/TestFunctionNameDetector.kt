@@ -43,8 +43,15 @@ import kotlin.io.path.Path
 @Suppress("UnstableApiUsage")
 class TestFunctionNameDetector : Detector(), SourceCodeScanner {
 
-    override fun beforeCheckRootProject(context: Context) {
-        super.beforeCheckRootProject(context)
+    /**
+     * Prevents conflicting overloads from using the same name twice
+     * when the LM cannot distinguish two test cases.
+     */
+    private val usedNames = hashSetOf<String>()
+
+    override fun beforeCheckFile(context: Context) {
+        super.beforeCheckFile(context)
+        usedNames.clear()
     }
 
     override fun applicableAnnotations() = listOf("org.junit.Test")
@@ -127,6 +134,10 @@ class TestFunctionNameDetector : Detector(), SourceCodeScanner {
         val proposedFunctionName = response.substring(firstBackTick..secondBackTick)
 
         if (proposedFunctionName.isEmpty()) {
+            return null
+        }
+
+        if (!usedNames.add(proposedFunctionName)) {
             return null
         }
 
