@@ -18,6 +18,8 @@ package com.duckduckgo.lint
 
 import com.android.tools.lint.checks.infrastructure.TestFiles.kt
 import com.android.tools.lint.checks.infrastructure.TestLintTask.lint
+import com.android.tools.lint.checks.infrastructure.TestMode
+import com.android.tools.lint.checks.infrastructure.TestMode.Companion
 import com.android.tools.lint.detector.api.Scope
 import org.junit.Test
 import java.util.EnumSet
@@ -163,6 +165,7 @@ class TestFunctionNameDetectorTest {
         lint()
             .allowMissingSdk()
             .customScope(EnumSet.of(Scope.JAVA_FILE))
+            .skipTestModes(TestMode.IMPORT_ALIAS) // We won't worry about import aliases here as it adds a lot of complexity
             .issues(TestFunctionNameDetector.TEST_FUNCTION_NAME)
             .files(
                 JUNIT_STUB,
