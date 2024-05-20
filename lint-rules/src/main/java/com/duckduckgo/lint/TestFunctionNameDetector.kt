@@ -34,8 +34,12 @@ import dev.langchain4j.data.message.UserMessage
 import dev.langchain4j.model.chat.ChatLanguageModel
 import dev.langchain4j.model.ollama.OllamaChatModel
 import org.jetbrains.kotlin.psi.KtNamedDeclaration
+import org.jetbrains.kotlin.toKtPsiSourceElement
+import org.jetbrains.uast.UClass
 import org.jetbrains.uast.UElement
+import org.jetbrains.uast.getParentOfType
 import org.jetbrains.uast.kotlin.KotlinUMethod
+import org.jetbrains.uast.skipParentOfType
 import java.util.EnumSet
 import kotlin.LazyThreadSafetyMode.SYNCHRONIZED
 import kotlin.io.path.Path
@@ -65,6 +69,15 @@ class TestFunctionNameDetector : Detector(), SourceCodeScanner {
         usageInfo: AnnotationUsageInfo,
     ) {
         if (context.isAndroidTest()) return
+
+        // Skip parameterized tests
+        val containerClass = element.getParentOfType<UClass>() ?: return
+        val annotation = containerClass.getAnnotation("org.junit.runner.RunWith")
+        if (annotation != null) {
+            if ("Parameterized" in annotation.parameterList.attributes.firstOrNull()?.value?.text.orEmpty()) {
+                return
+            }
+        }
 
         val method = element.uastParent as? KotlinUMethod ?: return
 

@@ -158,6 +158,40 @@ class TestFunctionNameDetectorTest {
             .expectClean()
     }
 
+    @Test
+    fun `parameterized test - clean`() {
+        lint()
+            .allowMissingSdk()
+            .customScope(EnumSet.of(Scope.JAVA_FILE))
+            .issues(TestFunctionNameDetector.TEST_FUNCTION_NAME)
+            .files(
+                JUNIT_STUB,
+                RUNNER_STUB,
+                kt(
+                    """
+                package com.example        
+
+                import org.junit.Test
+                import org.junit.runner.Parameterized
+                import org.junit.runner.RunWith
+                
+                @RunWith(Parameterized::class)
+                class Test {
+                    @Test
+                    fun `Foo - Bar`() {
+                        println("hello")
+                    }
+                }
+            """,
+                ),
+            )
+
+            .run()
+            .expectClean()
+    }
+
+
+
     companion object {
 
         val JUNIT_STUB = kt(
@@ -165,6 +199,18 @@ class TestFunctionNameDetectorTest {
                 package org.junit
 
                 annotation class Test
+            """,
+        )
+
+        val RUNNER_STUB = kt(
+            """
+                package org.junit.runner
+
+                open class Runner
+
+                class Parameterized: Runner
+
+                annotation class RunWith(val value: KClass<out Runner>)
             """,
         )
     }
