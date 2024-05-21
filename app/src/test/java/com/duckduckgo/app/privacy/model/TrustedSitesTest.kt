@@ -26,12 +26,12 @@ import org.junit.runner.RunWith
 class TrustedSitesTest {
 
     @Test
-    fun whenSiteIsInTrustedListThenIsTrustedIsTrue() {
+    fun `isTrusted - site in trusted list - is true`() {
         assertTrue(TrustedSites.isTrusted("https://www.duckduckgo.com"))
     }
 
     @Test
-    fun whenSiteIsNotInTrustedListThenIsTrustedIsFalse() {
+    fun `isTrusted - site not in trusted list - is false`() {
         assertFalse(TrustedSites.isTrusted("https://www.example.com"))
     }
 }

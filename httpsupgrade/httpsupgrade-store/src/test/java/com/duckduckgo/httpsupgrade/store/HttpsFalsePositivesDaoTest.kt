@@ -56,29 +56,29 @@ class HttpsFalsePositivesDaoTest {
     }
 
     @Test
-    fun whenModelIsEmptyThenCountIsZero() = runTest {
+    fun `count - model empty - zero`() = runTest {
         assertEquals(0, dao.count())
     }
 
     @Test
-    fun whenModelIsEmptyThenContainsDomainIsFalse() = runTest {
+    fun `containsDomain - model empty - false`() = runTest {
         assertFalse(dao.contains(domain))
     }
 
     @Test
-    fun whenDomainInsertedThenContainsDomainIsTrue() = runTest {
+    fun `insertAll - contains domain is true`() = runTest {
         dao.insertAll(listOf(HttpsFalsePositiveDomain(domain)))
         assertTrue(dao.contains(domain))
     }
 
     @Test
-    fun whenDomainInsertedThenCountIsOne() = runTest {
+    fun `insertAll - count is one`() = runTest {
         dao.insertAll(listOf(HttpsFalsePositiveDomain(domain)))
         assertEquals(1, dao.count())
     }
 
     @Test
-    fun whenSecondUniqueDomainInsertedThenCountIsTwo() = runTest {
+    fun `insertAll - count is two`() = runTest {
         dao.insertAll(listOf(HttpsFalsePositiveDomain(domain)))
         dao.insertAll(listOf(HttpsFalsePositiveDomain(anotherDomain)))
         assertEquals(2, dao.count())
@@ -92,7 +92,7 @@ class HttpsFalsePositivesDaoTest {
     }
 
     @Test
-    fun whenAllUpdatedThenPreviousValuesAreReplaced() = runTest {
+    fun `updateAll - previous values replaced`() = runTest {
         dao.insertAll(listOf(HttpsFalsePositiveDomain(domain)))
         dao.updateAll(listOf(HttpsFalsePositiveDomain(anotherDomain)))
         assertEquals(1, dao.count())
@@ -100,7 +100,7 @@ class HttpsFalsePositivesDaoTest {
     }
 
     @Test
-    fun whenAllDeletedThenContainsDomainIsFalse() = runTest {
+    fun `insertAll - delete all - does not contain domain`() = runTest {
         dao.insertAll(listOf(HttpsFalsePositiveDomain(domain)))
         dao.deleteAll()
         assertFalse(dao.contains(domain))

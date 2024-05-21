@@ -66,7 +66,7 @@ class EmailJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenIsSignedInAndUrlIsDuckDuckGoEmailThenIsSignedInCalled() {
+    fun `isSignedIn - is signed in and url is duckduckgo email - is signed in called`() {
         whenever(mockWebView.url).thenReturn(DUCKDUCKGO_EMAIL_URL)
 
         testee.isSignedIn()
@@ -75,7 +75,7 @@ class EmailJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenIsSignedInAndUrlIsNotDuckDuckGoEmailThenIsSignedInNotCalled() {
+    fun `isSignedIn - is signed in and url not duckduckgo email - is signed in not called`() {
         whenever(mockWebView.url).thenReturn(NON_EMAIL_URL)
 
         testee.isSignedIn()
@@ -84,7 +84,7 @@ class EmailJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenStoreCredentialsAndUrlIsDuckDuckGoEmailThenStoreCredentialsCalledWithCorrectParameters() {
+    fun `storeCredentials - store credentials called with correct parameters`() {
         whenever(mockWebView.url).thenReturn(DUCKDUCKGO_EMAIL_URL)
 
         testee.storeCredentials("token", "username", "cohort")
@@ -93,7 +93,7 @@ class EmailJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenStoreCredentialsAndUrlIsNotDuckDuckGoEmailThenStoreCredentialsNotCalled() {
+    fun `storeCredentials - url is not duckduckgo email - store credentials not called`() {
         whenever(mockWebView.url).thenReturn(NON_EMAIL_URL)
 
         testee.storeCredentials("token", "username", "cohort")
@@ -102,7 +102,7 @@ class EmailJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenGetUserDataAndUrlIsDuckDuckGoEmailThenGetUserDataCalled() {
+    fun `getUserData - url is duckduckgo email - get user data called`() {
         whenever(mockWebView.url).thenReturn(DUCKDUCKGO_EMAIL_URL)
 
         testee.getUserData()
@@ -111,7 +111,7 @@ class EmailJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenGetUserDataAndUrlIsNotDuckDuckGoEmailThenGetUserDataIsNotCalled() {
+    fun `getUserData - url is not duckduckgo email - get user data is not called`() {
         whenever(mockWebView.url).thenReturn(NON_EMAIL_URL)
 
         testee.getUserData()
@@ -120,7 +120,7 @@ class EmailJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenShowTooltipThenLambdaCalled() {
+    fun `showTooltip - lambda called`() {
         whenever(mockWebView.url).thenReturn(NON_EMAIL_URL)
 
         testee.showTooltip()
@@ -129,7 +129,7 @@ class EmailJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenShowTooltipAndFeatureDisabledThenLambdaNotCalled() {
+    fun `showTooltip - feature disabled - lambda not called`() {
         whenever(mockWebView.url).thenReturn(NON_EMAIL_URL)
         autofillFeature.self().setEnabled(Toggle.State(enable = false))
 
@@ -139,7 +139,7 @@ class EmailJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenShowTooltipAndUrlIsAnExceptionThenLambdaNotCalled() {
+    fun `showTooltip - url is an exception - lambda not called`() {
         whenever(mockWebView.url).thenReturn(NON_EMAIL_URL)
         whenever(mockAutofill.isAnException(any())).thenReturn(true)
 
@@ -149,14 +149,14 @@ class EmailJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenGetDeviceCapabilitiesAndUrlIsDuckDuckGoEmailThenReturnNonEmptyString() {
+    fun `getDeviceCapabilities - url is duckduckgo email - return non empty string`() {
         whenever(mockWebView.url).thenReturn(DUCKDUCKGO_EMAIL_URL)
 
         assert(testee.getDeviceCapabilities().isNotBlank())
     }
 
     @Test
-    fun whenGetDeviceCapabilitiesAndUrlIsNotDuckDuckGoEmailThenReturnEmptyString() {
+    fun `getDeviceCapabilities - url is not duckduckgo email - empty string`() {
         whenever(mockWebView.url).thenReturn(NON_EMAIL_URL)
 
         assert(testee.getDeviceCapabilities().isBlank())

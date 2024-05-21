@@ -34,7 +34,7 @@ class DeviceAttributeMatcherTest {
     private val testee = DeviceAttributeMatcher(appBuildConfig, appProperties)
 
     @Test
-    fun whenDeviceMatchesLocaleThenReturnMatch() = runTest {
+    fun `evaluate - device matches locale - returns match`() = runTest {
         givenDeviceProperties(locale = java.util.Locale.US)
 
         val result = testee.evaluate(
@@ -45,7 +45,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenDeviceMatchesAnyLocaleThenReturnMatch() = runTest {
+    fun `evaluate - device matches any locale - returns match`() = runTest {
         givenDeviceProperties(locale = java.util.Locale.US)
 
         val result = testee.evaluate(
@@ -56,7 +56,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenDeviceDoesNotMatchLocaleThenReturnFail() = runTest {
+    fun `evaluate - device does not match locale - return fail`() = runTest {
         givenDeviceProperties(locale = java.util.Locale.FRANCE)
 
         val result = testee.evaluate(
@@ -67,7 +67,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenLocaleMatchingAttributeIsEmptyThenReturnFail() = runTest {
+    fun `evaluate - locale matching attribute empty - return fail`() = runTest {
         givenDeviceProperties(locale = java.util.Locale.US)
 
         val result = testee.evaluate(
@@ -78,7 +78,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenDeviceSameAsOsApiLevelThenReturnMatch() = runTest {
+    fun `evaluate - device same as os api level - return match`() = runTest {
         givenDeviceProperties(apiLevel = 21)
 
         val result = testee.evaluate(Api(value = 21))
@@ -87,7 +87,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenDeviceDifferentAsOsApiLevelThenReturnFail() = runTest {
+    fun `evaluate - device different as os api level - return fail`() = runTest {
         givenDeviceProperties(apiLevel = 21)
 
         val result = testee.evaluate(Api(value = 19))
@@ -96,7 +96,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenDeviceMatchesOsApiLevelThenReturnMatch() = runTest {
+    fun `evaluate - device matches os api level - returns match`() = runTest {
         givenDeviceProperties(apiLevel = 21)
 
         val result = testee.evaluate(Api(min = 19))
@@ -105,7 +105,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenDeviceMatchesOsApiLevelRangeThenReturnMatch() = runTest {
+    fun `evaluate - device matches os api level range - returns match`() = runTest {
         givenDeviceProperties(apiLevel = 21)
 
         val result = testee.evaluate(Api(min = 19, max = 23))
@@ -114,7 +114,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenDeviceDoesNotMatchesOsApiLevelRangeThenReturnMatch() = runTest {
+    fun `evaluate - device does not match os api level range - returns match`() = runTest {
         givenDeviceProperties(apiLevel = 23)
 
         val result = testee.evaluate(Api(min = 19, max = 21))
@@ -123,7 +123,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenDeviceDoesNotMatchOsApiLevelThenReturnFail() = runTest {
+    fun `evaluate - device does not match os api level - return fail`() = runTest {
         givenDeviceProperties(apiLevel = 21)
 
         val result = testee.evaluate(Api(max = 19))
@@ -132,7 +132,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenOsApiMatchingAttributeEmptyThenReturnFail() = runTest {
+    fun `evaluate - os api matching attribute empty - return fail`() = runTest {
         givenDeviceProperties(apiLevel = 21)
 
         val result = testee.evaluate(Api())
@@ -141,7 +141,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenDeviceWVSameAsWVVersionThenReturnMatch() = runTest {
+    fun `evaluate - device WV same as WV version - return match`() = runTest {
         givenDeviceProperties(webView = "96.0.4664.104")
 
         val result = testee.evaluate(WebView(value = "96.0.4664.104"))
@@ -150,7 +150,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenDeviceWVDifferentAsWVVersionThenReturnMatch() = runTest {
+    fun `evaluate - device WV different as WV version - return match`() = runTest {
         givenDeviceProperties(webView = "96.0.4664.104")
 
         val result = testee.evaluate(WebView(value = "96.0.4664.105"))
@@ -159,7 +159,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenDeviceWVLowerThanMaxWVVersionThenReturnMatch() = runTest {
+    fun `evaluate - device WV lower than max WV version - returns match`() = runTest {
         givenDeviceProperties(webView = "96.0.4664.104")
 
         val result = testee.evaluate(WebView(max = "96.0.4665.101"))
@@ -168,7 +168,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenDeviceWVGreaterThanMaxWVVersionThenReturnFail() = runTest {
+    fun `evaluate - device WV greater than max WV version - return fail`() = runTest {
         givenDeviceProperties(webView = "96.0.4665.0")
 
         val result = testee.evaluate(WebView(max = "96.0.4664.101"))
@@ -177,7 +177,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenDeviceWVGreaterThanMinWVVersionThenReturnMatch() = runTest {
+    fun `evaluate - device WV greater than min WV version - returns match`() = runTest {
         givenDeviceProperties(webView = "96.0.4665.104")
 
         val result = testee.evaluate(WebView(min = "96.0.4664.101"))
@@ -186,7 +186,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenDeviceWVLowerThanMinWVVersionThenReturnFail() = runTest {
+    fun `evaluate - device WV lower than min WV version - return fail`() = runTest {
         givenDeviceProperties(webView = "96.0.4664.104")
 
         val result = testee.evaluate(WebView(min = "96.1.4664.104"))
@@ -195,7 +195,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenDeviceMatchesWebViewMaxVersionThenReturnMatch() = runTest {
+    fun `evaluate - device matches web view max version - returns match`() = runTest {
         givenDeviceProperties(webView = "96.0.4664.104")
 
         val result = testee.evaluate(WebView(max = "96.0.4664.104"))
@@ -204,7 +204,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenDeviceMatchesWebViewMinVersionThenReturnMatch() = runTest {
+    fun `evaluate - device matches web view min version - returns match`() = runTest {
         givenDeviceProperties(webView = "96.0.4664.104")
 
         val result = testee.evaluate(WebView(min = "96.0.4664.104"))
@@ -213,7 +213,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenDeviceWVMatchesMaxSimplifiedWVVersionThenReturnMatch() = runTest {
+    fun `evaluate - device WV matches max simplified WV version - returns match`() = runTest {
         givenDeviceProperties(webView = "96.0.4664.104")
 
         val result = testee.evaluate(WebView(max = "96"))
@@ -222,7 +222,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenDeviceWVMatchesMinSimplifiedWVVersionThenReturnMatch() = runTest {
+    fun `evaluate - device WV matches min simplified WV version - returns match`() = runTest {
         givenDeviceProperties(webView = "96.0.4664.104")
 
         val result = testee.evaluate(WebView(min = "96"))
@@ -231,7 +231,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenDeviceWVGreaterThanMaxSimplifiedWVVersionThenReturnFail() = runTest {
+    fun `evaluate - device WV greater than max simplified WV version - return fail`() = runTest {
         givenDeviceProperties(webView = "96.0.4664.104")
 
         val result = testee.evaluate(WebView(max = "95"))
@@ -240,7 +240,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenDeviceWVLowerThanMinSimplifiedWVVersionThenReturnFail() = runTest {
+    fun `evaluate - device WV lower than min simplified WV version - return fail`() = runTest {
         givenDeviceProperties(webView = "96.0.4664.104")
 
         val result = testee.evaluate(WebView(min = "97"))
@@ -249,7 +249,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenDeviceDoesNotProvideWVVersionsThenReturnFail() = runTest {
+    fun `evaluate - device does not provide WV versions - return fail`() = runTest {
         givenDeviceProperties(webView = "")
 
         val result = testee.evaluate(WebView(min = "97"))
@@ -258,7 +258,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenDeviceWVVersionHasUnknownFormatThenReturnFail() = runTest {
+    fun `evaluate - device WV version unknown format - return fail`() = runTest {
         givenDeviceProperties(webView = "test93.91.0")
 
         val result = testee.evaluate(WebView(min = "91"))
@@ -267,7 +267,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenDeviceWVVersionHasUnknownFormatInBetweenThenReturnFail() = runTest {
+    fun `evaluate - device WV version has unknown format in between - return fail`() = runTest {
         givenDeviceProperties(webView = "93.91.test.0")
 
         val result = testee.evaluate(WebView(min = "91"))
@@ -276,7 +276,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenDeviceWVVersionHasUnknownFormatAtEndThenReturnFail() = runTest {
+    fun `evaluate - device WV version has unknown format at end - return fail`() = runTest {
         givenDeviceProperties(webView = "93.91.0.test")
 
         val result = testee.evaluate(WebView(min = "91"))
@@ -285,7 +285,7 @@ class DeviceAttributeMatcherTest {
     }
 
     @Test
-    fun whenEmptyWebViewMatchingAttributeThenReturnFail() = runTest {
+    fun `evaluate - empty web view matching attribute - return fail`() = runTest {
         givenDeviceProperties(webView = "96.0.4664.104")
 
         val result = testee.evaluate(WebView())

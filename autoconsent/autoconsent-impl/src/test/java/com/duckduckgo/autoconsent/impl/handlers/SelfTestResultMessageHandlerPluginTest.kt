@@ -35,14 +35,14 @@ class SelfTestResultMessageHandlerPluginTest {
     private val selfTestPlugin = SelfTestResultMessageHandlerPlugin()
 
     @Test
-    fun whenProcessIfMessageTypeIsNotSelfTestThenDoNothing() {
+    fun `process - if message type is not self test - do nothing`() {
         selfTestPlugin.process("noMatching", "", webView, mockCallback)
 
         verifyNoInteractions(mockCallback)
     }
 
     @Test
-    fun whenProcessIfCannotParseMessageThenDoNothing() {
+    fun `processIfCannotParseMessage - do nothing`() {
         val message = """
             {"type":"${selfTestPlugin.supportedTypes.first()}", cmp: "test", "result": true, "url": "http://example.com"}
         """.trimIndent()
@@ -53,7 +53,7 @@ class SelfTestResultMessageHandlerPluginTest {
     }
 
     @Test
-    fun whenProcessThenCallDashboardWithCorrectParameters() {
+    fun `process - dashboard with correct parameters - on result received`() {
         val message = """
             {"type":"${selfTestPlugin.supportedTypes.first()}", "cmp": "test", "result": true, "url": "http://example.com"}
         """.trimIndent()

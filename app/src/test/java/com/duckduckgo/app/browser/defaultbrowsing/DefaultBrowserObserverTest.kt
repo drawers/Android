@@ -49,7 +49,7 @@ class DefaultBrowserObserverTest {
     }
 
     @Test
-    fun whenDDGIsDefaultBrowserIfItWasNotBeforeThenFireSetPixel() {
+    fun `onResume - DDG is default browser if not before - fire set pixel`() {
         whenever(mockDefaultBrowserDetector.isDefaultBrowser()).thenReturn(true)
         whenever(mockAppInstallStore.defaultBrowser).thenReturn(false)
         val params = mapOf(
@@ -62,7 +62,7 @@ class DefaultBrowserObserverTest {
     }
 
     @Test
-    fun whenDDGIsNotDefaultBrowserIfItWasNotBeforeThenDoNotFireSetPixel() {
+    fun `onResume - DDG not default browser if it was not before - do not fire set pixel`() {
         whenever(mockDefaultBrowserDetector.isDefaultBrowser()).thenReturn(false)
         whenever(mockAppInstallStore.defaultBrowser).thenReturn(false)
 
@@ -72,7 +72,7 @@ class DefaultBrowserObserverTest {
     }
 
     @Test
-    fun whenDDGIsDefaultBrowserIfItWasBeforeThenDoNotFireSetPixel() {
+    fun `isDefaultBrowser - default browser set - does not fire set pixel`() {
         whenever(mockDefaultBrowserDetector.isDefaultBrowser()).thenReturn(true)
         whenever(mockAppInstallStore.defaultBrowser).thenReturn(true)
 
@@ -82,7 +82,7 @@ class DefaultBrowserObserverTest {
     }
 
     @Test
-    fun whenDDGIsNotDefaultBrowserIfItWasBeforeThenFireUnsetPixel() {
+    fun `onResume - DDG not default browser if it was before - fire unset pixel`() {
         whenever(mockDefaultBrowserDetector.isDefaultBrowser()).thenReturn(false)
         whenever(mockAppInstallStore.defaultBrowser).thenReturn(true)
 

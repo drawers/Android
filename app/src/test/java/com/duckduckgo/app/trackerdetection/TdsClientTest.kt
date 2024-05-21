@@ -49,57 +49,57 @@ class TdsClientTest {
     private val image = "image"
 
     @Test
-    fun whenUrlHasSameDomainAsTrackerEntryAndDefaultActionBlockThenMatchesIsTrue() {
+    fun `matches - url has same domain as tracker entry and default action block - is true`() {
         test(url = "http://tracker.com/script.js", trackerDomain = trackerDomain, action = BLOCK, expected = true)
     }
 
     @Test
-    fun whenUrlHasSameDomainAsTrackerEntryAndDefaultActionIgnoreThenMatchesIsFalse() {
+    fun `matches - url has same domain as tracker entry and default action ignore - is false`() {
         test(url = "http://tracker.com/script.js", trackerDomain = trackerDomain, action = IGNORE, expected = false)
     }
 
     @Test
-    fun whenUrlIsSubdomainOfTrackerEntryAndDefaultActionBlockThenMatchesIsTrue() {
+    fun `matches - url is subdomain of tracker entry and default action block - true`() {
         test(url = "http://subdomian.tracker.com/script.js", trackerDomain = trackerDomain, action = BLOCK, expected = true)
     }
 
     @Test
-    fun whenUrlIsNotDomainOrSubDomainOfTrackerEntryThenMatchesIsFalse() {
+    fun `test - url not domain or subdomain of tracker entry - matches is false`() {
         test(url = "http://nontracker.com/script.js", trackerDomain = trackerDomain, action = BLOCK, expected = false)
     }
 
     @Test
-    fun whenUrlIsAParentDomainOfATrackerEntryThenMatchesIsFalse() {
+    fun `matches - url is a parent domain of a tracker entry - matches is false`() {
         test(url = "http://tracker.com/script.js", trackerDomain = Domain("subdomain.tracker.com"), action = BLOCK, expected = false)
     }
 
     @Test
-    fun whenUrlContainsButIsNotSubdomainOfATrackerEntryThenMatchesIsFalse() {
+    fun `matches - url contains but is not subdomain of a tracker entry - matches is false`() {
         test(url = "http://notsubdomainoftracker.com", trackerDomain = trackerDomain, action = BLOCK, expected = false)
     }
 
     @Test
-    fun whenUrlMatchesRuleWithNoExceptionsAndRuleActionBlockThenMatchesIsTrue() {
+    fun `whenUrlMatchesRule - no exceptions and block action - matches is true`() {
         test(rule = ruleBlockNullExceptions, url = url, trackerDomain = trackerDomain, action = BLOCK, expected = true)
     }
 
     @Test
-    fun whenUrlMatchesRuleWithNoExceptionsAndRuleActionIgnoreThenMatchesIsFalse() {
+    fun `test - url matches rule with no exceptions and rule action ignore - matches is false`() {
         test(rule = ruleIgnoreNullExceptions, url = url, trackerDomain = trackerDomain, action = BLOCK, expected = false)
     }
 
     @Test
-    fun whenUrlMatchesDomainWithDefaultBlockAndRuleWithNoExceptionsAndNoActionThenMatchesIsTrue() {
+    fun `test - url matches domain with default block and rule with no exceptions and no action - matches is true`() {
         test(rule = ruleNullExceptions, url = url, trackerDomain = trackerDomain, action = BLOCK, expected = true)
     }
 
     @Test
-    fun whenUrlMatchesDomainWithDefaultIgnoreAndRuleWithNoExceptionsAndNoActionThenMatchesIsTrue() {
+    fun `matches - domain matches with default ignore and no exceptions - is true`() {
         test(rule = ruleNullExceptions, url = url, trackerDomain = trackerDomain, action = IGNORE, expected = true)
     }
 
     @Test
-    fun whenUrlMatchesRuleWithExceptionsAndExceptionDomainMatchesDocumentThenMatchesIsFalseIrrespectiveOfAction() {
+    fun `testUrlMatchesRuleWithExceptionsAndExceptionDomainMatchesDocument - matches is false - irrespective of action`() {
         val exampleException = RuleExceptions(listOf("example.com"), null)
 
         val ruleBlock = Rule(ruleString, BLOCK, exampleException, null, null)
@@ -115,7 +115,7 @@ class TdsClientTest {
     }
 
     @Test
-    fun whenUrlMatchesRuleWithExceptionsAndExceptionDomainDoesNotMatchDocumentThenMatchesBehaviorIsStandard() {
+    fun `testUrlMatchesRuleWithExceptionsAndExceptionDomainDoesNotMatchDocument - matches behavior is standard`() {
         val nonMatchingExceptions = RuleExceptions(listOf("nonmatching.com"), null)
 
         val ruleBlock = Rule(ruleString, BLOCK, nonMatchingExceptions, null, null)
@@ -131,7 +131,7 @@ class TdsClientTest {
     }
 
     @Test
-    fun whenUrlMatchesRuleWithExceptionsWithNoDomainsAndTypeMatchesExceptionThenMatchesIsFalseIrrespectiveOfAction() {
+    fun `testMatchesIsFalseIrrespectiveOfAction - matches is false`() {
         val exceptions = RuleExceptions(null, listOf("something"))
 
         val ruleBlock = Rule("api\\.tracker\\.com\\/auth", BLOCK, exceptions, null, null)
@@ -149,7 +149,7 @@ class TdsClientTest {
     }
 
     @Test
-    fun whenUrlMatchesRuleWithSurrogateThenMatchesIsTrueIrrespectiveOfActionExceptIgnore() {
+    fun `testUrlMatchesRuleWithSurrogate - matches is true - except ignore`() {
         val exceptions = RuleExceptions(null, null)
 
         val ruleBlock = Rule("api\\.tracker\\.com\\/auth", BLOCK, exceptions, "testId", null)
@@ -165,7 +165,7 @@ class TdsClientTest {
     }
 
     @Test
-    fun whenUrlMatchesRuleWithTypeExceptionAndDomainsIsNullThenMatchesIsFalse() {
+    fun `mapRule - domains is null - matches is false`() {
         test(
             mapResult = image,
             rule = Rule(ruleString, BLOCK, RuleExceptions(null, listOf(image)), null, null),
@@ -177,7 +177,7 @@ class TdsClientTest {
     }
 
     @Test
-    fun whenUrlMatchesRuleWithTypeExceptionAndDomainsIsEmptyThenMatchesIsFalse() {
+    fun `matches - url matches rule with type exception and domains empty - is false`() {
         test(
             mapResult = image,
             rule = Rule(ruleString, BLOCK, RuleExceptions(emptyList(), listOf(image)), null, null),
@@ -189,7 +189,7 @@ class TdsClientTest {
     }
 
     @Test
-    fun whenUrlMatchesRuleWithDomainExceptionAndTypesIsNullThenMatchesIsFalse() {
+    fun `mapRule - domain exception and types is null - matches is false`() {
         test(
             mapResult = image,
             rule = Rule(ruleString, BLOCK, RuleExceptions(listOf("example.com"), null), null, null),
@@ -201,7 +201,7 @@ class TdsClientTest {
     }
 
     @Test
-    fun whenUrlMatchesRuleWithDomainExceptionAndTypesIsEmptyThenMatchesIsFalse() {
+    fun `mapResult - url matches rule with domain exception and types is empty - matches is false`() {
         test(
             mapResult = image,
             rule = Rule(
@@ -219,7 +219,7 @@ class TdsClientTest {
     }
 
     @Test
-    fun whenUrlMatchesRuleWithDomainAndTypeExceptionThenMatchesIsFalse() {
+    fun `matches - url matches rule with domain and type exception - is false`() {
         test(
             mapResult = image,
             rule = Rule(ruleString, BLOCK, RuleExceptions(listOf("example.com"), listOf(image)), null, null),
@@ -231,7 +231,7 @@ class TdsClientTest {
     }
 
     @Test
-    fun whenUrlMatchesRuleWithDomainExceptionButNotTypeThenMatchesIsTrue() {
+    fun `mapRule - domain exception but not type - matches is true`() {
         test(
             mapResult = image,
             rule = Rule(ruleString, BLOCK, RuleExceptions(listOf("example.com"), listOf("script")), null, null),
@@ -243,7 +243,7 @@ class TdsClientTest {
     }
 
     @Test
-    fun whenUrlMatchesRuleWithTypeExceptionButNotDomainThenMatchesIsTrue() {
+    fun `mapRule - type exception but not domain - matches is true`() {
         test(
             mapResult = image,
             rule = Rule(ruleString, BLOCK, RuleExceptions(listOf("foo.com"), listOf(image)), null, null),
@@ -255,7 +255,7 @@ class TdsClientTest {
     }
 
     @Test
-    fun whenUrlMatchesRuleForBlockedTrackerWithMatchingExceptionAndOptionTypeAndEmptyOptionDomainThenMatchesFalse() {
+    fun `mapResult - rule matches blocked tracker with matching exception and option type and empty option domain - matches false`() {
         // If option domain is empty and type is matching, should block would be false since exception is matching.
         test(
             mapResult = image,
@@ -274,7 +274,7 @@ class TdsClientTest {
     }
 
     @Test
-    fun whenUrlMatchesRuleForBlockedTrackerWithMatchingExceptionAndOptionDomainAndEmptyOptionTypeThenMatchesFalse() {
+    fun `mapResult - rule matches blocked tracker with matching exception and option domain and empty option type - matches false`() {
         // If option type is empty and domain is matching, should block would be false since exception is matching.
         test(
             mapResult = image,
@@ -293,7 +293,7 @@ class TdsClientTest {
     }
 
     @Test
-    fun whenUrlMatchesRuleForBlockedTrackerWithMatchingExceptionAndOptionDomainButNotOptionTypeThenMatchesTrue() {
+    fun `mapResult - rule matches blocked tracker with matching exception and option domain but not option type - matches true`() {
         // If option type is not null and not matching, should block would be true since we will use the tracker's default action.
         test(
             mapResult = image,
@@ -312,7 +312,7 @@ class TdsClientTest {
     }
 
     @Test
-    fun whenUrlMatchesRuleForBlockedTrackerWithMatchingExceptionButNotOptionDomainAndOptionTypeThenMatchesTrue() {
+    fun `matches - rule for blocked tracker with matching exception but not option domain and option type - matches true`() {
         // If option domain is not null and not matching, should block would be true since we will use the tracker's default action.
         test(
             mapResult = image,
@@ -331,7 +331,7 @@ class TdsClientTest {
     }
 
     @Test
-    fun whenHasOptionsButDoesntMatchDomainNorTypeThenMatchesTrue() {
+    fun `whenHasOptionsButDoesntMatchDomainNorTypeThenMatchesTrue - matches true`() {
         // If option type and domain are both not null and not matching, should block would be true since we will use the tracker's default action.
         test(
             mapResult = image,
@@ -376,7 +376,7 @@ class TdsClientTest {
     }
 
     @Test
-    fun whenUrlMatchesRuleWithSurrogateThenSurrogateScriptIdReturned() {
+    fun `matches - url matches rule with surrogate - returns script id`() {
         val rule = Rule("api\\.tracker\\.com\\/auth", BLOCK, null, "script.js", null)
 
         val testee = TdsClient(TDS, listOf(TdsTracker(Domain("tracker.com"), BLOCK, OWNER, CATEGORY, listOf(rule))), mockUrlToTypeMapper, false)

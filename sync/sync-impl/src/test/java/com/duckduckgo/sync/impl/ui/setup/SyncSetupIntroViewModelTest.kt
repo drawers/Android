@@ -38,7 +38,7 @@ class SyncSetupIntroViewModelTest {
     private val testee = SyncSetupIntroViewModel()
 
     @Test
-    fun whenSyncIntroArgumentThenIntroCreateAccountScreenShown() = runTest {
+    fun `syncIntro - view state updated - intro create account screen shown`() = runTest {
         testee.viewState(SYNC_INTRO).test {
             val viewState = awaitItem()
             Assert.assertTrue(viewState.viewMode is CreateAccountIntro)
@@ -47,7 +47,7 @@ class SyncSetupIntroViewModelTest {
     }
 
     @Test
-    fun whenRecoverIntroArgumentThenIntroRecoveryScreenShown() = runTest {
+    fun `recoverIntroArgument - view state updated - intro recovery screen shown`() = runTest {
         testee.viewState(RECOVERY_INTRO).test {
             val viewState = awaitItem()
             Assert.assertTrue(viewState.viewMode is RecoverAccountIntro)
@@ -56,7 +56,7 @@ class SyncSetupIntroViewModelTest {
     }
 
     @Test
-    fun whenOnTurnSyncOnClickedThenStartSetupFlowCommandSent() = runTest {
+    fun `onTurnSyncOnClicked - start setup flow command sent`() = runTest {
         testee.onTurnSyncOnClicked()
 
         testee.commands().test {
@@ -67,7 +67,7 @@ class SyncSetupIntroViewModelTest {
     }
 
     @Test
-    fun whenOnStartRecoveryDataClickedThenRecoverDataFlowCommandSent() = runTest {
+    fun `onStartRecoverDataClicked - commands sent - recover data flow`() = runTest {
         testee.onStartRecoverDataClicked()
 
         testee.commands().test {
@@ -78,7 +78,7 @@ class SyncSetupIntroViewModelTest {
     }
 
     @Test
-    fun whenOnAbortCLickedThenAbortFlowCommandSent() = runTest {
+    fun `onAbortClicked - commands sent - abort flow command`() = runTest {
         testee.onAbortClicked()
 
         testee.commands().test {

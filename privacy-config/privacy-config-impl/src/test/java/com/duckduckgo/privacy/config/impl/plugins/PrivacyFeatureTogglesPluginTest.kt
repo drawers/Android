@@ -45,12 +45,12 @@ class PrivacyFeatureTogglesPluginTest {
     }
 
     @Test
-    fun whenIsEnabledAndFeatureIsNotAPrivacyFeatureThenReturnNull() = runTest {
+    fun `isEnabled - is not a privacy feature - null`() = runTest {
         assertNull(testee.isEnabled(NonPrivacyFeature().value, true))
     }
 
     @Test
-    fun whenIsEnabledAndFeatureIsPrivacyFeatureThenReturnTrueWhenEnabled() =
+    fun `isEnabled - privacy feature enabled - returns true when enabled`() =
         runTest {
             givenPrivacyFeatureIsEnabled()
 
@@ -60,7 +60,7 @@ class PrivacyFeatureTogglesPluginTest {
         }
 
     @Test
-    fun whenIsEnabledAndFeatureIsPrivacyFeatureThenReturnFalseWhenDisabled() =
+    fun `isEnabled - privacy feature disabled - returns false when disabled`() =
         runTest {
             givenPrivacyFeatureIsDisabled()
 
@@ -70,7 +70,7 @@ class PrivacyFeatureTogglesPluginTest {
         }
 
     @Test
-    fun whenIsEnabledAndFeatureIsPrivacyFeatureThenReturnDefaultValueIfFeatureDoesNotExist() =
+    fun `isEnabled - privacy feature does not exist - returns default value`() =
         runTest {
             val defaultValue = true
             givenPrivacyFeatureReturnsDefaultValue(defaultValue)
@@ -82,7 +82,7 @@ class PrivacyFeatureTogglesPluginTest {
         }
 
     @Test
-    fun whenIsEnabledAndFeatureIsPrivacyFeatureAndAppVersionEqualToMinSupportedVersionThenReturnTrueWhenEnabled() =
+    fun `isEnabled - privacy feature enabled and app version equal to min supported version - returns true when enabled`() =
         runTest {
             givenPrivacyFeatureIsEnabled()
             givenAppVersionIsEqualToMinSupportedVersion()
@@ -93,7 +93,7 @@ class PrivacyFeatureTogglesPluginTest {
         }
 
     @Test
-    fun whenIsEnabledAndFeatureIsPrivacyFeatureAndAppVersionIsGreaterThanMinSupportedVersionThenReturnTrueWhenEnabled() =
+    fun `isEnabled - privacy feature enabled and app version greater than min supported version - returns true when enabled`() =
         runTest {
             givenPrivacyFeatureIsEnabled()
             givenAppVersionIsGreaterThanMinSupportedVersion()
@@ -104,7 +104,7 @@ class PrivacyFeatureTogglesPluginTest {
         }
 
     @Test
-    fun whenIsEnabledAndFeatureIsPrivacyFeatureAndAppVersionIsSmallerThanMinSupportedVersionThenReturnFalseWhenEnabled() =
+    fun `isEnabled - privacy feature enabled and app version smaller than min supported version - returns false when enabled`() =
         runTest {
             givenPrivacyFeatureIsEnabled()
             givenAppVersionIsSmallerThanMinSupportedVersion()

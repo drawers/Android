@@ -36,19 +36,19 @@ class RuntimeChecksFeaturePluginTest {
     }
 
     @Test
-    fun whenFeatureNameDoesNotMatchRuntimeChecksThenReturnFalse() {
+    fun `store - feature name does not match runtime checks - returns false`() {
         RuntimeChecksFeatureName.values().filter { it != FEATURE_NAME }.forEach {
             assertFalse(testee.store(it.value, JSON_STRING))
         }
     }
 
     @Test
-    fun whenFeatureNameMatchesRuntimeChecksThenReturnTrue() {
+    fun `store - feature name matches runtime checks - true`() {
         assertTrue(testee.store(FEATURE_NAME_VALUE, JSON_STRING))
     }
 
     @Test
-    fun whenFeatureNameMatchesRuntimeChecksThenUpdateAll() {
+    fun `whenFeatureNameMatchesRuntimeChecks - update all - json string`() {
         testee.store(FEATURE_NAME_VALUE, JSON_STRING)
         val captor = argumentCaptor<RuntimeChecksEntity>()
         verify(mockRuntimeChecksRepository).updateAll(captor.capture())

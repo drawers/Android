@@ -42,7 +42,7 @@ class OptOutAndAutoconsentDoneMessageHandlerPluginTest {
     private val handler = OptOutAndAutoconsentDoneMessageHandlerPlugin(TestScope(), coroutineRule.testDispatcherProvider)
 
     @Test
-    fun whenProcessIfMessageTypeIsNotIncludedInListThenDoNothing() {
+    fun `process - if message type is not included in list - do nothing`() {
         handler.process("noMatching", "", webView, mockCallback)
 
         verifyNoInteractions(mockCallback)
@@ -50,7 +50,7 @@ class OptOutAndAutoconsentDoneMessageHandlerPluginTest {
     }
 
     @Test
-    fun whenProcessIfCannotParseMessageThenDoNothing() {
+    fun `processIfCannotParseMessage - do nothing`() {
         val message = """
             {"type":"${handler.supportedTypes}", url: "http://www.example.com", "cmp: "test"}
         """.trimIndent()
@@ -62,28 +62,28 @@ class OptOutAndAutoconsentDoneMessageHandlerPluginTest {
     }
 
     @Test
-    fun whenProcessOptOutIfResultIsFailsThenSendResultWithFailure() {
+    fun `processOptOutIfResultIsFails - send result with failure`() {
         handler.process(getOptOut(), optOutMessage(result = false, selfTest = false), webView, mockCallback)
 
         verify(mockCallback).onResultReceived(consentManaged = true, optOutFailed = true, selfTestFailed = false, isCosmetic = null)
     }
 
     @Test
-    fun whenProcessAutoconsentDoneIfCosmeticThenResultSentWithCosmeticSetToTrue() {
+    fun `processAutoconsent - cosmetic - result sent with cosmetic set to true`() {
         handler.process(getAutoconsentType(), autoconsentDoneMessage(cosmetic = true), webView, mockCallback)
 
         verify(mockCallback).onResultReceived(consentManaged = true, optOutFailed = false, selfTestFailed = false, isCosmetic = true)
     }
 
     @Test
-    fun whenProcessAutoconsentDoneIfNotCosmeticThenResultSentWithCosmeticSetToFalse() {
+    fun `processAutoconsent - not cosmetic - result sent with cosmetic set to false`() {
         handler.process(getAutoconsentType(), autoconsentDoneMessage(cosmetic = false), webView, mockCallback)
 
         verify(mockCallback).onResultReceived(consentManaged = true, optOutFailed = false, selfTestFailed = false, isCosmetic = false)
     }
 
     @Test
-    fun whenProcessAutoconsentDoneIfCannotGetHostTHenDoNothing() {
+    fun `processAutoconsent - done if cannot get host - do nothing`() {
         handler.process(getAutoconsentType(), autoconsentDoneMessage("noHost"), webView, mockCallback)
 
         verifyNoInteractions(mockCallback)
@@ -91,7 +91,7 @@ class OptOutAndAutoconsentDoneMessageHandlerPluginTest {
     }
 
     @Test
-    fun whenProcessOptOutWithSelfTestThenAutoconsentCallsEvaluateJavascript() {
+    fun `processOptOutWithSelfTest - evaluate javascript - calls auto consent`() {
         val expected = """
         javascript:(function() {
             window.autoconsentMessageCallback({ "type": "selfTest" }, window.origin);

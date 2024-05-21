@@ -36,7 +36,7 @@ class RealPrivacyConfigRepositoryTest {
     }
 
     @Test
-    fun whenInsertPrivacyConfigThenCallInsert() {
+    fun `whenInsertPrivacyConfig - call insert`() {
         val privacyConfig = PrivacyConfig(id = 1, version = 1, readme = "readme", eTag = "eTag", timestamp = "2023-01-01")
 
         testee.insert(privacyConfig)
@@ -45,14 +45,14 @@ class RealPrivacyConfigRepositoryTest {
     }
 
     @Test
-    fun whenDeleteThenCallDelete() {
+    fun `delete - call delete - delete`() {
         testee.delete()
 
         verify(mockPrivacyConfigDao).delete()
     }
 
     @Test
-    fun whenGetThenCallGet() {
+    fun `get - call get - gets privacy config`() {
         testee.get()
 
         verify(mockPrivacyConfigDao).get()

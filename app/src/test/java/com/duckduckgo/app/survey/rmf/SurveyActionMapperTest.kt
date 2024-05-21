@@ -54,7 +54,7 @@ class SurveyActionMapperTest {
     )
 
     @Test
-    fun whenEvaluateAndTypeIsSurveyThenReturnActionSurvey() {
+    fun `evaluate - type survey - return action survey`() {
         val jsonMessageAction = JsonMessageAction(
             type = "survey",
             value = "http://example.com",
@@ -65,7 +65,7 @@ class SurveyActionMapperTest {
     }
 
     @Test
-    fun whenEvaluateAndTypeIsSurveyAndNoParamsThenReturnActionSurvey() {
+    fun `evaluate - type survey and no params - return action survey`() {
         val jsonMessageAction = JsonMessageAction(
             type = "survey",
             value = "http://example.com",
@@ -76,7 +76,7 @@ class SurveyActionMapperTest {
     }
 
     @Test
-    fun whenEvaluateAndTypeIsSurveyButUnknownParamsThenReturnNull() {
+    fun `evaluate - survey unknown params - return null`() {
         val jsonMessageAction = JsonMessageAction(
             type = "survey",
             value = "value",
@@ -87,7 +87,7 @@ class SurveyActionMapperTest {
     }
 
     @Test
-    fun whenEvaluateAndQueryParamsInPayloadThenReturnActionSurveyWithQueryParams() = runTest {
+    fun `evaluate - and query params in payload - return action survey with query params`() = runTest {
         whenever(mockStatisticsStore.atb).thenReturn(Atb("123"))
         whenever(mockStatisticsStore.variant).thenReturn("abc")
         whenever(mockAppInstallStore.installTimestamp).thenReturn(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(2))
@@ -115,7 +115,7 @@ class SurveyActionMapperTest {
     }
 
     @Test
-    fun whenEvaluateAndTypeIsNotSurveyThenReturnNull() {
+    fun `evaluate - not survey - return null`() {
         val jsonMessageAction = JsonMessageAction(
             type = "notSurvey",
             value = "value",

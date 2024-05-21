@@ -50,19 +50,19 @@ class AdClickAttributionPluginTest {
     }
 
     @Test
-    fun whenFeatureNameDoesNotMatchAdClickAttributionThenReturnFalse() {
+    fun `store - feature name does not match ad click attribution - returns false`() {
         AdClickFeatureName.values().filter { it != FEATURE_NAME }.forEach {
             assertFalse(testee.store(it.value, EMPTY_JSON_STRING))
         }
     }
 
     @Test
-    fun whenFeatureNameMatchesAdClickAttributionThenReturnTrue() {
+    fun `store - feature name matches ad click attribution - returns true`() {
         assertTrue(testee.store(FEATURE_NAME_VALUE, EMPTY_JSON_STRING))
     }
 
     @Test
-    fun whenFeatureNameMatchesAdClickAttributionAndIsEnabledThenStoreFeatureEnabled() {
+    fun `store - feature name matches ad click attribution and is enabled - store feature enabled`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/ad_click_attribution.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -71,7 +71,7 @@ class AdClickAttributionPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesAdClickAttributionAndIsNotEnabledThenStoreFeatureDisabled() {
+    fun `store - feature name matches ad click attribution and is not enabled - store feature disabled`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/ad_click_attribution_disabled.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -80,7 +80,7 @@ class AdClickAttributionPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesAdClickAttributionThenUpdateAllExistingLists() {
+    fun `whenFeatureNameMatchesAdClickAttributionThenUpdateAllExistingLists - update all existing lists`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/ad_click_attribution.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -124,7 +124,7 @@ class AdClickAttributionPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesAdClickAttributionAndHasMinSupportedVersionThenStoreMinSupportedVersion() {
+    fun `store - feature name matches ad click attribution and has min supported version - store min supported version`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/ad_click_attribution_min_supported_version.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)

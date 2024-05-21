@@ -65,7 +65,7 @@ class WgTunnelTest {
     }
 
     @Test
-    fun establishThenReturnWgTunnelData() = runTest {
+    fun `establish - create wg tunnel data - matches expected config`() = runTest {
         val actual = wgTunnel.createWgConfig(keys).getOrThrow()
         val expected = Config.parse(BufferedReader(StringReader(wgQuickConfig)))
 
@@ -73,21 +73,21 @@ class WgTunnelTest {
     }
 
     @Test
-    fun establishErrorThenLogError() = runTest {
+    fun `establishError - log error`() = runTest {
         whenever(wgServerApi.registerPublicKey(any(), isNull())).thenReturn(serverData)
 
         assertNull(wgTunnel.createWgConfig(keys).getOrNull())
     }
 
     @Test
-    fun withNoKeysEstablishErrorThenLogError() = runTest {
+    fun `withNoKeys - establish error then log error`() = runTest {
         whenever(wgServerApi.registerPublicKey(any(), isNull())).thenReturn(serverData)
 
         assertNull(wgTunnel.createWgConfig().getOrNull())
     }
 
     @Test
-    fun whenTunnelIsMarkedAsUnhealthyAndCreateWgConfigThenUpdateStateToFailureRecovery() = runTest {
+    fun `markTunnelAsUnhealthy - create wg config - update state to failure recovery`() = runTest {
         whenever(wgServerApi.registerPublicKey(any(), eq(FailureRecovery(currentServer = "name")))).thenReturn(serverData)
         wgTunnelStore.wireguardConfig = Config.parse(BufferedReader(StringReader(wgQuickConfig)))
 
@@ -98,7 +98,7 @@ class WgTunnelTest {
     }
 
     @Test
-    fun whenTunnelIsMarkAsUnhealthyAndCreateAndSetWgConfigThenResetTunnelHealth() = runTest {
+    fun `markTunnelAsUnhealthy - create and set wg config - reset tunnel health`() = runTest {
         whenever(wgServerApi.registerPublicKey(any(), isNull())).thenReturn(serverData)
 
         wgTunnel.markTunnelUnhealthy()
@@ -108,7 +108,7 @@ class WgTunnelTest {
     }
 
     @Test
-    fun whenTunnelIsMarkedAsUnhealthyTheHealthyAndCreateWgConfigThenResetTunnelHealth() = runTest {
+    fun `markTunnelAsUnhealthy - mark tunnel healthy and create wg config then reset tunnel health`() = runTest {
         whenever(wgServerApi.registerPublicKey(any(), isNull())).thenReturn(serverData)
 
         wgTunnel.markTunnelUnhealthy()

@@ -58,7 +58,7 @@ class VpnFeaturesRegistryImplTest {
     }
 
     @Test
-    fun whenRegisterFeatureThenRestartVpnService() = runTest {
+    fun `registerFeature - restart vpn service`() = runTest {
         vpnFeaturesRegistry.registerFeature(TestVpnFeatures.FOO)
 
         assertEquals(0, vpnServiceWrapper.restartCount)
@@ -66,7 +66,7 @@ class VpnFeaturesRegistryImplTest {
     }
 
     @Test
-    fun whenFeaturesAreRegisteredThenVpnIsStarted() = runTest {
+    fun `registerFeatures - vpn started`() = runTest {
         vpnFeaturesRegistry.registerFeature(TestVpnFeatures.FOO)
         vpnFeaturesRegistry.registerFeature(TestVpnFeatures.BAR)
 
@@ -76,7 +76,7 @@ class VpnFeaturesRegistryImplTest {
     }
 
     @Test
-    fun whenIsFeatureRegisteredAndFeaturesAreRegisteredAndVpnIsRunningThenReturnTrue() = runTest {
+    fun `isFeatureRegistered - features registered - returns true`() = runTest {
         vpnFeaturesRegistry.registerFeature(TestVpnFeatures.FOO)
         vpnFeaturesRegistry.registerFeature(TestVpnFeatures.BAR)
         vpnServiceWrapper.startService()
@@ -86,12 +86,12 @@ class VpnFeaturesRegistryImplTest {
     }
 
     @Test
-    fun whenIsAnyFeatureRegisteredAndFeaturesAreNotRegisteredThenReturnFalse() = runTest {
+    fun `isAnyFeatureRegistered - features not registered - returns false`() = runTest {
         vpnFeaturesRegistry.registerFeature(TestVpnFeatures.FOO)
     }
 
     @Test
-    fun whenIsAnyFeatureRegisteredAndFeaturesAreRegisteredThenReturnTrue() = runTest {
+    fun `isAnyFeatureRegistered - features registered - returns true`() = runTest {
         vpnFeaturesRegistry.registerFeature(TestVpnFeatures.FOO)
 
         assertTrue(vpnFeaturesRegistry.isAnyFeatureRunning())
@@ -99,7 +99,7 @@ class VpnFeaturesRegistryImplTest {
     }
 
     @Test
-    fun whenIsAnyFeatureRegisteredAndFeaturesAreRegisteredAndVpnDisabledThenReturnFalse() = runTest {
+    fun `isAnyFeatureRegistered - vpn disabled - returns false`() = runTest {
         vpnFeaturesRegistry.registerFeature(TestVpnFeatures.FOO)
         vpnServiceWrapper.stopService()
 
@@ -108,7 +108,7 @@ class VpnFeaturesRegistryImplTest {
     }
 
     @Test
-    fun whenUnregisterFeatureThenFeatureIsUnregistered() = runTest {
+    fun `unregisterFeature - feature unregistered`() = runTest {
         vpnFeaturesRegistry.registerFeature(TestVpnFeatures.FOO)
         vpnFeaturesRegistry.unregisterFeature(TestVpnFeatures.FOO)
 
@@ -116,7 +116,7 @@ class VpnFeaturesRegistryImplTest {
     }
 
     @Test
-    fun whenUnregisterLastFeatureThenVpnIsNotRunning() = runTest {
+    fun `unregisterLastFeature - vpn is not running`() = runTest {
         vpnFeaturesRegistry.registerFeature(TestVpnFeatures.FOO)
         vpnFeaturesRegistry.registerFeature(TestVpnFeatures.BAR)
         vpnFeaturesRegistry.unregisterFeature(TestVpnFeatures.FOO)
@@ -126,7 +126,7 @@ class VpnFeaturesRegistryImplTest {
     }
 
     @Test
-    fun whenUnregisterFeatureIfFeaturesStillRegisteredThenRestartVpnService() = runTest {
+    fun `unregisterFeature - features still registered - restart vpn service`() = runTest {
         vpnFeaturesRegistry.registerFeature(TestVpnFeatures.FOO) // no restart
         vpnFeaturesRegistry.registerFeature(TestVpnFeatures.BAR) // restart
         vpnFeaturesRegistry.unregisterFeature(TestVpnFeatures.FOO) // restart
@@ -135,14 +135,14 @@ class VpnFeaturesRegistryImplTest {
     }
 
     @Test
-    fun whenRefreshUnregisteredFeatureThenDoNotRestartVpn() = runTest {
+    fun `refreshFeature - unregistered feature - do not restart VPN`() = runTest {
         vpnFeaturesRegistry.refreshFeature(TestVpnFeatures.FOO)
 
         assertEquals(0, vpnServiceWrapper.restartCount)
     }
 
     @Test
-    fun whenRefreshRegisteredFeatureThenRestartVpn() = runTest {
+    fun `refreshRegisteredFeature - restart VPN`() = runTest {
         vpnFeaturesRegistry.registerFeature(TestVpnFeatures.FOO)
         vpnFeaturesRegistry.refreshFeature(TestVpnFeatures.FOO)
 
@@ -151,7 +151,7 @@ class VpnFeaturesRegistryImplTest {
     }
 
     @Test
-    fun whenRegisterFeatureThenStartVpn() = runTest {
+    fun `registerFeature - start vpn`() = runTest {
         vpnFeaturesRegistry.registerFeature(TestVpnFeatures.FOO)
 
         assertTrue(vpnServiceWrapper.isServiceRunning())

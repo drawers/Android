@@ -17,7 +17,7 @@ class RMFPProEligibleMatchingAttributeTest {
     private val attribute = RMFPProEligibleMatchingAttribute(subscriptions)
 
     @Test
-    fun evaluateWithWrongAttributeThenNull() = runTest {
+    fun `evaluate - wrong attribute - null`() = runTest {
         whenever(subscriptions.isEligible()).thenReturn(false)
         assertNull(attribute.evaluate(FakeStringMatchingAttribute { "" }))
 
@@ -29,7 +29,7 @@ class RMFPProEligibleMatchingAttributeTest {
     }
 
     @Test
-    fun evaluateWithProEligibleMatchingAttributeThenValue() = runTest {
+    fun `evaluate - ppro eligible matching attribute then value`() = runTest {
         whenever(subscriptions.isEligible()).thenReturn(false)
         assertTrue(attribute.evaluate(attribute.map("pproEligible", JsonMatchingAttribute(value = false))!!)!!)
 
@@ -44,7 +44,7 @@ class RMFPProEligibleMatchingAttributeTest {
     }
 
     @Test
-    fun mapNoProEligibleMatchingAttributeKeyThenReturnNull() = runTest {
+    fun `map - no pro eligible matching attribute key - return null`() = runTest {
         assertNull(attribute.map("wrong", JsonMatchingAttribute(value = null)))
         assertNull(attribute.map("wrong", JsonMatchingAttribute(value = true)))
         assertNull(attribute.map("wrong", JsonMatchingAttribute(value = false)))

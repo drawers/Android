@@ -49,20 +49,20 @@ class SecondaryPromptDeciderTest {
     }
 
     @Test
-    fun whenUserHasUsedTheAppForAWhileSinceSeeingFirstPromptThenTheySeeSecondPrompt() = runTest {
+    fun `shouldShowPrompt - user has used app for a while since seeing first prompt - sees second prompt`() = runTest {
         configureLotsOfAppUsage()
         assertTrue(testee.shouldShowPrompt())
     }
 
     @Test
-    fun whenUserHasNotUsedTheAppMuchSinceSeeingFirstPromptThenTheyDoNotSeeSecondPrompt() = runTest {
+    fun `shouldShowPrompt - user has not used the app much since seeing first prompt - does not see second prompt`() = runTest {
         whenever(mockAppEnjoymentRepository.canUserBeShownSecondPrompt()).thenReturn(true)
         configureNotALotOfAppUsage()
         assertFalse(testee.shouldShowPrompt())
     }
 
     @Test
-    fun whenUserHasAlreadyRatedOrGaveFeedbackThenTheyDoNoSeeASecondPromptEvenAfterALotOfUsage() = runTest {
+    fun `canUserBeShownSecondPrompt - user has already rated or given feedback - should not show prompt`() = runTest {
         whenever(mockAppEnjoymentRepository.canUserBeShownSecondPrompt()).thenReturn(false)
         configureLotsOfAppUsage()
         assertFalse(testee.shouldShowPrompt())

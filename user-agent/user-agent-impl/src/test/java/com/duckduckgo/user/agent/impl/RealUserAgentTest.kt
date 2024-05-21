@@ -40,28 +40,28 @@ class RealUserAgentTest {
     }
 
     @Test
-    fun whenIsExceptionAndDomainIsListedInTheExceptionsListThenReturnTrue() {
+    fun `isException - domain listed in exceptions list - true`() {
         givenThereAreExceptions()
 
         assertTrue(testee.isException("http://www.example.com"))
     }
 
     @Test
-    fun whenIsExceptionWithSubdomainAndDomainIsListedInTheExceptionsListThenReturnTrue() {
+    fun `isException - exceptions list contains subdomain and domain - returns true`() {
         givenThereAreExceptions()
 
         assertTrue(testee.isException("http://test.example.com"))
     }
 
     @Test
-    fun whenIsExceptionAndDomainIsNotListedInTheExceptionsListThenReturnFalse() {
+    fun `isException - domain not listed in exceptions list - returns false`() {
         whenever(mockUserAgentRepository.exceptions).thenReturn(CopyOnWriteArrayList())
 
         assertFalse(testee.isException("http://test.example.com"))
     }
 
     @Test
-    fun whenIsExceptionAndDomainIsListedInTheUnprotectedTemporaryListThenReturnTrue() {
+    fun `isException - is listed in unprotected temporary list - returns true`() {
         val url = "http://example.com"
         whenever(mockUnprotectedTemporary.isAnException(url)).thenReturn(true)
         whenever(mockUserAgentRepository.exceptions).thenReturn(CopyOnWriteArrayList())
@@ -70,21 +70,21 @@ class RealUserAgentTest {
     }
 
     @Test
-    fun whenSiteInLegacySitesListThenUseLegacyUserAgent() {
+    fun `useLegacyUserAgent - site in legacy sites list`() {
         val url = "http://duckduckgo.com"
 
         assertTrue(testee.useLegacyUserAgent(url))
     }
 
     @Test
-    fun whenSubdomainInLegacySitesListThenUseLegacyUserAgent() {
+    fun `useLegacyUserAgent - subdomain in legacy sites list`() {
         val url = "http://test.duckduckgo.com"
 
         assertTrue(testee.useLegacyUserAgent(url))
     }
 
     @Test
-    fun whenSiteNotInLegacySitesListThenDoNotUseLegacyUserAgent() {
+    fun `useLegacyUserAgent - site not in legacy sites list - does not use legacy user agent`() {
         val url = "http://example.com"
 
         assertFalse(testee.useLegacyUserAgent(url))

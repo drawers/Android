@@ -27,13 +27,13 @@ class WebViewNavigationStateTest {
     private val stack: TestBackForwardList = TestBackForwardList()
 
     @Test
-    fun whenWebHistoryIsEmptyThenNavigationHistoryIsEmpty() {
+    fun `webViewState - navigation history empty - is empty`() {
         val stack = webViewState(stack).navigationHistory
         assertEquals(0, stack.size)
     }
 
     @Test
-    fun whenWebHistoryHasSinglePageThenNavigationHistoryRetrieved() {
+    fun `whenWebHistoryHasSinglePageThenNavigationHistoryRetrieved - navigation history retrieved`() {
         stack.addPageToHistory("example.com".toHistoryItem())
         val stack = webViewState(stack).navigationHistory
         assertEquals(1, stack.size)
@@ -41,7 +41,7 @@ class WebViewNavigationStateTest {
     }
 
     @Test
-    fun whenWebHistoryHasMultiplePagesThenNavigationHistoryRetrievedInCorrectOrder() {
+    fun `whenWebHistoryHasMultiplePages - navigation history retrieved in correct order`() {
         stack.addPageToHistory("a".toHistoryItem())
         stack.addPageToHistory("b".toHistoryItem())
         stack.addPageToHistory("c".toHistoryItem())

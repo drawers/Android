@@ -66,7 +66,7 @@ class SitePermissionsViewModelTest {
     }
 
     @Test
-    fun whenAllowedSitesLoadedThenViewStateEmittedWebsites() = runTest {
+    fun `whenAllowedSitesLoaded - view state emitted websites`() = runTest {
         viewModel.viewState.test {
             val sitePermissions = awaitItem().sitesPermissionsAllowed
             assertEquals(2, sitePermissions.size)
@@ -74,7 +74,7 @@ class SitePermissionsViewModelTest {
     }
 
     @Test
-    fun whenAllowedSitesLoadedThenViewStateEmittedLocationWebsites() = runTest {
+    fun `whenAllowedSitesLoaded - viewState emitted location websites`() = runTest {
         viewModel.viewState.test {
             val sitePermissions = awaitItem().locationPermissionsAllowed
             assertEquals(1, sitePermissions.size)
@@ -82,21 +82,21 @@ class SitePermissionsViewModelTest {
     }
 
     @Test
-    fun whenRemoveAllWebsitesThenClearAllLocationWebsitesIsCalled() = runTest {
+    fun `removeAllSites - clear all location websites is called`() = runTest {
         viewModel.removeAllSitesSelected()
 
         verify(mockGeoLocationPermissions).clearAll()
     }
 
     @Test
-    fun whenRemoveAllWebsitesThenDeleteAllSitePermissionsIsCalled() = runTest {
+    fun `removeAllSites - delete all site permissions called`() = runTest {
         viewModel.removeAllSitesSelected()
 
         verify(mockSitePermissionsRepository).deleteAll()
     }
 
     @Test
-    fun whenRemoveAllWebsitesThenShowRemoveAllSnackBar() = runTest {
+    fun `removeAll - show remove all snackbar`() = runTest {
         viewModel.removeAllSitesSelected()
 
         viewModel.commands.test {
@@ -105,7 +105,7 @@ class SitePermissionsViewModelTest {
     }
 
     @Test
-    fun whenPermissionsSettingsAreLoadedThenViewStateEmittedForAskLocationEnabled() = runTest {
+    fun `loadPermissionsSettings - view state emitted for ask location enabled - not enabled`() = runTest {
         loadPermissionsSettings(locationEnabled = false)
         viewModel.viewState.test {
             val askLocationEnabled = awaitItem().askLocationEnabled
@@ -114,7 +114,7 @@ class SitePermissionsViewModelTest {
     }
 
     @Test
-    fun whenPermissionsSettingsAreLoadedThenViewStateEmittedForAskCameraEnabled() = runTest {
+    fun `loadPermissionsSettings - view state emitted for ask camera enabled - not enabled`() = runTest {
         loadPermissionsSettings(cameraEnabled = false)
 
         viewModel.viewState.test {
@@ -124,7 +124,7 @@ class SitePermissionsViewModelTest {
     }
 
     @Test
-    fun whenPermissionsSettingsAreLoadedThenViewStateEmittedForAskMicEnabled() = runTest {
+    fun `loadPermissionsSettings - view state emitted for ask mic enabled - not asked`() = runTest {
         loadPermissionsSettings(micEnabled = false)
 
         viewModel.viewState.test {
@@ -134,7 +134,7 @@ class SitePermissionsViewModelTest {
     }
 
     @Test
-    fun whenToggleOffAskForLocationThenViewStateEmitted() = runTest {
+    fun `toggleOffAskForLocation - view state emitted`() = runTest {
         viewModel.permissionToggleSelected(false, R.string.sitePermissionsSettingsLocation)
 
         viewModel.viewState.test {
@@ -144,7 +144,7 @@ class SitePermissionsViewModelTest {
     }
 
     @Test
-    fun whenToggleOffAskForCameraThenViewStateEmitted() = runTest {
+    fun `toggleOffAskForCamera - view state emitted`() = runTest {
         viewModel.permissionToggleSelected(false, R.string.sitePermissionsSettingsCamera)
 
         viewModel.viewState.test {
@@ -154,7 +154,7 @@ class SitePermissionsViewModelTest {
     }
 
     @Test
-    fun whenToggleOffAskForMicThenViewStateEmitted() = runTest {
+    fun `toggleOffAskForMic - view state emitted`() = runTest {
         viewModel.permissionToggleSelected(false, R.string.sitePermissionsSettingsMicrophone)
 
         viewModel.viewState.test {
@@ -164,7 +164,7 @@ class SitePermissionsViewModelTest {
     }
 
     @Test
-    fun whenWebsiteIsTappedThenNavigateToPermissionsPerWebsiteScreen() = runTest {
+    fun `whenWebsiteIsTapped - navigate to permissions per website screen`() = runTest {
         val testDomain = "website1.com"
         viewModel.allowedSiteSelected(testDomain)
 

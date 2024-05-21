@@ -95,7 +95,7 @@ class DeviceShieldActivityFeedViewModelTest {
     }
 
     @Test
-    fun whenGetMostRecentTrackersCalledStartWithSkeleton() = runBlocking {
+    fun `getMostRecentTrackers - start with skeleton`() = runBlocking {
         viewModel.getMostRecentTrackers(timeWindow, config).test {
             assertEquals(TrackerFeedViewState(listOf(TrackerLoadingSkeleton), VpnState(DISABLED, ERROR)), awaitItem())
             cancelAndConsumeRemainingEvents()
@@ -103,7 +103,7 @@ class DeviceShieldActivityFeedViewModelTest {
     }
 
     @Test
-    fun whenGetMostRecentTrackersIsNotEmptyThenStartWithSkeletonThenEmit() = runBlocking {
+    fun `getMostRecentTrackers - is not empty - start with skeleton then emit`() = runBlocking {
         repository.insert(listOf(dummyTrackers[0], dummyTrackers[1], dummyTrackers[2]))
         db.vpnAppTrackerBlockingDao().insertTrackerEntities(dummySignals)
 
@@ -128,7 +128,7 @@ class DeviceShieldActivityFeedViewModelTest {
     }
 
     @Test
-    fun whenGetMostRecentTrackersIsNotEmptyAndOutsideTimeWindowThenEmitLoadingSkeleton() = runBlocking {
+    fun `getMostRecentTrackers - is not empty and outside time window - emit loading skeleton`() = runBlocking {
         repository.insert(listOf(dummyTrackers[3]))
 
         viewModel.getMostRecentTrackers(timeWindow, config).test {
@@ -145,7 +145,7 @@ class DeviceShieldActivityFeedViewModelTest {
     }
 
     @Test
-    fun whenGetMostRecentTrackersIsEmptyAndVpnEnabledAndBoundedConfigThenEmitDescriptionAndAppsProtectionState() = runBlocking {
+    fun `getMostRecentTrackers - empty and vpn enabled and bounded config - emit description and apps protection state`() = runBlocking {
         mockVpnEnabled()
         whenever(mockExcludedApps.getAppsAndProtectionInfo()).thenReturn(flowOf(listOf(app, excludedApp)))
         val boundedConfig = config.copy(maxRows = 5)
@@ -181,7 +181,7 @@ class DeviceShieldActivityFeedViewModelTest {
     }
 
     @Test
-    fun whenGetMostRecentTrackersIsEmptyAndVpnDisabledAndFiveRowsThenEmitDescription() = runBlocking {
+    fun `getMostRecentTrackers - empty and vpn disabled - emit description`() = runBlocking {
         mockVpnDisabled()
         whenever(mockExcludedApps.getAppsAndProtectionInfo()).thenReturn(flowOf(listOf(app, excludedApp)))
         val boundedConfig = config.copy(maxRows = 5)
@@ -203,7 +203,7 @@ class DeviceShieldActivityFeedViewModelTest {
     }
 
     @Test
-    fun whenGetMostRecentTrackersReturnsLessTrackersThanMaxRowsAndVpnEnabledThenEmitOnlyTrackerFeedDataItems() = runBlocking {
+    fun `getMostRecentTrackers - vpn enabled - emit only tracker feed data items`() = runBlocking {
         repository.insert(listOf(dummyTrackers[0], dummyTrackers[1], dummyTrackers[2]))
 
         db.vpnAppTrackerBlockingDao().insertTrackerEntities(dummySignals)

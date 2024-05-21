@@ -61,7 +61,7 @@ class RealGpcRepositoryTest {
     }
 
     @Test
-    fun whenRepositoryIsCreatedThenExceptionsLoadedIntoMemory() {
+    fun `whenRepositoryIsCreatedThenExceptionsLoadedIntoMemory - exceptions loaded into memory`() {
         givenGpcDaoContainsExceptions()
 
         testee =
@@ -77,7 +77,7 @@ class RealGpcRepositoryTest {
     }
 
     @Test
-    fun whenUpdateAllThenUpdateAllCalled() =
+    fun `updateAll - update all called`() =
         runTest {
             testee =
                 RealGpcRepository(
@@ -96,7 +96,7 @@ class RealGpcRepositoryTest {
         }
 
     @Test
-    fun whenUpdateAllThenPreviousExceptionsAreCleared() =
+    fun `updateAll - previous exceptions cleared`() =
         runTest {
             givenGpcDaoContainsExceptions()
             testee =
@@ -116,7 +116,7 @@ class RealGpcRepositoryTest {
         }
 
     @Test
-    fun whenUpdateAllThenPreviousHeadersAreCleared() =
+    fun `updateAll - previous headers cleared`() =
         runTest {
             givenGpcDaoContainsHeaders()
             testee =
@@ -136,7 +136,7 @@ class RealGpcRepositoryTest {
         }
 
     @Test
-    fun whenUpdateAllThenReplaceConfig() =
+    fun `updateAll - replace config`() =
         runTest {
             givenGpcDaoContainsConfig(configEntity)
             testee =
@@ -156,21 +156,21 @@ class RealGpcRepositoryTest {
         }
 
     @Test
-    fun whenEnableGpcThenSetGpcEnabledToTrue() {
+    fun `enableGpc - set gpc enabled to true`() {
         testee.enableGpc()
 
         verify(mockGpcDataStore).gpcEnabled = true
     }
 
     @Test
-    fun whenDisableGpcThenSetGpcEnabledToFalse() {
+    fun `disableGpc - gpc data store set enabled to false`() {
         testee.disableGpc()
 
         verify(mockGpcDataStore).gpcEnabled = false
     }
 
     @Test
-    fun whenIsGpcEnabledThenReturnGpcEnabledValue() {
+    fun `isGpcEnabled - gpc enabled value`() {
         whenever(mockGpcDataStore.gpcEnabled).thenReturn(true)
         assertTrue(testee.isGpcEnabled())
 

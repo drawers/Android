@@ -85,7 +85,7 @@ class PrivacyReportViewModelTest {
     }
 
     @Test
-    fun whenTrackersBlockedThenReportHasTrackers() = runBlocking {
+    fun `getReport - trackers blocked - report has trackers`() = runBlocking {
         trackerFound("dax.com")
         trackerFound("dax.com")
         trackerFound("dax.com")
@@ -98,7 +98,7 @@ class PrivacyReportViewModelTest {
     }
 
     @Test
-    fun whenTrackersBlockedOutsideTimeWindowThenReturnEmpty() = runBlocking {
+    fun `getReport - trackers blocked outside time window - return empty`() = runBlocking {
         trackerFoundYesterday("dax.com")
         trackerFoundYesterday("dax.com")
         trackerFoundYesterday("dax.com")
@@ -111,7 +111,7 @@ class PrivacyReportViewModelTest {
     }
 
     @Test
-    fun whenNoTrackersBlockedThenReportIsEmpty() = runBlocking {
+    fun `getReport - no trackers blocked - report is empty`() = runBlocking {
         testee.getReport().test {
             val result = awaitItem()
             assertEquals(0, result.trackers)

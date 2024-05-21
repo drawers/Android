@@ -34,7 +34,7 @@ class InteractedWithMessageMatcherTest {
     private val remoteMessagingRepository: RemoteMessagingRepository = mock()
 
     @Test
-    fun whenMapKeyIsInteractedWithMessageThenReturnMatchingAttribute() = runTest {
+    fun `map - map key interacted with message - matching attribute`() = runTest {
         val matcher = InteractedWithMessageMatcher(remoteMessagingRepository)
         val jsonMatchingAttribute = JsonMatchingAttribute(value = listOf("1", "2", "3"))
         val result = matcher.map("interactedWithMessage", jsonMatchingAttribute)
@@ -43,7 +43,7 @@ class InteractedWithMessageMatcherTest {
     }
 
     @Test
-    fun whenJsonMatchingAttributeValueIsNullThenReturnNull() = runTest {
+    fun `map - json matching attribute value is null - return null`() = runTest {
         val matcher = InteractedWithMessageMatcher(remoteMessagingRepository)
         val jsonMatchingAttribute = JsonMatchingAttribute(value = null)
         val result = matcher.map("interactedWithMessage", jsonMatchingAttribute)
@@ -51,7 +51,7 @@ class InteractedWithMessageMatcherTest {
     }
 
     @Test
-    fun whenJsonMatchingAttributeValueIsEmptyThenReturnNull() = runTest {
+    fun `map - json matching attribute value is empty - return null`() = runTest {
         val matcher = InteractedWithMessageMatcher(remoteMessagingRepository)
         val jsonMatchingAttribute = JsonMatchingAttribute(value = emptyList<String>())
         val result = matcher.map("interactedWithMessage", jsonMatchingAttribute)
@@ -59,7 +59,7 @@ class InteractedWithMessageMatcherTest {
     }
 
     @Test
-    fun whenJsonMatchingAttributeValueIsNotListThenReturnNull() = runTest {
+    fun `map - json matching attribute not list - return null`() = runTest {
         val matcher = InteractedWithMessageMatcher(remoteMessagingRepository)
         val jsonMatchingAttribute = JsonMatchingAttribute(value = 1)
         val result = matcher.map("interactedWithMessage", jsonMatchingAttribute)
@@ -67,7 +67,7 @@ class InteractedWithMessageMatcherTest {
     }
 
     @Test
-    fun whenDismissedMessageIdMatchesThenReturnTrue() = runTest {
+    fun `evaluate - message id matches - true`() = runTest {
         givenMessageIdDismissed(listOf("1", "2", "3"))
         val matcher = InteractedWithMessageMatcher(remoteMessagingRepository)
         val matchingAttribute = InteractedWithMessageMatchingAttribute(listOf("1", "2", "3"))
@@ -76,7 +76,7 @@ class InteractedWithMessageMatcherTest {
     }
 
     @Test
-    fun whenOneDismissedMessageIdMatchesThenReturnTrue() = runTest {
+    fun `evaluate - one dismissed message id matches - true`() = runTest {
         givenMessageIdDismissed(listOf("1", "2", "3"))
         val matcher = InteractedWithMessageMatcher(remoteMessagingRepository)
         val matchingAttribute = InteractedWithMessageMatchingAttribute(listOf("1", "4", "5"))
@@ -85,7 +85,7 @@ class InteractedWithMessageMatcherTest {
     }
 
     @Test
-    fun whenNoDismissedMessageIdMatchesThenReturnFalse() = runTest {
+    fun `evaluate - no dismissed message id matches - false`() = runTest {
         givenMessageIdDismissed(listOf("1", "2", "3"))
         val matcher = InteractedWithMessageMatcher(remoteMessagingRepository)
         val matchingAttribute = InteractedWithMessageMatchingAttribute(listOf("4", "5"))
@@ -94,7 +94,7 @@ class InteractedWithMessageMatcherTest {
     }
 
     @Test(expected = AssertionError::class)
-    fun whenEmptyListInMatchingAttributeThenReturnException() = runTest {
+    fun `givenMessageIdDismissed - empty list in matching attribute - return exception`() = runTest {
         givenMessageIdDismissed(listOf("1", "2", "3"))
         val matcher = InteractedWithMessageMatcher(remoteMessagingRepository)
         val matchingAttribute = InteractedWithMessageMatchingAttribute(emptyList())

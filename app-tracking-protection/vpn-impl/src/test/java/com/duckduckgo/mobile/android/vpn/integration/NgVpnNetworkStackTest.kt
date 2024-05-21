@@ -79,19 +79,19 @@ class NgVpnNetworkStackTest {
     }
 
     @Test
-    fun whenOnCreateVpnNoErrorThenReturnSuccess() {
+    fun `onCreateVpn - no error - return success`() {
         assertTrue(ngVpnNetworkStack.onCreateVpn().isSuccess)
     }
 
     @Test
-    fun whenOnCreateVpnThenCreateVpnNetwork() {
+    fun `onCreateVpn - create vpn network`() {
         ngVpnNetworkStack.onCreateVpn()
 
         verify(vpnNetwork).create()
     }
 
     @Test
-    fun whenOnCreateVpnMultipleTimesThenDestroyPreviousNetwork() {
+    fun `onCreateVpn - multiple times - destroy previous network`() {
         ngVpnNetworkStack.onCreateVpn()
         ngVpnNetworkStack.onCreateVpn()
 
@@ -100,7 +100,7 @@ class NgVpnNetworkStackTest {
     }
 
     @Test
-    fun whenOnCreateVpnMultipleTimesThenCreateVpnNetwork() {
+    fun `onCreateVpn - multiple times - create vpn network`() {
         ngVpnNetworkStack.onCreateVpn()
         ngVpnNetworkStack.onCreateVpn()
 
@@ -108,7 +108,7 @@ class NgVpnNetworkStackTest {
     }
 
     @Test
-    fun whenOnPrepareVpnThenReturnCorrectVpnTunnelConfig() = runTest {
+    fun `onPrepareVpn - returns correct vpn tunnel config`() = runTest {
         whenever(appBuildConfig.model).thenReturn("")
         whenever(trackingProtectionAppsRepository.getExclusionAppsList()).thenReturn(listOf())
 
@@ -129,7 +129,7 @@ class NgVpnNetworkStackTest {
     }
 
     @Test
-    fun whenMotoGPlayThenConfigureSystemDns() = runTest {
+    fun `onPrepareVpn - moto g play - configure system dns`() = runTest {
         whenever(appBuildConfig.model).thenReturn("moto g play - 2023")
         fakeDnsProvider.mutableSystemDns.add(InetAddress.getLocalHost())
         whenever(trackingProtectionAppsRepository.getExclusionAppsList()).thenReturn(listOf())
@@ -151,7 +151,7 @@ class NgVpnNetworkStackTest {
     }
 
     @Test
-    fun whenMotoGPowerThenConfigureSystemDns() = runTest {
+    fun `onPrepareVpn - moto g power - configure system dns`() = runTest {
         whenever(appBuildConfig.model).thenReturn("moto g stylus 5G")
         fakeDnsProvider.mutableSystemDns.add(InetAddress.getLocalHost())
         whenever(trackingProtectionAppsRepository.getExclusionAppsList()).thenReturn(listOf())
@@ -173,7 +173,7 @@ class NgVpnNetworkStackTest {
     }
 
     @Test
-    fun whenPrivateDnsSetAndDeviceModelMatchesThenConfigureEmptyDns() = runTest {
+    fun `onPrepareVpn - private dns set and device model matches - configure empty dns`() = runTest {
         whenever(appBuildConfig.model).thenReturn("moto g stylus 5G")
         fakeDnsProvider.mutablePrivateDns.add(InetAddress.getLocalHost())
         fakeDnsProvider.mutableSystemDns.add(InetAddress.getLocalHost())
@@ -196,7 +196,7 @@ class NgVpnNetworkStackTest {
     }
 
     @Test
-    fun whenDeviceModelNotMatchedThenConfigureEmptyDns() = runTest {
+    fun `onPrepareVpn - device model not matched - configure empty dns`() = runTest {
         whenever(appBuildConfig.model).thenReturn("wrong device")
         fakeDnsProvider.mutableSystemDns.add(InetAddress.getLocalHost())
         whenever(trackingProtectionAppsRepository.getExclusionAppsList()).thenReturn(listOf())
@@ -218,7 +218,7 @@ class NgVpnNetworkStackTest {
     }
 
     @Test
-    fun whenMotoGAndPrivateDnsSetThenReturnNoDns() = runTest {
+    fun `onPrepareVpn - moto g play - return no dns`() = runTest {
         whenever(appBuildConfig.model).thenReturn("moto g play")
         fakeDnsProvider.mutableSystemDns.add(InetAddress.getLocalHost())
         fakeDnsProvider.mutablePrivateDns.add(InetAddress.getLocalHost())
@@ -241,7 +241,7 @@ class NgVpnNetworkStackTest {
     }
 
     @Test
-    fun whenShortListedDeviceThenReturnSearchDomains() = runTest {
+    fun `onPrepareVpn - when shortlisted device - return search domains`() = runTest {
         whenever(appBuildConfig.model).thenReturn("moto g play")
         fakeDnsProvider.searchDomain = "internal.com"
         whenever(trackingProtectionAppsRepository.getExclusionAppsList()).thenReturn(listOf())
@@ -264,7 +264,7 @@ class NgVpnNetworkStackTest {
     }
 
     @Test
-    fun whenNotShortListedDeviceThenReturnSearchDomains() = runTest {
+    fun `onPrepareVpn - not short listed device - return search domains`() = runTest {
         whenever(appBuildConfig.model).thenReturn("wrong device")
         fakeDnsProvider.mutableSystemDns.add(InetAddress.getLocalHost())
         fakeDnsProvider.searchDomain = "internal.com"
@@ -288,14 +288,14 @@ class NgVpnNetworkStackTest {
     }
 
     @Test
-    fun whenOnEmFileErrorThenKillProcess() {
+    fun `onError - on Em file error - kill process`() {
         ngVpnNetworkStack.onError(24, "EmFileError")
 
         verify(runtime).exit(0)
     }
 
     @Test
-    fun whenOnAnyErrorOtherThanEmFileThenNoop() {
+    fun `onAnyErrorOtherThanEmFile - noop`() {
         for (error in 0..23) {
             ngVpnNetworkStack.onError(error, "SomeError")
             verify(runtime, never()).exit(0)
@@ -308,14 +308,14 @@ class NgVpnNetworkStackTest {
     }
 
     @Test
-    fun whenOnExitThenKillProcess() {
+    fun `onExit - runtime exit`() {
         ngVpnNetworkStack.onExit("SomeError")
 
         verify(runtime).exit(0)
     }
 
     @Test
-    fun whenIsAddressBlockedAndDomainIsTrackerThenReturnFalse() { // false because we don't want to block based on IP addresses
+    fun `onDnsResolved - is address blocked - false`() { // false because we don't want to block based on IP addresses
         val uid = 1200
         val tracker = AppTrackerDetector.AppTracker(
             "hostname",
@@ -332,7 +332,7 @@ class NgVpnNetworkStackTest {
     }
 
     @Test
-    fun whenIsAddressBlockedAndDomainIsNotTrackerThenReturnFalse() {
+    fun `isAddressBlocked - domain is not tracker - returns false`() {
         val uid = 1200
 
         whenever(appTrackerDetector.evaluate(TRACKER_HOSTNAME, uid)).thenReturn(null)

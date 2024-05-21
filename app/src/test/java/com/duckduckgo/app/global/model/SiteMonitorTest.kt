@@ -71,7 +71,7 @@ class SiteMonitorTest {
     private val mockBypassedSSLCertificatesRepository: BypassedSSLCertificatesRepository = mock()
 
     @Test
-    fun whenUrlIsHttpsThenHttpsStatusIsSecure() {
+    fun `whenUrlIsHttpsThenHttpsStatusIsSecure - https status secure`() {
         val testee = SiteMonitor(
             url = httpsDocument,
             title = null,
@@ -85,7 +85,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenUrlIsHttpThenHttpsStatusIsNone() {
+    fun `whenUrlIsHttpThenHttpsStatusIsNone - https status none`() {
         val testee = SiteMonitor(
             url = httpDocument,
             title = null,
@@ -99,7 +99,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenUrlIsHttpsWithHttpResourcesThenHttpsStatusIsMixed() {
+    fun `whenUrlIsHttpsWithHttpResourcesThenHttpsStatusIsMixed - has http resources - mixed`() {
         val testee = SiteMonitor(
             url = httpsDocument,
             title = null,
@@ -114,7 +114,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenUrlIsMalformedThenHttpsStatusIsNone() {
+    fun `whenUrlIsMalformedThenHttpsStatusIsNone - https status none`() {
         val testee = SiteMonitor(
             url = malformedDocument,
             title = null,
@@ -128,7 +128,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenSiteMonitorCreatedThenUrlIsCorrect() {
+    fun `SiteMonitor - url is correct`() {
         val testee = SiteMonitor(
             url = document,
             title = null,
@@ -142,7 +142,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenSiteMonitorCreatedThenTrackerCountIsZero() {
+    fun `whenSiteMonitorCreated - tracker count is zero`() {
         val testee = SiteMonitor(
             url = document,
             title = null,
@@ -156,7 +156,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenTrackersBlockedOrAllowedByUserAreDetectedThenTrackerCountIsIncremented() {
+    fun `trackerDetected - tracker count incremented`() {
         val testee = SiteMonitor(
             url = document,
             title = null,
@@ -203,7 +203,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenNoTrackersAllowedByUserAreDetectedThenAllTrackersBlockedIsTrue() {
+    fun `trackerDetected - all trackers blocked - true`() {
         val testee = SiteMonitor(
             url = document,
             title = null,
@@ -250,7 +250,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenAtLeastOneTrackersAllowedByUserIsDetectedThenAllTrackersBlockedIsFalse() {
+    fun `trackerDetected - at least one tracker allowed by user - all trackers blocked is false`() {
         val testee = SiteMonitor(
             url = document,
             title = null,
@@ -297,7 +297,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenNonMajorNetworkTrackerIsDetectedThenMajorNetworkCountIsZero() {
+    fun `trackerDetected - major network count zero`() {
         val testee = SiteMonitor(
             url = document,
             title = null,
@@ -322,7 +322,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenMajorNetworkTrackerIsDetectedThenMajorNetworkCountIsOne() {
+    fun `trackerDetected - major network tracker detected - one`() {
         val testee = SiteMonitor(
             url = document,
             title = null,
@@ -347,7 +347,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenDuplicateMajorNetworkIsDetectedThenMajorNetworkCountIsStillOne() {
+    fun `trackerDetected - duplicate major network detected - still one`() {
         val testee = SiteMonitor(
             url = document,
             title = null,
@@ -383,7 +383,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenSiteCreatedThenUpgradedHttpsIsFalse() {
+    fun `whenSiteCreated - site monitor upgraded https is false`() {
         val testee = SiteMonitor(
             url = document,
             title = null,
@@ -397,7 +397,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenSiteCreatedThenSurrogatesSizeIsZero() {
+    fun `whenSiteCreatedThenSurrogatesSizeIsZero - site created - size is zero`() {
         val testee = SiteMonitor(
             url = document,
             title = null,
@@ -411,7 +411,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenSurrogatesAreDetectedThenSurrogatesListIsIncremented() {
+    fun `surrogateDetected - surrogates list incremented`() {
         val testee = SiteMonitor(
             url = document,
             title = null,
@@ -426,7 +426,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenOtherDomainsAreLoadedThenOtherDomainsLoadedCountIsIncremented() {
+    fun `trackerDetected - other domains loaded count incremented`() {
         val testee = SiteMonitor(
             url = document,
             title = null,
@@ -473,7 +473,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenSpecialDomainsAreLoadedThenSpecialDomainsLoadedCountIsIncremented() {
+    fun `trackerDetected - special domains loaded count incremented`() {
         val testee = SiteMonitor(
             url = document,
             title = null,
@@ -553,7 +553,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenSiteBelongsToUserAllowListThenPrivacyShieldIsUnprotected() {
+    fun `whenSiteBelongsToUserAllowList - privacy shield unprotected`() {
         val testee = givenASiteMonitor(url = document)
         whenever(mockAllowListRepository.isDomainInUserAllowList(document)).thenReturn(true)
 
@@ -561,21 +561,21 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenSiteIsHttptThenPrivacyShieldIsUnprotected() {
+    fun `givenASiteMonitor - site is httpt - privacy shield unprotected`() {
         val testee = givenASiteMonitor(url = httpDocument)
 
         assertEquals(UNPROTECTED, testee.privacyProtection())
     }
 
     @Test
-    fun whenSiteIsNotExceptionOrHttpButFullDetailsNotAvailableThenReturnUnkown() {
+    fun `whenSiteIsNotExceptionOrHttpButFullDetailsNotAvailableThenReturnUnknown - privacy protection unknown`() {
         val testee = givenASiteMonitor(url = httpsDocument)
 
         assertEquals(UNKNOWN, testee.privacyProtection())
     }
 
     @Test
-    fun whenSiteIsMajorNetworkThenPrivacyShieldIsProtected() {
+    fun `updatePrivacyData - site is major network - privacy shield protected`() {
         val testee = givenASiteMonitor(url = httpsDocument)
 
         testee.updatePrivacyData(givenSitePrivacyData(entity = majorNetwork))
@@ -584,7 +584,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenPrivacyIssuesNotFoundThenPrivacyShieldIsProtected() {
+    fun `updatePrivacyData - privacy issues not found - privacy shield protected`() {
         val testee = givenASiteMonitor(url = httpsDocument)
 
         testee.updatePrivacyData(givenSitePrivacyData(entity = network))
@@ -593,7 +593,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenUserBypassedSslCertificateThenPrivacyShieldIsUnprotected() {
+    fun `whenUserBypassedSslCertificate - privacy shield unprotected`() {
         val testee = givenASiteMonitor(url = document)
         whenever(mockBypassedSSLCertificatesRepository.contains(document)).thenReturn(false)
 

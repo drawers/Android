@@ -46,14 +46,14 @@ class BrowserApplicationStateInfoTest {
     }
 
     @Test
-    fun whenActivityCreatedThenNoop() {
+    fun `onActivityCreated - noop`() {
         browserApplicationStateInfo.onActivityCreated(activity, null)
 
         verifyNoInteractions(observer)
     }
 
     @Test
-    fun whenFirstActivityCreatedAndStartedThenNotifyFreshAppLaunch() {
+    fun `onActivityCreated - started - notify fresh app launch`() {
         browserApplicationStateInfo.onActivityCreated(activity, null)
 
         browserApplicationStateInfo.onActivityStarted(activity)
@@ -62,7 +62,7 @@ class BrowserApplicationStateInfoTest {
     }
 
     @Test
-    fun whenAllActivitiesStopAndRestartThenNotifyAppOpen() {
+    fun `whenAllActivitiesStopAndRestartThenNotifyAppOpen - state - notify app open`() {
         browserApplicationStateInfo.onActivityCreated(activity, null)
         browserApplicationStateInfo.onActivityCreated(activity, null)
 
@@ -82,7 +82,7 @@ class BrowserApplicationStateInfoTest {
     }
 
     @Test
-    fun whenAllActivitiesAreDestroyedAndRecreatedThenNotifyFreshAppLaunch() {
+    fun `whenAllActivitiesAreDestroyedAndRecreatedThenNotifyFreshAppLaunch - observer notified`() {
         browserApplicationStateInfo.onActivityCreated(activity, null)
         browserApplicationStateInfo.onActivityCreated(activity, null)
 
@@ -106,7 +106,7 @@ class BrowserApplicationStateInfoTest {
     }
 
     @Test
-    fun whenAllActivitiesAreDestroyedByBackPressAndRecreatedThenDoNotNotifyFreshAppLaunch() {
+    fun `whenAllActivitiesAreDestroyedByBackPressAndRecreated - do not notify fresh app launch - observer on close`() {
         activity.destroyedByBackPress = true
 
         browserApplicationStateInfo.onActivityCreated(activity, null)
@@ -132,7 +132,7 @@ class BrowserApplicationStateInfoTest {
     }
 
     @Test
-    fun whenAllActivitiesAreDestroyedByConfigChangeAndRecreatedThenDoNotNotifyFreshAppLaunch() {
+    fun `whenAllActivitiesAreDestroyedByConfigChangeAndRecreatedThenDoNotNotifyFreshAppLaunch - do not notify fresh app launch`() {
         activity.isConfigChange = true
 
         browserApplicationStateInfo.onActivityCreated(activity, null)

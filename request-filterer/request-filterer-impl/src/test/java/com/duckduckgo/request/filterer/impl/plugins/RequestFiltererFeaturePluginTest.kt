@@ -43,19 +43,19 @@ class RequestFiltererFeaturePluginTest {
     }
 
     @Test
-    fun whenFeatureNameDoesNotMatchRequestFiltererThenReturnFalse() {
+    fun `store - feature name does not match request filterer - returns false`() {
         RequestFiltererFeatureName.values().filter { it != FEATURE_NAME }.forEach {
             assertFalse(testee.store(it.value, EMPTY_JSON_STRING))
         }
     }
 
     @Test
-    fun whenFeatureNameMatchesRequestFiltererThenReturnTrue() {
+    fun `store - feature name matches request filterer - returns true`() {
         TestCase.assertTrue(testee.store(FEATURE_NAME_VALUE, EMPTY_JSON_STRING))
     }
 
     @Test
-    fun whenFeatureNameMatchesRequestFiltererAndIsEnabledThenStoreFeatureEnabled() {
+    fun `store - feature name matches request filterer and is enabled - store feature enabled`() {
         val jsonString = FileUtilities.loadText(RequestFiltererFeaturePluginTest::class.java.classLoader!!, "json/request_filterer.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -64,7 +64,7 @@ class RequestFiltererFeaturePluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesRequestFiltererAndIsNotEnabledThenStoreFeatureDisabled() {
+    fun `store - feature name matches request filterer and is not enabled - store feature disabled`() {
         val jsonString = FileUtilities.loadText(
             RequestFiltererFeaturePluginTest::class.java.classLoader!!,
             "json/request_filterer_disabled.json",
@@ -76,7 +76,7 @@ class RequestFiltererFeaturePluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesRequestFiltererAndHasMinSupportedVersionThenStoreMinSupportedVersion() {
+    fun `store - feature name matches request filterer and has min supported version - store min supported version`() {
         val jsonString =
             FileUtilities.loadText(
                 RequestFiltererFeaturePluginTest::class.java.classLoader!!,
@@ -89,7 +89,7 @@ class RequestFiltererFeaturePluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesRequestFiltererThenUpdateAllExistingValues() {
+    fun `whenFeatureNameMatchesRequestFiltererThenUpdateAllExistingValues - update all existing values`() {
         val jsonString = FileUtilities.loadText(RequestFiltererFeaturePluginTest::class.java.classLoader!!, "json/request_filterer.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)

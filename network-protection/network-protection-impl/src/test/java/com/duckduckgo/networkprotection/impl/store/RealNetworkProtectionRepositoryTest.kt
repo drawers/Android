@@ -58,12 +58,12 @@ class RealNetworkProtectionRepositoryTest {
     }
 
     @Test
-    fun whenNoEnabledTimeMillisThenReturnDefaultValue() {
+    fun `getEnabledTimeInMillis - no enabled time - return default value`() {
         assertEquals(-1, testee.enabledTimeInMillis)
     }
 
     @Test
-    fun whenSettingEnabledTimeMillisThenPutLongInPrefs() {
+    fun `whenSettingEnabledTimeMillisThenPutLongInPrefs - put long in prefs`() {
         testee.enabledTimeInMillis = 12243235423453L
 
         assertEquals(12243235423453L, networkProtectionPrefs.getLong("wg_server_enable_time", -1))

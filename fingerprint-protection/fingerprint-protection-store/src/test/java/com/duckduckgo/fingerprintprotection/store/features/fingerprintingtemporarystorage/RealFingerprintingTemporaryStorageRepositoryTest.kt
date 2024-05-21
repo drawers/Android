@@ -44,7 +44,7 @@ class RealFingerprintingTemporaryStorageRepositoryTest {
     }
 
     @Test
-    fun whenInitializedAndDoesNotHaveStoredValueThenLoadEmptyJsonToMemory() =
+    fun `loadEmptyJsonToMemory - initialized and does not have stored value`() =
         runTest {
             testee =
                 RealFingerprintingTemporaryStorageRepository(
@@ -59,7 +59,7 @@ class RealFingerprintingTemporaryStorageRepositoryTest {
         }
 
     @Test
-    fun whenInitializedAndHasStoredValueThenLoadStoredJsonToMemory() =
+    fun `whenInitializedAndHasStoredValueThenLoadStoredJsonToMemory - load stored json to memory`() =
         runTest {
             whenever(mockFingerprintingTemporaryStorageDao.get()).thenReturn(fingerprintingTemporaryStorageEntity)
             testee =
@@ -75,7 +75,7 @@ class RealFingerprintingTemporaryStorageRepositoryTest {
         }
 
     @Test
-    fun whenUpdateAllThenUpdateAllCalled() =
+    fun `updateAll - update all called`() =
         runTest {
             testee =
                 RealFingerprintingTemporaryStorageRepository(

@@ -29,79 +29,79 @@ class TimePassedTest {
     private val resources = getApplicationContext<Context>().resources
 
     @Test
-    fun whenOnlyHoursPassedThenFormatsProperTime() {
+    fun `format - only hours passed - proper time`() {
         val timePassed = TimePassed(1, 0, 0)
         assertEquals("1 hr 0 min 0 sec", timePassed.format(resources = resources))
     }
 
     @Test
-    fun whenOnlyMinutesPassedThenFormatsProperTime() {
+    fun `format - only minutes passed - proper time`() {
         val timePassed = TimePassed(0, 10, 0)
         assertEquals("0 hr 10 min 0 sec", timePassed.format(resources = resources))
     }
 
     @Test
-    fun whenOnlySecondsPassedThenFormatsProperTime() {
+    fun `format - only seconds passed - proper time`() {
         val timePassed = TimePassed(0, 0, 25)
         assertEquals("0 hr 0 min 25 sec", timePassed.format(resources = resources))
     }
 
     @Test
-    fun whenHoursAndMinutesPassedThenFormatsProperTime() {
+    fun `format - hours and minutes passed - proper time`() {
         val timePassed = TimePassed(1, 10, 0)
         assertEquals("1 hr 10 min 0 sec", timePassed.format(resources = resources))
     }
 
     @Test
-    fun whenHoursAndSecondsPassedThenFormatsProperTime() {
+    fun `format - hours and seconds passed - proper time`() {
         val timePassed = TimePassed(1, 0, 30)
         assertEquals("1 hr 0 min 30 sec", timePassed.format(resources = resources))
     }
 
     @Test
-    fun whenMinutesAndSecondsPassedThenFormatsProperTime() {
+    fun `format - minutes and seconds passed - proper time`() {
         val timePassed = TimePassed(0, 10, 10)
         assertEquals("0 hr 10 min 10 sec", timePassed.format(resources = resources))
     }
 
     @Test
-    fun whenOnlyHoursPassedThenShortFormatsProperTime() {
+    fun `whenOnlyHoursPassedThenShortFormatsProperTime - short formats proper time`() {
         val timePassed = TimePassed(1, 0, 0)
         assertEquals("1h ago", timePassed.shortFormat(resources))
     }
 
     @Test
-    fun whenOnlyMinutesPassedThenShortFormatsProperTime() {
+    fun `whenOnlyMinutesPassedThenShortFormatsProperTime - short formats proper time`() {
         val timePassed = TimePassed(0, 10, 0)
         assertEquals("10m ago", timePassed.shortFormat(resources))
     }
 
     @Test
-    fun whenOnlySecondsPassedThenShortFormatsProperTime() {
+    fun `whenOnlySecondsPassedThenShortFormatsProperTime - short formats proper time`() {
         val timePassed = TimePassed(0, 0, 45)
         assertEquals("Just Now", timePassed.shortFormat(resources))
     }
 
     @Test
-    fun whenOnlyFewSecondsPassedThenShortFormatsProperTime() {
+    fun `whenOnlyFewSecondsPassed - short formats proper time - just now`() {
         val timePassed = TimePassed(0, 0, 25)
         assertEquals("Just Now", timePassed.shortFormat(resources))
     }
 
     @Test
-    fun whenHoursAndMinutesPassedThenShortFormatsProperTime() {
+    fun `when HoursAndMinutesPassed Then Short Formats Proper Time - short formats proper time`() {
         val timePassed = TimePassed(1, 10, 0)
         assertEquals("1h ago", timePassed.shortFormat(resources))
     }
 
     @Test
-    fun whenHoursAndSecondsPassedThenShortFormatsProperTime() {
+    fun `whenHoursAndSecondsPassed - short formats proper time`() {
         val timePassed = TimePassed(1, 0, 30)
         assertEquals("1h ago", timePassed.shortFormat(resources))
     }
 
     @Test
-    fun whenMinutesAndSecondsPassedShortThenFormatsProperTime() {
+    fun `whenMinutesAndSecondsPassedShort - formats proper time`() {
         val timePassed = TimePassed(0, 10, 10)
         assertEquals("10m ago", timePassed.shortFormat(resources))
     }

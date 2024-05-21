@@ -47,12 +47,12 @@ class VpnNetworkStackProviderTest {
     }
 
     @Test
-    fun whenProvideNetworkStackAndNoFeaturesRegisteredThenThrowsException() = runTest {
+    fun `provideNetworkStack - no features registered - throws exception`() = runTest {
         assertEquals(VpnNetworkStack.EmptyVpnNetworkStack, vpnNetworkStackProvider.provideNetworkStack())
     }
 
     @Test
-    fun whenProviderNetworkStackAndAppTpRegisteredThenReturnNetworkStack() = runTest {
+    fun `registerAppTp - return network stack`() = runTest {
         vpnFeaturesRegistry.registerFeature(AppTpVpnFeature.APPTP_VPN)
         val networkStack = vpnNetworkStackProvider.provideNetworkStack()
 
@@ -60,14 +60,14 @@ class VpnNetworkStackProviderTest {
     }
 
     @Test
-    fun whenProviderNetworkStackAndUnknownFeatureRegisteredThenThrowsException() = runTest {
+    fun `provideNetworkStack - provider network stack and unknown feature registered - throws exception`() = runTest {
         vpnFeaturesRegistry.registerFeature(VpnFeature { "unknown" })
         vpnNetworkStackProvider.provideNetworkStack()
         assertEquals(VpnNetworkStack.EmptyVpnNetworkStack, vpnNetworkStackProvider.provideNetworkStack())
     }
 
     @Test
-    fun whenProviderNetworkStackAndFeaturesContainAppTpThenReturnNetworkStack() = runTest {
+    fun `provideNetworkStack - provider network stack and features contain app tp - return network stack`() = runTest {
         vpnFeaturesRegistry.registerFeature(VpnFeature { "unknown" })
         vpnFeaturesRegistry.registerFeature(AppTpVpnFeature.APPTP_VPN)
 

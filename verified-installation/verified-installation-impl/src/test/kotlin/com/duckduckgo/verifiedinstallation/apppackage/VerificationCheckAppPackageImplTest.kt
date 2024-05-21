@@ -29,19 +29,19 @@ class VerificationCheckAppPackageImplTest {
     private val testee = VerificationCheckAppPackageImpl(appBuildConfig)
 
     @Test
-    fun whenPackageIsDebugVersionThenIsNotVerified() {
+    fun `isPackageDebug - is not verified`() {
         whenever(appBuildConfig.applicationId).thenReturn("com.duckduckgo.mobile.android.debug")
         assertFalse(testee.isProductionPackage())
     }
 
     @Test
-    fun whenPackageIsProductionVersionThenIsVerified() {
+    fun `isProductionPackage - package is production version - is verified`() {
         whenever(appBuildConfig.applicationId).thenReturn("com.duckduckgo.mobile.android")
         assertTrue(testee.isProductionPackage())
     }
 
     @Test
-    fun whenPackageIsUnrelatedToUsThenIsNotVerified() {
+    fun `isProductionPackage - package unrelated to us - is not verified`() {
         whenever(appBuildConfig.applicationId).thenReturn("com.random.app")
         assertFalse(testee.isProductionPackage())
     }

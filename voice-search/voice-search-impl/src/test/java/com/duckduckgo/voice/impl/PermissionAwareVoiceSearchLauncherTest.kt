@@ -50,7 +50,7 @@ class PermissionAwareVoiceSearchLauncherTest {
     }
 
     @Test
-    fun whenPermissionsNotGrantedThenLaunchPermissionRequest() {
+    fun `whenPermissionsNotGrantedThenLaunchPermissionRequest - permission request launched`() {
         whenever(voiceSearchPermissionCheck.hasRequiredPermissionsGranted()).thenReturn(false)
         whenever(voiceSearchAvailability.isVoiceSearchAvailable).thenReturn(true)
 
@@ -61,7 +61,7 @@ class PermissionAwareVoiceSearchLauncherTest {
     }
 
     @Test
-    fun whenPermissionsNotGrantedAndVoiceSearchNotAvailableThenLaunchPermissionRequest() {
+    fun `whenPermissionsNotGrantedAndVoiceSearchNotAvailableThenLaunchPermissionRequest -  - does not launch permission request`() {
         whenever(voiceSearchPermissionCheck.hasRequiredPermissionsGranted()).thenReturn(false)
         whenever(voiceSearchAvailability.isVoiceSearchAvailable).thenReturn(false)
 
@@ -72,7 +72,7 @@ class PermissionAwareVoiceSearchLauncherTest {
     }
 
     @Test
-    fun whenPermissionsGrantedThenLaunchVoiceSearchActivity() {
+    fun `whenPermissionsGranted - launch voice search activity`() {
         whenever(voiceSearchPermissionCheck.hasRequiredPermissionsGranted()).thenReturn(true)
         whenever(voiceSearchAvailability.isVoiceSearchAvailable).thenReturn(true)
 
@@ -83,7 +83,7 @@ class PermissionAwareVoiceSearchLauncherTest {
     }
 
     @Test
-    fun whenPermissionsGrantedAndVoiceSearchNotAvailableThenLaunchVoiceSearchActivity() {
+    fun `whenPermissionsGrantedAndVoiceSearchNotAvailable - launch voice search activity`() {
         whenever(voiceSearchPermissionCheck.hasRequiredPermissionsGranted()).thenReturn(true)
         whenever(voiceSearchAvailability.isVoiceSearchAvailable).thenReturn(false)
 

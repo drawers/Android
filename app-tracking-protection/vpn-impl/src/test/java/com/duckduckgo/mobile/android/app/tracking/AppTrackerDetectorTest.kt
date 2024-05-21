@@ -70,7 +70,7 @@ class AppTrackerDetectorTest {
     }
 
     @Test
-    fun whenEvaluateThirdPartyTrackerThenReturnTracker() {
+    fun `evaluateThirdPartyTracker - return tracker`() {
         whenever(appTrackerRepository.findTracker(TEST_APP_TRACKER.hostname, APP_PACKAGE_ID))
             .thenReturn(AppTrackerType.ThirdParty(TEST_APP_TRACKER))
         whenever(appNameResolver.getPackageIdForUid(APP_UID)).thenReturn(APP_ORIGINATING_APP.packageId)
@@ -90,7 +90,7 @@ class AppTrackerDetectorTest {
     }
 
     @Test
-    fun whenEvaluateThirdPartyTrackerAndSystemAppAndNotInExclusionListAndReturnNull() {
+    fun `evaluate - third party tracker and system app not in exclusion list - return null`() {
         whenever(appTrackerRepository.findTracker(TEST_APP_TRACKER.hostname, APP_PACKAGE_ID))
             .thenReturn(AppTrackerType.ThirdParty(TEST_APP_TRACKER))
         whenever(appNameResolver.getPackageIdForUid(APP_UID)).thenReturn(APP_ORIGINATING_APP.packageId)
@@ -103,7 +103,7 @@ class AppTrackerDetectorTest {
     }
 
     @Test
-    fun whenEvaluateThirdPartyTrackerAndoverriddenSystemAppAndNotInExclusionListAndReturnTracker() {
+    fun `evaluate - third party tracker and overridden system app - returns tracker`() {
         whenever(appTrackerRepository.findTracker(TEST_APP_TRACKER.hostname, APP_PACKAGE_ID))
             .thenReturn(AppTrackerType.ThirdParty(TEST_APP_TRACKER))
         whenever(appNameResolver.getPackageIdForUid(APP_UID)).thenReturn(APP_ORIGINATING_APP.packageId)
@@ -130,7 +130,7 @@ class AppTrackerDetectorTest {
     }
 
     @Test
-    fun whenEvaluateThirdPartyTrackerAndSystemAppAndInExclusionListAndReturnNull() {
+    fun `evaluate - third party tracker and system app in exclusion list - null`() {
         whenever(appTrackerRepository.findTracker(TEST_APP_TRACKER.hostname, APP_PACKAGE_ID))
             .thenReturn(AppTrackerType.ThirdParty(TEST_APP_TRACKER))
         whenever(appNameResolver.getPackageIdForUid(APP_UID)).thenReturn(APP_ORIGINATING_APP.packageId)
@@ -147,7 +147,7 @@ class AppTrackerDetectorTest {
     }
 
     @Test
-    fun whenEvaluateThirdPartyTrackerAndOverriddenSystemAppAndInExclusionListAndReturnNull() {
+    fun `evaluate - third party tracker and overridden system app in exclusion list - null`() {
         whenever(appTrackerRepository.findTracker(TEST_APP_TRACKER.hostname, APP_PACKAGE_ID))
             .thenReturn(AppTrackerType.ThirdParty(TEST_APP_TRACKER))
         whenever(appNameResolver.getPackageIdForUid(APP_UID)).thenReturn(APP_ORIGINATING_APP.packageId)
@@ -168,7 +168,7 @@ class AppTrackerDetectorTest {
     }
 
     @Test
-    fun whenEvaluateThirdPartyTrackerAndOverriddenSystemAppThenReturnTracker() {
+    fun `evaluate - third party tracker and overridden system app - return tracker`() {
         whenever(appTrackerRepository.findTracker(TEST_APP_TRACKER.hostname, APP_PACKAGE_ID))
             .thenReturn(AppTrackerType.ThirdParty(TEST_APP_TRACKER))
         whenever(appNameResolver.getPackageIdForUid(APP_UID)).thenReturn(APP_ORIGINATING_APP.packageId)
@@ -193,7 +193,7 @@ class AppTrackerDetectorTest {
     }
 
     @Test
-    fun whenEvaluateThirdPartyTrackerAndManuallyUnprotectedThenReturnNull() {
+    fun `evaluate - third party tracker and manually unprotected - return null`() {
         whenever(appTrackerRepository.findTracker(TEST_APP_TRACKER.hostname, APP_PACKAGE_ID))
             .thenReturn(AppTrackerType.ThirdParty(TEST_APP_TRACKER))
         whenever(appNameResolver.getPackageIdForUid(APP_UID)).thenReturn(APP_ORIGINATING_APP.packageId)
@@ -207,7 +207,7 @@ class AppTrackerDetectorTest {
     }
 
     @Test
-    fun whenEvaluateThirdPartyTrackerAndManuallyProtectedThenReturnTracker() {
+    fun `evaluate - third party tracker and manually protected - return tracker`() {
         whenever(appTrackerRepository.findTracker(TEST_APP_TRACKER.hostname, APP_PACKAGE_ID))
             .thenReturn(AppTrackerType.ThirdParty(TEST_APP_TRACKER))
         whenever(appNameResolver.getPackageIdForUid(APP_UID)).thenReturn(APP_ORIGINATING_APP.packageId)
@@ -230,7 +230,7 @@ class AppTrackerDetectorTest {
     }
 
     @Test
-    fun whenEvaluateThirdPartyTrackerAndInExclusionListThenReturnNull() {
+    fun `evaluate - third party tracker in exclusion list - return null`() {
         whenever(appTrackerRepository.findTracker(TEST_APP_TRACKER.hostname, APP_PACKAGE_ID))
             .thenReturn(AppTrackerType.ThirdParty(TEST_APP_TRACKER))
         whenever(appNameResolver.getPackageIdForUid(APP_UID)).thenReturn(APP_ORIGINATING_APP.packageId)
@@ -244,7 +244,7 @@ class AppTrackerDetectorTest {
     }
 
     @Test
-    fun whenEvaluateThirdPartyTrackerAndManuallyProtectedAndInExclusionListThenReturnTracker() {
+    fun `evaluate - third party tracker and manually protected in exclusion list - return tracker`() {
         whenever(appTrackerRepository.findTracker(TEST_APP_TRACKER.hostname, APP_PACKAGE_ID))
             .thenReturn(AppTrackerType.ThirdParty(TEST_APP_TRACKER))
         whenever(appNameResolver.getPackageIdForUid(APP_UID)).thenReturn(APP_ORIGINATING_APP.packageId)
@@ -270,7 +270,7 @@ class AppTrackerDetectorTest {
     }
 
     @Test
-    fun whenEvaluateThirdPartyTrackerFromUnknownAppThenReturnNull() {
+    fun `evaluateThirdPartyTrackerFromUnknownApp - return null`() {
         val packageId = AppNameResolver.OriginatingApp.unknown().packageId
 
         whenever(appTrackerRepository.findTracker(TEST_APP_TRACKER.hostname, packageId))
@@ -282,7 +282,7 @@ class AppTrackerDetectorTest {
     }
 
     @Test
-    fun whenEvaluateThirdPartyTrackerFromDdgAppThenReturnNull() {
+    fun `evaluateThirdPartyTrackerFromDdgApp - return null`() {
         // This test case is just in case we pass the DDG traffic through the VPN. Our app doesn't embed trackers but web trackers might be detected
         // as app trackers.
 
@@ -298,7 +298,7 @@ class AppTrackerDetectorTest {
     }
 
     @Test
-    fun whenEvaluateThirdPartyTrackerInExclusionListThenReturnTrackerNull() {
+    fun `evaluateThirdPartyTrackerInExclusionList - return tracker null`() {
         val packageId = APP_PACKAGE_ID
 
         whenever(appTrackerRepository.findTracker(TEST_APP_TRACKER.hostname, packageId))
@@ -313,7 +313,7 @@ class AppTrackerDetectorTest {
     }
 
     @Test
-    fun whenEvaluateFirstPartyTrackerThenReturnNull() {
+    fun `evaluateFirstPartyTracker - return null`() {
         whenever(appTrackerRepository.findTracker(TEST_APP_TRACKER.hostname, APP_PACKAGE_ID))
             .thenReturn(AppTrackerType.FirstParty(TEST_APP_TRACKER))
         whenever(appNameResolver.getPackageIdForUid(APP_UID)).thenReturn(APP_ORIGINATING_APP.packageId)
@@ -324,7 +324,7 @@ class AppTrackerDetectorTest {
     }
 
     @Test
-    fun whenEvaluateNonTrackerThenReturnNull() {
+    fun `evaluate - non tracker - return null`() {
         whenever(appTrackerRepository.findTracker(TEST_APP_TRACKER.hostname, APP_PACKAGE_ID)).thenReturn(AppTrackerType.NotTracker)
         whenever(appNameResolver.getPackageIdForUid(APP_UID)).thenReturn(APP_ORIGINATING_APP.packageId)
 
@@ -334,7 +334,7 @@ class AppTrackerDetectorTest {
     }
 
     @Test
-    fun whenAppTpDisabledReturnNull() = runTest {
+    fun `whenAppTpDisabledReturnNull - evaluate - null`() = runTest {
         whenever(vpnFeaturesRegistry.isFeatureRegistered(AppTpVpnFeature.APPTP_VPN)).thenReturn(false)
 
         val appTrackerDetectorDisabled = RealAppTrackerDetector(
@@ -354,7 +354,7 @@ class AppTrackerDetectorTest {
     }
 
     @Test
-    fun whenNullPackageIdThenEvaluateReturnsNull() {
+    fun `evaluate - null package id - returns null`() {
         whenever(appNameResolver.getPackageIdForUid(APP_UID)).thenReturn(null)
 
         assertNull(appTrackerDetector.evaluate(TEST_APP_TRACKER.hostname, APP_UID))

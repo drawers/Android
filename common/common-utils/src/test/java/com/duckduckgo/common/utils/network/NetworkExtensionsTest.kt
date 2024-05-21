@@ -27,7 +27,7 @@ import org.junit.runner.RunWith
 class NetworkExtensionsTest {
 
     @Test
-    fun `test isCGNAT`() {
+    fun `test isCGNAT - cgnat range - true and false`() {
         // cover all CGNAT range
         for (octet2 in 64..127) {
             for (octet3 in 0..255) {

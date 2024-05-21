@@ -23,7 +23,7 @@ import org.mockito.kotlin.verify
 class LoginDetectionJavascriptInterfaceTest {
 
     @Test
-    fun whenLoginDetectedThenNotifyCallback() {
+    fun `loginDetection - login detected - notify callback`() {
         val loginDetected = mock<() -> Unit>()
         val loginDetectionInterface = LoginDetectionJavascriptInterface(loginDetected)
 

@@ -15,7 +15,7 @@ class RMFPProSubscriberMatchingAttributeTest {
     private val attribute = RMFPProSubscriberMatchingAttribute(subscriptions)
 
     @Test
-    fun evaluateWithWrongAttributeThenNull() = runTest {
+    fun `evaluate - wrong attribute - null`() = runTest {
         whenever(subscriptions.getAccessToken()).thenReturn(null)
         Assert.assertNull(attribute.evaluate(FakeStringMatchingAttribute { "" }))
 
@@ -27,7 +27,7 @@ class RMFPProSubscriberMatchingAttributeTest {
     }
 
     @Test
-    fun evaluateWithProEligibleMatchingAttributeThenValue() = runTest {
+    fun `evaluateWithProEligibleMatchingAttributeThenValue - attribute evaluated`() = runTest {
         whenever(subscriptions.getAccessToken()).thenReturn(null)
         Assert.assertTrue(attribute.evaluate(attribute.map("pproSubscriber", JsonMatchingAttribute(value = false))!!)!!)
 
@@ -42,7 +42,7 @@ class RMFPProSubscriberMatchingAttributeTest {
     }
 
     @Test
-    fun mapNoProEligibleMatchingAttributeKeyThenReturnNull() = runTest {
+    fun `mapNoProEligibleMatchingAttributeKey - return null`() = runTest {
         Assert.assertNull(attribute.map("wrong", JsonMatchingAttribute(value = null)))
         Assert.assertNull(attribute.map("wrong", JsonMatchingAttribute(value = true)))
         Assert.assertNull(attribute.map("wrong", JsonMatchingAttribute(value = false)))

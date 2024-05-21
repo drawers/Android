@@ -39,7 +39,7 @@ class AutoconsentInterfaceTest {
     }
 
     @Test
-    fun whenMessagedParsedIfTypeMatchesThenCallProcess() {
+    fun `process - message parsed if type matches - call process`() {
         val message = """{"type":"fake"}"""
 
         autoconsentInterface.process(message)
@@ -48,7 +48,7 @@ class AutoconsentInterfaceTest {
     }
 
     @Test
-    fun whenMessagedParsedIfTypeDoesNotMatchThenDoNotCallProcess() {
+    fun `process - message parsed if type does not match - do not call process`() {
         val message = """{"type":"noMatchingType"}"""
 
         autoconsentInterface.process(message)

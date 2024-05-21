@@ -63,7 +63,7 @@ class SaveRecoveryCodeViewModelTest {
     )
 
     @Test
-    fun whenUserIsNotSignedInThenAccountCreatedAndViewStateUpdated() = runTest {
+    fun `isNotSignedIn - account created - view state updated`() = runTest {
         whenever(syncAccountRepository.isSignedIn()).thenReturn(false)
         whenever(syncAccountRepository.createAccount()).thenReturn(Result.Success(true))
         whenever(syncAccountRepository.getRecoveryCode()).thenReturn(Result.Success(jsonRecoveryKeyEncoded))
@@ -76,7 +76,7 @@ class SaveRecoveryCodeViewModelTest {
     }
 
     @Test
-    fun whenUserSignedInThenShowViewState() = runTest {
+    fun `whenUserSignedInThenShowViewState - view state - signed in`() = runTest {
         whenever(syncAccountRepository.isSignedIn()).thenReturn(true)
         whenever(syncAccountRepository.getRecoveryCode()).thenReturn(Result.Success(jsonRecoveryKeyEncoded))
 
@@ -88,7 +88,7 @@ class SaveRecoveryCodeViewModelTest {
     }
 
     @Test
-    fun whenCreateAccountFailsThenEmitFinishWithError() = runTest {
+    fun `createAccount - view state updated - emit finish with error`() = runTest {
         whenever(syncAccountRepository.isSignedIn()).thenReturn(false)
         whenever(syncAccountRepository.createAccount()).thenReturn(accountCreatedFailInvalid)
 
@@ -106,7 +106,7 @@ class SaveRecoveryCodeViewModelTest {
     }
 
     @Test
-    fun whenUserClicksNextThenFinishFlow() = runTest {
+    fun `onNextClicked - finish flow`() = runTest {
         testee.commands().test {
             testee.onNextClicked()
             val command = awaitItem()
@@ -116,7 +116,7 @@ class SaveRecoveryCodeViewModelTest {
     }
 
     @Test
-    fun whenUserClicksOnSaveRecoveryCodeThenEmitCheckIfUserHasPermissionCommand() = runTest {
+    fun `onSaveRecoveryCodeClicked - emit check if user has permission command`() = runTest {
         whenever(syncAccountRepository.getRecoveryCode()).thenReturn(Result.Success(jsonRecoveryKeyEncoded))
         testee.commands().test {
             testee.onSaveRecoveryCodeClicked()
@@ -127,7 +127,7 @@ class SaveRecoveryCodeViewModelTest {
     }
 
     @Test
-    fun whenGenerateRecoveryCodeThenGenerateFileAndEmitSuccessCommand() = runTest {
+    fun `generateRecoveryCode - generate file and emit success command`() = runTest {
         whenever(syncAccountRepository.getRecoveryCode()).thenReturn(Result.Success(jsonRecoveryKeyEncoded))
         whenever(recoveryPDF.generateAndStoreRecoveryCodePDF(any(), eq(jsonRecoveryKeyEncoded))).thenReturn(pdfFile())
 
@@ -140,7 +140,7 @@ class SaveRecoveryCodeViewModelTest {
     }
 
     @Test
-    fun whenUserClicksCopyThenCopyToClipboard() = runTest {
+    fun `onCopyCodeClicked - copy to clipboard`() = runTest {
         whenever(syncAccountRepository.getRecoveryCode()).thenReturn(Result.Success(jsonRecoveryKeyEncoded))
         testee.commands().test {
             testee.onCopyCodeClicked()

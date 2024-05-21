@@ -43,7 +43,7 @@ class SyncSharedPrefsStoreTest {
     }
 
     @Test
-    fun whenUserIdStoredThenValueUpdatedInPrefsStore() {
+    fun `whenUserIdStored - value updated in prefs store`() {
         assertNull(store.userId)
         store.userId = "test_user"
         assertEquals("test_user", store.userId)
@@ -52,7 +52,7 @@ class SyncSharedPrefsStoreTest {
     }
 
     @Test
-    fun whenDeviceNameStoredThenValueUpdatedInPrefsStore() {
+    fun `whenDeviceNameStored - value updated in prefs store`() {
         assertNull(store.deviceName)
         store.deviceName = "test_device"
         assertEquals("test_device", store.deviceName)
@@ -61,7 +61,7 @@ class SyncSharedPrefsStoreTest {
     }
 
     @Test
-    fun whenDeviceIdStoredThenValueUpdatedInPrefsStore() {
+    fun `whenDeviceIdStored - value updated in prefs store`() {
         assertNull(store.deviceId)
         store.deviceId = "test_device_id"
         assertEquals("test_device_id", store.deviceId)
@@ -70,7 +70,7 @@ class SyncSharedPrefsStoreTest {
     }
 
     @Test
-    fun whenStoreCredentialsThenValuesUpdatedInPrefsStore() {
+    fun `storeCredentials - values updated in prefs store`() {
         assertNull(store.userId)
         assertNull(store.deviceName)
         assertNull(store.deviceId)
@@ -87,14 +87,14 @@ class SyncSharedPrefsStoreTest {
     }
 
     @Test
-    fun whenIsSignedInThenReturnTrueIfUserHasAuthKeys() {
+    fun `isSignedIn - has auth keys - true`() {
         store.storeCredentials("userId", "deviceId", "deviceName", "primaryKey", "secretKey", "token")
 
         assertTrue(store.isSignedIn())
     }
 
     @Test
-    fun whenClearAllThenReturnRemoveAllKeys() {
+    fun `clearAll - return remove all keys`() {
         store.storeCredentials("userId", "deviceId", "deviceName", "primaryKey", "secretKey", "token")
         assertEquals("userId", store.userId)
         assertEquals("deviceName", store.deviceName)

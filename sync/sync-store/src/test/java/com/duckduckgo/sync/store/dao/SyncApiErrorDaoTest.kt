@@ -56,7 +56,7 @@ class SyncApiErrorDaoTest {
     }
 
     @Test
-    fun whenApiErrorAddedThenItCanBeRetrieved() = runTest {
+    fun `whenApiErrorAddedThenItCanBeRetrieved - api error added - can be retrieved`() = runTest {
         val feature = "bookmarks"
         val errorType = SyncApiErrorType.OBJECT_LIMIT_EXCEEDED
         val date = DatabaseDateFormatter.getUtcIsoLocalDate()
@@ -69,7 +69,7 @@ class SyncApiErrorDaoTest {
     }
 
     @Test
-    fun whenApiErrorIncrementedThenCounterIncremented() = runTest {
+    fun `whenApiErrorIncrementedThenCounterIncremented - api error incremented - counter incremented`() = runTest {
         val feature = "bookmarks"
         val errorType = SyncApiErrorType.OBJECT_LIMIT_EXCEEDED
         val date = DatabaseDateFormatter.getUtcIsoLocalDate()

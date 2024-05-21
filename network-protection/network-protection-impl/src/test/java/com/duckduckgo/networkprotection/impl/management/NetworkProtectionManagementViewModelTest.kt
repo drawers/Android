@@ -152,7 +152,7 @@ class NetworkProtectionManagementViewModelTest {
     }
 
     @Test
-    fun whenOnNetpToggleClickedToEnabledThenEmitCheckVPNPermissionCommand() = runTest {
+    fun `onNetpToggleClicked - on netp toggle clicked to enabled - emit check vpn permission command`() = runTest {
         whenever(externalVpnDetector.isExternalVpnDetected()).thenReturn(false)
 
         testee.commands().test {
@@ -163,21 +163,21 @@ class NetworkProtectionManagementViewModelTest {
     }
 
     @Test
-    fun whenOnStartVpnThenRegisterFeature() = runTest {
+    fun `onStartVpn - register feature - network protection state started`() = runTest {
         testee.onStartVpn()
 
         verify(networkProtectionState).start()
     }
 
     @Test
-    fun whenOnNetpToggleClickedToDisabledThenUnregisterFeature() = runTest {
+    fun `onNetpToggleClicked - network protection state cleared - unregistered feature`() = runTest {
         testee.onNetpToggleClicked(false)
 
         verify(networkProtectionState).clearVPNConfigurationAndStop()
     }
 
     @Test
-    fun whenExternalVPNDetectedAndOnNetpToggleClickedTrueThenEmitShowVpnConflictDialog() = runTest {
+    fun `onNetpToggleClicked - external VPN detected - emit show VPN conflict dialog`() = runTest {
         whenever(externalVpnDetector.isExternalVpnDetected()).thenReturn(true)
 
         testee.commands().test {
@@ -188,7 +188,7 @@ class NetworkProtectionManagementViewModelTest {
     }
 
     @Test
-    fun whenNoExternalVPNDetectedAndOnNetpToggleClickedTrueThenEmitCheckVPNPermission() = runTest {
+    fun `onNetpToggleClicked - no external VPN detected - emit check VPN permission`() = runTest {
         whenever(externalVpnDetector.isExternalVpnDetected()).thenReturn(false)
 
         testee.commands().test {
@@ -198,7 +198,7 @@ class NetworkProtectionManagementViewModelTest {
     }
 
     @Test
-    fun wheOnVPNPermissionRejectedWithTimeToLastVPNRequestDiffLessThan500ThenEmitShowVpnAlwaysOnConflictDialog() = runTest {
+    fun `onVPNPermissionRejected - time to last VPN request diff less than 500 - emit show VPN always on conflict dialog`() = runTest {
         testee.commands().test {
             val intent = Intent()
             testee.onRequiredPermissionNotGranted(intent, 600)
@@ -211,7 +211,7 @@ class NetworkProtectionManagementViewModelTest {
     }
 
     @Test
-    fun whenOnVPNPermissionRejectedWithTimeToLastVPNRequestDiffGreaterThan500ThenDoNotShowAlwaysOnConflictDialog() = runTest {
+    fun `onVPNPermissionRejected - time to last VPN request diff greater than 500 - do not show always on conflict dialog`() = runTest {
         testee.commands().test {
             val intent = Intent()
             testee.onRequiredPermissionNotGranted(intent, 600)
@@ -223,7 +223,7 @@ class NetworkProtectionManagementViewModelTest {
     }
 
     @Test
-    fun whenOnRequiredPermissionNotGrantedThenEmitRequestVPNPermission() = runTest {
+    fun `onRequiredPermissionNotGranted - emit request VPN permission`() = runTest {
         testee.commands().test {
             val intent = Intent()
             testee.onRequiredPermissionNotGranted(intent, 1000)
@@ -232,7 +232,7 @@ class NetworkProtectionManagementViewModelTest {
     }
 
     @Test
-    fun whenVpnStateIsEnablingThenViewStateEmitsConnecting() = runTest {
+    fun `onStartVpn - view state emits connecting`() = runTest {
         whenever(vpnStateMonitor.getStateFlow(NetPVpnFeature.NETP_VPN)).thenReturn(
             flowOf(
                 VpnState(
@@ -262,7 +262,7 @@ class NetworkProtectionManagementViewModelTest {
     }
 
     @Test
-    fun whenVpnStateIsDisabledThenViewStateEmitsDisconnected() = runTest {
+    fun `whenVpnStateIsDisabledThenViewStateEmitsDisconnected - view state emits disconnected`() = runTest {
         whenever(vpnStateMonitor.getStateFlow(NetPVpnFeature.NETP_VPN)).thenReturn(
             flowOf(
                 VpnState(
@@ -295,7 +295,7 @@ class NetworkProtectionManagementViewModelTest {
     }
 
     @Test
-    fun whenEnabledAndServerDetailsAvailableThenEmitViewStateConnectedWithDetails() = runTest {
+    fun `whenEnabledAndServerDetailsAvailableThenEmitViewStateConnectedWithDetails - view state connected with details`() = runTest {
         whenever(networkProtectionRepository.enabledTimeInMillis).thenReturn(-1)
         whenever(wgTunnelConfig.getWgConfig()).thenReturn(wgConfig)
         whenever(vpnStateMonitor.getStateFlow(NetPVpnFeature.NETP_VPN)).thenReturn(
@@ -330,7 +330,7 @@ class NetworkProtectionManagementViewModelTest {
     }
 
     @Test
-    fun whenOnResumeThenReturnViewStateExcludeAppCount() = runTest {
+    fun `onResume - return view state exclude app count`() = runTest {
         whenever(vpnStateMonitor.getStateFlow(NetPVpnFeature.NETP_VPN)).thenReturn(
             flowOf(
                 VpnState(
@@ -362,74 +362,74 @@ class NetworkProtectionManagementViewModelTest {
     }
 
     @Test
-    fun whenTimeDifferenceIs0ThenShowStartingTimeString() {
+    fun `toDisplayableTimerText - time difference is 0 - show starting timer string`() {
         assertEquals("00:00:00", 0L.toDisplayableTimerText())
     }
 
     @Test
-    fun whenTimeDifferenceHasHoursOnlyThenSetMinsAndSecondsToDefault() {
+    fun `whenTimeDifferenceHasHoursOnly - set minutes and seconds to default - timer text`() {
         assertEquals("27:00:00", 97_200_000L.toDisplayableTimerText())
     }
 
     @Test
-    fun whenTimeDifferenceHasMinsOnlyThenSetHoursAndSecondsToDefault() {
+    fun `whenTimeDifferenceHasMinsOnly - set hours and seconds to default - 00·00·00`() {
         assertEquals("00:38:00", 2_280_000L.toDisplayableTimerText())
     }
 
     @Test
-    fun whenTimeDifferenceHasSecondsOnlyThenSetHoursAndMinutesToDefault() {
+    fun `whenTimeDifferenceHasSecondsOnly - set hours and minutes to default - default timer text`() {
         assertEquals("00:00:32", 32_000L.toDisplayableTimerText())
     }
 
     @Test
-    fun whenTimeDifferenceThenSetHoursAndMinutesToDefault() {
+    fun `whenTimeDifference - set hours and minutes to default`() {
         assertEquals("27:38:32", 99_512_000L.toDisplayableTimerText())
     }
 
     @Test
-    fun whenOnStartVpnThenResetValuesInRepository() {
+    fun `onStartVpn - reset values in repository`() {
         testee.onStartVpn()
 
         verify(networkProtectionRepository).enabledTimeInMillis = -1L
     }
 
     @Test
-    fun whenVpnStateIsDisabledAndNullStopReasonThenNone() {
+    fun `getAlertState - vpn state disabled and null stop reason - none`() {
         assertEquals(None, testee.getAlertState(DISABLED, null, AlwaysOnState.DEFAULT))
     }
 
     @Test
-    fun whenVpnStateIsDisabledAndUnknownStopReasonThenNone() {
+    fun `getAlertState - vpn state disabled and unknown stop reason - none`() {
         assertEquals(None, testee.getAlertState(DISABLED, UNKNOWN, AlwaysOnState.DEFAULT))
     }
 
     @Test
-    fun whenVpnStateIsEnabledAndNullStopReasonThenNone() {
+    fun `getAlertState - vpn state enabled and null stop reason - none`() {
         assertEquals(None, testee.getAlertState(ENABLED, null, AlwaysOnState.DEFAULT))
     }
 
     @Test
-    fun whenVpnStateIsEnablingAndNoneStopReasonThenNone() {
+    fun `getAlertState - vpn state enabling and none stop reason - none`() {
         assertEquals(None, testee.getAlertState(ENABLING, null, AlwaysOnState.DEFAULT))
     }
 
     @Test
-    fun whenVpnStateIsEnabledAndAlwaysOnStateIsLockdownThenAlertStateIsShowAlwaysOnLockdownEnabled() {
+    fun `getAlertState - vpn state enabled and always on state lockdown - show always on lockdown enabled`() {
         assertEquals(ShowAlwaysOnLockdownEnabled, testee.getAlertState(ENABLED, null, AlwaysOnState.ALWAYS_ON_LOCKED_DOWN))
     }
 
     @Test
-    fun whenNotReconnectingThenAlertStateIsNone() {
+    fun `getAlertState - not reconnecting - none`() {
         assertEquals(None, testee.getAlertState(DISABLED, UNKNOWN, AlwaysOnState.DEFAULT))
     }
 
     @Test
-    fun whenStopReasonIsRevokedAndNotReconnectingThenAlertStateIsShowRevoked() {
+    fun `getAlertState - stop reason revoked and not reconnecting - show revoked`() {
         assertEquals(ShowRevoked, testee.getAlertState(DISABLED, REVOKED, AlwaysOnState.DEFAULT))
     }
 
     @Test
-    fun whenOnAlwaysOnOpenSettingsClickedFromPromotionThenEmitOpenVPNSettingsCommandAndEmitPixels() = runTest {
+    fun `onOpenSettingsFromAlwaysOnPromotionClicked - emit openvpn settings command and report pixels`() = runTest {
         testee.commands().test {
             testee.onOpenSettingsFromAlwaysOnPromotionClicked()
             assertEquals(OpenVPNSettings, this.awaitItem())
@@ -438,7 +438,7 @@ class NetworkProtectionManagementViewModelTest {
     }
 
     @Test
-    fun whenOnAlwaysOnOpenSettingsClickedFromLockdownThenEmitOpenVPNSettingsCommandAndEmitPixels() = runTest {
+    fun `onOpenSettingsFromAlwaysOnLockdown - emit open VPN settings command and report pixels`() = runTest {
         testee.commands().test {
             testee.onOpenSettingsFromAlwaysOnLockdownClicked()
             assertEquals(OpenVPNSettings, this.awaitItem())
@@ -447,7 +447,7 @@ class NetworkProtectionManagementViewModelTest {
     }
 
     @Test
-    fun whenOnStartVpnWithAlwaysOnOFFAndVPNLastDisabledByAndroidThenEmitShowAlwaysOnPromotionDialogCommand() = runTest {
+    fun `onStartVpn - always on off and vpn last disabled by android - emit show always on promotion dialog command`() = runTest {
         whenever(vpnStateMonitor.isAlwaysOnEnabled()).thenReturn(false)
         whenever(vpnStateMonitor.vpnLastDisabledByAndroid()).thenReturn(true)
 
@@ -459,7 +459,7 @@ class NetworkProtectionManagementViewModelTest {
     }
 
     @Test
-    fun whenOnStartVpnWithAlwaysOnEnabledThenDoNotEmitShowAlwaysOnPromotionDialogCommand() = runTest {
+    fun `onStartVpn - always on enabled - do not emit show always on promotion dialog command`() = runTest {
         whenever(vpnStateMonitor.isAlwaysOnEnabled()).thenReturn(true)
         whenever(vpnStateMonitor.vpnLastDisabledByAndroid()).thenReturn(true)
 
@@ -470,7 +470,7 @@ class NetworkProtectionManagementViewModelTest {
     }
 
     @Test
-    fun whenOnStartVpnWithAlwaysOnOffButVPNNotKilledByAndroidThenDoNotEmitShowAlwaysOnPromotionDialogCommand() = runTest {
+    fun `onStartVpn - always on off but vpn not killed by android - do not emit show always on promotion dialog command`() = runTest {
         whenever(vpnStateMonitor.isAlwaysOnEnabled()).thenReturn(false)
         whenever(vpnStateMonitor.vpnLastDisabledByAndroid()).thenReturn(false)
 
@@ -481,7 +481,7 @@ class NetworkProtectionManagementViewModelTest {
     }
 
     @Test
-    fun whenOnStartWithAlwaysOnLockdownThenDoNotEmitShowAlwaysOnLockdownDialogCommand() = runTest {
+    fun `onStart - always on lockdown - do not emit show always on lockdown dialog command`() = runTest {
         whenever(vpnStateMonitor.getStateFlow(NetPVpnFeature.NETP_VPN)).thenReturn(
             flowOf(
                 VpnState(
@@ -499,7 +499,7 @@ class NetworkProtectionManagementViewModelTest {
     }
 
     @Test
-    fun whenOnStartWithoutAlwaysOnLockdowmThenDoNotEmitShowAlwaysOnLockdownDialogCommand() = runTest {
+    fun `onStart - without always on lockdown - do not emit show always on lockdown dialog command`() = runTest {
         whenever(vpnStateMonitor.getStateFlow(NetPVpnFeature.NETP_VPN)).thenReturn(
             flowOf(
                 VpnState(
@@ -516,7 +516,7 @@ class NetworkProtectionManagementViewModelTest {
     }
 
     @Test
-    fun whenOnReportIssuesClickedThenEmitShowIssueReportingPageCommand() = runTest {
+    fun `onReportIssuesClicked - emit show issue reporting page command`() = runTest {
         testee.onReportIssuesClicked()
 
         testee.commands().test {

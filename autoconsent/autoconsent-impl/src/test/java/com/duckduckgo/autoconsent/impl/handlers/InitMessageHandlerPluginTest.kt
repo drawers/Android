@@ -55,14 +55,14 @@ class InitMessageHandlerPluginTest {
     )
 
     @Test
-    fun whenProcessIfMessageTypeIsNotInitThenDoNothing() {
+    fun `process - if message type is not init - do nothing`() {
         initHandlerPlugin.process("noMatching", "", webView, mockCallback)
 
         assertNull(shadowOf(webView).lastEvaluatedJavascript)
     }
 
     @Test
-    fun whenProcessIfCannotParseMessageThenDoNothing() {
+    fun `processIfCannotParseMessage - do nothing`() {
         val message = """
             {"type":"${initHandlerPlugin.supportedTypes.first()}", url: "http://www.example.com"}
         """.trimIndent()
@@ -73,7 +73,7 @@ class InitMessageHandlerPluginTest {
     }
 
     @Test
-    fun whenProcessIfNotUrlSchemaThenDoNothing() {
+    fun `processIfNotUrlSchema - do nothing - null`() {
         val message = """
             {"type":"${initHandlerPlugin.supportedTypes.first()}", "url": "ftp://www.example.com"}
         """.trimIndent()
@@ -84,7 +84,7 @@ class InitMessageHandlerPluginTest {
     }
 
     @Test
-    fun whenProcessIfAutoconsentIsDisabledAndAlreadyHandledThenDoNothing() {
+    fun `processIfAutoconsentIsDisabledAndAlreadyHandled - do nothing`() {
         settingsRepository.userSetting = false
         settingsRepository.firstPopupHandled = true
 
@@ -94,7 +94,7 @@ class InitMessageHandlerPluginTest {
     }
 
     @Test
-    fun whenProcessIfAutoconsentIsDisabledAndNotHandledThenDoNotCallEvaluate() {
+    fun `processIfAutoconsentIsDisabledAndNotHandled - do not call evaluate`() {
         settingsRepository.userSetting = false
         settingsRepository.firstPopupHandled = false
 
@@ -104,7 +104,7 @@ class InitMessageHandlerPluginTest {
     }
 
     @Test
-    fun whenProcessMessageForFirstTimeThenDoNotCallEvaluate() {
+    fun `processMessageForFirstTime - do not call evaluate - null result`() {
         whenever(repository.disabledCMPs).thenReturn(CopyOnWriteArrayList<String>().apply { add("MyCmp") })
         settingsRepository.userSetting = false
         settingsRepository.firstPopupHandled = false
@@ -117,7 +117,7 @@ class InitMessageHandlerPluginTest {
     }
 
     @Test
-    fun whenProcessMessageResponseSentIsCorrect() {
+    fun `processMessageResponseSent - correct response - `() {
         settingsRepository.userSetting = true
         settingsRepository.firstPopupHandled = true
         whenever(repository.disabledCMPs).thenReturn(CopyOnWriteArrayList())
@@ -136,7 +136,7 @@ class InitMessageHandlerPluginTest {
     }
 
     @Test
-    fun whenProcessMessageThenOnResultReceivedCalled() {
+    fun `processMessage - on result received called - consent not managed`() {
         settingsRepository.userSetting = true
         settingsRepository.firstPopupHandled = true
 

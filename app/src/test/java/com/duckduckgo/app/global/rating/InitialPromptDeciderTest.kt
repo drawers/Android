@@ -49,42 +49,42 @@ class InitialPromptDeciderTest {
     }
 
     @Test
-    fun whenUserHasNotSeenPromptBeforeAndNotUsedTheAppEnoughThenShouldNotSeePrompt() = runTest {
+    fun `shouldShowPrompt - user has not seen prompt before and not used the app enough - should not see prompt`() = runTest {
         whenever(mockAppDaysUsedRepository.getNumberOfDaysAppUsed()).thenReturn(NOT_ENOUGH_DAYS)
         whenever(mockAppEnjoymentRepository.canUserBeShownFirstPrompt()).thenReturn(true)
         assertFalse(testee.shouldShowPrompt())
     }
 
     @Test
-    fun whenUserHasNotSeenPromptBeforeAndUsedTheAppExactEnoughDaysThenShouldSeePrompt() = runTest {
+    fun `shouldShowPrompt - user has not seen prompt before and used app exact enough days - should see prompt`() = runTest {
         whenever(mockAppDaysUsedRepository.getNumberOfDaysAppUsed()).thenReturn(EXACT_NUMBER_OF_DAYS)
         whenever(mockAppEnjoymentRepository.canUserBeShownFirstPrompt()).thenReturn(true)
         assertTrue(testee.shouldShowPrompt())
     }
 
     @Test
-    fun whenUserHasNotSeenPromptBeforeAndUsedTheAppMoreThanEnoughDaysThenShouldSeePrompt() = runTest {
+    fun `shouldShowPrompt - user has not seen prompt before and used app more than enough days - should see prompt`() = runTest {
         whenever(mockAppDaysUsedRepository.getNumberOfDaysAppUsed()).thenReturn(MORE_THAN_ENOUGH_DAYS)
         whenever(mockAppEnjoymentRepository.canUserBeShownFirstPrompt()).thenReturn(true)
         assertTrue(testee.shouldShowPrompt())
     }
 
     @Test
-    fun whenUserHasSeenPromptBeforeAndNotUsedTheAppEnoughThenShouldNotSeePrompt() = runTest {
+    fun `shouldShowPrompt - user has seen prompt before and not used app enough - should not see prompt`() = runTest {
         whenever(mockAppDaysUsedRepository.getNumberOfDaysAppUsed()).thenReturn(NOT_ENOUGH_DAYS)
         whenever(mockAppEnjoymentRepository.canUserBeShownFirstPrompt()).thenReturn(false)
         assertFalse(testee.shouldShowPrompt())
     }
 
     @Test
-    fun whenUserHasSeenPromptBeforeAndUsedTheAppExactEnoughDaysThenShouldNotSeePrompt() = runTest {
+    fun `shouldShowPrompt - user has seen prompt before and used app exact enough days - should not see prompt`() = runTest {
         whenever(mockAppDaysUsedRepository.getNumberOfDaysAppUsed()).thenReturn(EXACT_NUMBER_OF_DAYS)
         whenever(mockAppEnjoymentRepository.canUserBeShownFirstPrompt()).thenReturn(false)
         assertFalse(testee.shouldShowPrompt())
     }
 
     @Test
-    fun whenUserHasSeenPromptBeforeAndUsedTheAppMoreThanEnoughDaysThenShouldNotSeePrompt() = runTest {
+    fun `shouldShowPrompt - user has seen prompt before and used app more than enough days - should not see prompt`() = runTest {
         whenever(mockAppDaysUsedRepository.getNumberOfDaysAppUsed()).thenReturn(MORE_THAN_ENOUGH_DAYS)
         whenever(mockAppEnjoymentRepository.canUserBeShownFirstPrompt()).thenReturn(false)
         assertFalse(testee.shouldShowPrompt())

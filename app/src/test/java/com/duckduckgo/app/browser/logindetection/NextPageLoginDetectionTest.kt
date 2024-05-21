@@ -57,7 +57,7 @@ class NextPageLoginDetectionTest {
     }
 
     @Test
-    fun whenLoginAttemptedAndUserForwardedToNewPageThenLoginDetected() = runTest {
+    fun `onLoginAttempted - login detected`() = runTest {
         givenLoginDetector(enabled = true)
         loginDetector.onEvent(NavigationEvent.LoginAttempt("http://example.com/login"))
 
@@ -68,7 +68,7 @@ class NextPageLoginDetectionTest {
     }
 
     @Test
-    fun whenLoginAttemptedInsideOAuthFlowThenLoginDetectedWhenUserForwardedToDifferentDomain() = runTest {
+    fun `whenLoginAttemptedInsideOAuthFlow - login detected when user forwarded to different domain`() = runTest {
         givenLoginDetector(enabled = true)
         redirectTo("https://accounts.google.com/o/oauth2/v2/auth")
         giveLoginDetectorChanceToExecute()
@@ -88,7 +88,7 @@ class NextPageLoginDetectionTest {
     }
 
     @Test
-    fun whenLoginAttemptedInsideSSOFlowThenLoginDetectedWhenUserForwardedToDifferentDomain() = runTest {
+    fun `whenLoginAttemptedInsideSSOFlow - login detected when user forwarded to different domain - login detected`() = runTest {
         givenLoginDetector(enabled = true)
         fullyLoadSite("https://app.asana.com/-/login")
         giveLoginDetectorChanceToExecute()
@@ -108,7 +108,7 @@ class NextPageLoginDetectionTest {
     }
 
     @Test
-    fun whenLoginAttemptedSkip2FAUrlsThenLoginDetectedForLatestOne() = runTest {
+    fun `onEvent - login detected for latest one`() = runTest {
         givenLoginDetector(enabled = true)
         fullyLoadSite("https://accounts.google.com/ServiceLogin")
         giveLoginDetectorChanceToExecute()
@@ -126,7 +126,7 @@ class NextPageLoginDetectionTest {
     }
 
     @Test
-    fun whenLoginAttemptedAndUserForwardedToMultipleNewPagesThenLoginDetectedForLatestOne() = runTest {
+    fun `onLoginAttempt - login detected for latest one`() = runTest {
         givenLoginDetector(enabled = true)
         loginDetector.onEvent(NavigationEvent.LoginAttempt("http://example.com/login"))
 
@@ -141,7 +141,7 @@ class NextPageLoginDetectionTest {
     }
 
     @Test
-    fun whenLoginAttemptedAndUserForwardedToSamePageThenLoginNotDetected() = runTest {
+    fun `onEvent - login attempted and user forwarded to same page - login not detected`() = runTest {
         givenLoginDetector(enabled = true)
         loginDetector.onEvent(NavigationEvent.LoginAttempt("http://example.com/login"))
 
@@ -152,7 +152,7 @@ class NextPageLoginDetectionTest {
     }
 
     @Test
-    fun whenNotDetectedLoginAttemptAndForwardedToNewPageThenLoginNotDetected() = runTest {
+    fun `whenNotDetectedLoginAttemptAndForwardedToNewPageThenLoginNotDetected - login not detected`() = runTest {
         givenLoginDetector(enabled = true)
         fullyLoadSite("http://example.com")
         giveLoginDetectorChanceToExecute()
@@ -173,7 +173,7 @@ class NextPageLoginDetectionTest {
     }
 
     @Test
-    fun whenLoginAttemptedAndUserForwardedToSameUrlThenLoginNotDetected() = runTest {
+    fun `onEvent - login attempted and user forwarded to same url - login not detected`() = runTest {
         givenLoginDetector(enabled = true)
         loginDetector.onEvent(NavigationEvent.LoginAttempt("http://example.com/login"))
 
@@ -185,7 +185,7 @@ class NextPageLoginDetectionTest {
     }
 
     @Test
-    fun whenNotDetectedLoginAttemptAndForwardedToNewUrlThenLoginNotDetected() = runTest {
+    fun `whenNotDetectedLoginAttemptAndForwardedToNewUrlThenLoginNotDetected - login not detected`() = runTest {
         givenLoginDetector(enabled = true)
         loginDetector.onEvent(NavigationEvent.WebNavigationEvent(WebNavigationStateChange.UrlUpdated(url = "http://example.com")))
         loginDetector.onEvent(NavigationEvent.PageFinished)
@@ -195,7 +195,7 @@ class NextPageLoginDetectionTest {
     }
 
     @Test
-    fun whenLoginAttemptedAndNextPageFinishedThenLoadingNewPageDoesNotDetectLogin() = runTest {
+    fun `onLoginAttempted - loading new page does not detect login - no login detected`() = runTest {
         givenLoginDetector(enabled = true)
         loginDetector.onEvent(NavigationEvent.LoginAttempt("http://example.com/login"))
         loginDetector.onEvent(NavigationEvent.PageFinished)
@@ -208,7 +208,7 @@ class NextPageLoginDetectionTest {
     }
 
     @Test
-    fun whenLoginAttemptedAndUserNavigatesBackThenNewPageDoesNotDetectLogin() = runTest {
+    fun `onLoginAttempted - navigation back - no login detected`() = runTest {
         givenLoginDetector(enabled = true)
         loginDetector.onEvent(NavigationEvent.LoginAttempt("http://example.com/login"))
         loginDetector.onEvent(NavigationEvent.UserAction.NavigateBack)
@@ -220,7 +220,7 @@ class NextPageLoginDetectionTest {
     }
 
     @Test
-    fun whenLoginAttemptedAndUserNavigatesForwardThenNewPageDoesNotDetectLogin() = runTest {
+    fun `onLoginAttempted - navigation forward - no login detected`() = runTest {
         givenLoginDetector(enabled = true)
         loginDetector.onEvent(NavigationEvent.LoginAttempt("http://example.com/login"))
         loginDetector.onEvent(NavigationEvent.UserAction.NavigateForward)
@@ -232,7 +232,7 @@ class NextPageLoginDetectionTest {
     }
 
     @Test
-    fun whenLoginAttemptedAndUserReloadsWebsiteThenNewPageDoesNotDetectLogin() = runTest {
+    fun `onRefresh - login detector - no login detected`() = runTest {
         givenLoginDetector(enabled = true)
         loginDetector.onEvent(NavigationEvent.LoginAttempt("http://example.com/login"))
         loginDetector.onEvent(NavigationEvent.UserAction.Refresh)
@@ -244,7 +244,7 @@ class NextPageLoginDetectionTest {
     }
 
     @Test
-    fun whenLoginAttemptedAndUserSubmitsNewQueryThenNewPageDoesNotDetectLogin() = runTest {
+    fun `onNewQuerySubmitted - login detector does not detect login`() = runTest {
         givenLoginDetector(enabled = true)
         loginDetector.onEvent(NavigationEvent.LoginAttempt("http://example.com/login"))
         loginDetector.onEvent(NavigationEvent.UserAction.NewQuerySubmitted)
@@ -256,7 +256,7 @@ class NextPageLoginDetectionTest {
     }
 
     @Test
-    fun whenLoginAttemptedHasInvalidURLThenNewPageDoesNotDetectLogin() = runTest {
+    fun `onLoginAttempted - invalid URL - new page does not detect login`() = runTest {
         givenLoginDetector(enabled = true)
         loginDetector.onEvent(NavigationEvent.LoginAttempt(""))
 
@@ -267,7 +267,7 @@ class NextPageLoginDetectionTest {
     }
 
     @Test
-    fun whenLoginAttemptedAndUserForwardedToInvalidNewPageThenLoginDetected() = runTest {
+    fun `onLoginAttempted - login detected - no event issued`() = runTest {
         givenLoginDetector(enabled = true)
         loginDetector.onEvent(NavigationEvent.LoginAttempt("http://example.com/login"))
 

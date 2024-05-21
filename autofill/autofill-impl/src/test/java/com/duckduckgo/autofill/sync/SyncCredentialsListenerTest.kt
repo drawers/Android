@@ -50,7 +50,7 @@ class SyncCredentialsListenerTest {
     }
 
     @Test
-    fun whenOnCredentialAddedThenNotifySyncMetadata() {
+    fun `onCredentialAdded - notify sync metadata`() {
         testee.onCredentialAdded(1)
 
         syncMetatadaDao.getSyncMetadata(1)?.let {
@@ -61,7 +61,7 @@ class SyncCredentialsListenerTest {
     }
 
     @Test
-    fun whenAddingCredentialRecentlyRemovedThenCancelDeleteOperationAndDoNotUpdateMetadata() = runTest {
+    fun `onCredentialAdded - recently removed credential - do not update metadata`() = runTest {
         testee.onCredentialAdded(1)
         val credential = syncMetatadaDao.getSyncMetadata(1)
         testee.onCredentialRemoved(1)
@@ -74,7 +74,7 @@ class SyncCredentialsListenerTest {
     }
 
     @Test
-    fun whenCredentialNotReinsertedThenNotifySyncMetadata() = runTest {
+    fun `onCredentialNotReinserted - notify sync metadata`() = runTest {
         testee.onCredentialAdded(1)
         testee.onCredentialRemoved(1)
         this.advanceTimeBy(SYNC_CREDENTIALS_DELETE_DELAY + 1)
@@ -85,7 +85,7 @@ class SyncCredentialsListenerTest {
     }
 
     @Test
-    fun whenMultipleCredentialsAddedThenNotifySyncMetadata() {
+    fun `onCredentialsAdded - notify sync metadata`() {
         testee.onCredentialsAdded(listOf(1, 2, 3, 4, 5))
 
         assertEquals(5, syncMetatadaDao.getAll().size)
@@ -97,7 +97,7 @@ class SyncCredentialsListenerTest {
     }
 
     @Test
-    fun whenReinsertingCredentialsRecentlyRemovedThenCancelDeleteOperationAndDoNotUpdateMetadata() = runTest {
+    fun `onCredentialRemoved - reinserting credentials recently removed - does not update metadata`() = runTest {
         testee.onCredentialsAdded(listOf(1, 2, 3, 4, 5))
         val credentials = syncMetatadaDao.getAll()
         assertEquals(5, credentials.size)
@@ -113,7 +113,7 @@ class SyncCredentialsListenerTest {
     }
 
     @Test
-    fun whenCredentialsNotReinsertedThenNotifySyncMetadata() = runTest {
+    fun `onCredentialsNotReinserted - notify sync metadata`() = runTest {
         testee.onCredentialsAdded(listOf(1, 2, 3, 4, 5))
 
         testee.onCredentialRemoved(listOf(1, 2, 3, 4, 5))

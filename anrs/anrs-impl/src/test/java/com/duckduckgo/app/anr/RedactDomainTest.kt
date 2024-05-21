@@ -25,7 +25,7 @@ import org.junit.runner.RunWith
 class RedactDomainTest {
 
     @Test
-    fun `redact PII from stack trace`() {
+    fun `redact PII from stack trace - sanitize stack trace - expected outcome`() {
         val message = """
             Exception in thread "main" java.lang.NullPointerException: Something went wrong
                 at com.example.MyClass.method(MyClass.java:10)

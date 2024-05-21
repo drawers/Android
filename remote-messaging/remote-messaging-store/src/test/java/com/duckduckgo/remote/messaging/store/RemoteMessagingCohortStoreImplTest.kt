@@ -38,19 +38,19 @@ class RemoteMessagingCohortStoreImplTest {
     private val testee = RemoteMessagingCohortStoreImpl(db, coroutineRule.testDispatcherProvider)
 
     @Test
-    fun whenPercentileIsSetForMessageThenReturnSameValue() = runTest {
+    fun `getPercentile - set percentile for message - same value`() = runTest {
         cohortDao.insert(RemoteMessagingCohort(messageId = "message1", percentile = 0.5f))
         assertEquals(0.5f, testee.getPercentile("message1"))
     }
 
     @Test
-    fun whenPercentileIsNotSetForMessageThenItIsCalculated() = runTest {
+    fun `getPercentile - no percentile set - calculated`() = runTest {
         val percentile = testee.getPercentile("message1")
         assertTrue(percentile in 0.0f..1.0f)
     }
 
     @Test
-    fun whenMoreThanOneMessageWithCohortThenReturnExpectedCohort() = runTest {
+    fun `getPercentile - more than one message with cohort - expected cohort`() = runTest {
         cohortDao.insert(RemoteMessagingCohort(messageId = "message1", percentile = 0.5f))
         cohortDao.insert(RemoteMessagingCohort(messageId = "message2", percentile = 0.6f))
         assertEquals(0.5f, testee.getPercentile("message1"))

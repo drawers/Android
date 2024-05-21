@@ -18,7 +18,7 @@ class WebShareChooserTest {
     private val webShareChooser = WebShareChooser()
 
     @Test
-    fun whenTitleAndUrlAndTextEmptyThenParseCorrectData() {
+    fun `whenTitleAndUrlAndTextEmptyThenParseCorrectData - parse correct data`() {
         val data = JsCallbackData(
             params = JSONObject("""{"title":"Sample title","url":"https://example.com/", "text":""}"""),
             featureName = "featureName",
@@ -37,7 +37,7 @@ class WebShareChooserTest {
     }
 
     @Test
-    fun whenTitleAndUrlAndTextNullThenParseCorrectData() {
+    fun `whenTitleAndUrlAndTextNullThenParseCorrectData - parse correct data`() {
         val data = JsCallbackData(
             params = JSONObject("""{"title":"Sample title","url":"https://example.com/"}"""),
             featureName = "featureName",
@@ -56,7 +56,7 @@ class WebShareChooserTest {
     }
 
     @Test
-    fun whenTitleEmptyAndUrlThenParseCorrectData() {
+    fun `whenTitleEmptyAndUrlThenParseCorrectData - extras parsed correctly`() {
         val data = JsCallbackData(
             params = JSONObject("""{"title":"","url":"https://example.com/"}"""),
             featureName = "featureName",
@@ -75,7 +75,7 @@ class WebShareChooserTest {
     }
 
     @Test
-    fun whenTitleAndUrlAndTextThenParseCorrectData() {
+    fun `whenTitleAndUrlAndTextThenParseCorrectData - parse correct data`() {
         val data = JsCallbackData(
             params = JSONObject("""{"title":"Sample title","url":"https://example.com/", "text":"Test"}"""),
             featureName = "featureName",
@@ -94,7 +94,7 @@ class WebShareChooserTest {
     }
 
     @Test
-    fun whenTitleAndTextAndUrlEmptyThenParseCorrectData() {
+    fun `whenTitleAndTextAndUrlEmptyThenParseCorrectData - parse correct data`() {
         val data = JsCallbackData(
             params = JSONObject("""{"title":"Sample title","url":"", "text":"Test"}"""),
             featureName = "featureName",
@@ -113,7 +113,7 @@ class WebShareChooserTest {
     }
 
     @Test
-    fun whenTitleAndTextAndUrlNullThenParseCorrectData() {
+    fun `whenTitleAndTextAndUrlNullThenParseCorrectData - parse correct data`() {
         val data = JsCallbackData(
             params = JSONObject("""{"title":"Sample title", "text":"Test"}"""),
             featureName = "featureName",
@@ -132,7 +132,7 @@ class WebShareChooserTest {
     }
 
     @Test
-    fun whenParseResultIsOkAndDataNotInitializedThenReturnDataError() {
+    fun `parseResult - ok and data not initialized - return data error`() {
         val data = webShareChooser.parseResult(Activity.RESULT_OK, null)
 
         assertEquals(WebShareChooser.DATA_ERROR, data.params.toString())
@@ -142,7 +142,7 @@ class WebShareChooserTest {
     }
 
     @Test
-    fun whenParseResultIsOkThenReturnSuccess() {
+    fun `parseResult - ok - return success`() {
         val data = JsCallbackData(
             params = JSONObject("""{"title":"Sample title", "text":"Test"}"""),
             featureName = "featureName",
@@ -160,7 +160,7 @@ class WebShareChooserTest {
     }
 
     @Test
-    fun whenParseResultIsCanceledThenReturnAbort() {
+    fun `parseResult - is canceled - return abort`() {
         val data = JsCallbackData(
             params = JSONObject("""{"title":"Sample title", "text":"Test"}"""),
             featureName = "featureName",
@@ -178,7 +178,7 @@ class WebShareChooserTest {
     }
 
     @Test
-    fun whenParseResultIsOtherThenReturnDataError() {
+    fun `parseResult - is other - return data error`() {
         val data = JsCallbackData(
             params = JSONObject("""{"title":"Sample title", "text":"Test"}"""),
             featureName = "featureName",

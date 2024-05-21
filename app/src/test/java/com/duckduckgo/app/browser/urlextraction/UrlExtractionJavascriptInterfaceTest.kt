@@ -23,7 +23,7 @@ import org.mockito.kotlin.verify
 class UrlExtractionJavascriptInterfaceTest {
 
     @Test
-    fun whenUrlExtractedThenInvokeCallbackWithUrl() {
+    fun `urlExtracted - invoke callback with url`() {
         val onUrlExtracted = mock<(extractedUrl: String?) -> Unit>()
         val urlExtractionInterface = UrlExtractionJavascriptInterface(onUrlExtracted)
 
@@ -33,7 +33,7 @@ class UrlExtractionJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenUrlIsUndefinedThenInvokeCallbackWithNull() {
+    fun `urlExtracted - undefined - invoke callback with null`() {
         val onUrlExtracted = mock<(extractedUrl: String?) -> Unit>()
         val urlExtractionInterface = UrlExtractionJavascriptInterface(onUrlExtracted)
 

@@ -48,7 +48,7 @@ class SyncCryptoTest {
     }
 
     @Test(expected = java.lang.Exception::class)
-    fun whenEncryptFailsThenResultIsEmpty() {
+    fun `encrypt - fails - result is empty`() {
         whenever(nativeLib.encryptData(any(), any())).thenReturn(EncryptResult(1, "not encrypted"))
 
         val result = syncCrypto.encrypt("something")
@@ -59,7 +59,7 @@ class SyncCryptoTest {
     }
 
     @Test
-    fun whenEncryptSucceedsThenResultIsEncrypted() {
+    fun `encrypt - succeeds - result is encrypted`() {
         whenever(nativeLib.encryptData(any(), any())).thenReturn(EncryptResult(0, "not encrypted"))
 
         val result = syncCrypto.encrypt("something")
@@ -70,7 +70,7 @@ class SyncCryptoTest {
     }
 
     @Test(expected = java.lang.Exception::class)
-    fun whenDecryptFailsThenResultIsEmpty() {
+    fun `decrypt - fails - empty result`() {
         whenever(nativeLib.decryptData(any(), any())).thenReturn(DecryptResult(1, "not decrypted"))
 
         val result = syncCrypto.decrypt("something")
@@ -81,7 +81,7 @@ class SyncCryptoTest {
     }
 
     @Test
-    fun whenDecryptSucceedsThenResultIsDecrypted() {
+    fun `decrypt - succeeds - result is decrypted`() {
         whenever(nativeLib.decryptData(any(), any())).thenReturn(DecryptResult(0, "not decrypted"))
 
         val result = syncCrypto.decrypt("something")
@@ -92,7 +92,7 @@ class SyncCryptoTest {
     }
 
     @Test
-    fun whenDataToDecryptIsEmptyThenResultIsEmpty() {
+    fun `decrypt - data to decrypt empty - result empty`() {
         val result = syncCrypto.decrypt("")
 
         verifyNoInteractions(recorder)

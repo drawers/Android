@@ -63,7 +63,7 @@ class RemoteMessagingConfigMatcherTest {
     )
 
     @Test
-    fun whenEmptyConfigThenReturnNull() = runBlocking {
+    fun `evaluate - config empty - null`() = runBlocking {
         val emptyRemoteConfig = RemoteConfig(messages = emptyList(), rules = emptyList())
 
         val message = testee.evaluate(emptyRemoteConfig)
@@ -72,7 +72,7 @@ class RemoteMessagingConfigMatcherTest {
     }
 
     @Test
-    fun whenNoMatchingRulesThenReturnFirstMessage() = runBlocking {
+    fun `evaluate - no matching rules - return first message`() = runBlocking {
         val noRulesRemoteConfig = RemoteConfig(messages = listOf(aSmallMessage()), rules = emptyList())
 
         val message = testee.evaluate(noRulesRemoteConfig)
@@ -81,7 +81,7 @@ class RemoteMessagingConfigMatcherTest {
     }
 
     @Test
-    fun whenNotExistingRuleThenReturnSkipMessage() = runBlocking {
+    fun `evaluate - no existing rule - skip message`() = runBlocking {
         val noRulesRemoteConfig = RemoteConfig(
             messages = listOf(
                 aSmallMessage(matchingRules = rules(1)),
@@ -96,7 +96,7 @@ class RemoteMessagingConfigMatcherTest {
     }
 
     @Test
-    fun whenNoMessagesThenReturnNull() = runBlocking {
+    fun `evaluate - no messages - return null`() = runBlocking {
         val noMessagesRemoteConfig = RemoteConfig(
             messages = emptyList(),
             rules = listOf(rule(id = 1, matchingAttributes = arrayOf(Api(max = 19)))),
@@ -108,7 +108,7 @@ class RemoteMessagingConfigMatcherTest {
     }
 
     @Test
-    fun whenDeviceDoesNotMatchMessageRulesThenReturnNull() = runBlocking {
+    fun `evaluate - device does not match message rules - return null`() = runBlocking {
         givenDeviceMatches()
 
         val message = testee.evaluate(
@@ -125,7 +125,7 @@ class RemoteMessagingConfigMatcherTest {
     }
 
     @Test
-    fun whenNoMatchingRulesThenReturnFirstNonExcludedMessage() = runBlocking {
+    fun `evaluate - no matching rules - return first non-excluded message`() = runBlocking {
         givenDeviceMatches(Api(max = 19), Locale(value = listOf("en-US")), EmailEnabled(value = true))
 
         val message = testee.evaluate(
@@ -146,7 +146,7 @@ class RemoteMessagingConfigMatcherTest {
     }
 
     @Test
-    fun whenMatchingMessageShouldBeExcludedThenReturnNull() = runBlocking {
+    fun `evaluate - device matches - return null`() = runBlocking {
         givenDeviceMatches(Api(max = 19), Locale(value = listOf("en-US")))
 
         val message = testee.evaluate(
@@ -163,7 +163,7 @@ class RemoteMessagingConfigMatcherTest {
     }
 
     @Test
-    fun whenMatchingMessageShouldBeExcludedByOneOfMultipleRulesThenReturnNull() = runBlocking {
+    fun `evaluate - multiple rules - returns null`() = runBlocking {
         givenDeviceMatches(Api(max = 19), EmailEnabled(value = true), Bookmarks(max = 10))
 
         val message = testee.evaluate(
@@ -189,7 +189,7 @@ class RemoteMessagingConfigMatcherTest {
     }
 
     @Test
-    fun whenMultipleMatchingMessagesAndSomeExcludedThenReturnFirstNonExcludedMatch() = runBlocking {
+    fun `evaluate - multiple matching messages and some excluded - return first non-excluded match`() = runBlocking {
         givenDeviceMatches(Api(max = 19), Locale(value = listOf("en-US")))
 
         val message = testee.evaluate(
@@ -210,7 +210,7 @@ class RemoteMessagingConfigMatcherTest {
     }
 
     @Test
-    fun whenMessageMatchesAndExclusionRuleFailsThenReturnMessage() = runBlocking {
+    fun `evaluate - message matches and exclusion rule fails - return message`() = runBlocking {
         givenDeviceMatches(Api(max = 19), EmailEnabled(value = true))
 
         val message = testee.evaluate(
@@ -229,7 +229,7 @@ class RemoteMessagingConfigMatcherTest {
     }
 
     @Test
-    fun whenDeviceMatchesMessageRulesThenReturnFirstMatch() = runBlocking {
+    fun `evaluate - device matches message rules - returns first match`() = runBlocking {
         givenDeviceMatches(Api(max = 19))
 
         val message = testee.evaluate(
@@ -243,7 +243,7 @@ class RemoteMessagingConfigMatcherTest {
     }
 
     @Test
-    fun whenDeviceMatchesMessageRulesForMultipleMessagesThenReturnFirstMatch() = runBlocking {
+    fun `evaluate - device matches multiple messages - returns first match`() = runBlocking {
         givenDeviceMatches(Api(max = 19))
 
         val message = testee.evaluate(
@@ -260,7 +260,7 @@ class RemoteMessagingConfigMatcherTest {
     }
 
     @Test
-    fun whenDeviceMatchesMessageRulesForOneOfMultipleMessagesThenReturnMatch() = runBlocking {
+    fun `evaluate - device matches - return match`() = runBlocking {
         givenDeviceMatches(Api(max = 19), EmailEnabled(value = true))
 
         val message = testee.evaluate(
@@ -280,7 +280,7 @@ class RemoteMessagingConfigMatcherTest {
     }
 
     @Test
-    fun whenUserDismissedMessagesAndDeviceMatchesMultipleMessagesThenReturnFistMatchNotDismissed() = runBlocking {
+    fun `evaluate - user dismissed messages and device matches multiple messages - returns first match not dismissed`() = runBlocking {
         givenDeviceMatches(Api(max = 19), EmailEnabled(value = true))
         givenUserDismissed("1")
         val rules = listOf(
@@ -301,7 +301,7 @@ class RemoteMessagingConfigMatcherTest {
     }
 
     @Test
-    fun whenDeviceMatchesAnyRuleThenReturnFirstMatch() = runBlocking {
+    fun `evaluate - device matches any rule - return first match`() = runBlocking {
         givenDeviceMatches(Api(max = 19), Locale(value = listOf("en-US")))
 
         val message = testee.evaluate(
@@ -318,7 +318,7 @@ class RemoteMessagingConfigMatcherTest {
     }
 
     @Test
-    fun whenDeviceDoesMatchAnyRuleThenReturnNull() = runBlocking {
+    fun `evaluate - device matches any rule - return null`() = runBlocking {
         givenDeviceMatches(Locale(value = listOf("en-US")), Api(max = 19))
 
         val message = testee.evaluate(
@@ -338,7 +338,7 @@ class RemoteMessagingConfigMatcherTest {
     }
 
     @Test
-    fun whenUnknownRuleFailsThenReturnNull() = runBlocking {
+    fun `evaluate - unknown rule fails - return null`() = runBlocking {
         val message = testee.evaluate(
             RemoteConfig(
                 messages = listOf(
@@ -355,7 +355,7 @@ class RemoteMessagingConfigMatcherTest {
     }
 
     @Test
-    fun whenUnknownRuleMatchesThenReturnFirstMatch() = runBlocking {
+    fun `evaluate - unknown rule matches - return first match`() = runBlocking {
         val message = testee.evaluate(
             RemoteConfig(
                 messages = listOf(
@@ -372,7 +372,7 @@ class RemoteMessagingConfigMatcherTest {
     }
 
     @Test
-    fun whenDeviceMatchesMessageRulesAndPartOfPercentileThenReturnMessage() = runBlocking {
+    fun `evaluate - device matches message rules and part of percentile - returns message`() = runBlocking {
         givenDeviceMatches(Api(max = 19))
         cohortDao.insert(RemoteMessagingCohort(messageId = "message1", percentile = 0.1f))
 
@@ -387,7 +387,7 @@ class RemoteMessagingConfigMatcherTest {
     }
 
     @Test
-    fun whenDeviceMatchesMessageRulesButOutOfPercentileThenReturnNull() = runBlocking {
+    fun `evaluate - device matches message rules but out of percentile - return null`() = runBlocking {
         givenDeviceMatches(Api(max = 19))
         cohortDao.insert(RemoteMessagingCohort(messageId = "message1", percentile = 0.5f))
 
@@ -419,7 +419,7 @@ class RemoteMessagingConfigMatcherTest {
     }
 
     @Test
-    fun whenMatchingMessageShouldBeExcludedButOutOfPercentileThenReturnMessage() = runBlocking {
+    fun `evaluate - matching message excluded but out of percentile - return message`() = runBlocking {
         givenDeviceMatches(Locale(value = listOf("en-US")))
         cohortDao.insert(RemoteMessagingCohort(messageId = "message1", percentile = 0.5f))
 

@@ -54,7 +54,7 @@ class RealUnprotectedTemporaryRepositoryTest {
     }
 
     @Test
-    fun whenRepositoryIsCreatedThenExceptionsLoadedIntoMemory() {
+    fun `whenRepositoryIsCreatedThenExceptionsLoadedIntoMemory - exceptions loaded into memory`() {
         givenUnprotectedTemporaryDaoContainsExceptions()
 
         testee =
@@ -69,7 +69,7 @@ class RealUnprotectedTemporaryRepositoryTest {
     }
 
     @Test
-    fun whenUpdateAllThenUpdateAllCalled() =
+    fun `updateAll - update all called`() =
         runTest {
             testee =
                 RealUnprotectedTemporaryRepository(
@@ -85,7 +85,7 @@ class RealUnprotectedTemporaryRepositoryTest {
         }
 
     @Test
-    fun whenUpdateAllThenPreviousExceptionsAreCleared() =
+    fun `updateAll - previous exceptions cleared`() =
         runTest {
             givenUnprotectedTemporaryDaoContainsExceptions()
             testee =

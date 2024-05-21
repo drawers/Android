@@ -124,7 +124,7 @@ class BookmarksViewModelTest {
     }
 
     @Test
-    fun whenBookmarkDeleteUndoThenRepositoryNotUpdated() = runTest {
+    fun `onDeleteSaveSiteRequested - bookmark delete undo - repository not updated`() = runTest {
         testee.onDeleteSavedSiteRequested(bookmark)
         testee.undoDelete(bookmark)
 
@@ -133,7 +133,7 @@ class BookmarksViewModelTest {
     }
 
     @Test
-    fun whenBookmarkDeleteThenRepositoryUpdated() = runTest {
+    fun `onDeleteSavedSite - repository updated`() = runTest {
         testee.onDeleteSavedSiteRequested(bookmark)
         testee.onDeleteSavedSiteSnackbarDismissed(bookmark)
 
@@ -142,7 +142,7 @@ class BookmarksViewModelTest {
     }
 
     @Test
-    fun whenBookmarkDeleteRequestedThenConfirmCommandSent() = runTest {
+    fun `onDeleteSavedSiteRequested - confirm command sent`() = runTest {
         testee.onDeleteSavedSiteRequested(bookmark)
 
         verify(commandObserver).onChanged(commandCaptor.capture())
@@ -151,7 +151,7 @@ class BookmarksViewModelTest {
     }
 
     @Test
-    fun whenFavoriteDeleteUndoThenRepositoryNotUpdated() = runTest {
+    fun `onDeleteSaveSiteRequested - undo - repository not updated`() = runTest {
         testee.onDeleteSavedSiteRequested(favorite)
         testee.undoDelete(favorite)
 
@@ -178,21 +178,21 @@ class BookmarksViewModelTest {
     }
 
     @Test
-    fun whenBookmarkEditedThenDaoUpdated() = runTest {
+    fun `onBookmarkEdited - dao updated`() = runTest {
         testee.onBookmarkEdited(bookmark, "folder1", true)
 
         verify(savedSitesRepository).updateBookmark(bookmark, "folder1", true)
     }
 
     @Test
-    fun whenFavoriteEditedThenRepositoryUpdated() = runTest {
+    fun `onFavouriteEdited - repository updated`() = runTest {
         testee.onFavouriteEdited(favorite)
 
         verify(savedSitesRepository).updateFavourite(favorite)
     }
 
     @Test
-    fun whenSavedSiteSelectedThenOpenCommand() {
+    fun `onSelected - saved site selected - open command`() {
         testee.onSelected(bookmark)
 
         verify(commandObserver).onChanged(commandCaptor.capture())
@@ -201,14 +201,14 @@ class BookmarksViewModelTest {
     }
 
     @Test
-    fun whenFavoriteSelectedThenPixelSent() {
+    fun `onSelected - favorite selected - pixel sent`() {
         testee.onSelected(favorite)
 
         verify(pixel).fire(AppPixelName.FAVORITE_BOOKMARKS_ITEM_PRESSED)
     }
 
     @Test
-    fun whenDeleteRequestedThenConfirmCommand() {
+    fun `onDeleteRequested - confirm command`() {
         testee.onDeleteSavedSiteRequested(bookmark)
 
         verify(commandObserver).onChanged(commandCaptor.capture())
@@ -217,7 +217,7 @@ class BookmarksViewModelTest {
     }
 
     @Test
-    fun whenBookmarkFolderSelectedThenIssueOpenBookmarkFolderCommand() {
+    fun `onBookmarkFolderSelected - issue open bookmark folder command`() {
         testee.onBookmarkFolderSelected(bookmarkFolder)
 
         verify(commandObserver).onChanged(commandCaptor.capture())
@@ -225,7 +225,7 @@ class BookmarksViewModelTest {
     }
 
     @Test
-    fun whenFetchBookmarksAndFoldersThenUpdateStateWithCollectedBookmarksAndFolders() = runTest {
+    fun `fetchBookmarksAndFolders - state updated with collected bookmarks and folders`() = runTest {
         val parentId = "folder1"
 
         testee.fetchBookmarksAndFolders(parentId = parentId)
@@ -246,7 +246,7 @@ class BookmarksViewModelTest {
     }
 
     @Test
-    fun whenFetchEverythingThenUpdateStateWithData() = runTest {
+    fun `fetchEverything - update state with data`() = runTest {
         whenever(savedSitesRepository.getFavoritesSync()).thenReturn(listOf(favorite))
         whenever(savedSitesRepository.getBookmarksTree()).thenReturn(listOf(bookmark, bookmark, bookmark))
         whenever(savedSitesRepository.getFolderTree(SavedSitesNames.BOOKMARKS_ROOT, null)).thenReturn(listOf(bookmarkFolderItem, bookmarkFolderItem))
@@ -272,14 +272,14 @@ class BookmarksViewModelTest {
     }
 
     @Test
-    fun whenBookmarkFolderAddedThenCallInsertOnRepository() = runTest {
+    fun `onBookmarkFolderAdded - repository inserted`() = runTest {
         testee.onBookmarkFolderAdded(bookmarkFolder)
 
         verify(savedSitesRepository).insert(bookmarkFolder)
     }
 
     @Test
-    fun whenEditBookmarkFolderThenIssueShowEditBookmarkFolderCommand() {
+    fun `onEditBookmarkFolderRequested - issue show edit bookmark folder command`() {
         testee.onEditBookmarkFolderRequested(bookmarkFolder)
 
         verify(commandObserver).onChanged(commandCaptor.capture())
@@ -287,14 +287,14 @@ class BookmarksViewModelTest {
     }
 
     @Test
-    fun whenBookmarkFolderUpdatedThenCallUpdateOnRepository() = runTest {
+    fun `onBookmarkFolderUpdated - repository updated`() = runTest {
         testee.onBookmarkFolderUpdated(bookmarkFolder)
 
         verify(savedSitesRepository).update(bookmarkFolder)
     }
 
     @Test
-    fun whenDeleteEmptyFolderRequestedThenCommandIssued() = runTest {
+    fun `onDeleteBookmarkFolderRequested - command issued`() = runTest {
         testee.onDeleteBookmarkFolderRequested(bookmarkFolder)
         verify(commandObserver).onChanged(commandCaptor.capture())
         assertEquals(bookmarkFolder, (commandCaptor.value as BookmarksViewModel.Command.ConfirmDeleteBookmarkFolder).bookmarkFolder)
@@ -310,7 +310,7 @@ class BookmarksViewModelTest {
     }
 
     @Test
-    fun whenDeleteBookmarkFolderUndoThenRepositoryNotUpdated() = runTest {
+    fun `onDeleteBookmarkFolderRequested - undo - repository not updated`() = runTest {
         val parentFolder = BookmarkFolder("folder1", "Parent Folder", SavedSitesNames.BOOKMARKS_ROOT, 0, 0, "timestamp")
         val childFolder = BookmarkFolder("folder2", "Parent Folder", "folder1", 0, 0, "timestamp")
         val childBookmark = Bookmark("bookmark1", "title", "www.example.com", "folder2", "timestamp")
@@ -325,7 +325,7 @@ class BookmarksViewModelTest {
     }
 
     @Test
-    fun whenDeleteBookmarkFolderConfirmedThenDeleteFolderAndIssueConfirmDeleteBookmarkFolderCommand() = runTest {
+    fun `onDeleteBookmarkFolderConfirmed - when delete bookmark folder confirmed then issue confirm delete bookmark folder command`() = runTest {
         val parentFolder = BookmarkFolder("folder1", "Parent Folder", SavedSitesNames.BOOKMARKS_ROOT, 0, 0, "timestamp")
         val childFolder = BookmarkFolder("folder2", "Parent Folder", "folder1", 0, 0, "timestamp")
         val childBookmark = Bookmark("bookmark1", "title", "www.example.com", "folder2", "timestamp")
@@ -343,7 +343,7 @@ class BookmarksViewModelTest {
     }
 
     @Test
-    fun whenDeleteBookmarkFolderRequestedThenIssueDeleteBookmarkFolderCommand() = runTest {
+    fun `onDeleteBookmarkFolderRequested - issue delete bookmark folder command`() = runTest {
         val parentFolder = BookmarkFolder("folder1", "Parent Folder", SavedSitesNames.BOOKMARKS_ROOT, 0, 0, "timestamp")
         val childFolder = BookmarkFolder("folder2", "Parent Folder", "folder1", 0, 0, "timestamp")
         val childBookmark = Bookmark("bookmark1", "title", "www.example.com", "folder2", "timestamp")
@@ -359,7 +359,7 @@ class BookmarksViewModelTest {
     }
 
     @Test
-    fun whenOnBookmarkFoldersActivityResultCalledThenOpenSavedSiteCommandSent() {
+    fun `onBookmarkFoldersActivityResult - command observer open saved site - open saved site`() {
         val savedSiteUrl = "https://www.example.com"
 
         testee.onBookmarkFoldersActivityResult(savedSiteUrl)
@@ -369,7 +369,7 @@ class BookmarksViewModelTest {
     }
 
     @Test
-    fun whenUpdateBookmarksCalledThenUpdateFolderRelation() {
+    fun `updateBookmarks - update folder relation`() {
         val parentId = "folderId"
         val bookmarksAndFolders = listOf("bookmark1", "folder1")
 
@@ -379,14 +379,14 @@ class BookmarksViewModelTest {
     }
 
     @Test
-    fun whenAddFavoriteCalledThenInsertFavorite() {
+    fun `addFavorite - insert favorite`() {
         testee.addFavorite(bookmark)
 
         verify(savedSitesRepository).insertFavorite(bookmark.id, bookmark.url, bookmark.title)
     }
 
     @Test
-    fun whenRemoveFavoriteCalledThenDeleteFavorite() {
+    fun `removeFavorite - delete favorite`() {
         testee.removeFavorite(bookmark)
 
         verify(savedSitesRepository).delete(

@@ -35,7 +35,7 @@ class AddDeviceViewModelTest {
     }
 
     @Test
-    fun whenUseEmailIfNoDataThenEmitError() = runTest {
+    fun `useEmail - no data - emit error`() = runTest {
         viewModel.commands().test {
             viewModel.useEmail()
             assertTrue(awaitItem() is Error)
@@ -43,7 +43,7 @@ class AddDeviceViewModelTest {
     }
 
     @Test
-    fun whenUseEmailIfFailureThenEmitError() = runTest {
+    fun `useEmail - error emitted`() = runTest {
         whenever(subscriptionsManager.getSubscription()).thenReturn(null)
         viewModel.commands().test {
             viewModel.useEmail()
@@ -52,7 +52,7 @@ class AddDeviceViewModelTest {
     }
 
     @Test
-    fun whenUseEmailIEmailBlankThenEmitAddEmail() = runTest {
+    fun `useEmail - email blank - emit add email`() = runTest {
         whenever(subscriptionsManager.getAccount()).thenReturn(
             Account(email = "", externalId = "externalId"),
         )
@@ -63,7 +63,7 @@ class AddDeviceViewModelTest {
     }
 
     @Test
-    fun whenUseEmailIEmailNullThenEmitAddEmail() = runTest {
+    fun `useEmail - account email null - emit add email`() = runTest {
         whenever(subscriptionsManager.getAccount()).thenReturn(
             Account(email = null, externalId = "externalId"),
         )
@@ -74,7 +74,7 @@ class AddDeviceViewModelTest {
     }
 
     @Test
-    fun whenUseEmailIfEmailThenEmitManage() = runTest {
+    fun `useEmail - account set - emit manage`() = runTest {
         whenever(subscriptionsManager.getAccount()).thenReturn(
             Account(email = "email@email.com", externalId = "externalId"),
         )
@@ -85,7 +85,7 @@ class AddDeviceViewModelTest {
     }
 
     @Test
-    fun whenOnCreateIfEmailExistsThenEmitIt() = runTest {
+    fun `onCreate - email exists - emits it`() = runTest {
         whenever(subscriptionsManager.getAccount()).thenReturn(
             Account(email = "email@email.com", externalId = "externalId"),
         )
@@ -101,7 +101,7 @@ class AddDeviceViewModelTest {
     }
 
     @Test
-    fun whenOnCreateIfEmailBlankThenEmitIt() = runTest {
+    fun `onCreate - email blank - emit it`() = runTest {
         val flowTest: MutableSharedFlow<SubscriptionStatus> = MutableSharedFlow()
         whenever(subscriptionsManager.subscriptionStatus).thenReturn(flowTest)
 
@@ -114,7 +114,7 @@ class AddDeviceViewModelTest {
     }
 
     @Test
-    fun whenEnterEmailClickedThenPixelIsSent() = runTest {
+    fun `useEmail - pixel sent`() = runTest {
         viewModel.useEmail()
         verify(pixelSender).reportAddDeviceEnterEmailClick()
     }

@@ -43,12 +43,12 @@ class RealSavedSitesSyncStoreTest {
     val testee = RealSavedSitesSyncStore(mockContext, coroutineRule.testScope, coroutineRule.testDispatcherProvider)
 
     @Test
-    fun whenNoValueIsSyncPausedThenReturnFalse() {
+    fun `isSyncPaused - no value - return false`() {
         assertFalse(testee.isSyncPaused)
     }
 
     @Test
-    fun whenIsSyncPausedUpdatedThenEmitNewValue() = runTest {
+    fun `isSyncPausedUpdated - emit new value`() = runTest {
         testee.isSyncPausedFlow().test {
             awaitItem()
             testee.isSyncPaused = true

@@ -27,25 +27,25 @@ import org.junit.Test
 class DatabaseDateFormatterTest {
 
     @Test
-    fun whenBucketingByHourOnlyHourlyPrecisionIsUsed() {
+    fun `bucketByHour - only hourly precision used`() {
         val formatted = DatabaseDateFormatter.bucketByHour(fixedTime())
         assertEquals("2020-12-25T13:00:00", formatted)
     }
 
     @Test
-    fun whenBucketingByTimestampOnlySecondsPrecisionIsUsed() {
+    fun `formatTimestamp - seconds precision used`() {
         val formatted = DatabaseDateFormatter.timestamp(fixedTime())
         assertEquals("2020-12-25T13:14:15", formatted)
     }
 
     @Test
-    fun whenIso8601isUsedThenDateIsFormatted() {
+    fun `iso8601 - date formatted`() {
         val formatted = DatabaseDateFormatter.iso8601(fixedUTCTime())
         assertEquals("2020-12-25T13:14:15.000000016Z", formatted)
     }
 
     @Test
-    fun whenIso8601isParsedThenDateIsCorrect() {
+    fun `parseIso8601 - date is correct`() {
         val now = OffsetDateTime.now(ZoneOffset.UTC)
             .truncatedTo(ChronoUnit.MILLIS) // SystemClock returns time with higher precision on JVM
         val format = DatabaseDateFormatter.iso8601(now)
@@ -56,7 +56,7 @@ class DatabaseDateFormatterTest {
     }
 
     @Test
-    fun whenParsingSystemTimeMillisToIso8601ThenStringRepresentsExpectedDateTime() {
+    fun `parseSystemTimeToIso8601 - string represents expected datetime`() {
         val timeInMillisNow = System.currentTimeMillis()
 
         val formattedMillis = DatabaseDateFormatter.parseMillisIso8601(timeInMillisNow)
@@ -70,7 +70,7 @@ class DatabaseDateFormatterTest {
     }
 
     @Test
-    fun whenParsingIso8601ToMillisThenMillisRepresentsExpectedDateTime() {
+    fun `parseIso8601ToMillis - parsing iso 8601 to millis - represents expected datetime`() {
         val timeInMillisNow = System.currentTimeMillis()
         val iso8601String = DatabaseDateFormatter.parseMillisIso8601(timeInMillisNow)
 

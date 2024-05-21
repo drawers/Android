@@ -40,7 +40,7 @@ class PublicKeyInfoMapperTest {
     }
 
     @Test
-    fun whenRSASslCertificateThenReturnRsaPublicKeyInfo() {
+    fun `mapFrom - rsa ssl certificate - returns rsa public key info`() {
         val expected = PublicKeyInfo(
             type = "rsa",
             bitSize = 1,
@@ -52,7 +52,7 @@ class PublicKeyInfoMapperTest {
     }
 
     @Test
-    fun whenDSASslCertificateThenReturnDSAPublicKeyInfo() {
+    fun `mapFrom - dsa ssl certificate - returns dsa public key info`() {
         val expected = PublicKeyInfo(
             type = "dsa",
             bitSize = 1,
@@ -65,7 +65,7 @@ class PublicKeyInfoMapperTest {
     }
 
     @Test
-    fun whenDSAWithParamsSslCertificateThenReturnDSAPublicKeyInfo() {
+    fun `mapFrom - DSA with params SSL certificate - return DSA public key info`() {
         val expected = PublicKeyInfo(
             type = "dsa",
             bitSize = 1,
@@ -78,7 +78,7 @@ class PublicKeyInfoMapperTest {
     }
 
     @Test
-    fun whenECSslCertificateThenReturnECPublicKeyInfo() {
+    fun `mapFrom - ECS ssl certificate - return ec public key info`() {
         val expected = PublicKeyInfo(
             type = "ec",
             bitSize = 1,

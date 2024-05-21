@@ -33,14 +33,14 @@ class DosDetectorTest {
     val testee: DosDetector = DosDetector()
 
     @Test
-    fun whenLessThanMaxRequestsCountCallsWithSameUrlThenReturnFalse() {
+    fun `isUrlGeneratingDos - same url - return false`() {
         for (i in 0 until MAX_REQUESTS_COUNT) {
             assertFalse(testee.isUrlGeneratingDos(Uri.parse("http://example.com")))
         }
     }
 
     @Test
-    fun whenMoreThanMaxRequestsCountCallsWithSameUrlThenLastCallReturnsTrue() {
+    fun `isUrlGeneratingDos - more than max requests count calls with same url - returns true`() {
         for (i in 0..MAX_REQUESTS_COUNT) {
             assertFalse(testee.isUrlGeneratingDos(Uri.parse("http://example.com")))
         }
@@ -48,7 +48,7 @@ class DosDetectorTest {
     }
 
     @Test
-    fun whenMoreThanMaxRequestsCountCallsWithSameUrlAndDelayGreaterThanLimitThenReturnFalse() {
+    fun `isUrlGeneratingDos - more than max requests count calls with same url and delay greater than limit - return false`() {
         runBlocking {
             for (i in 0..MAX_REQUESTS_COUNT) {
                 assertFalse(testee.isUrlGeneratingDos(Uri.parse("http://example.com")))
@@ -59,7 +59,7 @@ class DosDetectorTest {
     }
 
     @Test
-    fun whenMoreThanMaxRequestsCountCallsWithSameUrlAndDelayGreaterThanLimitThenCountIsResetSoNextAndSubsequentRequestsReturnFalse() {
+    fun `whenMoreThanMaxRequestsCountCallsWithSameUrlAndDelayGreaterThanLimitThenCountIsResetSoNextAndSubsequentRequestsReturnFalse - isUrlGeneratingDos reset`() {
         runBlocking {
             for (i in 0..MAX_REQUESTS_COUNT) {
                 assertFalse(testee.isUrlGeneratingDos(Uri.parse("http://example.com")))
@@ -71,7 +71,7 @@ class DosDetectorTest {
     }
 
     @Test
-    fun whenMultipleRequestsFromDifferentUrlsThenReturnFalse() {
+    fun `isUrlGeneratingDos - multiple requests from different urls - returns false`() {
         for (i in 0 until MAX_REQUESTS_COUNT * 2) {
             if (i % 2 == 0) {
                 assertFalse(testee.isUrlGeneratingDos(Uri.parse("http://example.com")))
@@ -82,7 +82,7 @@ class DosDetectorTest {
     }
 
     @Test
-    fun whenMaxRequestsReceivedConsecutivelyFromDifferentUrlsThenReturnFalse() {
+    fun `isUrlGeneratingDos - max requests received consecutively from different urls - return false`() {
         for (i in 0 until MAX_REQUESTS_COUNT) {
             assertFalse(testee.isUrlGeneratingDos(Uri.parse("http://example.com")))
         }

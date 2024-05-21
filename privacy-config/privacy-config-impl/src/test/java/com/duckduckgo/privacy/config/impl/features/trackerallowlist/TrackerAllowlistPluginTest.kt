@@ -41,19 +41,19 @@ class TrackerAllowlistPluginTest {
     }
 
     @Test
-    fun whenFeatureNameDoesNotMatchTrackerAllowlistThenReturnFalse() {
+    fun `store - feature name does not match tracker allowlist - return false`() {
         PrivacyFeatureName.values().filter { it != FEATURE_NAME }.forEach {
             assertFalse(testee.store(it.value, EMPTY_JSON_STRING))
         }
     }
 
     @Test
-    fun whenFeatureNameMatchesTrackerAllowlistThenReturnTrue() {
+    fun `store - feature name matches tracker allowlist - true`() {
         assertTrue(testee.store(FEATURE_NAME_VALUE, EMPTY_JSON_STRING))
     }
 
     @Test
-    fun whenFeatureNameMatchesTrackerAllowlistAndIsEnabledThenStoreFeatureEnabled() {
+    fun `store - feature name matches tracker allowlist and is enabled - store feature enabled`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/tracker_allowlist.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -62,7 +62,7 @@ class TrackerAllowlistPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesTrackerAllowlistAndIsNotEnabledThenStoreFeatureDisabled() {
+    fun `store - feature name matches tracker allowlist and is not enabled - store feature disabled`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/tracker_allowlist_disabled.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -71,7 +71,7 @@ class TrackerAllowlistPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesTrackerAllowlistAndHasMinSupportedVersionThenStoreMinSupportedVersion() {
+    fun `store - feature name matches tracker allowlist and has min supported version - store min supported version`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/tracker_allowlist_min_supported_version.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -80,7 +80,7 @@ class TrackerAllowlistPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesTrackerAllowlistThenUpdateAllExistingExceptions() {
+    fun `whenFeatureNameMatchesTrackerAllowlistThenUpdateAllExistingExceptions - store - update all existing exceptions`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/tracker_allowlist.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)

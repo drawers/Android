@@ -34,21 +34,21 @@ class RealPrivacyFeatureTogglesRepositoryTest {
     }
 
     @Test
-    fun whenDeleteAllThenDeleteAllCalled() {
+    fun `deleteAll - delete all called`() {
         testee.deleteAll()
 
         verify(mockPrivacyFeatureTogglesDataStore).deleteAll()
     }
 
     @Test
-    fun whenGetThenGetCalled() {
+    fun `get - get called`() {
         testee.get(PrivacyFeatureName.GpcFeatureName, true)
 
         verify(mockPrivacyFeatureTogglesDataStore).get(PrivacyFeatureName.GpcFeatureName, true)
     }
 
     @Test
-    fun whenInsertThenInsertCalled() {
+    fun `insert - data store inserted`() {
         val privacyFeatureToggle = PrivacyFeatureToggles(PrivacyFeatureName.GpcFeatureName.value, true, null)
         testee.insert(privacyFeatureToggle)
 

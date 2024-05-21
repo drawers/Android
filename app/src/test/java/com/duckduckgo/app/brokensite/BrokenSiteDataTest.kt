@@ -47,7 +47,7 @@ class BrokenSiteDataTest {
     private val mockBypassedSSLCertificatesRepository: BypassedSSLCertificatesRepository = mock()
 
     @Test
-    fun whenSiteIsNullThenDataIsEmptyAndUpgradedIsFalse() {
+    fun `whenSiteIsNull - data empty and upgraded is false`() {
         val data = BrokenSiteData.fromSite(null, reportFlow = MENU)
         assertTrue(data.url.isEmpty())
         assertTrue(data.blockedTrackers.isEmpty())
@@ -56,28 +56,28 @@ class BrokenSiteDataTest {
     }
 
     @Test
-    fun whenSiteExistsThenDataContainsUrl() {
+    fun `fromSite - site exists - contains url`() {
         val site = buildSite(SITE_URL)
         val data = BrokenSiteData.fromSite(site, reportFlow = MENU)
         assertEquals(SITE_URL, data.url)
     }
 
     @Test
-    fun whenSiteUpgradedThenHttpsUpgradedIsTrue() {
+    fun `whenSiteUpgraded - site data upgraded to https - true`() {
         val site = buildSite(SITE_URL, httpsUpgraded = true)
         val data = BrokenSiteData.fromSite(site, reportFlow = MENU)
         assertTrue(data.upgradedToHttps)
     }
 
     @Test
-    fun whenSiteNotUpgradedThenHttpsUpgradedIsFalse() {
+    fun `whenSiteNotUpgraded - site not upgraded - https upgraded is false`() {
         val site = buildSite(SITE_URL, httpsUpgraded = false)
         val data = BrokenSiteData.fromSite(site, reportFlow = MENU)
         assertFalse(data.upgradedToHttps)
     }
 
     @Test
-    fun whenUrlParametersRemovedThenUrlParametersRemovedIsTrue() {
+    fun `whenUrlParametersRemoved - url parameters removed is true`() {
         val site = buildSite(SITE_URL)
         site.urlParametersRemoved = true
         val data = BrokenSiteData.fromSite(site, reportFlow = MENU)
@@ -85,21 +85,21 @@ class BrokenSiteDataTest {
     }
 
     @Test
-    fun whenUrlParametersNotRemovedThenUrlParametersRemovedIsFalse() {
+    fun `whenUrlParametersNotRemovedThenUrlParametersRemovedIsFalse - url parameters not removed - is false`() {
         val site = buildSite(SITE_URL)
         val data = BrokenSiteData.fromSite(site, reportFlow = MENU)
         assertFalse(data.urlParametersRemoved)
     }
 
     @Test
-    fun whenSiteHasNoTrackersThenBlockedTrackersIsEmpty() {
+    fun `whenSiteHasNoTrackers - blocked trackers empty`() {
         val site = buildSite(SITE_URL)
         val data = BrokenSiteData.fromSite(site, reportFlow = MENU)
         assertTrue(data.blockedTrackers.isEmpty())
     }
 
     @Test
-    fun whenSiteHasBlockedTrackersThenBlockedTrackersExist() {
+    fun `whenSiteHasBlockedTrackersThenBlockedTrackersExist - site has blocked trackers - tracker·com exists`() {
         val site = buildSite(SITE_URL)
         val event = TrackingEvent(
             documentUrl = "http://www.example.com",
@@ -125,7 +125,7 @@ class BrokenSiteDataTest {
     }
 
     @Test
-    fun whenSiteHasSameHostBlockedTrackersThenOnlyUniqueTrackersIncludedInData() {
+    fun `whenSiteHasSameHostBlockedTrackers - only unique trackers included in data`() {
         val site = buildSite(SITE_URL)
         val event = TrackingEvent(
             documentUrl = "http://www.example.com",
@@ -151,7 +151,7 @@ class BrokenSiteDataTest {
     }
 
     @Test
-    fun whenSiteHasBlockedCnamedTrackersThenBlockedTrackersExist() {
+    fun `whenSiteHasBlockedCnamedTrackersThenBlockedTrackersExist - blocked trackers exist`() {
         val site = buildSite(SITE_URL)
         val event = TrackingEvent(
             documentUrl = "http://www.example.com",
@@ -167,14 +167,14 @@ class BrokenSiteDataTest {
     }
 
     @Test
-    fun whenSiteHasNoSurrogatesThenSurrogatesIsEmpty() {
+    fun `whenSiteHasNoSurrogates - surrogates empty`() {
         val site = buildSite(SITE_URL)
         val data = BrokenSiteData.fromSite(site, reportFlow = MENU)
         assertTrue(data.surrogates.isEmpty())
     }
 
     @Test
-    fun whenSiteHasSurrogatesThenSurrogatesExist() {
+    fun `whenSiteHasSurrogatesThenSurrogatesExist - site has surrogates - exist`() {
         val surrogate = SurrogateResponse("test.js", true, "surrogate.com/test.js", "", "")
         val anotherSurrogate = SurrogateResponse("test.js", true, "anothersurrogate.com/test.js", "", "")
         val site = buildSite(SITE_URL)
@@ -184,7 +184,7 @@ class BrokenSiteDataTest {
     }
 
     @Test
-    fun whenSiteHasSameHostSurrogatesThenOnlyUniqueSurrogateIncludedInData() {
+    fun `whenSiteHasSameHostSurrogatesThenOnlyUniqueSurrogateIncludedInData - site data - only unique surrogate included`() {
         val surrogate = SurrogateResponse("test.js", true, "surrogate.com/test.js", "", "")
         val anotherSurrogate = SurrogateResponse("test.js", true, "surrogate.com/test2.js", "", "")
         val site = buildSite(SITE_URL)

@@ -41,7 +41,7 @@ class RealTrackingParametersTest {
     }
 
     @Test
-    fun whenIsExceptionCalledAndDomainIsInUserAllowListThenReturnTrue() {
+    fun `isAnException - is domain in user allow list - returns true`() {
         whenever(mockUserAllowListRepository.isUrlInUserAllowList(anyString())).thenReturn(true)
         assertTrue(testee.isAnException("foo.com", "test.com"))
     }

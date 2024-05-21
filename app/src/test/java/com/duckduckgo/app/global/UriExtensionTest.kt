@@ -40,237 +40,237 @@ import org.junit.runner.RunWith
 class UriExtensionTest {
 
     @Test
-    fun whenUriDoesNotHaveASchemeThenWithSchemeAppendsHttp() {
+    fun `withScheme - no scheme - with http scheme`() {
         val url = "someurl"
         assertEquals("http://$url", Uri.parse(url).withScheme().toString())
     }
 
     @Test
-    fun whenUriHasASchemeThenWithSchemeHasNoEffect() {
+    fun `parse - uri has scheme - with scheme has no effect`() {
         val url = "http://someurl"
         assertEquals(url, Uri.parse(url).withScheme().toString())
     }
 
     @Test
-    fun whenUriBeginsWithWwwThenBaseHostReturnsWithoutWww() {
+    fun `parse - uri begins with www - base host returns without www`() {
         val url = "http://www.example.com"
         assertEquals("example.com", Uri.parse(url).baseHost)
     }
 
     @Test
-    fun whenUriDoesNotBeginWithWwwThenBaseHosReturnsWithSameHost() {
+    fun `parse - uri does not begin with www - same host`() {
         val url = "http://example.com"
         assertEquals("example.com", Uri.parse(url).baseHost)
     }
 
     @Test
-    fun whenUriDoesNotHaveASchemeThenBaseHostStillResolvesHost() {
+    fun `parseUri - no scheme - base host still resolves host`() {
         val url = "www.example.com"
         assertEquals("example.com", Uri.parse(url).baseHost)
     }
 
     @Test
-    fun whenUriContainsInvalidHostThenBaseHostIsNull() {
+    fun `parse - uri contains invalid host - base host is null`() {
         val url = "about:blank"
         assertNull(Uri.parse(url).baseHost)
     }
 
     @Test
-    fun whenUriIsHttpIrrespectiveOfCaseThenIsHttpIsTrue() {
+    fun `parseUri - http uri - is http true`() {
         assertTrue(Uri.parse("http://example.com").isHttp)
         assertTrue(Uri.parse("HTTP://example.com").isHttp)
     }
 
     @Test
-    fun whenUriIsHttpsThenIsHttpIsFalse() {
+    fun `parseUri - https - is http false`() {
         assertFalse(Uri.parse("https://example.com").isHttp)
     }
 
     @Test
-    fun whenUriIsMalformedThenIsHttpIsFalse() {
+    fun `parseUri - malformed uri - is http false`() {
         assertFalse(Uri.parse("[example com]").isHttp)
     }
 
     @Test
-    fun whenUriIsHttpsIrrespectiveOfCaseThenIsHttpsIsTrue() {
+    fun `parseUri - https - is true`() {
         assertTrue(Uri.parse("https://example.com").isHttps)
         assertTrue(Uri.parse("HTTPS://example.com").isHttps)
     }
 
     @Test
-    fun whenUriIsHttpThenIsHttpsIsFalse() {
+    fun `parseUri - http uri - is https false`() {
         assertFalse(Uri.parse("http://example.com").isHttps)
     }
 
     @Test
-    fun whenUriIsHttpsAndOtherIsHttpButOtherwiseIdenticalThenIsHttpsVersionOfOtherIsTrue() {
+    fun `isHttpsVersionOf - identical uris - is https version true`() {
         val uri = Uri.parse("https://example.com")
         val other = Uri.parse("http://example.com")
         assertTrue(uri.isHttpsVersionOfUri(other))
     }
 
     @Test
-    fun whenUriIsHttpsAndOtherIsHttpButNotOtherwiseIdenticalThenIsHttpsVersionOfOtherIsFalse() {
+    fun `isHttpsVersionOfUri - not identical - is false`() {
         val uri = Uri.parse("https://example.com")
         val other = Uri.parse("http://example.com/path")
         assertFalse(uri.isHttpsVersionOfUri(other))
     }
 
     @Test
-    fun whenUriIsHttpThenIsHttpsVersionOfOtherIsFalse() {
+    fun `isHttpsVersionOfUri - http - is false`() {
         val uri = Uri.parse("http://example.com")
         val other = Uri.parse("http://example.com")
         assertFalse(uri.isHttpsVersionOfUri(other))
     }
 
     @Test
-    fun whenUriIsHttpsAndOtherIsHttpsThenIsHttpsVersionOfOtherIsFalse() {
+    fun `isHttpsVersionOfUri - same protocol - is false`() {
         val uri = Uri.parse("https://example.com")
         val other = Uri.parse("https://example.com")
         assertFalse(uri.isHttpsVersionOfUri(other))
     }
 
     @Test
-    fun whenUriIsMalformedThenIsHtpsIsFalse() {
+    fun `parseUri - malformed uri - is https false`() {
         assertFalse(Uri.parse("[example com]").isHttps)
     }
 
     @Test
-    fun whenIpUriThenHasIpHostIsTrue() {
+    fun `whenUriHasIpHost - has ip host is true`() {
         assertTrue(Uri.parse("https://54.229.105.203/something").hasIpHost)
         assertTrue(Uri.parse("54.229.105.203/something").hasIpHost)
     }
 
     @Test
-    fun whenIpWithPortUriThenHasIpHostIsTrue() {
+    fun `whenUriHasPortThenHasIpHostIsTrue - has ip host`() {
         assertTrue(Uri.parse("https://54.229.105.203:999/something").hasIpHost)
         assertTrue(Uri.parse("54.229.105.203:999/something").hasIpHost)
     }
 
     @Test
-    fun whenIpWithPortUriThenPortNumberParsedSuccessfully() {
+    fun `parseUri - port number parsed successfully`() {
         assertEquals(999, Uri.parse("https://54.229.105.203:999/something").port)
     }
 
     @Test
-    fun whenValidIpAddressWithPortParsedWithSchemeThenPortNumberParsedSuccessfully() {
+    fun `parse - valid ip address with port parsed with scheme - port number parsed successfully`() {
         assertEquals(999, Uri.parse("121.33.2.11:999").withScheme().port)
     }
 
     @Test
-    fun whenStandardUriThenHasIpHostIsFalse() {
+    fun `whenStandardUriThenHasIpHostIsFalse - standard uri - has ip host is false`() {
         assertFalse(Uri.parse("http://example.com").hasIpHost)
     }
 
     @Test
-    fun whenUrlStartsMDotThenIdentifiedAsMobileSite() {
+    fun `parseUri - url starts with m dot - identified as mobile site`() {
         assertTrue(Uri.parse("https://m.example.com").isMobileSite)
     }
 
     @Test
-    fun whenUrlStartsMobileDotThenIdentifiedAsMobileSite() {
+    fun `parseUri - url starts mobile dot - identified as mobile site`() {
         assertTrue(Uri.parse("https://mobile.example.com").isMobileSite)
     }
 
     @Test
-    fun whenUrlSubdomainEndsWithMThenNotIdentifiedAsMobileSite() {
+    fun `parseUri - subdomain ends with M - not mobile site`() {
         assertFalse(Uri.parse("https://adam.example.com").isMobileSite)
     }
 
     @Test
-    fun whenUrlDoesNotStartWithMDotThenNotIdentifiedAsMobileSite() {
+    fun `parseUri - does not start with M dot - not identified as mobile site`() {
         assertFalse(Uri.parse("https://example.com").isMobileSite)
     }
 
     @Test
-    fun whenConvertingMobileSiteToDesktopSiteThenShortMobilePrefixStripped() {
+    fun `toDesktopUri - short mobile prefix stripped`() {
         val converted = Uri.parse("https://m.example.com").toDesktopUri()
         assertEquals("https://example.com", converted.toString())
     }
 
     @Test
-    fun whenConvertingMobileSiteToDesktopSiteThenLongMobilePrefixStripped() {
+    fun `toDesktopUri - long mobile prefix stripped`() {
         val converted = Uri.parse("https://mobile.example.com").toDesktopUri()
         assertEquals("https://example.com", converted.toString())
     }
 
     @Test
-    fun whenConvertingMobileSiteToDesktopSiteThenMultipleMobilePrefixesStripped() {
+    fun `toDesktopUri - multiple mobile prefixes stripped`() {
         val converted = Uri.parse("https://mobile.m.example.com").toDesktopUri()
         assertEquals("https://example.com", converted.toString())
     }
 
     @Test
-    fun whenConvertingDesktopSiteToDesktopSiteThenUrlUnchanged() {
+    fun `toDesktopUri - url unchanged`() {
         val converted = Uri.parse("https://example.com").toDesktopUri()
         assertEquals("https://example.com", converted.toString())
     }
 
     @Test
-    fun whenGettingAbsoluteStringThenDoNotReturnQueryParameters() {
+    fun `getAbsoluteString - no query parameters - https·//example·com/test`() {
         val absoluteString = Uri.parse("https://example.com/test?q=example/#1/anotherrandomcode").absoluteString
         assertEquals("https://example.com/test", absoluteString)
     }
 
     @Test
-    fun whenNullUrlThenNullFaviconUrl() {
+    fun `toUri - null url - null favicon url`() {
         assertNull("".toUri().faviconLocation())
     }
 
     @Test
-    fun whenHttpRequestThenFaviconLocationAlsoHttp() {
+    fun `whenHttpRequest - favicon location also http - is http`() {
         val favicon = "http://example.com".toUri().faviconLocation()
         assertTrue(favicon!!.isHttp)
     }
 
     @Test
-    fun whenHttpsRequestThenFaviconLocationAlsoHttps() {
+    fun `whenHttpsRequestThenFaviconLocationAlsoHttps - favicon location also https`() {
         val favicon = "https://example.com".toUri().faviconLocation()
         assertTrue(favicon!!.isHttps)
     }
 
     @Test
-    fun whenUrlContainsASubdomainThenSubdomainReturnedInFavicon() {
+    fun `whenUrlContainsASubdomain - favicon returned - subdomain favicon`() {
         val favicon = "https://sub.example.com".toUri().faviconLocation()
         assertEquals("https://sub.example.com/favicon.ico", favicon.toString())
     }
 
     @Test
-    fun whenUrlIsIpAddressThenIpReturnedInFaviconUrl() {
+    fun `toUri - url is ip address - ip returned in favicon url`() {
         val favicon = "https://192.168.1.0".toUri().faviconLocation()
         assertEquals("https://192.168.1.0/favicon.ico", favicon.toString())
     }
 
     @Test
-    fun whenUrlDoesNotHaveSchemeReturnNull() {
+    fun `toUri - no scheme - returns null`() {
         assertNull("www.example.com".toUri().domain())
     }
 
     @Test
-    fun whenUrlHasSchemeReturnDomain() {
+    fun `toUri - has scheme - returns domain`() {
         assertEquals("www.example.com", "http://www.example.com".toUri().domain())
     }
 
     @Test
-    fun whenUriHasResourceNameThenDropSchemeReturnResourceName() {
+    fun `toUri - has resource name - drops scheme`() {
         assertEquals("www.foo.com", "https://www.foo.com".toUri().toStringDropScheme())
         assertEquals("www.foo.com", "http://www.foo.com".toUri().toStringDropScheme())
     }
 
     @Test
-    fun whenUriHasResourceNameAndPathThenDropSchemeReturnResourceNameAndPath() {
+    fun `toUri - has resource name and path - drops scheme`() {
         assertEquals("www.foo.com/path/to/foo", "https://www.foo.com/path/to/foo".toUri().toStringDropScheme())
         assertEquals("www.foo.com/path/to/foo", "http://www.foo.com/path/to/foo".toUri().toStringDropScheme())
     }
 
     @Test
-    fun whenUriHasResourceNamePathAndParamsThenDropSchemeReturnResourceNamePathAndParams() {
+    fun `toUri - has resource name path and params - drop scheme return resource name path and params`() {
         assertEquals("www.foo.com/path/to/foo?key=value", "https://www.foo.com/path/to/foo?key=value".toUri().toStringDropScheme())
         assertEquals("www.foo.com/path/to/foo?key=value", "http://www.foo.com/path/to/foo?key=value".toUri().toStringDropScheme())
     }
 
     @Test
-    fun whenUriExtractDomainThenReturnDomainOnly() {
+    fun `extractDomain - when Uri extract domain then return domain only`() {
         assertEquals("www.foo.com", "https://www.foo.com/path/to/foo?key=value".extractDomain())
         assertEquals("www.foo.com", "www.foo.com/path/to/foo?key=value".extractDomain())
         assertEquals("foo.com", "foo.com/path/to/foo?key=value".extractDomain())

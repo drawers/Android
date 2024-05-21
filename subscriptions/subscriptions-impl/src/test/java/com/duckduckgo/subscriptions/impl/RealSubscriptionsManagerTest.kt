@@ -91,7 +91,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenRecoverSubscriptionFromStoreIfUserNotAuthenticatedAndNotPurchaseStoredThenReturnFailure() = runTest {
+    fun `recoverSubscriptionFromStore - user not authenticated and no purchase stored - return failure`() = runTest {
         givenUserIsNotAuthenticated()
 
         val value = subscriptionsManager.recoverSubscriptionFromStore()
@@ -100,7 +100,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenRecoverSubscriptionFromStoreIfUserNotAuthenticatedAndPurchaseStoredThenReturnSubscriptionAndStoreData() = runTest {
+    fun `recoverSubscriptionFromStore - user not authenticated and purchase stored - return subscription and store data`() = runTest {
         givenUserIsNotAuthenticated()
         givenPurchaseStored()
         givenStoreLoginSucceeds()
@@ -116,7 +116,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenRecoverSubscriptionFromStoreIfStoreLoginFailsThenReturnFailure() = runTest {
+    fun `recoverSubscriptionFromStore - store login fails - failure`() = runTest {
         givenUserIsNotAuthenticated()
         givenPurchaseStored()
         givenStoreLoginSucceeds()
@@ -128,7 +128,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenRecoverSubscriptionFromStoreIfUserAuthenticatedWithNotPurchasesThenReturnFailure() = runTest {
+    fun `recoverSubscriptionFromStore - user authenticated with no purchases - return failure`() = runTest {
         givenUserIsAuthenticated()
         givenAccessTokenSucceeds()
 
@@ -138,7 +138,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenRecoverSubscriptionFromStoreIfValidateTokenSucceedsThenReturnExternalId() = runTest {
+    fun `recoverSubscriptionFromStore - validate token succeeds - return external id`() = runTest {
         givenPurchaseStored()
         givenStoreLoginSucceeds()
         givenSubscriptionSucceedsWithEntitlements()
@@ -152,7 +152,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenRecoverSubscriptionFromStoreIfSubscriptionExpiredThenReturnFailure() = runTest {
+    fun `recoverSubscriptionFromStore - subscription expired - failure`() = runTest {
         givenPurchaseStored()
         givenStoreLoginSucceeds()
         givenSubscriptionExists(EXPIRED)
@@ -164,7 +164,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenRecoverSubscriptionFromStoreIfValidateTokenFailsReturnFailure() = runTest {
+    fun `recoverSubscriptionFromStore - validate token fails - failure`() = runTest {
         givenUserIsAuthenticated()
         givenValidateTokenFails("failure")
 
@@ -174,7 +174,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenRecoverSubscriptionFromStoreIfPurchaseHistoryRetrievedThenSignInUserAndSetToken() = runTest {
+    fun `recoverSubscriptionFromStore - is signed in - signed in with token`() = runTest {
         givenUserIsNotAuthenticated()
         givenPurchaseStored()
         givenStoreLoginSucceeds()
@@ -190,7 +190,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenFetchAndStoreAllDataIfUserNotAuthenticatedThenReturnNullSubscription() = runTest {
+    fun `fetchAndStoreAllData - user not authenticated - return null subscription`() = runTest {
         givenUserIsNotAuthenticated()
 
         val value = subscriptionsManager.fetchAndStoreAllData()
@@ -199,7 +199,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenFetchAndStoreAllDataIfTokenIsValidThenReturnSubscription() = runTest {
+    fun `fetchAndStoreAllData - token valid - return subscription`() = runTest {
         givenUserIsAuthenticated()
         givenSubscriptionSucceedsWithEntitlements()
 
@@ -209,7 +209,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenFetchAndStoreAllDataIfTokenIsValidThenReturnEmitEntitlements() = runTest {
+    fun `fetchAndStoreAllData - entitlements returned`() = runTest {
         givenUserIsAuthenticated()
         givenSubscriptionSucceedsWithEntitlements()
 
@@ -221,7 +221,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenFetchAndStoreAllDataIfSubscriptionFailsThenReturnNull() = runTest {
+    fun `fetchAndStoreAllData - subscription fails - return null`() = runTest {
         givenUserIsAuthenticated()
         givenSubscriptionFails()
 
@@ -229,7 +229,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenPurchaseFlowIfUserNotAuthenticatedAndNotPurchaseStoredThenCreateAccount() = runTest {
+    fun `purchase - user not authenticated and no purchase stored - create account`() = runTest {
         givenUserIsNotAuthenticated()
 
         subscriptionsManager.purchase(mock(), planId = "")
@@ -238,7 +238,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenPurchaseFlowIfUserNotAuthenticatedAndNotPurchaseStoredAndSignedInEmailThenCreateAccountWithEmailToken() = runTest {
+    fun `subscriptionsManager - purchase flow - create account with email token`() = runTest {
         whenever(emailManager.getToken()).thenReturn("emailToken")
         givenUserIsNotAuthenticated()
 
@@ -248,7 +248,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenPurchaseFlowIfCreateAccountFailsThenReturnFailure() = runTest {
+    fun `purchase - create account fails - return failure`() = runTest {
         givenUserIsNotAuthenticated()
         givenCreateAccountFails()
 
@@ -261,7 +261,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenPurchaseFlowIfCreateAccountSucceedsThenBillingFlowUsesCorrectExternalId() = runTest {
+    fun `purchase - create account succeeds - uses correct external id`() = runTest {
         givenUserIsNotAuthenticated()
         givenCreateAccountSucceeds()
         givenValidateTokenSucceedsNoEntitlements()
@@ -273,7 +273,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenPurchaseFlowIfUserNotAuthenticatedAndPurchaseNotActiveInStoreThenGetIdFromPurchase() = runTest {
+    fun `purchase - user not authenticated and purchase not active in store - get id from purchase`() = runTest {
         givenUserIsNotAuthenticated()
         givenPurchaseStored()
         givenStoreLoginSucceeds()
@@ -286,7 +286,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenPurchaseFlowIfUserNotAuthenticatedAndPurchaseActiveInStoreThenRecoverSubscription() = runTest {
+    fun `purchase - user not authenticated and purchase active in store - recover subscription`() = runTest {
         givenUserIsNotAuthenticated()
         givenPurchaseStored()
         givenStoreLoginSucceeds()
@@ -303,7 +303,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenPurchaseFlowIfStoreLoginFailsThenReturnFailure() = runTest {
+    fun `purchase - store login fails - return failure`() = runTest {
         givenUserIsNotAuthenticated()
         givenPurchaseStored()
         givenStoreLoginSucceeds()
@@ -318,7 +318,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenPurchaseFlowIfUserAuthenticatedThenValidateToken() = runTest {
+    fun `purchase - user authenticated - validate token`() = runTest {
         givenUserIsAuthenticated()
 
         subscriptionsManager.purchase(mock(), planId = "")
@@ -327,7 +327,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenPurchaseFlowIfValidateTokenSucceedsThenBillingFlowUsesCorrectExternalIdAndEmitStates() = runTest {
+    fun `purchase - validate token succeeds - uses correct external id and emit states`() = runTest {
         givenUserIsAuthenticated()
         givenSubscriptionSucceedsWithoutEntitlements(status = "Expired")
 
@@ -341,7 +341,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenPurchaseFlowIfCreateAccountFailsReturnFailure() = runTest {
+    fun `purchase - create account fails - failure`() = runTest {
         givenUserIsNotAuthenticated()
         givenCreateAccountFails()
 
@@ -354,7 +354,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenPurchaseFlowIfNullSubscriptionAndAuthenticatedThenDoNotCreateAccount() = runTest {
+    fun `subscriptionsManager - purchase flow if null subscription and authenticated - do not create account`() = runTest {
         givenUserIsAuthenticated()
         givenValidateTokenFails("failure")
 
@@ -364,7 +364,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenPurchaseFlowIfAccountCreatedThenSetTokens() = runTest {
+    fun `purchaseFlow - account created - set tokens`() = runTest {
         givenUserIsNotAuthenticated()
         givenCreateAccountSucceeds()
         givenSubscriptionSucceedsWithoutEntitlements()
@@ -376,7 +376,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenPurchaseFlowIfPurchaseHistoryRetrievedThenSignInUserAndSetToken() = runTest {
+    fun `purchase - purchase history retrieved - sign in user and set token`() = runTest {
         givenUserIsNotAuthenticated()
         givenPurchaseStored()
         givenStoreLoginSucceeds()
@@ -393,14 +393,14 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test(expected = Exception::class)
-    fun whenExchangeTokenFailsTokenThenReturnThrow() = runTest {
+    fun `exchangeAuthToken - token fails - returns throw`() = runTest {
         givenAccessTokenFails()
 
         subscriptionsManager.exchangeAuthToken("authToken")
     }
 
     @Test
-    fun whenExchangeTokenIfAccessTokenThenExchangeTokenAndStore() = runTest {
+    fun `exchangeAuthToken - exchange token and store - access token stored`() = runTest {
         givenAccessTokenSucceeds()
 
         val result = subscriptionsManager.exchangeAuthToken("authToken")
@@ -409,7 +409,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenSubscribedToSubscriptionStatusThenEmit() = runTest {
+    fun `whenSubscribedToSubscriptionStatusThenEmit - subscription status emitted`() = runTest {
         val manager = RealSubscriptionsManager(
             authService,
             subscriptionsService,
@@ -429,7 +429,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenSubscribedToSubscriptionStatusAndSubscriptionExistsThenEmit() = runTest {
+    fun `whenSubscribedToSubscriptionStatusAndSubscriptionExistsThenEmit - subscription status updated`() = runTest {
         givenUserIsAuthenticated()
         givenSubscriptionExists()
         val manager = RealSubscriptionsManager(
@@ -451,7 +451,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenPurchaseSuccessfulThenPurchaseCheckedAndSuccessEmit() = runTest {
+    fun `whenPurchaseSuccessfulThenPurchaseCheckedAndSuccessEmit - current purchase state updated - success`() = runTest {
         givenUserIsAuthenticated()
         givenConfirmPurchaseSucceeds()
 
@@ -491,7 +491,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenPurchaseFailedThenPurchaseCheckedAndWaitingEmit() = runTest {
+    fun `whenPurchaseFailedThenPurchaseCheckedAndWaitingEmit - purchase failed - waiting emit`() = runTest {
         givenUserIsAuthenticated()
         givenValidateTokenFails("failure")
         givenConfirmPurchaseFails()
@@ -526,7 +526,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenPurchaseCanceledThenEmitCanceled() = runTest {
+    fun `whenPurchaseCanceledThenEmitCanceled - current purchase state updated - canceled`() = runTest {
         val flowTest: MutableSharedFlow<PurchaseState> = MutableSharedFlow()
         whenever(playBillingManager.purchaseState).thenReturn(flowTest)
 
@@ -550,7 +550,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenGetAccessTokenIfUserIsAuthenticatedThenReturnSuccess() = runTest {
+    fun `getAccessToken - user authenticated - success`() = runTest {
         givenUserIsAuthenticated()
 
         val result = subscriptionsManager.getAccessToken()
@@ -560,7 +560,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenGetAccessTokenIfUserIsAuthenticatedThenReturnFailure() = runTest {
+    fun `getAccessToken - user not authenticated - failure`() = runTest {
         givenUserIsNotAuthenticated()
 
         val result = subscriptionsManager.getAccessToken()
@@ -569,7 +569,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenGetAuthTokenIfUserAuthenticatedAndValidTokenThenReturnSuccess() = runTest {
+    fun `getAuthToken - user authenticated and valid token - success`() = runTest {
         givenUserIsAuthenticated()
         givenValidateTokenSucceedsWithEntitlements()
 
@@ -580,7 +580,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenGetAuthTokenIfUserNotAuthenticatedThenReturnFailure() = runTest {
+    fun `getAuthToken - user not authenticated - failure`() = runTest {
         givenUserIsNotAuthenticated()
 
         val result = subscriptionsManager.getAuthToken()
@@ -589,7 +589,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenGetAuthTokenIfUserAuthenticatedWithSubscriptionAndTokenExpiredAndEntitlementsExistsThenReturnSuccess() = runTest {
+    fun `getAuthToken - user authenticated with subscription and token expired and entitlements exists - return success`() = runTest {
         authDataStore.externalId = "1234"
         givenUserIsAuthenticated()
         givenSubscriptionSucceedsWithEntitlements()
@@ -606,7 +606,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenGetAuthTokenIfUserAuthenticatedWithSubscriptionAndTokenExpiredAndEntitlementsExistsAndExternalIdDifferentThenReturnFailure() = runTest {
+    fun `getAuthToken - user authenticated with subscription and token expired and external id different - return failure`() = runTest {
         authDataStore.externalId = "test"
         givenUserIsAuthenticated()
         givenSubscriptionSucceedsWithEntitlements()
@@ -622,7 +622,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenGetAuthTokenIfUserAuthenticatedWithSubscriptionAndTokenExpiredAndEntitlementsDoNotExistThenReturnFailure() = runTest {
+    fun `getAuthToken - user authenticated with subscription and token expired and entitlements do not exist - return failure`() = runTest {
         givenUserIsAuthenticated()
         givenValidateTokenSucceedsNoEntitlements()
         givenValidateTokenFailsAndThenSucceedsWithNoEntitlements("""{ "error": "expired_token" }""")
@@ -637,7 +637,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenGetAuthTokenIfUserAuthenticatedAndTokenExpiredAndNoPurchaseInTheStoreThenReturnFailure() = runTest {
+    fun `getAuthToken - user authenticated and token expired and no purchase in store - return failure`() = runTest {
         givenUserIsAuthenticated()
         givenValidateTokenFailsAndThenSucceeds("""{ "error": "expired_token" }""")
 
@@ -648,7 +648,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenGetAuthTokenIfUserAuthenticatedAndTokenExpiredAndPurchaseNotValidThenReturnFailure() = runTest {
+    fun `getAuthToken - user authenticated and token expired and purchase not valid - return failure`() = runTest {
         givenUserIsAuthenticated()
         givenValidateTokenFailsAndThenSucceeds("""{ "error": "expired_token" }""")
         givenStoreLoginFails()
@@ -661,7 +661,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenGetSubscriptionThenReturnCorrectStatus() = runTest {
+    fun `getSubscription - when get subscription then return correct status`() = runTest {
         givenUserIsAuthenticated()
         givenValidateTokenSucceedsWithEntitlements()
 
@@ -691,7 +691,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenGetPortalAndUserAuthenticatedReturnUrl() = runTest {
+    fun `getPortal - user authenticated - returns url`() = runTest {
         givenUserIsAuthenticated()
         givenUrlPortalSucceeds()
 
@@ -699,14 +699,14 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenGetPortalAndUserIsNotAuthenticatedReturnNull() = runTest {
+    fun `getPortal - user not authenticated - null`() = runTest {
         givenUserIsNotAuthenticated()
 
         assertNull(subscriptionsManager.getPortalUrl())
     }
 
     @Test
-    fun whenGetPortalFailsReturnNull() = runTest {
+    fun `getPortal - fails - returns null`() = runTest {
         givenUserIsAuthenticated()
         givenUrlPortalFails()
 
@@ -714,7 +714,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenSignOutThenCallRepositorySignOut() = runTest {
+    fun `signOut - call repository sign out`() = runTest {
         val mockRepo: AuthRepository = mock()
         val manager = RealSubscriptionsManager(
             authService,
@@ -733,7 +733,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenSignOutEmitFalseForIsSignedIn() = runTest {
+    fun `signOut - is signed in false`() = runTest {
         givenSubscriptionExists()
         givenUserIsAuthenticated()
 
@@ -746,7 +746,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenSignOutThenEmitUnknown() = runTest {
+    fun `signOut - subscription status updated - unknown`() = runTest {
         givenUserIsAuthenticated()
         givenSubscriptionExists()
 
@@ -771,7 +771,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenPurchaseIsSuccessfulThenPixelIsSent() = runTest {
+    fun `whenPurchaseIsSuccessfulThenPixelIsSent - current purchase state in progress and success - pixel sent`() = runTest {
         givenUserIsAuthenticated()
         givenValidateTokenSucceedsWithEntitlements()
         givenConfirmPurchaseSucceeds()
@@ -791,7 +791,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenSubscriptionIsRestoredOnPurchaseAttemptThenPixelIsSent() = runTest {
+    fun `subscriptionsManager - purchase restored on attempt - pixel sent`() = runTest {
         givenUserIsNotAuthenticated()
         givenPurchaseStored()
         givenStoreLoginSucceeds()
@@ -812,7 +812,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenPurchaseFailsThenPixelIsSent() = runTest {
+    fun `whenPurchaseFailsThenPixelIsSent - subscriptions manager current purchase state - pixel is sent`() = runTest {
         givenUserIsAuthenticated()
         givenValidateTokenFails("failure")
         givenConfirmPurchaseFails()
@@ -831,7 +831,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenPurchaseFlowIfCreateAccountFailsThenPixelIsSent() = runTest {
+    fun `purchaseFlow - create account fails - pixel sent`() = runTest {
         givenUserIsNotAuthenticated()
         givenCreateAccountFails()
 
@@ -849,7 +849,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenGetSubscriptionOfferThenReturnValue() = runTest {
+    fun `getSubscriptionOffer - return value - subscription offer details`() = runTest {
         val productDetails: ProductDetails = mock { productDetails ->
             whenever(productDetails.productId).thenReturn(SubscriptionsConstants.BASIC_SUBSCRIPTION)
 
@@ -889,12 +889,12 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenCanSupportEncryptionThenReturnTrue() = runTest {
+    fun `canSupportEncryption - state - returns true`() = runTest {
         assertTrue(subscriptionsManager.canSupportEncryption())
     }
 
     @Test
-    fun whenCanSupportEncryptionIfCannotThenReturnFalse() = runTest {
+    fun `canSupportEncryption - cannot support encryption - returns false`() = runTest {
         val authDataStore: SubscriptionsDataStore = FakeSubscriptionsDataStore(supportEncryption = false)
         val authRepository = RealAuthRepository(authDataStore, coroutineRule.testDispatcherProvider)
         subscriptionsManager = RealSubscriptionsManager(
@@ -913,7 +913,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenDeleteAccountIfUserAuthenticatedAndValidTokenThenReturnTrue() = runTest {
+    fun `deleteAccount - authenticated and valid token - returns true`() = runTest {
         givenUserIsAuthenticated()
         givenValidateTokenSucceedsWithEntitlements()
         givenDeleteAccountSucceeds()
@@ -922,7 +922,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenDeleteAccountIfUserNotAuthenticatedThenReturnFalse() = runTest {
+    fun `deleteAccount - user not authenticated - returns false`() = runTest {
         givenUserIsNotAuthenticated()
         givenDeleteAccountFails()
 
@@ -930,7 +930,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenDeleteAccountIfUserAuthenticatedWithSubscriptionAndTokenExpiredAndEntitlementsExistsThenReturnTrue() = runTest {
+    fun `deleteAccount - authenticated with subscription and token expired and entitlements exists - returns true`() = runTest {
         authDataStore.externalId = "1234"
         givenUserIsAuthenticated()
         givenSubscriptionSucceedsWithEntitlements()
@@ -944,7 +944,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenRemoveEntitlementsThenEntitlementsDeleted() = runTest {
+    fun `removeEntitlements - entitlements deleted`() = runTest {
         givenSubscriptionExists()
         assertEquals("""[{"product":"product", "name":"name"}]""", authDataStore.entitlements)
 

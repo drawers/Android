@@ -12,31 +12,31 @@ class DefaultAutofillEngagementBucketingTest {
     private val testee = DefaultAutofillEngagementBucketing()
 
     @Test
-    fun whenZeroSavedPasswordsThenBucketIsNone() {
+    fun `bucketNumberOfSavedPasswords - zero saved passwords - none`() {
         assertEquals(NONE, testee.bucketNumberOfSavedPasswords(0))
     }
 
     @Test
-    fun whenBetweenOneAndThreeSavedPasswordThenBucketIsFew() {
+    fun `bucketNumberOfSavedPasswords - between one and three saved password - few`() {
         assertEquals(FEW, testee.bucketNumberOfSavedPasswords(1))
         assertEquals(FEW, testee.bucketNumberOfSavedPasswords(2))
         assertEquals(FEW, testee.bucketNumberOfSavedPasswords(3))
     }
 
     @Test
-    fun whenBetweenFourAndTenSavedPasswordThenBucketIsSome() {
+    fun `bucketNumberOfSavedPasswords - between 4 and 10 saved password - some`() {
         assertEquals(SOME, testee.bucketNumberOfSavedPasswords(4))
         assertEquals(SOME, testee.bucketNumberOfSavedPasswords(10))
     }
 
     @Test
-    fun whenBetweenElevenAndFortyNineSavedPasswordThenBucketIsMany() {
+    fun `bucketNumberOfSavedPasswords - between eleven and forty-nine saved password - many`() {
         assertEquals(MANY, testee.bucketNumberOfSavedPasswords(11))
         assertEquals(MANY, testee.bucketNumberOfSavedPasswords(49))
     }
 
     @Test
-    fun whenFiftyOrOverThenBucketIsMany() {
+    fun `bucketNumberOfSavedPasswords - fifty or over - many`() {
         assertEquals(LOTS, testee.bucketNumberOfSavedPasswords(50))
         assertEquals(LOTS, testee.bucketNumberOfSavedPasswords(Int.MAX_VALUE))
     }

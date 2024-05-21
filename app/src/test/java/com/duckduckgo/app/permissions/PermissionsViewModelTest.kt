@@ -63,7 +63,7 @@ class PermissionsViewModelTest {
     }
 
     @Test
-    fun whenStartNotCalledYetThenViewStateInitialisedDefaultValues() = runTest {
+    fun `viewState - initialises default values`() = runTest {
         testee.viewState().test {
             val value = awaitItem()
             assertTrue(value.autoCompleteSuggestionsEnabled)
@@ -73,7 +73,7 @@ class PermissionsViewModelTest {
     }
 
     @Test
-    fun whenStartCalledWithNotificationsEnabledThenNotificationsSettingSubtitleSetCorrectlyAsEnabled() = runTest {
+    fun `start - notifications setting subtitle set correctly as enabled`() = runTest {
         testee.start(notificationsEnabled = true)
 
         testee.viewState().test {
@@ -86,7 +86,7 @@ class PermissionsViewModelTest {
     }
 
     @Test
-    fun whenStartCalledWithNotificationsDisabledThenNotificationsSettingSubtitleSetCorrectlyAsDisabled() = runTest {
+    fun `start - notifications disabled - notifications setting subtitle set correctly as disabled`() = runTest {
         testee.start(notificationsEnabled = false)
 
         testee.viewState().test {
@@ -99,7 +99,7 @@ class PermissionsViewModelTest {
     }
 
     @Test
-    fun whenAppLinksSetToAskEverytimeThenDataStoreIsUpdatedAndPixelIsSent() {
+    fun `onAppLinksSettingChanged - data store updated and pixel sent`() {
         testee.onAppLinksSettingChanged(AppLinkSettingType.ASK_EVERYTIME)
 
         verify(mockAppSettingsDataStore).appLinksEnabled = true
@@ -126,7 +126,7 @@ class PermissionsViewModelTest {
     }
 
     @Test
-    fun whenOnSitePermissionsClickedThenEmitCommandLaunchLocationAndPixelFired() = runTest {
+    fun `onSitePermissionsClicked - emit command launch location and pixel fired`() = runTest {
         testee.commands().test {
             testee.onSitePermissionsClicked()
 
@@ -138,7 +138,7 @@ class PermissionsViewModelTest {
     }
 
     @Test
-    fun whenUserRequestedToChangeNotificationsSettingThenEmitCommandLaunchNotificationsSettingsAndSendPixel() = runTest {
+    fun `userRequestedToChangeNotificationsSetting - emit command launch notifications settings and send pixel`() = runTest {
         testee.commands().test {
             testee.userRequestedToChangeNotificationsSetting()
 
@@ -150,7 +150,7 @@ class PermissionsViewModelTest {
     }
 
     @Test
-    fun whenUserRequestedToChangeAppLinkSettingThenEmitCommandLaunchAppLinkSettings() = runTest {
+    fun `userRequestedToChangeAppLinkSetting - emit command launch app link settings`() = runTest {
         testee.commands().test {
             testee.userRequestedToChangeAppLinkSetting()
 

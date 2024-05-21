@@ -25,19 +25,19 @@ import org.junit.runner.RunWith
 class CookiesFeatureNameUtilTest {
 
     @Test
-    fun whenQueryHasWhenThenReturnRedactedBase64Stacktrace() {
+    fun `redactStacktrace - has when - returns redacted base64 stack trace`() {
         val ss = redactStacktraceInBase64(WITH_WHEN)
         assertEquals(WITH_WHEN_BASE634, ss)
     }
 
     @Test
-    fun whenQueryDoesNotHaveWhenThenReturnBase64Stacktrace() {
+    fun `redactStacktraceInBase64 - without when - returns base64 stack trace`() {
         val ss = redactStacktraceInBase64(WITHOUT_WHEN)
         assertEquals(WITHOUT_WHEN_BASE64, ss)
     }
 
     @Test
-    fun whenQueryOneLineThenReturnBase64Stacktrace() {
+    fun `queryOneLine - return base64 stack trace`() {
         val ss = redactStacktraceInBase64(WITHOUT_NEW_LINE)
         assertEquals(WITHOUT_NEW_LINE_BASE64, ss)
     }

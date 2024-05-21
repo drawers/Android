@@ -29,21 +29,21 @@ internal class AppDeviceSyncStateTest {
     private val appDeviceSyncState = AppDeviceSyncState(syncFeatureToggle, syncAccountRepository)
 
     @Test
-    fun whenUserSignedInThenDeviceSyncEnabled() {
+    fun `isUserSignedInOnDevice - device sync enabled`() {
         whenever(syncAccountRepository.isSignedIn()).thenReturn(true)
 
         assertTrue(appDeviceSyncState.isUserSignedInOnDevice())
     }
 
     @Test
-    fun whenShowSyncDisabledThenFeatureDisabled() {
+    fun `showSync - feature disabled - not enabled`() {
         givenFeatureFlag(enabled = false)
 
         assertFalse(appDeviceSyncState.isFeatureEnabled())
     }
 
     @Test
-    fun whenShowSyncEnabledThenFeatureEnabled() {
+    fun `showSync - is feature enabled`() {
         givenFeatureFlag(enabled = true)
 
         assertTrue(appDeviceSyncState.isFeatureEnabled())

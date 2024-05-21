@@ -67,7 +67,7 @@ class NetpVpnAccessRevokedDialogMonitorTest {
     }
 
     @Test
-    fun whenVPNStateIsInactiveThenDontShowDialogs() {
+    fun `getVpnStatus - vpn state inactive - dont show dialogs`() {
         coroutineTestRule.testScope.launch {
             whenever(netpSubscriptionManager.getVpnStatus()).thenReturn(INACTIVE)
 
@@ -79,7 +79,7 @@ class NetpVpnAccessRevokedDialogMonitorTest {
     }
 
     @Test
-    fun whenVPNStateIsActiveThenDontShowDialogs() {
+    fun `getVpnStatus - vpn state active - dont show dialogs`() {
         coroutineTestRule.testScope.launch {
             whenever(netpSubscriptionManager.getVpnStatus()).thenReturn(ACTIVE)
 
@@ -91,7 +91,7 @@ class NetpVpnAccessRevokedDialogMonitorTest {
     }
 
     @Test
-    fun whenVPNEnabledAndStateIsActiveThenDontShowDialogs() {
+    fun `whenVPNEnabledAndStateIsActiveThenDontShowDialogs - network protection state active - dont show dialogs`() {
         coroutineTestRule.testScope.launch {
             whenever(networkProtectionState.isEnabled()).thenReturn(true)
             whenever(netpSubscriptionManager.getVpnStatus()).thenReturn(ACTIVE)
@@ -104,7 +104,7 @@ class NetpVpnAccessRevokedDialogMonitorTest {
     }
 
     @Test
-    fun whenVPNEnabledAndStateIsInactiveThenDontShowDialogs() {
+    fun `whenVPNEnabledAndStateIsInactiveThenDontShowDialogs - network protection state inactive - dont show dialogs`() {
         coroutineTestRule.testScope.launch {
             whenever(networkProtectionState.isEnabled()).thenReturn(true)
             whenever(netpSubscriptionManager.getVpnStatus()).thenReturn(INACTIVE)
@@ -117,7 +117,7 @@ class NetpVpnAccessRevokedDialogMonitorTest {
     }
 
     @Test
-    fun whenVPNStateIsSignedOutThenDontShowDialogs() {
+    fun `getVpnStatus - vpn state signed out - dont show dialogs`() {
         coroutineTestRule.testScope.launch {
             whenever(netpSubscriptionManager.getVpnStatus()).thenReturn(SIGNED_OUT)
 
@@ -129,7 +129,7 @@ class NetpVpnAccessRevokedDialogMonitorTest {
     }
 
     @Test
-    fun whenVPNEnabledAndStateIsSignedOutThenDontShowDialogs() {
+    fun `whenVPNEnabledAndStateIsSignedOut - dont show dialogs`() {
         coroutineTestRule.testScope.launch {
             whenever(networkProtectionState.isEnabled()).thenReturn(true)
             whenever(netpSubscriptionManager.getVpnStatus()).thenReturn(SIGNED_OUT)
@@ -142,7 +142,7 @@ class NetpVpnAccessRevokedDialogMonitorTest {
     }
 
     @Test
-    fun whenVPNStateIsExpiredThenShowAccessRevokedDialog() {
+    fun `getVpnStatus - vpn state expired - show access revoked dialog`() {
         coroutineTestRule.testScope.launch {
             whenever(netpSubscriptionManager.getVpnStatus()).thenReturn(EXPIRED)
 
@@ -154,7 +154,7 @@ class NetpVpnAccessRevokedDialogMonitorTest {
     }
 
     @Test
-    fun whenVPNEnabledStateIsExpiredThenShowAccessRevokedDialog() {
+    fun `whenVPNEnabledStateIsExpiredThenShowAccessRevokedDialog - show access revoked dialog`() {
         coroutineTestRule.testScope.launch {
             whenever(networkProtectionState.isEnabled()).thenReturn(true)
             whenever(netpSubscriptionManager.getVpnStatus()).thenReturn(EXPIRED)
@@ -167,7 +167,7 @@ class NetpVpnAccessRevokedDialogMonitorTest {
     }
 
     @Test
-    fun whenVPNNotOnboardedAndStateIsExpiredThenDontShowDialogs() {
+    fun `whenVPNNotOnboardedAndStateIsExpiredThenDontShowDialogs - dont show dialogs`() {
         coroutineTestRule.testScope.launch {
             whenever(networkProtectionState.isOnboarded()).thenReturn(false)
             whenever(netpSubscriptionManager.getVpnStatus()).thenReturn(EXPIRED)
@@ -181,7 +181,7 @@ class NetpVpnAccessRevokedDialogMonitorTest {
     }
 
     @Test
-    fun whenVPNEnabledNotOnboardedAndStateIsExpiredThenDontShowDialogs() {
+    fun `whenVPNEnabledNotOnboardedAndStateIsExpiredThenDontShowDialogs - dont show dialogs`() {
         coroutineTestRule.testScope.launch {
             whenever(networkProtectionState.isOnboarded()).thenReturn(false)
             whenever(networkProtectionState.isEnabled()).thenReturn(true)

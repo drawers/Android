@@ -110,26 +110,26 @@ class RealPrivacyConfigPersisterTest {
     }
 
     @Test
-    fun whenHashIsNullSignatureReturnsFeatureName() {
+    fun `getSignature - hash is null - feature name`() {
         val expected = pluginPoint.getPlugins().sumOf { it.featureName.hashCode() }
         assertEquals(expected, pluginPoint.signature())
     }
 
     @Test
-    fun whenHashIsNotNullSignatureReturnsHash() {
+    fun `getSignature - hash is not null - returns hash`() {
         val pluginPoint = FakePrivacyFeaturePluginPoint(listOf(HashedFakePrivacyFeaturePlugin()))
         val expected = pluginPoint.getPlugins().sumOf { it.hash().hashCode() }
         assertEquals(expected, pluginPoint.signature())
     }
 
     @Test
-    fun whenDifferentPluginPointsThenReturnDifferentSignatures() {
+    fun `pluginPoint - different plugin points - different signatures`() {
         val differentPluginPoint = FakePrivacyFeaturePluginPoint(listOf(FakePrivacyFeaturePlugin(), FakePrivacyFeaturePlugin()))
         assertNotEquals(pluginPoint.signature(), differentPluginPoint.signature())
     }
 
     @Test
-    fun whenPersistPrivacyConfigThenDeleteAllTogglesPreviouslyStored() =
+    fun `persistPrivacyConfig - delete all toggles previously stored`() =
         runTest {
             testee.persistPrivacyConfig(getJsonPrivacyConfig())
 
@@ -137,7 +137,7 @@ class RealPrivacyConfigPersisterTest {
         }
 
     @Test
-    fun whenPersistPrivacyConfigThenUpdateAllUnprotectedTemporaryExceptions() =
+    fun `persistPrivacyConfig - update all unprotected temporary exceptions`() =
         runTest {
             assertEquals(0, unprotectedTemporaryRepository.exceptions.size)
 
@@ -147,7 +147,7 @@ class RealPrivacyConfigPersisterTest {
         }
 
     @Test
-    fun whenPersistPrivacyConfigAndPluginMatchesFeatureNameThenStoreCalled() =
+    fun `persistPrivacyConfig - store called`() =
         runTest {
             testee.persistPrivacyConfig(getJsonPrivacyConfig())
 
@@ -156,7 +156,7 @@ class RealPrivacyConfigPersisterTest {
         }
 
     @Test
-    fun whenPersistPrivacyConfigAndVersionIsLowerThanPreviousOneStoredThenDoNothing() =
+    fun `persistPrivacyConfig - version lower than previous one stored - do nothing`() =
         runTest {
             privacyRepository.insert(PrivacyConfig(version = 3, readme = "readme", eTag = "eTag", timestamp = "2023-01-02"))
 
@@ -167,7 +167,7 @@ class RealPrivacyConfigPersisterTest {
         }
 
     @Test
-    fun whenPersistPrivacyConfigAndVersionIsLowerThanPreviousOneAndDifferentPluginsThenStoreNewConfig() =
+    fun `persistPrivacyConfig - version lower than previous one and different plugins - store new config`() =
         runTest {
             sharedPreferences.edit().putInt("plugin_signature", 0)
             privacyRepository.insert(PrivacyConfig(version = 3, readme = "readme", eTag = "eTag", timestamp = "2023-01-02"))
@@ -179,7 +179,7 @@ class RealPrivacyConfigPersisterTest {
         }
 
     @Test
-    fun whenPersistPrivacyConfigAndVersionIsEqualsThanPreviousOneStoredThenDoNothing() =
+    fun `persistPrivacyConfig - version equals previous one stored - do nothing`() =
         runTest {
             privacyRepository.insert(PrivacyConfig(version = 2, readme = "readme", eTag = "eTag", timestamp = "2023-01-02"))
 
@@ -190,7 +190,7 @@ class RealPrivacyConfigPersisterTest {
         }
 
     @Test
-    fun whenPersistPrivacyConfigAndVersionIsEqualsThanPreviousOneStoredAndDifferentPluginsThenUpdateConfig() =
+    fun `persistPrivacyConfig - version equals previous one stored and different plugins - update config`() =
         runTest {
             sharedPreferences.edit().putInt("plugin_signature", 0)
             privacyRepository.insert(PrivacyConfig(version = 2, readme = "readme", eTag = "eTag", timestamp = "2023-01-02"))
@@ -202,7 +202,7 @@ class RealPrivacyConfigPersisterTest {
         }
 
     @Test
-    fun whenPersistPrivacyConfigAndVersionIsHigherThanPreviousOneStoredThenStoreNewConfig() =
+    fun `persistPrivacyConfig - version higher than previous one stored - store new config`() =
         runTest {
             privacyRepository.insert(PrivacyConfig(version = 1, readme = "readme", eTag = "eTag", timestamp = "2023-01-02"))
 
@@ -212,7 +212,7 @@ class RealPrivacyConfigPersisterTest {
         }
 
     @Test
-    fun whenPersistPrivacyConfigAndVersionIsHigherThanPreviousOneStoredAndDifferentPluginsThenStoreNewConfig() =
+    fun `persistPrivacyConfig - version higher than previous one stored and different plugins - store new config`() =
         runTest {
             sharedPreferences.edit().putInt("plugin_signature", 0)
             privacyRepository.insert(PrivacyConfig(version = 1, readme = "readme", eTag = "eTag", timestamp = "2023-01-02"))

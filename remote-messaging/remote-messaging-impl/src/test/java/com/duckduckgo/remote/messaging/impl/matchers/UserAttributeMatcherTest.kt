@@ -34,7 +34,7 @@ class UserAttributeMatcherTest {
     private val testee = UserAttributeMatcher(userBrowserProperties)
 
     @Test
-    fun whenAppThemeMatchesThenReturnMatch() = runTest {
+    fun `evaluate - app theme matches - returns match`() = runTest {
         givenBrowserProperties(appTheme = DuckDuckGoTheme.SYSTEM_DEFAULT)
 
         val result = testee.evaluate(
@@ -45,7 +45,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenAppThemeDoesNotMatchThenReturnFail() = runTest {
+    fun `evaluate - app theme does not match - return fail`() = runTest {
         givenBrowserProperties(appTheme = DuckDuckGoTheme.SYSTEM_DEFAULT)
 
         val result = testee.evaluate(
@@ -56,7 +56,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenBookmarksMatchesThenReturnMatch() = runTest {
+    fun `evaluate - bookmarks matches - return match`() = runTest {
         givenBrowserProperties(bookmarks = 10L)
 
         val result = testee.evaluate(
@@ -67,7 +67,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenBookmarksDoesNotMatchThenReturnFail() = runTest {
+    fun `evaluate - bookmarks does not match - return fail`() = runTest {
         givenBrowserProperties(bookmarks = 10L)
 
         val result = testee.evaluate(
@@ -78,7 +78,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenBookmarksEqualOrLowerThanMaxThenReturnMatch() = runTest {
+    fun `evaluate - bookmarks equal or lower than max - return match`() = runTest {
         givenBrowserProperties(bookmarks = 10L)
 
         val result = testee.evaluate(
@@ -89,7 +89,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenBookmarksGreaterThanMaxThenReturnFail() = runTest {
+    fun `evaluate - bookmarks greater than max - return fail`() = runTest {
         givenBrowserProperties(bookmarks = 15L)
 
         val result = testee.evaluate(
@@ -100,7 +100,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenBookmarksEqualOrGreaterThanMinThenReturnMatch() = runTest {
+    fun `evaluate - bookmarks equal or greater than min - return match`() = runTest {
         givenBrowserProperties(bookmarks = 10L)
 
         val result = testee.evaluate(
@@ -111,7 +111,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenBookmarksLowerThanMinThenReturnFail() = runTest {
+    fun `evaluate - bookmarks lower than min - return fail`() = runTest {
         givenBrowserProperties(bookmarks = 0L)
 
         val result = testee.evaluate(
@@ -122,7 +122,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenBookmarksInRangeThenReturnMatch() = runTest {
+    fun `evaluate - bookmarks in range - returns match`() = runTest {
         givenBrowserProperties(bookmarks = 10L)
 
         val result = testee.evaluate(
@@ -133,7 +133,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenBookmarksNotInRangeThenReturnMatch() = runTest {
+    fun `evaluate - bookmarks not in range - return match`() = runTest {
         givenBrowserProperties(bookmarks = 10L)
 
         val result = testee.evaluate(
@@ -145,7 +145,7 @@ class UserAttributeMatcherTest {
 
     // Favorites
     @Test
-    fun whenFavoritesMatchesThenReturnMatch() = runTest {
+    fun `evaluate - favorites matches - returns match`() = runTest {
         givenBrowserProperties(favorites = 10L)
 
         val result = testee.evaluate(
@@ -156,7 +156,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenFavoritesDoesNotMatchThenReturnFail() = runTest {
+    fun `evaluate - favorites does not match - return fail`() = runTest {
         givenBrowserProperties(favorites = 10L)
 
         val result = testee.evaluate(
@@ -167,7 +167,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenFavoritesEqualOrLowerThanMaxThenReturnMatch() = runTest {
+    fun `evaluate - favorites equal or lower than max - return match`() = runTest {
         givenBrowserProperties(favorites = 10L)
 
         val result = testee.evaluate(
@@ -178,7 +178,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenFavoritesGreaterThanMaxThenReturnFail() = runTest {
+    fun `evaluate - favorites greater than max - return fail`() = runTest {
         givenBrowserProperties(favorites = 10L)
 
         val result = testee.evaluate(
@@ -189,7 +189,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenFavoritesEqualOrGreaterThanMinThenReturnMatch() = runTest {
+    fun `evaluate - favorites equal or greater than min - return match`() = runTest {
         givenBrowserProperties(favorites = 10L)
 
         val result = testee.evaluate(
@@ -200,7 +200,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenFavoritesLowerThanMinThenReturnFail() = runTest {
+    fun `evaluate - favorites lower than min - return fail`() = runTest {
         givenBrowserProperties(favorites = 0L)
 
         val result = testee.evaluate(
@@ -211,7 +211,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenFavoritesInRangeThenReturnMatch() = runTest {
+    fun `evaluate - favorites in range - return match`() = runTest {
         givenBrowserProperties(favorites = 10L)
 
         val result = testee.evaluate(
@@ -222,7 +222,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenFavoritesNotInRangeThenReturnMatch() = runTest {
+    fun `evaluate - favorites not in range - return match`() = runTest {
         givenBrowserProperties(favorites = 10L)
 
         val result = testee.evaluate(
@@ -234,7 +234,7 @@ class UserAttributeMatcherTest {
 
     // DaysSinceInstalled
     @Test
-    fun whenDaysSinceInstalledEqualOrLowerThanMaxThenReturnMatch() = runTest {
+    fun `evaluate - days since installed equal or lower than max - return match`() = runTest {
         givenBrowserProperties(daysSinceInstalled = 10L)
 
         val result = testee.evaluate(
@@ -245,7 +245,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenDaysSinceInstalledGreaterThanMaxThenReturnFail() = runTest {
+    fun `evaluate - days since installed greater than max - return fail`() = runTest {
         givenBrowserProperties(daysSinceInstalled = 10L)
 
         val result = testee.evaluate(
@@ -256,7 +256,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenDaysSinceInstalledEqualOrGreaterThanMinThenReturnMatch() = runTest {
+    fun `evaluate - days since installed equal or greater than min - return match`() = runTest {
         givenBrowserProperties(daysSinceInstalled = 10L)
 
         val result = testee.evaluate(
@@ -267,7 +267,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenDaysSinceInstalledLowerThanMinThenReturnFail() = runTest {
+    fun `evaluate - days since installed lower than min - return fail`() = runTest {
         givenBrowserProperties(daysSinceInstalled = 1L)
 
         val result = testee.evaluate(
@@ -278,7 +278,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenDaysSinceInstalledInRangeThenReturnMatch() = runTest {
+    fun `evaluate - days since installed in range - return match`() = runTest {
         givenBrowserProperties(daysSinceInstalled = 10L)
 
         val result = testee.evaluate(
@@ -289,7 +289,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenDaysSinceInstalledNotInRangeThenReturnMatch() = runTest {
+    fun `evaluate - days since installed not in range - return match`() = runTest {
         givenBrowserProperties(daysSinceInstalled = 10L)
 
         val result = testee.evaluate(
@@ -301,7 +301,7 @@ class UserAttributeMatcherTest {
 
     // DaysUsedSince
     @Test
-    fun whenDaysUsedSinceMatchesThenReturnMatch() = runTest {
+    fun `evaluate - days used since matches - return match`() = runTest {
         givenBrowserProperties(daysUsedSince = 10L)
 
         val result = testee.evaluate(
@@ -312,7 +312,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenDaysUsedSinceDoesNotMatchThenReturnFail() = runTest {
+    fun `evaluate - days used since does not match - return fail`() = runTest {
         givenBrowserProperties(daysUsedSince = 10L)
 
         val result = testee.evaluate(
@@ -324,7 +324,7 @@ class UserAttributeMatcherTest {
 
     // DefaultBrowser
     @Test
-    fun whenDefaultBrowserMatchesThenReturnMatch() = runTest {
+    fun `evaluate - default browser matches - returns match`() = runTest {
         givenBrowserProperties(defaultBrowser = true)
 
         val result = testee.evaluate(
@@ -335,7 +335,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenDefaultBrowserDoesNotMatchThenReturnFail() = runTest {
+    fun `evaluate - default browser does not match - return fail`() = runTest {
         givenBrowserProperties(defaultBrowser = false)
 
         val result = testee.evaluate(
@@ -347,7 +347,7 @@ class UserAttributeMatcherTest {
 
     // EmailEnabled
     @Test
-    fun whenEmailEnabledMatchesThenReturnMatch() = runTest {
+    fun `evaluate - email enabled matches - returns match`() = runTest {
         givenBrowserProperties(emailEnabled = true)
 
         val result = testee.evaluate(
@@ -358,7 +358,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenEmailEnabledDoesNotMatchThenReturnFail() = runTest {
+    fun `evaluate - email enabled does not match - return fail`() = runTest {
         givenBrowserProperties(emailEnabled = false)
 
         val result = testee.evaluate(
@@ -370,7 +370,7 @@ class UserAttributeMatcherTest {
 
     // SearchCount
     @Test
-    fun whenSearchCountMatchesThenReturnMatch() = runTest {
+    fun `evaluate - search count matches - returns match`() = runTest {
         givenBrowserProperties(searchCount = 10L)
 
         val result = testee.evaluate(
@@ -381,7 +381,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenSearchCountDoesNotMatchThenReturnFail() = runTest {
+    fun `evaluate - search count does not match - return fail`() = runTest {
         givenBrowserProperties(searchCount = 10L)
 
         val result = testee.evaluate(
@@ -392,7 +392,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenSearchCountEqualOrLowerThanMaxThenReturnMatch() = runTest {
+    fun `evaluate - search count equal or lower than max - return match`() = runTest {
         givenBrowserProperties(searchCount = 10L)
 
         val result = testee.evaluate(
@@ -403,7 +403,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenSearchCountGreaterThanMaxThenReturnFail() = runTest {
+    fun `evaluate - search count greater than max - return fail`() = runTest {
         givenBrowserProperties(searchCount = 10L)
 
         val result = testee.evaluate(
@@ -414,7 +414,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenSearchCountEqualOrGreaterThanMinThenReturnMatch() = runTest {
+    fun `evaluate - search count equal or greater than min - return match`() = runTest {
         givenBrowserProperties(searchCount = 10L)
 
         val result = testee.evaluate(
@@ -425,7 +425,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenSearchCountLowerThanMinThenReturnFail() = runTest {
+    fun `evaluate - search count lower than min - return fail`() = runTest {
         givenBrowserProperties(searchCount = 1L)
 
         val result = testee.evaluate(
@@ -436,7 +436,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenSearchCountInRangeThenReturnMatch() = runTest {
+    fun `evaluate - search count in range - return match`() = runTest {
         givenBrowserProperties(searchCount = 10L)
 
         val result = testee.evaluate(
@@ -447,7 +447,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenSearchCountNotInRangeThenReturnMatch() = runTest {
+    fun `evaluate - search count not in range - return match`() = runTest {
         givenBrowserProperties(searchCount = 10L)
 
         val result = testee.evaluate(
@@ -459,7 +459,7 @@ class UserAttributeMatcherTest {
 
     // WidgetAdded
     @Test
-    fun whenWidgetAddedMatchesThenReturnMatch() = runTest {
+    fun `evaluate - widget added matches - return match`() = runTest {
         givenBrowserProperties(widgetAdded = true)
 
         val result = testee.evaluate(
@@ -470,7 +470,7 @@ class UserAttributeMatcherTest {
     }
 
     @Test
-    fun whenWidgetAddedDoesNotMatchThenReturnFail() = runTest {
+    fun `evaluate - widget added does not match - return fail`() = runTest {
         givenBrowserProperties(widgetAdded = false)
 
         val result = testee.evaluate(

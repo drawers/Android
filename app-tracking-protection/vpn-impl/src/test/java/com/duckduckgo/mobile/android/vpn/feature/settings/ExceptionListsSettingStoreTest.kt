@@ -95,13 +95,13 @@ class ExceptionListsSettingStoreTest {
     }
 
     @Test
-    fun whenEmptyJsonStoreNothing() {
+    fun `store - empty json store nothing - no interactions`() {
         exceptionListsSettingStore.store("")
         verifyNoInteractions(mockVpnDatabase)
     }
 
     @Test
-    fun whenValidJSONUpdatesDB() = runTest {
+    fun `store - valid json updates db - updates tracker exception rules and exclusion list and system app overrides`() = runTest {
         exceptionListsSettingStore = ExceptionListsSettingStore(
             mockVpnDatabase,
             coroutineRule.testScope,

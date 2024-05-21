@@ -42,7 +42,7 @@ class AppSiteViewStateMapperTest {
     val testee = AppSiteViewStateMapper(PublicKeyInfoMapper(androidQAppBuildConfig))
 
     @Test
-    fun whenSiteHasEntityThenViewStateHasParentEntity() {
+    fun `mapFromSite - site has entity - view state has parent entity`() {
         val site = site(entity = MAJOR_ENTITY_A)
 
         val siteProtectionsViewState = testee.mapFromSite(site)
@@ -53,7 +53,7 @@ class AppSiteViewStateMapperTest {
     }
 
     @Test
-    fun whenSiteDoesNotHaveEntityThenViewStateParentEntityNull() {
+    fun `mapFromSite - site does not have entity - view state parent entity null`() {
         val site = site()
 
         val siteProtectionsViewState = testee.mapFromSite(site)
@@ -62,7 +62,7 @@ class AppSiteViewStateMapperTest {
     }
 
     @Test
-    fun whenMappingSiteThenViewStateHasSiteInfo() {
+    fun `mapFromSite - view state has site info`() {
         val site = site()
 
         val siteProtectionsViewState = testee.mapFromSite(site)
@@ -73,7 +73,7 @@ class AppSiteViewStateMapperTest {
     }
 
     @Test
-    fun whenSiteHasCertificateThenViewStateContainsCertificates() {
+    fun `mapFromSite - site has certificate - view state contains certificates`() {
         val site = site(certificate = TestCertificateInfo("cname"))
 
         val siteProtectionsViewState = testee.mapFromSite(site)
@@ -83,7 +83,7 @@ class AppSiteViewStateMapperTest {
     }
 
     @Test
-    fun whenSiteDoesNotHaveCertificateThenViewStateCertificatesEmpty() {
+    fun `mapFromSite - site does not have certificate - view state certificates empty`() {
         val site = site()
 
         val siteProtectionsViewState = testee.mapFromSite(site)

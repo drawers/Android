@@ -96,7 +96,7 @@ class TabSwitcherViewModelTest {
     }
 
     @Test
-    fun whenNewTabRequestedThenRepositoryNotifiedAndSwitcherClosed() = runTest {
+    fun `onNewTabRequested - repository notified and switcher closed`() = runTest {
         testee.onNewTabRequested()
         verify(mockTabRepository).add()
         verify(mockCommandObserver).onChanged(commandCaptor.capture())
@@ -104,7 +104,7 @@ class TabSwitcherViewModelTest {
     }
 
     @Test
-    fun whenTabSelectedThenRepositoryNotifiedAndSwitcherClosed() = runTest {
+    fun `onTabSelected - repository notified and switcher closed`() = runTest {
         testee.onTabSelected(TabEntity("abc", "", "", position = 0))
         verify(mockTabRepository).select(eq("abc"))
         verify(mockCommandObserver).onChanged(commandCaptor.capture())
@@ -112,7 +112,7 @@ class TabSwitcherViewModelTest {
     }
 
     @Test
-    fun whenTabDeletedThenRepositoryNotified() = runTest {
+    fun `onTabDeleted - repository notified`() = runTest {
         val entity = TabEntity("abc", "", "", position = 0)
         testee.onTabDeleted(entity)
         verify(mockTabRepository).delete(entity)
@@ -120,7 +120,7 @@ class TabSwitcherViewModelTest {
     }
 
     @Test
-    fun whenOnMarkTabAsDeletableThenCallMarkDeletable() = runTest {
+    fun `onMarkTabAsDeletable - call mark deletable`() = runTest {
         val entity = TabEntity("abc", "", "", position = 0)
         testee.onMarkTabAsDeletable(entity)
 
@@ -129,7 +129,7 @@ class TabSwitcherViewModelTest {
     }
 
     @Test
-    fun whenUndoDeletableTabThenUndoDeletable() = runTest {
+    fun `undoDeletableTab - undo deletable tab - undo deletable`() = runTest {
         val entity = TabEntity("abc", "", "", position = 0)
         testee.undoDeletableTab(entity)
 
@@ -137,14 +137,14 @@ class TabSwitcherViewModelTest {
     }
 
     @Test
-    fun whenPurgeDeletableTabsThenCallRepositoryPurgeDeletableTabs() = runTest {
+    fun `purgeDeletableTabs - call repository purge deletable tabs`() = runTest {
         testee.purgeDeletableTabs()
 
         verify(mockTabRepository).purgeDeletableTabs()
     }
 
     @Test
-    fun whenRepositoryDeletableTabsUpdatesThenDeletableTabsEmits() = runTest {
+    fun `repoDeletableTabs - updates - emits deletable tabs`() = runTest {
         val tab = TabEntity("ID", position = 0)
 
         val expectedTabs = listOf(listOf(), listOf(tab))
@@ -158,7 +158,7 @@ class TabSwitcherViewModelTest {
     }
 
     @Test
-    fun whenRepositoryDeletableTabsEmitsSameValueThenDeletableTabsEmitsAll() = runTest {
+    fun `repoDeletableTabs - emits same value - emits all`() = runTest {
         val tab = TabEntity("ID", position = 0)
 
         testee.deletableTabs.observeForever {
@@ -170,7 +170,7 @@ class TabSwitcherViewModelTest {
     }
 
     @Test
-    fun whenOnCloseAllTabsRequestedThenEmitCommandCloseAllTabsRequest() = runTest {
+    fun `onCloseAllTabsRequested - emit command close all tabs request`() = runTest {
         testee.onCloseAllTabsRequested()
 
         verify(mockCommandObserver).onChanged(commandCaptor.capture())
@@ -178,7 +178,7 @@ class TabSwitcherViewModelTest {
     }
 
     @Test
-    fun whenOnCloseAllTabsConfirmedThenTabDeletedAndTabIdClearedAndSessionDeleted() = runTest {
+    fun `onCloseAllTabsConfirmed - tab deleted and session cleared - tab id cleared`() = runTest {
         val tab = TabEntity("ID", position = 0)
         tabs.postValue(listOf(tab))
 

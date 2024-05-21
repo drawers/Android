@@ -46,7 +46,7 @@ class DeviceInfoCollectorTest {
     }
 
     @Test
-    fun whenCollectVpnRelatedStateThenReturnDeviceInfo() = runTest {
+    fun `collectVpnRelatedState - return device info`() = runTest {
         val state = deviceInfoCollector.collectVpnRelatedState()
 
         assertEquals("deviceInfo", deviceInfoCollector.collectorName)
@@ -58,7 +58,7 @@ class DeviceInfoCollectorTest {
     }
 
     @Test
-    fun whenIgnoringBatteryOptimizationsThenReportBatteryOptimizationsTrue() = runTest {
+    fun `collectVpnRelatedState - ignoring battery optimizations - report battery optimizations true`() = runTest {
         val state = DeviceInfoCollector(appBuildConfig, { true }).collectVpnRelatedState()
 
         assertEquals("deviceInfo", deviceInfoCollector.collectorName)

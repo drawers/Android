@@ -45,7 +45,7 @@ class OnboardingPageManagerTest {
     }
 
     @Test
-    fun whenDDGIsNotDefaultBrowserThenExpectedOnboardingPagesAreTwo() {
+    fun `buildPageBlueprints - DDG not default browser - expected onboarding pages are two`() {
         configureDeviceSupportsDefaultBrowser()
         whenever(mockDefaultBrowserDetector.isDefaultBrowser()).thenReturn(false)
         whenever(defaultRoleBrowserDialog.shouldShowDialog()).thenReturn(false)
@@ -56,7 +56,7 @@ class OnboardingPageManagerTest {
     }
 
     @Test
-    fun whenDDGIsNotDefaultBrowserAndShouldShowBrowserDialogThenExpectedOnboardingPagesAre1() {
+    fun `buildPageBlueprints - DDG not default browser and should show browser dialog - expected onboarding pages are 1`() {
         configureDeviceSupportsDefaultBrowser()
         whenever(mockDefaultBrowserDetector.isDefaultBrowser()).thenReturn(false)
         whenever(defaultRoleBrowserDialog.shouldShowDialog()).thenReturn(true)
@@ -67,7 +67,7 @@ class OnboardingPageManagerTest {
     }
 
     @Test
-    fun whenDDGAsDefaultBrowserThenSinglePageOnBoarding() {
+    fun `buildPageBlueprints - default browser - single page onboarding`() {
         configureDeviceSupportsDefaultBrowser()
         whenever(mockDefaultBrowserDetector.isDefaultBrowser()).thenReturn(true)
         whenever(defaultRoleBrowserDialog.shouldShowDialog()).thenReturn(false)
@@ -78,7 +78,7 @@ class OnboardingPageManagerTest {
     }
 
     @Test
-    fun whenDDGAsDefaultBrowserAndShouldShowBrowserDialogThenSinglePageOnBoarding() {
+    fun `buildPageBlueprints - default browser and dialog - single page onboarding`() {
         configureDeviceSupportsDefaultBrowser()
         whenever(mockDefaultBrowserDetector.isDefaultBrowser()).thenReturn(true)
         whenever(defaultRoleBrowserDialog.shouldShowDialog()).thenReturn(true)
@@ -89,7 +89,7 @@ class OnboardingPageManagerTest {
     }
 
     @Test
-    fun whenDeviceDoesNotSupportDefaultBrowserThenSinglePageOnBoarding() {
+    fun `buildPageBlueprints - device does not support default browser - single page onboarding`() {
         configureDeviceDoesNotSupportDefaultBrowser()
         whenever(defaultRoleBrowserDialog.shouldShowDialog()).thenReturn(false)
 
@@ -99,7 +99,7 @@ class OnboardingPageManagerTest {
     }
 
     @Test
-    fun whenDeviceDoesNotSupportDefaultBrowserAndShouldShowBrowserDialogThenSinglePageOnBoarding() {
+    fun `buildPageBlueprints - device does not support default browser and should show browser dialog - single page onboarding`() {
         configureDeviceDoesNotSupportDefaultBrowser()
         whenever(defaultRoleBrowserDialog.shouldShowDialog()).thenReturn(true)
 

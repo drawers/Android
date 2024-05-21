@@ -56,18 +56,18 @@ class HttpsBloomFilterSpecDaoTest {
     }
 
     @Test
-    fun whenModelIsEmptyThenGetIsNull() = runTest {
+    fun `get - model empty - is null`() = runTest {
         assertNull(dao.get())
     }
 
     @Test
-    fun whenModelIsInsertedThenGetIsNotNull() = runTest {
+    fun `insert - get is not null`() = runTest {
         dao.insert(HttpsBloomFilterSpec(errorRate = 0.1, bitCount = 1000, totalEntries = 55, sha256 = "abc"))
         assertNotNull(dao.get())
     }
 
     @Test
-    fun whenNewModelIsInsertedThenGetIsNotNullAndDetailsUpdates() = runTest {
+    fun `get - new model inserted - is not null and details updates`() = runTest {
         dao.insert(HttpsBloomFilterSpec(bitCount = 1000, errorRate = 0.1, totalEntries = 55, sha256 = "abc"))
         dao.insert(HttpsBloomFilterSpec(bitCount = 2000, errorRate = 0.2, totalEntries = 60, sha256 = "xyz"))
 

@@ -78,7 +78,7 @@ class ManageAppsProtectionViewModelTest {
     }
 
     @Test
-    fun whenAppIsManuallyExcludedThenUserMadeChangesReturnsTrue() = runTest {
+    fun `onResume - app is manually excluded - user made changes returns true`() = runTest {
         manuallyExcludedApps.send(listOf())
 
         viewModel.onResume(TestLifecycleOwner())
@@ -89,14 +89,14 @@ class ManageAppsProtectionViewModelTest {
     }
 
     @Test
-    fun whenNoManuallyExcludedAppsThenUserMadeChangesReturnsFalse() = runTest {
+    fun `whenNoManuallyExcludedAppsThenUserMadeChangesReturnsFalse - user made changes - false`() = runTest {
         manuallyExcludedApps.send(listOf())
 
         assertFalse(viewModel.userMadeChanges())
     }
 
     @Test
-    fun whenPackageNameIsExcludedThenProtectedAppsExcludesIt() = runTest {
+    fun `onAppProtectionDisabled - package name excluded - manually excludes app`() = runTest {
         val packageName = "com.package.name"
         val appName = "App"
         val report = true
@@ -107,7 +107,7 @@ class ManageAppsProtectionViewModelTest {
     }
 
     @Test
-    fun whenAppProtectionisSubmittedAndReportIsSkippedThenSkipPixelIsSent() = runTest {
+    fun `onAppProtection - app protection submitted and report skipped - skip pixel sent`() = runTest {
         val packageName = "com.package.name"
         val appName = "App"
         val report = false
@@ -118,7 +118,7 @@ class ManageAppsProtectionViewModelTest {
     }
 
     @Test
-    fun whenAppProtectionisSubmittedAndReportIsSentThenSubmitPixelIsSent() = runTest {
+    fun `onAppProtection - submit pixel sent`() = runTest {
         val packageName = "com.package.name"
         val appName = "App"
         val report = true
@@ -129,7 +129,7 @@ class ManageAppsProtectionViewModelTest {
     }
 
     @Test
-    fun whenAppProtectionisSubmittedAndReportIsSentThenReportCommandIsSent() = runTest {
+    fun `onAppProtectionisSubmitted - report sent - report command is sent`() = runTest {
         val packageName = "com.package.name"
         val appName = "App"
         val report = true
@@ -143,7 +143,7 @@ class ManageAppsProtectionViewModelTest {
     }
 
     @Test
-    fun whenPackageNameIsEnabledAndAppHasNoIssuesThenProtectedAppsEnablesIt() = runTest {
+    fun `onAppProtectionEnabled - package name enabled - enables it`() = runTest {
         val packageName = "com.package.name"
         viewModel.onAppProtectionEnabled(packageName)
 
@@ -152,7 +152,7 @@ class ManageAppsProtectionViewModelTest {
     }
 
     @Test
-    fun whenPackageNameIsEnabledAndAppHasIssuesThenProtectedAppsEnablesItAndSendsPixel() = runTest {
+    fun `onAppProtectionEnabled - package name enabled and app has issues - sends pixel`() = runTest {
         val packageName = "com.package.name"
         viewModel.onAppProtectionEnabled(packageName)
 
@@ -160,7 +160,7 @@ class ManageAppsProtectionViewModelTest {
     }
 
     @Test
-    fun whenUserWantsToRestoreDefaultThenDefaultListIsRestoredAndVpnRestarted() = runTest {
+    fun `restoreProtectedApps - default list restored - vpn restarted`() = runTest {
         viewModel.commands().test {
             viewModel.restoreProtectedApps()
             assertEquals(Command.RestartVpn, awaitItem())
@@ -171,7 +171,7 @@ class ManageAppsProtectionViewModelTest {
     }
 
     @Test
-    fun whenRestoreProtectionsThenDoNotRestartVpnOnLeavingScreen() = runTest {
+    fun `restoreProtectedApps - do not restart vpn on leaving screen`() = runTest {
         viewModel.commands().test {
             viewModel.restoreProtectedApps()
             assertEquals(Command.RestartVpn, awaitItem())
@@ -182,7 +182,7 @@ class ManageAppsProtectionViewModelTest {
     }
 
     @Test
-    fun whenUserLeavesScreenAndChangesWereMadeThenTheVpnIsRestarted() = runTest {
+    fun `onPause - vpn restarted`() = runTest {
         viewModel.commands().test {
             manuallyExcludedApps.send(listOf())
             viewModel.onResume(TestLifecycleOwner())
@@ -194,7 +194,7 @@ class ManageAppsProtectionViewModelTest {
     }
 
     @Test
-    fun whenUserLeavesScreenAndNoChangesWereMadeThenTheVpnIsNotRestarted() = runTest {
+    fun `onPause - no changes made - vpn not restarted`() = runTest {
         viewModel.commands().test {
             manuallyExcludedApps.send(listOf())
             viewModel.onResume(TestLifecycleOwner())
@@ -205,7 +205,7 @@ class ManageAppsProtectionViewModelTest {
     }
 
     @Test
-    fun whenAppWithKnownIssuesIsEnabledThenEnableProtectionDialogIsShown() = runTest {
+    fun `onAppProtectionChanged - enable protection dialog shown`() = runTest {
         viewModel.commands().test {
             viewModel.onAppProtectionChanged(appWithKnownIssues, 0, true)
             assertEquals(Command.ShowEnableProtectionDialog(appWithKnownIssues, 0), awaitItem())
@@ -214,7 +214,7 @@ class ManageAppsProtectionViewModelTest {
     }
 
     @Test
-    fun whenAppWithKnownIssuesIsDisabledThenNoDialogIsShown() = runTest {
+    fun `onAppProtectionChanged - app with known issues disabled - no dialog shown`() = runTest {
         viewModel.commands().test {
             viewModel.onAppProtectionChanged(appWithKnownIssues, 0, false)
             expectNoEvents()
@@ -223,7 +223,7 @@ class ManageAppsProtectionViewModelTest {
     }
 
     @Test
-    fun whenAppLoadsWebsitesIsEnabledThenEnableProtectionDialogIsShown() = runTest {
+    fun `onAppProtectionChanged - app loads websites enabled - enable protection dialog shown`() = runTest {
         viewModel.commands().test {
             viewModel.onAppProtectionChanged(appLoadsWebsites, 0, true)
             assertEquals(Command.ShowEnableProtectionDialog(appLoadsWebsites, 0), awaitItem())
@@ -232,7 +232,7 @@ class ManageAppsProtectionViewModelTest {
     }
 
     @Test
-    fun whenAppLoadsWebsitesIsDisabledThenNoDialogIsShown() = runTest {
+    fun `onAppProtectionChanged - app loads websites disabled - no dialog shown`() = runTest {
         viewModel.commands().test {
             viewModel.onAppProtectionChanged(appLoadsWebsites, 0, false)
             expectNoEvents()
@@ -241,7 +241,7 @@ class ManageAppsProtectionViewModelTest {
     }
 
     @Test
-    fun whenAppWithNoIssuesIsEnabledThenNoDialogIsShown() = runTest {
+    fun `onAppProtectionChanged - no issues - no dialog shown`() = runTest {
         viewModel.commands().test {
             viewModel.onAppProtectionChanged(appWithoutIssues, 0, true)
             expectNoEvents()
@@ -250,7 +250,7 @@ class ManageAppsProtectionViewModelTest {
     }
 
     @Test
-    fun whenAppWithNoIssuesIsDisabledThenDisabledDialogIsShown() = runTest {
+    fun `onAppProtectionChanged - app with no issues disabled - show disable protection dialog`() = runTest {
         viewModel.commands().test {
             viewModel.onAppProtectionChanged(appWithoutIssues, 0, false)
             assertEquals(Command.ShowDisableProtectionDialog(appWithoutIssues), awaitItem())
@@ -259,7 +259,7 @@ class ManageAppsProtectionViewModelTest {
     }
 
     @Test
-    fun whenAppManuallyDisabledIsEnabledThenNoDialogIsShown() = runTest {
+    fun `onAppProtectionChanged - app manually disabled is enabled - no dialog shown`() = runTest {
         viewModel.commands().test {
             viewModel.onAppProtectionChanged(appManuallyExcluded, 0, true)
             expectNoEvents()
@@ -268,7 +268,7 @@ class ManageAppsProtectionViewModelTest {
     }
 
     @Test
-    fun whenAppManuallyDisabledIsDisabledThenDisableDialogIsShown() = runTest {
+    fun `onAppProtectionChanged - app manually disabled - disable dialog shown`() = runTest {
         viewModel.commands().test {
             viewModel.onAppProtectionChanged(appManuallyExcluded, 0, false)
             assertEquals(Command.ShowDisableProtectionDialog(appManuallyExcluded), awaitItem())
@@ -277,7 +277,7 @@ class ManageAppsProtectionViewModelTest {
     }
 
     @Test
-    fun whenAllAppsFilterAppliedAndGetProtectedAppsCalledThenProtectedAndUnprotectedAppsAreReturned() = runTest {
+    fun `applyAppsFilter - get protected apps called - protected and unprotected apps returned`() = runTest {
         val protectedApps = listOf(appWithoutIssues)
         val unprotectedApps = listOf(appWithKnownIssues, appLoadsWebsites, appManuallyExcluded)
         val allApps = protectedApps + unprotectedApps
@@ -306,7 +306,7 @@ class ManageAppsProtectionViewModelTest {
     }
 
     @Test
-    fun whenProtectedOnlyFilterAppliedAndGetProtectedAppsCalledThenOnlyProtectedAppsAreReturned() = runTest {
+    fun `getProtectedApps - when protected only filter applied - returns only protected apps`() = runTest {
         val protectedApps = listOf(appWithoutIssues)
         val unprotectedApps = listOf(appWithKnownIssues, appLoadsWebsites, appManuallyExcluded)
         val allApps = protectedApps + unprotectedApps
@@ -335,7 +335,7 @@ class ManageAppsProtectionViewModelTest {
     }
 
     @Test
-    fun whenProtectedOnlyFilterAppliedAndAllAppsAreUnprotectedAndGetProtectedAppsCalledThenOnlyHeaderItemsAreReturned() = runTest {
+    fun `getProtectedApps - protected only filter applied - only header items returned`() = runTest {
         val protectedApps = emptyList<TrackingProtectionAppInfo>()
         val unprotectedApps = listOf(appWithKnownIssues, appLoadsWebsites, appManuallyExcluded)
         val allApps = protectedApps + unprotectedApps
@@ -356,7 +356,7 @@ class ManageAppsProtectionViewModelTest {
     }
 
     @Test
-    fun whenUnprotectedOnlyFilterAppliedAndAllAppsAreProtectedAndGetProtectedAppsCalledThenHeadersAreReturned() = runTest {
+    fun `getProtectedApps - apps list returned - unfiltered`() = runTest {
         val protectedApps = listOf(appWithoutIssues)
         val unprotectedApps = emptyList<TrackingProtectionAppInfo>()
         val allApps = protectedApps + unprotectedApps
@@ -380,7 +380,7 @@ class ManageAppsProtectionViewModelTest {
     }
 
     @Test
-    fun whenUnprotectedOnlyFilterAppliedAndGetProtectedAppsCalledThenOnlyUnprotectedAppsAreReturnedAndUnprotectedAppsBannerShown() =
+    fun `getProtectedApps - when unprotected only filter applied - returns only unprotected apps and shows banner`() =
         runTest {
             val protectedApps = listOf(appWithoutIssues)
             val unprotectedApps = listOf(appWithKnownIssues, appLoadsWebsites, appManuallyExcluded)
@@ -405,7 +405,7 @@ class ManageAppsProtectionViewModelTest {
         }
 
     @Test
-    fun whenAtLeastOneAppManuallyExcludedAndGetProtectedAppsCalledThenShowAllOrProtectedBannerContent() = runTest {
+    fun `getProtectedApps - at least one app manually excluded - show all or protected banner content`() = runTest {
         val allApps = listOf(appWithKnownIssues, appManuallyExcluded)
         val panelType = InfoPanelType(ALL_OR_PROTECTED_APPS)
         val filterType = FilterType(string.atp_ExcludedAppsFilterAllLabel, allApps.size)
@@ -424,7 +424,7 @@ class ManageAppsProtectionViewModelTest {
     }
 
     @Test
-    fun whenAtLeastOneAppProblematicNotExcludedAndGetProtectedAppsCalledThenShowCustomBannerContent() = runTest {
+    fun `getProtectedApps - at least one app problematic not excluded - show custom banner content`() = runTest {
         val allApps = listOf(appWithKnownIssues, appProblematicNotExcluded)
 
         val panelType = InfoPanelType(CUSTOMISED_PROTECTION)

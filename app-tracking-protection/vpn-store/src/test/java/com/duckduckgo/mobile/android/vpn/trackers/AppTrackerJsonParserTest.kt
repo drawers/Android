@@ -26,7 +26,7 @@ class AppTrackerJsonParserTest {
     private val moshi = Moshi.Builder().build()
 
     @Test
-    fun whenJsonIsValidThenBlocklistIsParsed() {
+    fun `parseAppTrackerJson - json is valid - blocklist parsed`() {
         val json = loadText(javaClass.classLoader!!, "full_app_trackers_blocklist.json")
         val blocklist = AppTrackerJsonParser.parseAppTrackerJson(moshi, json)
 

@@ -79,7 +79,7 @@ class NetpGeoSwitchingViewModelTest {
     }
 
     @Test
-    fun whenViewModelIsInitializedThenViewStateShouldEmitParsedList() = runTest {
+    fun `onStart - view state should emit parsed list`() = runTest {
         testee.onStart(mockLifecycleOwner)
         testee.viewState().test {
             expectMostRecentItem().also {
@@ -113,7 +113,7 @@ class NetpGeoSwitchingViewModelTest {
     }
 
     @Test
-    fun whenProviderHasNoDownloadedDataThenViewStateShouldOnlyContainNearestAvailable() = runTest {
+    fun `onStart - provider has no downloaded data - view state only contains nearest available`() = runTest {
         val mockProvider = mock(NetpEgressServersProvider::class.java)
         testee = NetpGeoSwitchingViewModel(
             mockProvider,
@@ -136,7 +136,7 @@ class NetpGeoSwitchingViewModelTest {
     }
 
     @Test
-    fun whenChosenPreferredCountryAndCityAreChangedThenUpdateStoredCountryAndResetCity() = runTest {
+    fun `onCountrySelected - update stored country and reset city`() = runTest {
         fakeRepository.setUserPreferredLocation(UserPreferredLocation("us", "Newark"))
 
         testee.onCountrySelected("uk")
@@ -149,7 +149,7 @@ class NetpGeoSwitchingViewModelTest {
     }
 
     @Test
-    fun whenChosenPreferredCountryAndCityAreSameThenStoredDataShouldBeSame() = runTest {
+    fun `onCountrySelected - same preferred country and city - stored data same`() = runTest {
         fakeRepository.setUserPreferredLocation(UserPreferredLocation("us", "Newark"))
 
         testee.onCountrySelected("us")
@@ -162,7 +162,7 @@ class NetpGeoSwitchingViewModelTest {
     }
 
     @Test
-    fun whenNearestAvailableCountrySelectedThenStoredDataShouldBeNull() = runTest {
+    fun `onNearestAvailableCountrySelected - stored data should be null`() = runTest {
         fakeRepository.setUserPreferredLocation(UserPreferredLocation("us", "Newark"))
 
         testee.onNearestAvailableCountrySelected()
@@ -175,7 +175,7 @@ class NetpGeoSwitchingViewModelTest {
     }
 
     @Test
-    fun whenNetPIsNotEnabledThenDoNotRestart() = runTest {
+    fun `onStart - netP not enabled - do not restart`() = runTest {
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
 
         testee.onStart(mockLifecycleOwner)
@@ -186,7 +186,7 @@ class NetpGeoSwitchingViewModelTest {
     }
 
     @Test
-    fun whenNetPIsEnabledButNoChangeInPreferredLocationThenDoNotRestart() = runTest {
+    fun `onStart - netP enabled but no change in preferred location - do not restart`() = runTest {
         fakeRepository.setUserPreferredLocation(UserPreferredLocation(countryCode = "us"))
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
 
@@ -199,7 +199,7 @@ class NetpGeoSwitchingViewModelTest {
     }
 
     @Test
-    fun whenNetPIsEnabledAndPreferredCountryChangedThenRestart() = runTest {
+    fun `onStart - netP enabled and preferred country changed - restart`() = runTest {
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
 
         testee.onStart(mockLifecycleOwner)
@@ -210,7 +210,7 @@ class NetpGeoSwitchingViewModelTest {
     }
 
     @Test
-    fun whenNetPIsEnabledAndPreferredCityChangedThenRestart() = runTest {
+    fun `onStart - netPis enabled and preferred city changed - restart`() = runTest {
         fakeRepository.setUserPreferredLocation(UserPreferredLocation(countryCode = "us", cityName = "El Segundo"))
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
 
@@ -222,14 +222,14 @@ class NetpGeoSwitchingViewModelTest {
     }
 
     @Test
-    fun whenOnCreateIsCalledThenEmitImpressionPixels() {
+    fun `onCreate - emit impression pixels`() {
         testee.onCreate(mockLifecycleOwner)
 
         verify(networkProtectionPixels).reportGeoswitchingScreenShown()
     }
 
     @Test
-    fun whenNoCountriesAvailableThenEmitNoLocationsPixel() = runTest {
+    fun `onStart - no countries available - emit no locations pixel`() = runTest {
         val mockProvider = mock(NetpEgressServersProvider::class.java)
         testee = NetpGeoSwitchingViewModel(
             mockProvider,
@@ -247,7 +247,7 @@ class NetpGeoSwitchingViewModelTest {
     }
 
     @Test
-    fun whenNetpIsNotEnabledAndPreferredLocationChangedToNearestThenEmitPixelForNearest() = runTest {
+    fun `onStart - netp not enabled - emit pixel for nearest`() = runTest {
         fakeRepository.setUserPreferredLocation(UserPreferredLocation(countryCode = "us", cityName = "El Segundo"))
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
         testee.onStart(mockLifecycleOwner)
@@ -259,7 +259,7 @@ class NetpGeoSwitchingViewModelTest {
     }
 
     @Test
-    fun whenNetpIsEnabledAndPreferredLocationChangedToNearestThenEmitPixelForNearest() = runTest {
+    fun `onStart - netp enabled and preferred location changed to nearest - emit pixel for nearest`() = runTest {
         fakeRepository.setUserPreferredLocation(UserPreferredLocation(countryCode = "us", cityName = "El Segundo"))
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
         testee.onStart(mockLifecycleOwner)
@@ -271,7 +271,7 @@ class NetpGeoSwitchingViewModelTest {
     }
 
     @Test
-    fun whenNetpIsNotEnabledAndPreferredLocationChangedToCustomThenEmitPixelForCustom() = runTest {
+    fun `onStart - netp not enabled - emit pixel for custom`() = runTest {
         fakeRepository.setUserPreferredLocation(UserPreferredLocation())
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
         testee.onStart(mockLifecycleOwner)
@@ -283,7 +283,7 @@ class NetpGeoSwitchingViewModelTest {
     }
 
     @Test
-    fun whenNetpEnabledAndPreferredLocationChangedToCustomThenEmitPixelForCustom() = runTest {
+    fun `onStart - netp enabled and preferred location changed to custom - emit pixel for custom`() = runTest {
         fakeRepository.setUserPreferredLocation(UserPreferredLocation())
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
         testee.onStart(mockLifecycleOwner)
@@ -295,7 +295,7 @@ class NetpGeoSwitchingViewModelTest {
     }
 
     @Test
-    fun whenNetPIsEnabledButNoChangeInCustomPreferredLocationThenEmitNoPixels() = runTest {
+    fun `onStart - netP enabled but no change in custom preferred location - emit no pixels`() = runTest {
         fakeRepository.setUserPreferredLocation(UserPreferredLocation(countryCode = "us"))
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
 
@@ -307,7 +307,7 @@ class NetpGeoSwitchingViewModelTest {
     }
 
     @Test
-    fun whenNetPIsEnabledButNoChangeInDefaultPreferredLocationThenEmitNoPixels() = runTest {
+    fun `onStart - netP enabled but no change in default preferred location - emit no pixels`() = runTest {
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
 
         testee.onStart(mockLifecycleOwner)

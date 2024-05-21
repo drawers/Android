@@ -44,7 +44,7 @@ class RealTrackerAllowlistTest {
     }
 
     @Test
-    fun whenUrlCannotBeParsedThenDoNotThrowAnException() {
+    fun `isAnException - url cannot be parsed - does not throw exception`() {
         val url = "://allowlist-tracker-1.com:5000/videos.js"
         givenDomainIsAnException("allowlist-tracker-1.com")
 

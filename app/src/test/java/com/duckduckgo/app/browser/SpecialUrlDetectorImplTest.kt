@@ -73,47 +73,47 @@ class SpecialUrlDetectorImplTest {
     }
 
     @Test
-    fun whenUrlIsHttpThenWebTypeDetected() {
+    fun `determineType - url is http - web type detected`() {
         val expected = Web::class
         val actual = testee.determineType("http://example.com")
         assertEquals(expected, actual::class)
     }
 
     @Test
-    fun whenUrlIsHttpThenWebAddressInData() {
+    fun `determineType - http url - web address in data`() {
         val type: Web = testee.determineType("http://example.com") as Web
         assertEquals("http://example.com", type.webAddress)
     }
 
     @Test
-    fun whenUrlIsHttpsThenWebTypeDetected() {
+    fun `determineType - https - web type detected`() {
         val expected = Web::class
         val actual = testee.determineType("https://example.com")
         assertEquals(expected, actual::class)
     }
 
     @Test
-    fun whenUrlIsHttpsThenSchemePreserved() {
+    fun `determineType - url is https - scheme preserved`() {
         val type = testee.determineType("https://example.com") as Web
         assertEquals("https://example.com", type.webAddress)
     }
 
     @Test
-    fun whenNoNonBrowserActivitiesFoundThenReturnWebType() {
+    fun `determineType - no non-browser activities found - return web type`() {
         whenever(mockPackageManager.queryIntentActivities(any(), anyInt())).thenReturn(listOf(buildBrowserResolveInfo()))
         val type = testee.determineType("https://example.com")
         assertTrue(type is Web)
     }
 
     @Test
-    fun whenAppLinkThrowsURISyntaxExceptionThenReturnWebType() {
+    fun `determineType - app link throws URI syntax exception - returns web type`() {
         given(mockPackageManager.queryIntentActivities(any(), anyInt())).willAnswer { throw URISyntaxException("", "") }
         val type = testee.determineType("https://example.com")
         assertTrue(type is Web)
     }
 
     @Test
-    fun whenDefaultNonBrowserActivityFoundThenReturnAppLinkWithIntent() {
+    fun `determineType - default non browser activity found - return app link with intent`() {
         whenever(mockPackageManager.resolveActivity(any(), eq(PackageManager.MATCH_DEFAULT_ONLY))).thenReturn(buildAppResolveInfo())
         whenever(mockPackageManager.queryIntentActivities(any(), anyInt())).thenReturn(
             listOf(
@@ -135,7 +135,7 @@ class SpecialUrlDetectorImplTest {
     }
 
     @Test
-    fun whenFirstNonBrowserActivityFoundThenReturnAppLinkWithIntent() {
+    fun `determineType - first non browser activity found - return app link with intent`() {
         whenever(mockPackageManager.resolveActivity(any(), eq(PackageManager.MATCH_DEFAULT_ONLY))).thenReturn(null)
         whenever(mockPackageManager.queryIntentActivities(any(), anyInt())).thenReturn(
             listOf(
@@ -157,7 +157,7 @@ class SpecialUrlDetectorImplTest {
     }
 
     @Test
-    fun whenNoNonBrowserActivityFoundThenReturnWebType() {
+    fun `determineType - no non-browser activity found - return web type`() {
         whenever(mockPackageManager.resolveActivity(any(), eq(PackageManager.MATCH_DEFAULT_ONLY))).thenReturn(null)
         whenever(mockPackageManager.queryIntentActivities(any(), anyInt())).thenReturn(
             listOf(
@@ -175,198 +175,198 @@ class SpecialUrlDetectorImplTest {
     }
 
     @Test
-    fun whenUrlIsTelWithDashesThenTelephoneTypeDetected() {
+    fun `determineType - url is tel with dashes - telephone type detected`() {
         val expected = Telephone::class
         val actual = testee.determineType("tel:+123-555-12323")
         assertEquals(expected, actual::class)
     }
 
     @Test
-    fun whenUrlIsTelThenTelephoneTypeDetected() {
+    fun `determineType - url is tel - telephone type detected`() {
         val expected = Telephone::class
         val actual = testee.determineType("tel:12355512323")
         assertEquals(expected, actual::class)
     }
 
     @Test
-    fun whenUrlIsTelThenSchemeRemoved() {
+    fun `determineType - url is tel - scheme removed`() {
         val type = testee.determineType("tel:+123-555-12323") as Telephone
         assertEquals("+123-555-12323", type.telephoneNumber)
     }
 
     @Test
-    fun whenUrlIsTelpromptThenTelephoneTypeDetected() {
+    fun `determineType - url is telprompt - telephone type detected`() {
         val expected = Telephone::class
         val actual = testee.determineType("telprompt:12355512323")
         assertEquals(expected, actual::class)
     }
 
     @Test
-    fun whenUrlIsTelpromptThenSchemeRemoved() {
+    fun `determineType - url is telprompt - scheme removed`() {
         val type = testee.determineType("telprompt:123-555-12323") as Telephone
         assertEquals("123-555-12323", type.telephoneNumber)
     }
 
     @Test
-    fun whenUrlIsMailtoThenEmailTypeDetected() {
+    fun `determineType - url is mailto - email type detected`() {
         val expected = Email::class
         val actual = testee.determineType("mailto:foo@example.com")
         assertEquals(expected, actual::class)
     }
 
     @Test
-    fun whenUrlIsMailtoThenSchemePreserved() {
+    fun `determineType - url is mailto - scheme preserved`() {
         val type = testee.determineType("mailto:foo@example.com") as Email
         assertEquals("mailto:foo@example.com", type.emailAddress)
     }
 
     @Test
-    fun whenUrlIsSmsThenSmsTypeDetected() {
+    fun `determineType - url is sms - sms type detected`() {
         val expected = Sms::class
         val actual = testee.determineType("sms:123-555-13245")
         assertEquals(expected, actual::class)
     }
 
     @Test
-    fun whenUrlIsSmsToThenSmsTypeDetected() {
+    fun `determineType - url is sms to - sms type detected`() {
         val expected = Sms::class
         val actual = testee.determineType("smsto:123-555-13245")
         assertEquals(expected, actual::class)
     }
 
     @Test
-    fun whenUrlIsSmsThenSchemeRemoved() {
+    fun `determineType - url is sms - scheme removed`() {
         val type = testee.determineType("sms:123-555-12323") as Sms
         assertEquals("123-555-12323", type.telephoneNumber)
     }
 
     @Test
-    fun whenUrlIsSmsToThenSchemeRemoved() {
+    fun `determineType - url is sms to - scheme removed`() {
         val type = testee.determineType("smsto:123-555-12323") as Sms
         assertEquals("123-555-12323", type.telephoneNumber)
     }
 
     @Test
-    fun whenUrlIsCustomUriSchemeThenNonHttpAppLinkTypeDetected() {
+    fun `determineType - url is custom uri scheme - non http app link detected`() {
         val type = testee.determineType("myapp:foo bar") as NonHttpAppLink
         assertEquals("myapp:foo bar", type.uriString)
     }
 
     @Test
-    fun whenUrlIsNotPrivacyProThenQueryTypeDetected() {
+    fun `determineType - url not privacy pro - query type detected`() {
         whenever(subscriptions.shouldLaunchPrivacyProForUrl(any())).thenReturn(false)
         val result = testee.determineType("duckduckgo.com")
         assertTrue(result is SearchQuery)
     }
 
     @Test
-    fun whenUrlIsPrivacyProThenPrivacyProTypeDetected() {
+    fun `determineType - url is privacy pro - should launch privacy pro link`() {
         whenever(subscriptions.shouldLaunchPrivacyProForUrl(any())).thenReturn(true)
         val result = testee.determineType("duckduckgo.com")
         assertTrue(result is ShouldLaunchPrivacyProLink)
     }
 
     @Test
-    fun whenUrlIsParametrizedQueryThenSearchQueryTypeDetected() {
+    fun `determineType - url is parameterized query - search query detected`() {
         val type = testee.determineType("foo site:duckduckgo.com") as SearchQuery
         assertEquals("foo site:duckduckgo.com", type.query)
     }
 
     @Test
-    fun whenUrlIsJavascriptSchemeThenWebSearchTypeDetected() {
+    fun `determineType - url is javascript scheme - web search type detected`() {
         val expected = SearchQuery::class
         val actual = testee.determineType("javascript:alert(0)")
         assertEquals(expected, actual::class)
     }
 
     @Test
-    fun whenUrlIsJavascriptSchemeThenFullQueryRetained() {
+    fun `determineType - url is javascript scheme - full query retained`() {
         val type = testee.determineType("javascript:alert(0)") as SearchQuery
         assertEquals("javascript:alert(0)", type.query)
     }
 
     @Test
-    fun whenUrlIsAboutSchemeThenWebSearchTypeDetected() {
+    fun `determineType - about scheme - web search type detected`() {
         val expected = SearchQuery::class
         val actual = testee.determineType("about:blank")
         assertEquals(expected, actual::class)
     }
 
     @Test
-    fun whenUrlIsAboutSchemeThenFullQueryRetained() {
+    fun `determineType - url is about scheme - full query retained`() {
         val type = testee.determineType("about:blank") as SearchQuery
         assertEquals("about:blank", type.query)
     }
 
     @Test
-    fun whenUrlIsFileSchemeThenWebSearchTypeDetected() {
+    fun `determineType - url is file scheme - web search type detected`() {
         val expected = SearchQuery::class
         val actual = testee.determineType("file:///sdcard/")
         assertEquals(expected, actual::class)
     }
 
     @Test
-    fun whenUrlIsFileSchemeThenFullQueryRetained() {
+    fun `determineType - url is file scheme - full query retained`() {
         val type = testee.determineType("file:///sdcard/") as SearchQuery
         assertEquals("file:///sdcard/", type.query)
     }
 
     @Test
-    fun whenUrlIsSiteSchemeThenWebSearchTypeDetected() {
+    fun `determineType - url is site scheme - web search type detected`() {
         val expected = SearchQuery::class
         val actual = testee.determineType("site:example.com")
         assertEquals(expected, actual::class)
     }
 
     @Test
-    fun whenUrlIsSiteSchemeThenFullQueryRetained() {
+    fun `determineType - url is site scheme - full query retained`() {
         val type = testee.determineType("site:example.com") as SearchQuery
         assertEquals("site:example.com", type.query)
     }
 
     @Test
-    fun whenUrlIsBlobSchemeThenFullQueryRetained() {
+    fun `determineType - url is blob scheme - full query retained`() {
         val type = testee.determineType("blob:example.com") as SearchQuery
         assertEquals("blob:example.com", type.query)
     }
 
     @Test
-    fun whenSmsContentIsLongerThanMaxAllowedThenTruncateToMax() {
+    fun `determineType - sms content longer than max allowed - truncated to max`() {
         val longSms = randomString(SMS_MAX_LENGTH + 1)
         val type = testee.determineType("sms:$longSms") as Sms
         assertEquals(longSms.substring(0, SMS_MAX_LENGTH), type.telephoneNumber)
     }
 
     @Test
-    fun whenSmsToContentIsLongerThanMaxAllowedThenTruncateToMax() {
+    fun `determineType - sms to content longer than max allowed - truncated to max`() {
         val longSms = randomString(SMS_MAX_LENGTH + 1)
         val type = testee.determineType("smsto:$longSms") as Sms
         assertEquals(longSms.substring(0, SMS_MAX_LENGTH), type.telephoneNumber)
     }
 
     @Test
-    fun whenEmailContentIsLongerThanMaxAllowedThenTruncateToMax() {
+    fun `determineType - email content longer than max allowed - truncated to max`() {
         val longEmail = "mailto:${randomString(EMAIL_MAX_LENGTH + 1)}"
         val type = testee.determineType(longEmail) as Email
         assertEquals(longEmail.substring(0, EMAIL_MAX_LENGTH), type.emailAddress)
     }
 
     @Test
-    fun whenTelephoneContentIsLongerThanMaxAllowedThenTruncateToMax() {
+    fun `determineType - telephone content longer than max allowed - truncated to max`() {
         val longTelephone = randomString(PHONE_MAX_LENGTH + 1)
         val type = testee.determineType("tel:$longTelephone") as Telephone
         assertEquals(longTelephone.substring(0, PHONE_MAX_LENGTH), type.telephoneNumber)
     }
 
     @Test
-    fun whenTelephonePromptContentIsLongerThanMaxAllowedThenTruncateToMax() {
+    fun `determineType - telephone prompt content longer than max allowed - truncated to max`() {
         val longTelephone = randomString(PHONE_MAX_LENGTH + 1)
         val type = testee.determineType("telprompt:$longTelephone") as Telephone
         assertEquals(longTelephone.substring(0, PHONE_MAX_LENGTH), type.telephoneNumber)
     }
 
     @Test
-    fun whenUrlIsAmpLinkThenExtractedAmpLinkTypeDetected() {
+    fun `determineType - url is amp link - extracted amp link detected`() {
         whenever(mockAmpLinks.extractCanonicalFromAmpLink(anyString()))
             .thenReturn(AmpLinkType.ExtractedAmpLink(extractedUrl = "https://www.example.com"))
         val expected = ExtractedAmpLink::class
@@ -376,7 +376,7 @@ class SpecialUrlDetectorImplTest {
     }
 
     @Test
-    fun whenUrlIsCloakedAmpLinkThenCloakedAmpLinkTypeDetected() {
+    fun `determineType - url is cloaked amp link - cloaked amp link type detected`() {
         whenever(mockAmpLinks.extractCanonicalFromAmpLink(anyString()))
             .thenReturn(AmpLinkType.CloakedAmpLink(ampUrl = "https://www.example.com/amp"))
         val expected = CloakedAmpLink::class
@@ -386,7 +386,7 @@ class SpecialUrlDetectorImplTest {
     }
 
     @Test
-    fun whenUrlIsTrackingParameterLinkThenTrackingParameterLinkTypeDetected() {
+    fun `determineType - url is tracking parameter link - tracking parameter link type detected`() {
         whenever(mockTrackingParameters.cleanTrackingParameters(initiatingUrl = anyString(), url = anyString()))
             .thenReturn("https://www.example.com/query.html")
         val expected = TrackingParameterLink::class
@@ -397,7 +397,7 @@ class SpecialUrlDetectorImplTest {
     }
 
     @Test
-    fun whenUrlIsPrivacyProThenPrivacyProLinkDetected() {
+    fun `determineType - privacy pro link detected - should launch privacy pro link`() {
         whenever(subscriptions.shouldLaunchPrivacyProForUrl(any())).thenReturn(true)
 
         val actual =

@@ -37,13 +37,13 @@ class CookiesContentScopeConfigPluginTest {
     }
 
     @Test
-    fun whenGetConfigThenReturnCorrectlyFormattedJson() {
+    fun `getConfig - get correctly formatted json - correctly formatted json`() {
         whenever(mockContentScopeScriptsCookieRepository.getCookieEntity()).thenReturn(CookieEntity(json = config))
         assertEquals("\"cookie\":$config", testee.config())
     }
 
     @Test
-    fun whenGetPreferencesThenReturnNull() {
+    fun `getPreferences - null`() {
         assertNull(testee.preferences())
     }
 

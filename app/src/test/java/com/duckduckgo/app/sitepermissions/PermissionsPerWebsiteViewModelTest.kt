@@ -59,7 +59,7 @@ class PermissionsPerWebsiteViewModelTest {
     private val domain = "domain.com"
 
     @Test
-    fun whenPermissionsSettingsAreLoadedThenViewStateEmittedSettings() = runTest {
+    fun `loadWebsitePermissions - view state emitted settings`() = runTest {
         loadAskForPermissionsPrefs()
         loadWebsitePermissionsSettings()
 
@@ -72,7 +72,7 @@ class PermissionsPerWebsiteViewModelTest {
     }
 
     @Test
-    fun whenSitePermissionIsAllowAlwaysThenShowSettingAsAllow() = runTest {
+    fun `loadWebsitePermissions - site permission is allow always - show setting as allow`() = runTest {
         loadAskForPermissionsPrefs()
         loadWebsitePermissionsSettings(cameraSetting = SitePermissionAskSettingType.ALLOW_ALWAYS.name)
 
@@ -85,7 +85,7 @@ class PermissionsPerWebsiteViewModelTest {
     }
 
     @Test
-    fun whenSitePermissionIsAskEveryTimeThenShowSettingAsAsk() = runTest {
+    fun `loadWebsitePermissions - site permission ask every time - show setting as ask`() = runTest {
         loadAskForPermissionsPrefs()
         loadWebsitePermissionsSettings(cameraSetting = SitePermissionAskSettingType.ASK_EVERY_TIME.name)
 
@@ -98,7 +98,7 @@ class PermissionsPerWebsiteViewModelTest {
     }
 
     @Test
-    fun whenSitePermissionIsDenyAlwaysTimeThenShowSettingAsDeny() = runTest {
+    fun `loadWebsitePermissions - site permission is deny always time - show setting as deny`() = runTest {
         loadAskForPermissionsPrefs()
         loadWebsitePermissionsSettings(cameraSetting = SitePermissionAskSettingType.DENY_ALWAYS.name)
 
@@ -111,7 +111,7 @@ class PermissionsPerWebsiteViewModelTest {
     }
 
     @Test
-    fun whenAskForSitePermissionPrefsIsDisabledAndSettingIsAskThenShowSettingAsAskDisabled() = runTest {
+    fun `loadAskForSitePermissionPrefs - view state updated - ask disabled`() = runTest {
         loadAskForPermissionsPrefs(cameraEnabled = false)
         loadWebsitePermissionsSettings()
 
@@ -124,7 +124,7 @@ class PermissionsPerWebsiteViewModelTest {
     }
 
     @Test
-    fun whenAskForSitePermissionPrefsIsDisabledAndSettingIsDenyThenShowSettingAsDeny() = runTest {
+    fun `loadAskForSitePermissionPrefs - prefs disabled and setting deny - show setting as deny`() = runTest {
         loadAskForPermissionsPrefs(cameraEnabled = false)
         loadWebsitePermissionsSettings(cameraSetting = SitePermissionAskSettingType.DENY_ALWAYS.name)
 
@@ -137,7 +137,7 @@ class PermissionsPerWebsiteViewModelTest {
     }
 
     @Test
-    fun whenAskForSitePermissionPrefsIsDisabledAndSettingIsAllowThenShowSettingAsAllow() = runTest {
+    fun `loadAskForSitePermissionPrefs - website permission settings - show setting as allow`() = runTest {
         loadAskForPermissionsPrefs(cameraEnabled = false)
         loadWebsitePermissionsSettings(cameraSetting = SitePermissionAskSettingType.ALLOW_ALWAYS.name)
 
@@ -150,7 +150,7 @@ class PermissionsPerWebsiteViewModelTest {
     }
 
     @Test
-    fun whenPermissionIsTappedThenShowSettingsSelectionDialog() = runTest {
+    fun `whenPermissionIsTapped - show settings selection dialog`() = runTest {
         loadAskForPermissionsPrefs()
         loadWebsitePermissionsSettings()
 
@@ -165,7 +165,7 @@ class PermissionsPerWebsiteViewModelTest {
     }
 
     @Test
-    fun whenPermissionSettingIsChangedThenSave() = runTest {
+    fun `onPermissionSettingSelected - save permission setting`() = runTest {
         loadAskForPermissionsPrefs()
         loadWebsitePermissionsSettings()
 
@@ -184,7 +184,7 @@ class PermissionsPerWebsiteViewModelTest {
     }
 
     @Test
-    fun whenWebsitePermissionsAreRemovedThenDeleteFromDB() = runTest {
+    fun `websitePermissionsAreRemoved - delete from DB`() = runTest {
         loadAskForPermissionsPrefs()
         loadWebsitePermissionsSettings()
 
@@ -195,7 +195,7 @@ class PermissionsPerWebsiteViewModelTest {
     }
 
     @Test
-    fun whenWebsitePermissionsAreRemovedThenNavigateBackToSitePermissionsScreen() = runTest {
+    fun `whenRemoveWebsitePermissionsThenNavigateBack - website permissions removed - navigate back to site permissions screen`() = runTest {
         loadAskForPermissionsPrefs()
         loadWebsitePermissionsSettings()
 

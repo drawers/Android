@@ -78,7 +78,7 @@ class RealSavedSitesFormFactorSyncMigrationTest {
     }
 
     @Test
-    fun whenSyncEnabledThenFormFactorFavoriteFoldersCreated() {
+    fun `onFormFactorFavouritesEnabled - form factor favorite folders created`() {
         testee.onFormFactorFavouritesEnabled()
 
         assertNotNull(savedSitesEntitiesDao.entityById(SavedSitesNames.FAVORITES_ROOT))
@@ -87,7 +87,7 @@ class RealSavedSitesFormFactorSyncMigrationTest {
     }
 
     @Test
-    fun whenSyncEnabledThenAllFavoritesCopiedToNativeFolder() = runTest {
+    fun `onFormFactorFavouritesEnabled - all favorites copied to native folder`() = runTest {
         val entities = givenEntitiesWithIds("Entity1", "Entity2", "Entity3")
         givenEntitiesStoredIn(entities, SavedSitesNames.FAVORITES_ROOT)
 
@@ -101,7 +101,7 @@ class RealSavedSitesFormFactorSyncMigrationTest {
     }
 
     @Test
-    fun whenDisplayModeNativeAndFavoritesInAllFormFactorFolderThenCopyNativeFavoritesInRoot() = runTest {
+    fun `onFormFactorFavourites - display mode native - copy native favorites in root`() = runTest {
         val desktopEntities = givenEntitiesWithIds("Entity1", "Entity2", "Entity3")
         givenEntitiesStoredIn(desktopEntities, SavedSitesNames.FAVORITES_DESKTOP_ROOT)
         val nativeEntities = givenEntitiesWithIds("Entity4", "Entity5", "Entity6")
@@ -121,7 +121,7 @@ class RealSavedSitesFormFactorSyncMigrationTest {
     }
 
     @Test
-    fun whenDisplayModeUnifiedAndFavoritesInAllFormFactorFolderThenRemoveContentFromFormFactorFolders() = runTest {
+    fun `onFormFactorFavouritesDisabled - remove content from form factor folders`() = runTest {
         val desktopEntities = givenEntitiesWithIds("Entity1", "Entity2", "Entity3")
         givenEntitiesStoredIn(desktopEntities, SavedSitesNames.FAVORITES_DESKTOP_ROOT)
         val nativeEntities = givenEntitiesWithIds("Entity4", "Entity5", "Entity6")
@@ -141,7 +141,7 @@ class RealSavedSitesFormFactorSyncMigrationTest {
     }
 
     @Test
-    fun whenSyncDisabledAndDisplayModeUnifiedThenNewDisplayModeIsNative() {
+    fun `onFormFactorFavouritesDisabled - favorites display mode unified - native`() {
         savedSiteSettingsRepository.favoritesDisplayMode = FavoritesDisplayMode.UNIFIED
 
         testee.onFormFactorFavouritesDisabled()
@@ -150,7 +150,7 @@ class RealSavedSitesFormFactorSyncMigrationTest {
     }
 
     @Test
-    fun whenSyncDisabledAndDisplayModeNativeThenNewDisplayModeIsNative() {
+    fun `onFormFactorFavouritesDisabled - display mode native - native`() {
         savedSiteSettingsRepository.favoritesDisplayMode = FavoritesDisplayMode.NATIVE
 
         testee.onFormFactorFavouritesDisabled()
@@ -159,7 +159,7 @@ class RealSavedSitesFormFactorSyncMigrationTest {
     }
 
     @Test
-    fun whenSyncDisabledThenOnlyFavoritesRootFolderExist() {
+    fun `onFormFactorFavouritesDisabled - state - only favorites root folder exists`() {
         savedSitesEntitiesDao.insert(
             Entity(entityId = SavedSitesNames.FAVORITES_ROOT, url = "", title = SavedSitesNames.FAVORITES_NAME, type = FOLDER),
         )

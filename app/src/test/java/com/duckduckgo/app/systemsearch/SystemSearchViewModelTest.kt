@@ -97,7 +97,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenOnboardingShouldNotShowThenViewIsNotVisibleAndUnexpanded() = runTest {
+    fun `onboardingShouldNotShow - view state not visible and unexpanded`() = runTest {
         whenever(mockUserStageStore.getUserAppStage()).thenReturn(AppStage.DAX_ONBOARDING)
         testee.resetViewState()
 
@@ -107,7 +107,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenOnboardingShouldShowThenViewIsVisibleAndUnexpanded() = runTest {
+    fun `onboarding - shows onboarding view - is visible and unexpanded`() = runTest {
         whenever(mockUserStageStore.getUserAppStage()).thenReturn(AppStage.NEW)
         testee.resetViewState()
 
@@ -117,14 +117,14 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenOnboardingShownThenPixelSent() = runTest {
+    fun `resetViewState - onboarding shown - pixel sent`() = runTest {
         whenever(mockUserStageStore.getUserAppStage()).thenReturn(AppStage.NEW)
         testee.resetViewState()
         verify(mockPixel).fire(INTERSTITIAL_ONBOARDING_SHOWN)
     }
 
     @Test
-    fun whenOnboardingIsUnexpandedAndUserPressesToggleThenItIsExpandedAndPixelSent() = runTest {
+    fun `onboardingToggle - onboarding expanded and pixel sent`() = runTest {
         whenOnboardingShowing()
         testee.userTappedOnboardingToggle()
 
@@ -134,7 +134,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenOnboardingIsExpandedAndUserPressesToggleThenItIsUnexpandedAndPixelSent() = runTest {
+    fun `onboardingIsExpandedAndUserPressesToggle - onboarding unexpanded and pixel sent`() = runTest {
         whenOnboardingShowing()
         testee.userTappedOnboardingToggle() // first press to expand
         testee.userTappedOnboardingToggle() // second press to minimize
@@ -145,7 +145,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenOnboardingIsDismissedThenViewHiddenPixelSentAndOnboardingStoreNotified() = runTest {
+    fun `onboardingIsDismissed - view hidden pixel sent and onboarding store notified`() = runTest {
         whenOnboardingShowing()
         testee.userDismissedOnboarding()
 
@@ -156,7 +156,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenUserUpdatesQueryThenViewStateUpdated() = runTest {
+    fun `userUpdatedQuery - viewState updated`() = runTest {
         testee.userUpdatedQuery(QUERY)
 
         val newViewState = testee.resultsViewState.value as SystemSearchResultsViewState
@@ -166,7 +166,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenUserAddsSpaceToQueryThenViewStateMatchesAndSpaceTrimmedFromAutocomplete() = runTest {
+    fun `userUpdatedQuery - view state matches and space trimmed from autocomplete`() = runTest {
         testee.userUpdatedQuery(QUERY)
         testee.userUpdatedQuery("$QUERY ")
 
@@ -177,7 +177,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenUsersUpdatesWithAutoCompleteEnabledThenAutoCompleteSuggestionsIsNotEmpty() = runTest {
+    fun `userUpdated - autoComplete suggestions is not empty`() = runTest {
         doReturn(true).whenever(mockSettingsStore).autoCompleteSuggestionsEnabled
         testee.userUpdatedQuery(QUERY)
 
@@ -188,7 +188,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenUsersUpdatesWithAutoCompleteDisabledThenViewStateReset() = runTest {
+    fun `userUpdated - autoComplete disabled - view state reset`() = runTest {
         doReturn(false).whenever(mockSettingsStore).autoCompleteSuggestionsEnabled
         testee.userUpdatedQuery(QUERY)
 
@@ -196,7 +196,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenUserClearsQueryThenViewStateReset() = runTest {
+    fun `userClearsQuery - viewState reset`() = runTest {
         testee.userUpdatedQuery(QUERY)
         testee.userRequestedClear()
 
@@ -204,7 +204,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenUsersUpdatesWithBlankQueryThenViewStateReset() = runTest {
+    fun `userUpdatedQuery - view state reset`() = runTest {
         testee.userUpdatedQuery(QUERY)
         testee.userUpdatedQuery(BLANK_QUERY)
 
@@ -212,7 +212,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenUserSubmitsQueryThenBrowserLaunchedWithQueryAndPixelSent() {
+    fun `userSubmittedQuery - browser launched with query and pixel sent`() {
         testee.userSubmittedQuery(QUERY)
         verify(commandObserver, atLeastOnce()).onChanged(commandCaptor.capture())
         assertEquals(Command.LaunchBrowser(QUERY), commandCaptor.lastValue)
@@ -220,7 +220,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenUserSubmitsQueryWithSpaceThenBrowserLaunchedWithTrimmedQueryAndPixelSent() {
+    fun `userSubmitsQueryWithSpace - browser launched with trimmed query and pixel sent`() {
         testee.userSubmittedQuery("$QUERY ")
         verify(commandObserver, atLeastOnce()).onChanged(commandCaptor.capture())
         assertEquals(Command.LaunchBrowser(QUERY), commandCaptor.lastValue)
@@ -228,20 +228,20 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenUserSubmitsBlankQueryThenIgnored() {
+    fun `userSubmitsBlankQuery - ignored - does not launch browser`() {
         testee.userSubmittedQuery(BLANK_QUERY)
         assertFalse(commandCaptor.allValues.any { it is Command.LaunchBrowser })
         verify(mockPixel, never()).fire(INTERSTITIAL_LAUNCH_BROWSER_QUERY)
     }
 
     @Test
-    fun whenUserSubmitsQueryThenOnboardingCompleted() = runTest {
+    fun `userSubmittedQuery - onboarding completed - stage completed`() = runTest {
         testee.userSubmittedQuery(QUERY)
         verify(mockUserStageStore).stageCompleted(AppStage.NEW)
     }
 
     @Test
-    fun whenUserSubmitsAutocompleteResultThenBrowserLaunchedAndPixelSent() {
+    fun `userSubmitsAutocompleteResult - browser launched and pixel sent`() {
         testee.userSubmittedAutocompleteResult(AUTOCOMPLETE_RESULT)
         verify(commandObserver, atLeastOnce()).onChanged(commandCaptor.capture())
         assertEquals(Command.LaunchBrowser(AUTOCOMPLETE_RESULT), commandCaptor.lastValue)
@@ -249,7 +249,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenUserSelectsAppResultThenAppLaunchedAndPixelSent() {
+    fun `userSelectsApp - app launched and pixel sent`() {
         testee.userSelectedApp(deviceApp)
         verify(commandObserver, atLeastOnce()).onChanged(commandCaptor.capture())
         assertEquals(Command.LaunchDeviceApplication(deviceApp), commandCaptor.lastValue)
@@ -257,7 +257,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenUserTapsDaxThenAppLaunchedAndPixelSent() {
+    fun `userTapsDax - app launched and pixel sent`() {
         testee.userTappedDax()
         verify(commandObserver, atLeastOnce()).onChanged(commandCaptor.capture())
         assertTrue(commandCaptor.lastValue is LaunchDuckDuckGo)
@@ -265,18 +265,18 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenUserTapsDaxThenOnboardingCompleted() = runTest {
+    fun `userTappedDax - onboarding completed - stage completed`() = runTest {
         testee.userTappedDax()
         verify(mockUserStageStore).stageCompleted(AppStage.NEW)
     }
 
     @Test
-    fun whenViewModelCreatedThenAppsRefreshed() = runTest {
+    fun `whenViewModelCreated - apps refreshed`() = runTest {
         verify(mockDeviceAppLookup).refreshAppList()
     }
 
     @Test
-    fun whenUserSelectsAppThatCannotBeFoundThenAppsRefreshedAndUserMessageShown() = runTest {
+    fun `appNotFound - user selects app that cannot be found - show app not found message`() = runTest {
         testee.appNotFound(deviceApp)
         verify(mockDeviceAppLookup, times(2)).refreshAppList()
         verify(commandObserver, atLeastOnce()).onChanged(commandCaptor.capture())
@@ -284,7 +284,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenUserSelectedToUpdateQueryThenEditQueryCommandSent() {
+    fun `onUserSelectedToEditQuery - edit query command sent`() {
         val query = "test"
         testee.onUserSelectedToEditQuery(query)
         verify(commandObserver, atLeastOnce()).onChanged(commandCaptor.capture())
@@ -292,7 +292,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenQuickAccessItemClickedThenLaunchBrowser() {
+    fun `onQuickAccessItemClicked - launch browser`() {
         val quickAccessItem = QuickAccessFavorite(Favorite("favorite1", "title", "http://example.com", "timestamp", 0))
 
         testee.onQuickAccessItemClicked(quickAccessItem)
@@ -302,7 +302,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenQuickAccessItemClickedThenPixelSent() {
+    fun `onQuickAccessItemClicked - pixel sent`() {
         val quickAccessItem = QuickAccessFavorite(Favorite("favorite1", "title", "http://example.com", "timestamp", 0))
 
         testee.onQuickAccessItemClicked(quickAccessItem)
@@ -311,7 +311,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenQuickAccessItemEditRequestedThenLaunchEditDialog() {
+    fun `onEditQuickAccessItemRequested - launch edit dialog`() {
         val quickAccessItem = QuickAccessFavorite(Favorite("favorite1", "title", "http://example.com", "timestamp", 0))
 
         testee.onEditQuickAccessItemRequested(quickAccessItem)
@@ -321,7 +321,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenQuickAccessItemDeleteRequestedThenShowDeleteFavoriteConfirmation() {
+    fun `onDeleteQuickAccessItemRequested - show delete favorite confirmation`() {
         val quickAccessItem = QuickAccessFavorite(Favorite("favorite1", "title", "http://example.com", "timestamp", 0))
 
         testee.onDeleteQuickAccessItemRequested(quickAccessItem)
@@ -331,7 +331,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenSavedSiteDeleteRequestedThenShowDeleteSavedSiteConfirmation() {
+    fun `onDeleteSavedSiteRequested - show delete saved site confirmation`() {
         val quickAccessItem = QuickAccessFavorite(Favorite("favorite1", "title", "http://example.com", "timestamp", 0))
 
         testee.onDeleteSavedSiteRequested(quickAccessItem)
@@ -341,7 +341,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenQuickAccessEditedThenRepositoryUpdated() {
+    fun `onFavouriteEdited - repository updated`() {
         val savedSite = Favorite("favorite1", "title", "http://example.com", "timestamp", 0)
 
         testee.onFavouriteEdited(savedSite)
@@ -350,7 +350,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenQuickAccessDeleteRequestedThenFavouriteDeletedFromViewState() = runTest {
+    fun `onDeleteQuickAccessItemRequested - view state updated`() = runTest {
         val savedSite = Favorite("favorite1", "title", "http://example.com", "timestamp", 0)
         whenever(mocksavedSitesRepository.getFavorites()).thenReturn(flowOf(listOf(savedSite)))
         testee = SystemSearchViewModel(
@@ -374,7 +374,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenQuickAccessDeleteUndoThenViewStateUpdated() = runTest {
+    fun `undoDelete - view state updated`() = runTest {
         val savedSite = Favorite("favorite1", "title", "http://example.com", "timestamp", 0)
         whenever(mocksavedSitesRepository.getFavorites()).thenReturn(flowOf(listOf(savedSite)))
         testee = SystemSearchViewModel(
@@ -397,7 +397,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenQuickAccessDeletedThenRepositoryDeletesFavorite() = runTest {
+    fun `deleteFavorite - quick access deleted - repository deletes favorite`() = runTest {
         val savedSite = Favorite("favorite1", "title", "http://example.com", "timestamp", 0)
 
         testee.deleteFavoriteSnackbarDismissed(savedSite)
@@ -406,7 +406,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenAssociatedBookmarkDeletedThenRepositoryDeletesBookmark() = runTest {
+    fun `deleteSavedSite - repository deletes bookmark`() = runTest {
         val savedSite = Favorite("favorite1", "title", "http://example.com", "timestamp", 0)
 
         testee.deleteSavedSiteSnackbarDismissed(savedSite)
@@ -415,7 +415,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenQuickAccessListChangedThenRepositoryUpdated() {
+    fun `onQuickAccessListChanged - repository updated`() {
         val savedSite = Favorite("favorute1", "title", "http://example.com", "timestamp", 0)
         val savedSites = listOf(QuickAccessFavorite(savedSite))
 
@@ -425,7 +425,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenUserHasFavoritesThenInitialStateShowsFavorites() {
+    fun `whenUserHasFavorites - initialState shows favorites`() {
         val savedSite = Favorite("favorite1", "title", "http://example.com", "timestamp", 0)
         whenever(mocksavedSitesRepository.getFavorites()).thenReturn(flowOf(listOf(savedSite)))
         testee = SystemSearchViewModel(
@@ -445,7 +445,7 @@ class SystemSearchViewModelTest {
     }
 
     @Test
-    fun whenVoiceSearchDisabledThenShouldEmitUpdateVoiceSearchCommand() {
+    fun `voiceSearchDisabled - should emit update voice search command`() {
         testee.voiceSearchDisabled()
 
         verify(commandObserver, atLeastOnce()).onChanged(commandCaptor.capture())

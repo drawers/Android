@@ -26,7 +26,7 @@ class ContentScopeScriptsJsInjectorPluginTest {
     }
 
     @Test
-    fun whenEnabledAndInjectContentScopeScriptsThenPopulateMessagingParameters() {
+    fun `onPageStarted - enabled - populate messaging parameters`() {
         whenever(mockCoreContentScopeScripts.isEnabled()).thenReturn(true)
         whenever(mockCoreContentScopeScripts.getScript(null)).thenReturn("")
         contentScopeScriptsJsInjectorPlugin.onPageStarted(mockWebView, null, null)
@@ -36,7 +36,7 @@ class ContentScopeScriptsJsInjectorPluginTest {
     }
 
     @Test
-    fun whenDisabledAndInjectContentScopeScriptsThenDoNothing() {
+    fun `onPageStarted - disabled - do nothing`() {
         whenever(mockCoreContentScopeScripts.isEnabled()).thenReturn(false)
         contentScopeScriptsJsInjectorPlugin.onPageStarted(mockWebView, null, null)
 
@@ -44,7 +44,7 @@ class ContentScopeScriptsJsInjectorPluginTest {
     }
 
     @Test
-    fun whenEnabledAndInjectContentScopeScriptsThenUseSite() {
+    fun `onPageStarted - enabled and inject content scope scripts - use site`() {
         val site: Site = mock()
         whenever(mockCoreContentScopeScripts.isEnabled()).thenReturn(true)
         whenever(mockCoreContentScopeScripts.getScript(site)).thenReturn("")

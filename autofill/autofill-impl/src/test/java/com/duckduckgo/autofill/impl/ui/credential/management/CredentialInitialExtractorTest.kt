@@ -33,76 +33,76 @@ class CredentialInitialExtractorTest {
     private val testee = CredentialInitialExtractor(autofillUrlMatcher = AutofillDomainNameUrlMatcher(unicodeNormalizer))
 
     @Test
-    fun whenMissingTitleAndDomainThenPlaceholderChar() {
+    fun `extractInitial - missing title and domain - is placeholder char`() {
         val result = testee.extractInitial(creds(title = null, domain = null))
         result.assertIsPlaceholder()
     }
 
     @Test
-    fun whenEmptyStringTitleAndEmptyStringDomainThenPlaceholderChar() {
+    fun `extractInitial - empty string title and domain - is placeholder char`() {
         val result = testee.extractInitial(creds(title = "", domain = ""))
         result.assertIsPlaceholder()
     }
 
     @Test
-    fun whenMissingTitleThenDomainInitialUsed() {
+    fun `extractInitial - missing title - uses domain initial`() {
         val loginCredentials = creds(title = null, domain = "example.com")
         val result = testee.extractInitial(loginCredentials)
         assertEquals("E", result)
     }
 
     @Test
-    fun whenTitleIsPresentThenTitleInitialIsUsedAndDomainIsIgnored() {
+    fun `extractInitial - title present - title initial used and domain ignored`() {
         val loginCredentials = creds(title = "A website", domain = "example.com")
         val result = testee.extractInitial(loginCredentials)
         assertEquals("A", result)
     }
 
     @Test
-    fun whenTitleStartsWithANumberThenPlaceholderUsed() {
+    fun `extractInitial - title starts with a number - uses placeholder`() {
         val loginCredentials = creds(title = "123 website")
         testee.extractInitial(loginCredentials).assertIsPlaceholder()
     }
 
     @Test
-    fun whenTitleStartsWithASpecialCharacterThenPlaceholderUsed() {
+    fun `extractInitial - title starts with special character - is placeholder`() {
         val loginCredentials = creds(title = "$123 website")
         testee.extractInitial(loginCredentials).assertIsPlaceholder()
     }
 
     @Test
-    fun whenTitleStartsWithANonLatinLetterThatCannotBeDecomposedThenOriginalLetterIsUsed() {
+    fun `extractInitial - title starts with non-latin letter that cannot be decomposed - original letter is used`() {
         val loginCredentials = creds(title = "ß website")
         assertEquals("ß", testee.extractInitial(loginCredentials))
     }
 
     @Test
-    fun whenDomainStartsWithANonLatinLetterThatCannotBeDecomposedThenOriginalLetterIsUsed() {
+    fun `extractInitial - domain starts with non-latin letter that cannot be decomposed - original letter is used`() {
         val loginCredentials = creds(title = "ß.com")
         assertEquals("ß", testee.extractInitial(loginCredentials))
     }
 
     @Test
-    fun whenTitleStartsWithAnAccentedLetterThenThatBaseLetterIsUsed() {
+    fun `extractInitial - title starts with accented letter - uses base letter`() {
         val loginCredentials = creds(title = "Ça va website")
         assertEquals("C", testee.extractInitial(loginCredentials))
     }
 
     @Test
-    fun whenDomainStartsWithAnAccentedLetterThenThatBaseLetterIsUsed() {
+    fun `extractInitial - domain starts with accented letter - uses base letter`() {
         unicodeNormalizer.overrides["ça.com"] = "ca.com"
         val loginCredentials = creds(domain = "ça.com")
         assertEquals("C", testee.extractInitial(loginCredentials))
     }
 
     @Test
-    fun whenTitleStartsWithANonLatinLetterThenThatLetterIsUsed() {
+    fun `extractInitial - title starts with non-latin letter - that letter is used`() {
         val loginCredentials = creds(title = "あ")
         assertEquals("あ", testee.extractInitial(loginCredentials))
     }
 
     @Test
-    fun whenSubdomainIsPresentThenNotUsedForInitialExtraction() {
+    fun `extractInitial - subdomain present - not used for initial extraction`() {
         val loginCredentials = creds(domain = "a.example.com")
         assertEquals("E", testee.extractInitial(loginCredentials))
     }

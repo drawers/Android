@@ -32,7 +32,7 @@ class PixelReQueryInterceptorTest {
     }
 
     @Test
-    fun whenRq0PixelIsSendThenRemoveDeviceAndFormFactor() {
+    fun `intercept - Rq0PixelIsSend - remove device and form factor`() {
         assertEquals(
             EXPECTED_RQ_0_URL.toHttpUrl(),
             pixelReQueryInterceptor.intercept(FakeChain(RQ_0_PHONE_URL)).request.url,
@@ -45,7 +45,7 @@ class PixelReQueryInterceptorTest {
     }
 
     @Test
-    fun whenRq1PixelIsSendThenRemoveDeviceAndFormFactor() {
+    fun `intercept - Rq1PixelIsSend - remove device and form factor`() {
         assertEquals(
             EXPECTED_RQ_1_URL.toHttpUrl(),
             pixelReQueryInterceptor.intercept(FakeChain(RQ_1_PHONE_URL)).request.url,
@@ -58,7 +58,7 @@ class PixelReQueryInterceptorTest {
     }
 
     @Test
-    fun whenPixelOtherThanRqIsSendThenDoNotModify() {
+    fun `intercept - other pixel phone and tablet urls - does not modify`() {
         assertEquals(
             EXPECTED_OTHER_PIXEL_PHONE_URL.toHttpUrl(),
             pixelReQueryInterceptor.intercept(FakeChain(OTHER_PIXEL_PHONE_URL)).request.url,

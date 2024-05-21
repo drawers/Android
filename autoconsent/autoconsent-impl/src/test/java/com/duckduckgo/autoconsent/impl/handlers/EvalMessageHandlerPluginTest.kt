@@ -46,14 +46,14 @@ class EvalMessageHandlerPluginTest {
     private val evalMessageHandlerPlugin = EvalMessageHandlerPlugin(TestScope(), coroutineRule.testDispatcherProvider)
 
     @Test
-    fun whenProcessMessageIfTypeNotEvalDoNothing() {
+    fun `processMessage - if type not eval - do nothing`() {
         evalMessageHandlerPlugin.process("noMatching", "", webView, mockCallback)
 
         assertNull(shadowOf(webView).lastEvaluatedJavascript)
     }
 
     @Test
-    fun whenProcessMessageIfDoesNotParseDoNothing() {
+    fun `processMessage - does not parse - do nothing`() {
         val message = """
             {"type":"${evalMessageHandlerPlugin.supportedTypes.first()}", id: "myId", "code": "42==42"}
         """.trimIndent()
@@ -64,7 +64,7 @@ class EvalMessageHandlerPluginTest {
     }
 
     @Test
-    fun whenProcessMessageThenCallEvaluateWithCorrectCode() {
+    fun `process - evaluate with correct code - last evaluated javascript`() {
         val expected = """
         javascript:(function() {
             try {
@@ -81,7 +81,7 @@ class EvalMessageHandlerPluginTest {
     }
 
     @Test
-    fun whenProcessMessageThenAndEvalTrueThenCorrectEvalRespSent() {
+    fun `process - and eval true - correct eval resp sent`() {
         evalMessageHandlerPlugin.process(evalMessageHandlerPlugin.supportedTypes.first(), message("42==42"), webView, mockCallback)
 
         val shadow = shadowOf(webView)
@@ -96,7 +96,7 @@ class EvalMessageHandlerPluginTest {
     }
 
     @Test
-    fun whenProcessMessageThenAndEvalFalseThenCorrectEvalRespSent() {
+    fun `process - and eval false - correct eval resp sent`() {
         evalMessageHandlerPlugin.process(evalMessageHandlerPlugin.supportedTypes.first(), message("41==42"), webView, mockCallback)
 
         val shadow = shadowOf(webView)

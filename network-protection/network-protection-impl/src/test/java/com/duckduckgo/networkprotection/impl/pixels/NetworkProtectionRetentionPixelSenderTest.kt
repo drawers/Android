@@ -34,7 +34,7 @@ class NetworkProtectionRetentionPixelSenderTest {
     }
 
     @Test
-    fun reportSearchRetentionWhenEnabled() = runTest {
+    fun `onSearchRetention - enabled - reports enabled on search`() = runTest {
         pixelSender.onSearchRetentionAtbRefreshed()
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
         pixelSender.onSearchRetentionAtbRefreshed()

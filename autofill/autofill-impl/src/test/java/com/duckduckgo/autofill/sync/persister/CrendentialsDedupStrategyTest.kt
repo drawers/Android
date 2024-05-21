@@ -77,7 +77,7 @@ internal class CredentialsDedupStrategyTest {
     )
 
     @Test
-    fun whenNoLocalEntitiesThenAllRemoteEntitiesStored() = runTest {
+    fun `processEntries - no local entities - all remote entities stored`() = runTest {
         givenLocalCredentials()
         val remoteCredentials = credentialsSyncEntries(
             entries = listOf(
@@ -97,7 +97,7 @@ internal class CredentialsDedupStrategyTest {
     }
 
     @Test
-    fun whenDuplicatesExistAndRemoteAreMoreRecentThenDeDupAndStoreMostRecent() = runTest {
+    fun `processEntries - duplicates exist and remote are more recent - de dup and store most recent`() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,
@@ -123,7 +123,7 @@ internal class CredentialsDedupStrategyTest {
     }
 
     @Test
-    fun whenDuplicatesExistAndLocalAreMoreRecentThenDeDupAndStoreMostRecent() = runTest {
+    fun `processEntries - duplicates exist and local are more recent - dedup and store most recent`() = runTest {
         givenLocalCredentials(
             twitterCredentials.copy(lastUpdatedMillis = 1689592358516),
             spotifyCredentials.copy(lastUpdatedMillis = 1689592358516),
@@ -151,7 +151,7 @@ internal class CredentialsDedupStrategyTest {
     }
 
     @Test
-    fun whenLocalHasDuplicatesAndNoDuplicatesThenDedupAndKeepTheRest() = runTest {
+    fun `processEntries - local has duplicates and no duplicates - dedup and keep the rest`() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,
@@ -180,7 +180,7 @@ internal class CredentialsDedupStrategyTest {
     }
 
     @Test
-    fun whenRemoteHasDuplicatesAndNewCredentialsThenDedupAndInsertNew() = runTest {
+    fun `processEntries - remote has duplicates and new credentials - dedup and insert new`() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,
@@ -205,7 +205,7 @@ internal class CredentialsDedupStrategyTest {
     }
 
     @Test
-    fun whenRemoteIsEmptyThenNoChanges() = runTest {
+    fun `processEntries - remote empty - no changes`() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,

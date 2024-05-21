@@ -54,7 +54,7 @@ class RealHttpsRepositoryTest {
     }
 
     @Test
-    fun whenRepositoryIsCreatedThenExceptionsLoadedIntoMemory() {
+    fun `whenRepositoryIsCreatedThenExceptionsLoadedIntoMemory - exceptions loaded into memory`() {
         givenHttpsDaoContainsExceptions()
 
         testee =
@@ -69,7 +69,7 @@ class RealHttpsRepositoryTest {
     }
 
     @Test
-    fun whenUpdateAllThenUpdateAllCalled() =
+    fun `updateAll - update all called`() =
         runTest {
             testee =
                 RealHttpsRepository(
@@ -85,7 +85,7 @@ class RealHttpsRepositoryTest {
         }
 
     @Test
-    fun whenUpdateAllThenPreviousExceptionsAreCleared() =
+    fun `updateAll - previous exceptions cleared`() =
         runTest {
             givenHttpsDaoContainsExceptions()
             testee =

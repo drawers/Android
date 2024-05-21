@@ -75,7 +75,7 @@ class DefaultBrowserPageViewModelTest {
     }
 
     @Test
-    fun whenInitializingIfThereIsADefaultBrowserThenShowSettingsUI() {
+    fun `whenInitializingIfThereIsADefaultBrowserThenShowSettingsUI - view state set to default browser settings UI`() {
         whenever(mockDefaultBrowserDetector.hasDefaultBrowser()).thenReturn(true)
 
         testee = DefaultBrowserPageViewModel(mockDefaultBrowserDetector, mockPixel, mockInstallStore)
@@ -84,7 +84,7 @@ class DefaultBrowserPageViewModelTest {
     }
 
     @Test
-    fun whenInitializingIfThereIsNotADefaultBrowserThenShowDialogUI() {
+    fun `initialize - no default browser - show dialog UI`() {
         whenever(mockDefaultBrowserDetector.hasDefaultBrowser()).thenReturn(false)
 
         testee = DefaultBrowserPageViewModel(mockDefaultBrowserDetector, mockPixel, mockInstallStore)
@@ -93,7 +93,7 @@ class DefaultBrowserPageViewModelTest {
     }
 
     @Test
-    fun whenLoadUiThenShowSettingsUiIfDefaultBrowserIsTrue() {
+    fun `loadUI - show settings UI if default browser true`() {
         whenever(mockDefaultBrowserDetector.hasDefaultBrowser()).thenReturn(true)
 
         testee.loadUI()
@@ -102,7 +102,7 @@ class DefaultBrowserPageViewModelTest {
     }
 
     @Test
-    fun whenLoadUiThenShowDialogUiIfDefaultBrowserIsFalse() {
+    fun `loadUI - default browser false - show dialog ui`() {
         whenever(mockDefaultBrowserDetector.hasDefaultBrowser()).thenReturn(false)
 
         testee.loadUI()
@@ -111,7 +111,7 @@ class DefaultBrowserPageViewModelTest {
     }
 
     @Test
-    fun whenLoadUIAfterDefaultButtonClickedThenSameState() {
+    fun `loadUI - same state`() {
         whenever(mockDefaultBrowserDetector.hasDefaultBrowser()).thenReturn(false)
         testee.loadUI()
         testee.onDefaultBrowserClicked()
@@ -123,7 +123,7 @@ class DefaultBrowserPageViewModelTest {
     }
 
     @Test
-    fun whenContinueButtonClickedWithoutTryingToSetDDGAsDefaultThenSendPixelAndExecuteContinueToBrowserCommand() {
+    fun `onContinueToBrowser - no default browser set - send pixel and execute continue to browser command`() {
         whenever(mockDefaultBrowserDetector.isDefaultBrowser()).thenReturn(false)
         testee.loadUI()
 
@@ -133,7 +133,7 @@ class DefaultBrowserPageViewModelTest {
     }
 
     @Test
-    fun whenDefaultButtonClickedWithDefaultBrowserThenExecuteOpenSettingsCommandAndFireDefaultBrowserLaunchedPixel() {
+    fun `onDefaultBrowserClicked - default browser launched - open settings command executed`() {
         whenever(mockDefaultBrowserDetector.hasDefaultBrowser()).thenReturn(true)
         val params = mapOf(
             Pixel.PixelParameter.DEFAULT_BROWSER_BEHAVIOUR_TRIGGERED to DEFAULT_BROWSER_SETTINGS,
@@ -146,7 +146,7 @@ class DefaultBrowserPageViewModelTest {
     }
 
     @Test
-    fun whenDefaultButtonClickedWithoutDefaultBrowserThenExecuteOpenDialogCommandAndShowInstructionsCard() {
+    fun `onDefaultButtonClicked - without default browser - execute open dialog command and show instructions card`() {
         whenever(mockDefaultBrowserDetector.hasDefaultBrowser()).thenReturn(false)
         testee.loadUI()
 
@@ -157,7 +157,7 @@ class DefaultBrowserPageViewModelTest {
     }
 
     @Test
-    fun whenUserSetDDGAsDefaultFromDialogThenContinueToBrowserAndFirePixel() {
+    fun `loadUI - default browser set from dialog - continue to browser and fire pixel`() {
         val params = mapOf(
             Pixel.PixelParameter.DEFAULT_BROWSER_SET_FROM_ONBOARDING to true.toString(),
             Pixel.PixelParameter.DEFAULT_BROWSER_SET_ORIGIN to DEFAULT_BROWSER_DIALOG,
@@ -173,7 +173,7 @@ class DefaultBrowserPageViewModelTest {
     }
 
     @Test
-    fun whenUserSetDDGAsJustOnceForFirstTimeThenShowInstructionsAgainOpenDialogAndFirePixel() {
+    fun `whenUserSetDDGAsJustOnceForFirstTime - show instructions again open dialog and fire pixel - show default browser dialog and fire pixel`() {
         whenever(mockDefaultBrowserDetector.isDefaultBrowser()).thenReturn(false)
         testee.loadUI()
         testee.onDefaultBrowserClicked()
@@ -186,7 +186,7 @@ class DefaultBrowserPageViewModelTest {
     }
 
     @Test
-    fun whenUserSetDDGAsJustOnceTheMaxAllowedTimesThenTakeUserToBrowser() {
+    fun `whenUserSetDDGAsJustOnceTheMaxAllowedTimesThenTakeUserToBrowser - handle result - take user to browser`() {
         whenever(mockDefaultBrowserDetector.isDefaultBrowser()).thenReturn(false)
         val params = mapOf(
             Pixel.PixelParameter.DEFAULT_BROWSER_SET_ORIGIN to Pixel.PixelValues.DEFAULT_BROWSER_JUST_ONCE_MAX,
@@ -202,7 +202,7 @@ class DefaultBrowserPageViewModelTest {
     }
 
     @Test
-    fun whenUserDismissedDialogThenShowDialogUIAndFirePixel() {
+    fun `whenUserDismissedDialog - show dialog UI and fire pixel`() {
         whenever(mockDefaultBrowserDetector.isDefaultBrowser()).thenReturn(false)
         whenever(mockDefaultBrowserDetector.hasDefaultBrowser()).thenReturn(false)
         val params = mapOf(
@@ -218,7 +218,7 @@ class DefaultBrowserPageViewModelTest {
     }
 
     @Test
-    fun whenUserSetAnotherBrowserAsDefaultThenShowSettingsUI() {
+    fun `onDefaultBrowserClicked - show settings UI`() {
         val params = mapOf(
             Pixel.PixelParameter.DEFAULT_BROWSER_SET_ORIGIN to Pixel.PixelValues.DEFAULT_BROWSER_EXTERNAL,
         )
@@ -234,7 +234,7 @@ class DefaultBrowserPageViewModelTest {
     }
 
     @Test
-    fun whenUserSetDDGAsDefaultThenContinueToBrowser() {
+    fun `whenUserSetDDGAsDefaultThenContinueToBrowser - continue to browser`() {
         val params = mapOf(
             Pixel.PixelParameter.DEFAULT_BROWSER_SET_FROM_ONBOARDING to true.toString(),
             Pixel.PixelParameter.DEFAULT_BROWSER_SET_ORIGIN to Pixel.PixelValues.DEFAULT_BROWSER_EXTERNAL,
@@ -251,7 +251,7 @@ class DefaultBrowserPageViewModelTest {
     }
 
     @Test
-    fun whenUserWasTakenToSettingsAndSelectedDDGAsDefaultThenContinueToBrowser() {
+    fun `loadUI - settings selected DDG as default - continue to browser`() {
         whenever(mockDefaultBrowserDetector.isDefaultBrowser()).thenReturn(false)
         whenever(mockDefaultBrowserDetector.hasDefaultBrowser()).thenReturn(true)
         testee.loadUI()
@@ -264,7 +264,7 @@ class DefaultBrowserPageViewModelTest {
     }
 
     @Test
-    fun whenUserWasTakenToSettingsAndDidNotSelectDDGAsDefaultThenShowSettingsUI() {
+    fun `loadUI - settings UI shown`() {
         whenever(mockDefaultBrowserDetector.isDefaultBrowser()).thenReturn(false)
         whenever(mockDefaultBrowserDetector.hasDefaultBrowser()).thenReturn(true)
         testee.loadUI()
@@ -276,7 +276,7 @@ class DefaultBrowserPageViewModelTest {
     }
 
     @Test
-    fun whenUserSelectedDDGAsDefaultInSettingsScreenThenFirePixel() {
+    fun `loadUI - settings screen - fire pixel`() {
         whenever(mockDefaultBrowserDetector.hasDefaultBrowser()).thenReturn(true)
         val params = mapOf(
             Pixel.PixelParameter.DEFAULT_BROWSER_SET_FROM_ONBOARDING to true.toString(),
@@ -292,7 +292,7 @@ class DefaultBrowserPageViewModelTest {
     }
 
     @Test
-    fun whenUserDoesNotSelectedDDGAsDefaultInSettingsThenFirePixel() {
+    fun `loadUI - default browser not set - fire pixel`() {
         whenever(mockDefaultBrowserDetector.isDefaultBrowser()).thenReturn(false)
         whenever(mockDefaultBrowserDetector.hasDefaultBrowser()).thenReturn(true)
         val params = mapOf(
@@ -307,7 +307,7 @@ class DefaultBrowserPageViewModelTest {
     }
 
     @Test
-    fun whenOriginReceivedIsSettingsThenResetTimesPressedJustOnce() {
+    fun `handleResult - origin received is settings - reset times pressed just once`() {
         testee.loadUI()
         testee.timesPressedJustOnce = 1
 
@@ -317,7 +317,7 @@ class DefaultBrowserPageViewModelTest {
     }
 
     @Test
-    fun whenOriginReceivedIsDialogDismissedThenResetTimesPressedJustOnce() {
+    fun `handleResult - origin received is dialog dismissed - reset times pressed just once`() {
         testee.loadUI()
         testee.timesPressedJustOnce = 1
 
@@ -327,7 +327,7 @@ class DefaultBrowserPageViewModelTest {
     }
 
     @Test
-    fun whenOriginReceivedIsExternalBrowserThenResetTimesPressedJustOnce() {
+    fun `handleResult - origin received is external browser - reset times pressed just once`() {
         testee.timesPressedJustOnce = 1
 
         testee.handleResult(Origin.ExternalBrowser)
@@ -336,7 +336,7 @@ class DefaultBrowserPageViewModelTest {
     }
 
     @Test
-    fun whenOriginReceivedIsInternalBrowserAndDDGIsTheDefaultBrowserThenResetTimesPressedJustOnce() {
+    fun `handleResult - origin received is internal browser and default browser - reset times pressed just once`() {
         whenever(mockDefaultBrowserDetector.isDefaultBrowser()).thenReturn(true)
         testee.timesPressedJustOnce = 1
 
@@ -346,7 +346,7 @@ class DefaultBrowserPageViewModelTest {
     }
 
     @Test
-    fun whenOriginReceivedIsInternalBrowserAndDDGIsNotTheDefaultBrowserThenIncreaseTimesPressedJustOnceIfIsLessThanTheMaxNumberOfAttempts() {
+    fun `handleResult - origin received is internal browser and DDG is not the default browser - increase times pressed just once if less than max number of attempts`() {
         whenever(mockDefaultBrowserDetector.isDefaultBrowser()).thenReturn(false)
         testee.timesPressedJustOnce = 1
 
@@ -356,7 +356,7 @@ class DefaultBrowserPageViewModelTest {
     }
 
     @Test
-    fun whenOriginReceivedIsInternalBrowserAndDDGIsNotTheDefaultBrowserThenResetTimesPressedJustOnceIfIsGreaterOrEqualThanTheMaxNumberOfAttempts() {
+    fun `handleResult - origin received is internal browser and DDG is not default browser - reset times pressed just once if greater or equal to max number of attempts`() {
         whenever(mockDefaultBrowserDetector.isDefaultBrowser()).thenReturn(false)
         testee.timesPressedJustOnce = MAX_DIALOG_ATTEMPTS
 

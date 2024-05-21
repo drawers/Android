@@ -47,7 +47,7 @@ class RealContentBlockingRepositoryTest {
     }
 
     @Test
-    fun whenRepositoryIsCreatedThenExceptionsLoadedIntoMemory() {
+    fun `whenRepositoryIsCreatedThenExceptionsLoadedIntoMemory - exceptions loaded into memory`() {
         givenContentBlockingDaoContainsExceptions()
 
         testee =
@@ -65,7 +65,7 @@ class RealContentBlockingRepositoryTest {
     }
 
     @Test
-    fun whenUpdateAllThenUpdateAllCalled() =
+    fun `updateAll - update all called`() =
         runTest {
             testee =
                 RealContentBlockingRepository(
@@ -81,7 +81,7 @@ class RealContentBlockingRepositoryTest {
         }
 
     @Test
-    fun whenUpdateAllThenPreviousExceptionsAreCleared() =
+    fun `updateAll - previous exceptions cleared`() =
         runTest {
             givenContentBlockingDaoContainsExceptions()
             testee =

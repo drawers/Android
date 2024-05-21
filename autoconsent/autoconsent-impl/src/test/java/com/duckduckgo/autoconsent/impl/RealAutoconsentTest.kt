@@ -63,7 +63,7 @@ class RealAutoconsentTest {
     }
 
     @Test
-    fun whenInjectAutoconsentIfNeverHandledThenDoNotCallEvaluate() {
+    fun `injectAutoconsent - never handled - do not call evaluate`() {
         settingsRepository.userSetting = false
         settingsRepository.firstPopupHandled = false
 
@@ -78,7 +78,7 @@ class RealAutoconsentTest {
     }
 
     @Test
-    fun whenInjectAutoconsentIfPreviouslyHandledAndSettingFalseThenDoNotCallEvaluate() {
+    fun `injectAutoconsent - previously handled and setting false - do not call evaluate`() {
         settingsRepository.userSetting = false
         settingsRepository.firstPopupHandled = true
 
@@ -88,7 +88,7 @@ class RealAutoconsentTest {
     }
 
     @Test
-    fun whenInjectAutoconsentIfPreviouslyHandledAndSettingTrueThenCallEvaluate() {
+    fun `injectAutoconsent - previously handled and setting true - call evaluate`() {
         settingsRepository.userSetting = true
         settingsRepository.firstPopupHandled = true
 
@@ -98,7 +98,7 @@ class RealAutoconsentTest {
     }
 
     @Test
-    fun whenChangeSettingChangedThenRepoSetValueChanged() {
+    fun `changeSetting - repo set value changed`() {
         autoconsent.changeSetting(false)
         assertFalse(settingsRepository.userSetting)
 
@@ -107,7 +107,7 @@ class RealAutoconsentTest {
     }
 
     @Test
-    fun whenSettingEnabledCalledThenReturnValueFromRepo() {
+    fun `isSettingEnabled - setting enabled called - return value from repo`() {
         settingsRepository.userSetting = false
         assertFalse(autoconsent.isSettingEnabled())
 
@@ -116,7 +116,7 @@ class RealAutoconsentTest {
     }
 
     @Test
-    fun whenSetAutoconsentOptOutThenEvaluateJavascriptCalled() {
+    fun `setAutoconsentOptOut - evaluate javascript called`() {
         val expected = """
         javascript:(function() {
             window.autoconsentMessageCallback({ "type": "optOut" }, window.origin);
@@ -128,25 +128,25 @@ class RealAutoconsentTest {
     }
 
     @Test
-    fun whenSetAutoconsentOptOutThenTrueValueStored() {
+    fun `setAutoconsentOptOut - settings stored - true value stored`() {
         autoconsent.setAutoconsentOptOut(webView)
         assertTrue(settingsRepository.userSetting)
     }
 
     @Test
-    fun whenSetAutoconsentOptInThenFalseValueStored() {
+    fun `setAutoconsentOptIn - settings stored - false value stored`() {
         autoconsent.setAutoconsentOptIn()
         assertFalse(settingsRepository.userSetting)
     }
 
     @Test
-    fun whenFirstPopUpHandledThenFalseValueStored() {
+    fun `firstPopUpHandled - settings stored - false value stored`() {
         autoconsent.firstPopUpHandled()
         assertTrue(settingsRepository.firstPopupHandled)
     }
 
     @Test
-    fun whenInjectAutoconsentIfUrlIsExceptionThenDoNothing() {
+    fun `injectAutoconsent - url is exception - do nothing`() {
         givenSettingsRepositoryAllowsInjection()
 
         autoconsent.injectAutoconsent(webView, EXCEPTION_URL)
@@ -155,7 +155,7 @@ class RealAutoconsentTest {
     }
 
     @Test
-    fun whenInjectAutoconsentIfUrlContainsDomainThatIsExceptionThenDoNothing() {
+    fun `injectAutoconsent - url contains exception domain - do nothing`() {
         givenSettingsRepositoryAllowsInjection()
 
         autoconsent.injectAutoconsent(webView, EXCEPTION_SUBDOMAIN_URL)
@@ -164,7 +164,7 @@ class RealAutoconsentTest {
     }
 
     @Test
-    fun whenInjectAutoconsentIfUrlIsInUserAllowListThenDoNothing() {
+    fun `injectAutoconsent - url in user allow list - do nothing`() {
         givenSettingsRepositoryAllowsInjection()
 
         autoconsent.injectAutoconsent(webView, USER_ALLOWED_URL)
@@ -173,7 +173,7 @@ class RealAutoconsentTest {
     }
 
     @Test
-    fun whenInjectAutoconsentIfUrlIsInUnprotectedListThenDoNothing() {
+    fun `injectAutoconsent - url in unprotected list - do nothing`() {
         givenSettingsRepositoryAllowsInjection()
 
         autoconsent.injectAutoconsent(webView, UNPROTECTED_URL)
@@ -182,7 +182,7 @@ class RealAutoconsentTest {
     }
 
     @Test
-    fun whenInjectAutoconsentIfFeatureIsDisabledThenDoNothing() {
+    fun `injectAutoconsent - feature disabled - do nothing`() {
         givenSettingsRepositoryAllowsInjection()
         whenever(mockToggle.isEnabled()).thenReturn(false)
 

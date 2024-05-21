@@ -55,7 +55,7 @@ class LaunchViewModelTest {
     }
 
     @Test
-    fun whenOnboardingShouldShowAndReferrerDataReturnsQuicklyThenCommandIsOnboarding() = runTest {
+    fun `determineViewToShow - onboarding should show and referrer data returns quickly - command is onboarding`() = runTest {
         testee = LaunchViewModel(
             userStageStore,
             StubAppReferrerFoundStateListener("xx"),
@@ -70,7 +70,7 @@ class LaunchViewModelTest {
     }
 
     @Test
-    fun whenOnboardingShouldShowAndReferrerDataReturnsButNotInstantlyThenCommandIsOnboarding() = runTest {
+    fun `determineViewToShow - onboarding should show and referrer data returns but not instantly - command is onboarding`() = runTest {
         testee = LaunchViewModel(
             userStageStore,
             StubAppReferrerFoundStateListener("xx", mockDelayMs = 1_000),
@@ -85,7 +85,7 @@ class LaunchViewModelTest {
     }
 
     @Test
-    fun whenOnboardingShouldShowAndReferrerDataTimesOutThenCommandIsOnboarding() = runTest {
+    fun `determineViewToShow - onboarding should show and referrer data times out - command is onboarding`() = runTest {
         testee = LaunchViewModel(
             userStageStore,
             StubAppReferrerFoundStateListener("xx", mockDelayMs = Long.MAX_VALUE),
@@ -100,7 +100,7 @@ class LaunchViewModelTest {
     }
 
     @Test
-    fun whenOnboardingShouldNotShowAndReferrerDataReturnsQuicklyThenCommandIsHome() = runTest {
+    fun `determineViewToShow - onboarding should not show and referrer data returns quickly - command is home`() = runTest {
         testee = LaunchViewModel(userStageStore, StubAppReferrerFoundStateListener("xx"), mockExtendedOnboardingExperimentVariantManager)
         whenever(userStageStore.getUserAppStage()).thenReturn(AppStage.DAX_ONBOARDING)
         testee.command.observeForever(mockCommandObserver)
@@ -109,7 +109,7 @@ class LaunchViewModelTest {
     }
 
     @Test
-    fun whenOnboardingShouldNotShowAndReferrerDataReturnsButNotInstantlyThenCommandIsHome() = runTest {
+    fun `determineViewToShow - onboarding should not show and referrer data returns but not instantly - command is home`() = runTest {
         testee = LaunchViewModel(
             userStageStore,
             StubAppReferrerFoundStateListener("xx", mockDelayMs = 1_000),
@@ -122,7 +122,7 @@ class LaunchViewModelTest {
     }
 
     @Test
-    fun whenOnboardingShouldNotShowAndReferrerDataTimesOutThenCommandIsHome() = runTest {
+    fun `determineViewToShow - onboarding times out - command is home`() = runTest {
         testee = LaunchViewModel(
             userStageStore,
             StubAppReferrerFoundStateListener("xx", mockDelayMs = Long.MAX_VALUE),

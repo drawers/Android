@@ -50,14 +50,14 @@ class QueryUrlConverterTest {
     }
 
     @Test
-    fun whenSingleWordThenSearchQueryBuilt() {
+    fun `convertQueryToUrl - single word - search query built`() {
         val input = "foo"
         val result = testee.convertQueryToUrl(input)
         assertDuckDuckGoSearchQuery("foo", result)
     }
 
     @Test
-    fun whenWebUrlCalledWithInvalidURLThenEncodedSearchQueryBuilt() {
+    fun `convertQueryToUrl - web url called with invalid url - encoded search query built`() {
         val input = "http://test .com"
         val expected = "http%3A%2F%2Ftest%20.com"
         val result = testee.convertQueryToUrl(input)
@@ -65,7 +65,7 @@ class QueryUrlConverterTest {
     }
 
     @Test
-    fun whenEncodingQueryWithSymbolsThenQueryProperlyEncoded() {
+    fun `convertQueryToUrl - encoding query with symbols - properly encoded`() {
         val input = "test \"%-.<>\\^_`{|~"
         val expected = "test%20%22%25-.%3C%3E%5C%5E_%60%7B%7C~"
         val result = testee.convertQueryToUrl(input)
@@ -73,7 +73,7 @@ class QueryUrlConverterTest {
     }
 
     @Test
-    fun whenParamHasInvalidCharactersThenAddingParamAppendsEncodedVersion() {
+    fun `convertQueryToUrl - param has invalid characters - appends encoded version`() {
         val input = "43 + 5"
         val expected = "43%20%2B%205"
         val result = testee.convertQueryToUrl(input)
@@ -81,7 +81,7 @@ class QueryUrlConverterTest {
     }
 
     @Test
-    fun whenIsWebUrlMissingSchemeThenHttpWillBeAddedUponConversion() {
+    fun `convertQueryToUrl - is web url missing scheme - http will be added upon conversion`() {
         val input = "example.com"
         val expected = "http://$input"
         val result = testee.convertQueryToUrl(input)
@@ -89,42 +89,42 @@ class QueryUrlConverterTest {
     }
 
     @Test
-    fun whenQueryOriginIsFromUserAndIsQueryThenSearchQueryBuilt() {
+    fun `convertQueryToUrl - from user is query - search query built`() {
         val input = "foo"
         val result = testee.convertQueryToUrl(input, queryOrigin = QueryOrigin.FromUser)
         assertDuckDuckGoSearchQuery("foo", result)
     }
 
     @Test
-    fun whenQueryOriginIsFromUserAndIsUrlThenUrlReturned() {
+    fun `convertQueryToUrl - from user and is url - url returned`() {
         val input = "http://example.com"
         val result = testee.convertQueryToUrl(input, queryOrigin = QueryOrigin.FromUser)
         assertEquals(input, result)
     }
 
     @Test
-    fun whenQueryOriginIsFromAutocompleteAndIsNavIsFalseThenSearchQueryBuilt() {
+    fun `convertQueryToUrl - from autocomplete and is nav false - search query built`() {
         val input = "example.com"
         val result = testee.convertQueryToUrl(input, queryOrigin = QueryOrigin.FromAutocomplete(isNav = false))
         assertDuckDuckGoSearchQuery("example.com", result)
     }
 
     @Test
-    fun whenQueryOriginIsFromAutocompleteAndIsNavIsTrueThenUrlReturned() {
+    fun `convertQueryToUrl - from autocomplete and is nav true - url returned`() {
         val input = "http://example.com"
         val result = testee.convertQueryToUrl(input, queryOrigin = QueryOrigin.FromAutocomplete(isNav = true))
         assertEquals(input, result)
     }
 
     @Test
-    fun whenQueryOriginIsFromAutocompleteAndIsNavIsNullAndIsNotUrlThenSearchQueryBuilt() {
+    fun `convertQueryToUrl - from autocomplete and is nav null and is not url - search query built`() {
         val input = "foo"
         val result = testee.convertQueryToUrl(input, queryOrigin = QueryOrigin.FromAutocomplete(isNav = null))
         assertDuckDuckGoSearchQuery("foo", result)
     }
 
     @Test
-    fun whenConvertQueryToUrlContainsAMajorVerticalThenVerticalAddedToUrl() {
+    fun `convertQueryToUrl - contains major vertical - vertical added to url`() {
         val input = "foo"
         val vertical = QueryUrlConverter.majorVerticals.random()
         val result = testee.convertQueryToUrl(input, vertical = vertical, queryOrigin = QueryOrigin.FromUser)
@@ -132,7 +132,7 @@ class QueryUrlConverterTest {
     }
 
     @Test
-    fun whenConvertQueryToUrlContainsANonMajorVerticalThenVerticalNotAddedToUrl() {
+    fun `convertQueryToUrl - contains non major vertical - does not add to url`() {
         val input = "foo"
         val vertical = "nonMajor"
         val result = testee.convertQueryToUrl(input, vertical = vertical, queryOrigin = QueryOrigin.FromUser)

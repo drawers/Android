@@ -49,7 +49,7 @@ class SyncCreateAccountViewModelTest {
     )
 
     @Test
-    fun whenUserIsNotSignedInThenAccountCreatedAndViewStateUpdated() = runTest {
+    fun `whenUserIsNotSignedIn - account created and view state updated - creating account and finish setup flow`() = runTest {
         whenever(syncRepostitory.createAccount()).thenReturn(Result.Success(true))
 
         testee.viewState().test {
@@ -67,7 +67,7 @@ class SyncCreateAccountViewModelTest {
     }
 
     @Test
-    fun whenCreateAccountFailsThenEmitError() = runTest {
+    fun `createAccount - fails - emit error`() = runTest {
         whenever(syncRepostitory.createAccount()).thenReturn(Result.Error(1, ""))
 
         testee.viewState().test {

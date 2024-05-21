@@ -23,28 +23,28 @@ import org.junit.Test
 class LocationPermissionEntityTest {
 
     @Test
-    fun whenDomainStartsWithHttpsThenDropPrefix() {
+    fun `whenDomainStartsWithHttpsThenDropPrefix - for fireproofing - www example com`() {
         val locationPermissionEntity = LocationPermissionEntity("https://www.example.com/", LocationPermissionType.ALLOW_ONCE)
         val host = locationPermissionEntity.forFireproofing()
         Assert.assertEquals("www.example.com", host)
     }
 
     @Test
-    fun whenDomainStartsWithHttpsUppercaseThenDropPrefix() {
+    fun `whenDomainStartsWithHttpsUppercaseThenDropPrefix - for fireproofing - www example com`() {
         val locationPermissionEntity = LocationPermissionEntity("HTTPS://www.example.com/", LocationPermissionType.ALLOW_ONCE)
         val host = locationPermissionEntity.forFireproofing()
         Assert.assertEquals("www.example.com", host)
     }
 
     @Test
-    fun whenDomainDoesNotStartWithHttpsThenDomainUnchanged() {
+    fun `whenDomainDoesNotStartWithHttpsThenDomainUnchanged - for fireproofing - unchanged`() {
         val locationPermissionEntity = LocationPermissionEntity("mobile.example.com/", LocationPermissionType.ALLOW_ONCE)
         val host = locationPermissionEntity.forFireproofing()
         Assert.assertEquals("mobile.example.com/", host)
     }
 
     @Test
-    fun whenDomainIsReturnedAsPermissionOriginThenDomainMatches() {
+    fun `asLocationPermissionOrigin - domain matches`() {
         val domain = "www.example.com"
         val host = domain.asLocationPermissionOrigin()
         Assert.assertEquals("https://www.example.com/", host)
