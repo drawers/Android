@@ -46,19 +46,19 @@ class CookiesFeaturePluginTest {
     }
 
     @Test
-    fun whenFeatureNameDoesNotMatchCookiesThenReturnFalse() {
+    fun `store - feature name does not match cookies - returns false`() {
         CookiesFeatureName.values().filter { it != FEATURE_NAME }.forEach {
             assertFalse(testee.store(it.value, EMPTY_JSON_STRING))
         }
     }
 
     @Test
-    fun whenFeatureNameMatchesCookiesThenReturnTrue() {
+    fun `store - feature name matches cookies - returns true`() {
         TestCase.assertTrue(testee.store(FEATURE_NAME_VALUE, EMPTY_JSON_STRING))
     }
 
     @Test
-    fun whenFeatureNameMatchesCookiesAndIsEnabledThenStoreFeatureEnabled() {
+    fun `store - feature name matches cookies and is enabled - store feature enabled`() {
         val jsonString = FileUtilities.loadText(CookiesFeaturePluginTest::class.java.classLoader!!, "json/cookies.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -67,7 +67,7 @@ class CookiesFeaturePluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesCookiesAndIsNotEnabledThenStoreFeatureDisabled() {
+    fun `store - feature name matches cookies and is not enabled - store feature disabled`() {
         val jsonString = FileUtilities.loadText(
             CookiesFeaturePluginTest::class.java.classLoader!!,
             "json/cookies_disabled.json",
@@ -79,7 +79,7 @@ class CookiesFeaturePluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesCookiesAndHasMinSupportedVersionThenStoreMinSupportedVersion() {
+    fun `store - feature name matches cookies and has min supported version - stores min supported version`() {
         val jsonString = FileUtilities.loadText(CookiesFeaturePluginTest::class.java.classLoader!!, "json/cookies_min_supported_version.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -88,7 +88,7 @@ class CookiesFeaturePluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesCookiesThenUpdateAllExistingValues() {
+    fun `whenFeatureNameMatchesCookies - update all existing values`() {
         val jsonString = FileUtilities.loadText(CookiesFeaturePluginTest::class.java.classLoader!!, "json/cookies.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)

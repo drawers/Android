@@ -75,7 +75,7 @@ internal class FireButtonViewModelTest {
     }
 
     @Test
-    fun whenInitialisedThenViewStateEmittedWithDefaultValues() = runTest {
+    fun `initialise - view state emitted with default values`() = runTest {
         whenever(mockAppSettingsDataStore.selectedFireAnimation).thenReturn(FireAnimation.HeroFire)
         val expectedClearData = FireButtonViewModel.AutomaticallyClearData(
             clearWhatOption = ClearWhatOption.CLEAR_NONE,
@@ -94,7 +94,7 @@ internal class FireButtonViewModelTest {
     }
 
     @Test
-    fun whenOnFireproofWebsitesClickedThenEmitCommandLaunchFireproofWebsitesAndPixelFired() = runTest {
+    fun `onFireproofWebsitesClicked - emit command launch fireproof websites and pixel fired`() = runTest {
         testee.commands().test {
             testee.onFireproofWebsitesClicked()
 
@@ -106,7 +106,7 @@ internal class FireButtonViewModelTest {
     }
 
     @Test
-    fun whenOnAutomaticallyClearWhatClickedEmitCommandShowClearWhatDialogAndPixelFired() = runTest {
+    fun `onAutomaticallyClearWhatClicked - emit command show clear what dialog and pixel fired`() = runTest {
         testee.commands().test {
             testee.onAutomaticallyClearWhatClicked()
 
@@ -118,7 +118,7 @@ internal class FireButtonViewModelTest {
     }
 
     @Test
-    fun whenOnAutomaticallyClearWhenClickedEmitCommandShowClearWhenDialogAndPixelFired() = runTest {
+    fun `onAutomaticallyClearWhenClicked - emit command show clear when dialog and pixel fired`() = runTest {
         testee.commands().test {
             testee.onAutomaticallyClearWhenClicked()
 
@@ -130,7 +130,7 @@ internal class FireButtonViewModelTest {
     }
 
     @Test
-    fun whenOnAutomaticallyWhatOptionSelectedWithNewOptionThenDataStoreIsUpdatedAndPixelSent() = runTest {
+    fun `onAutomaticallyWhatOptionSelected - data store updated and pixel sent`() = runTest {
         whenever(mockAppSettingsDataStore.isCurrentlySelected(ClearWhatOption.CLEAR_TABS_AND_DATA)).thenReturn(false)
 
         testee.commands().test {
@@ -142,7 +142,7 @@ internal class FireButtonViewModelTest {
     }
 
     @Test
-    fun whenOnAutomaticallyWhatOptionSelectedWithSameOptionThenDataStoreIsNotUpdatedAndPixelNotSent() = runTest {
+    fun `onAutomaticallyWhatOptionSelected - same option selected - data store not updated and pixel not sent`() = runTest {
         whenever(mockAppSettingsDataStore.isCurrentlySelected(ClearWhatOption.CLEAR_NONE)).thenReturn(true)
 
         testee.commands().test {
@@ -154,7 +154,7 @@ internal class FireButtonViewModelTest {
     }
 
     @Test
-    fun whenOnAutomaticallyWhenOptionSelectedWithNewOptionThenDataStoreIsUpdatedAndPixelSent() = runTest {
+    fun `onAutomaticallyWhenOptionSelected - data store updated and pixel sent`() = runTest {
         whenever(mockAppSettingsDataStore.isCurrentlySelected(ClearWhenOption.APP_EXIT_ONLY)).thenReturn(false)
 
         testee.commands().test {
@@ -166,7 +166,7 @@ internal class FireButtonViewModelTest {
     }
 
     @Test
-    fun whenOnAutomaticallyWhenOptionSelectedWithSameOptionThenDataStoreIsNotUpdatedAndPixelNotSent() = runTest {
+    fun `onAutomaticallyWhenOptionSelected - same option selected - data store not updated and pixel not sent`() = runTest {
         whenever(mockAppSettingsDataStore.isCurrentlySelected(ClearWhenOption.APP_EXIT_ONLY)).thenReturn(true)
 
         testee.commands().test {
@@ -178,7 +178,7 @@ internal class FireButtonViewModelTest {
     }
 
     @Test
-    fun whenFireAnimationSettingClickedThenCommandIsLaunchFireAnimationSettings() = runTest {
+    fun `commands - fire animation setting clicked - launch fire animation settings`() = runTest {
         testee.commands().test {
             testee.userRequestedToChangeFireAnimation()
 
@@ -189,14 +189,14 @@ internal class FireButtonViewModelTest {
     }
 
     @Test
-    fun whenFireAnimationSettingClickedThenPixelSent() {
+    fun `whenFireAnimationSettingClicked - pixel sent`() {
         testee.userRequestedToChangeFireAnimation()
 
         verify(mockPixel).fire(AppPixelName.FIRE_ANIMATION_SETTINGS_OPENED)
     }
 
     @Test
-    fun whenNewFireAnimationSelectedThenUpdateViewState() = runTest {
+    fun `onFireAnimationSelected - view state updated`() = runTest {
         val expectedAnimation = FireAnimation.HeroWater
 
         testee.viewState().test {
@@ -211,21 +211,21 @@ internal class FireButtonViewModelTest {
     }
 
     @Test
-    fun whenNewFireAnimationSelectedThenStoreNewSelectedAnimation() {
+    fun `onFireAnimationSelected - store new selected animation`() {
         testee.onFireAnimationSelected(FireAnimation.HeroWater)
 
         verify(mockAppSettingsDataStore).selectedFireAnimation = FireAnimation.HeroWater
     }
 
     @Test
-    fun whenNewFireAnimationSelectedThenPreLoadAnimation() {
+    fun `onFireAnimationSelected - preloads selected animation`() {
         testee.onFireAnimationSelected(FireAnimation.HeroWater)
 
         verify(mockFireAnimationLoader).preloadSelectedAnimation()
     }
 
     @Test
-    fun whenNewFireAnimationSelectedThenPixelSent() {
+    fun `onFireAnimationSelected - pixel sent`() {
         testee.onFireAnimationSelected(FireAnimation.HeroWater)
 
         verify(mockPixel).fire(
@@ -235,7 +235,7 @@ internal class FireButtonViewModelTest {
     }
 
     @Test
-    fun whenSameFireAnimationSelectedThenDoNotSendPixel() {
+    fun `onFireAnimationSelected - same fire animation selected - do not send pixel`() {
         givenSelectedFireAnimation(FireAnimation.HeroFire)
 
         testee.onFireAnimationSelected(FireAnimation.HeroFire)

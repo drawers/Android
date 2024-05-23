@@ -42,7 +42,7 @@ class RuntimeChecksRepositoryTest {
     }
 
     @Test
-    fun whenInitializedAndDoesNotHaveStoredValueThenLoadEmptyJsonToMemory() =
+    fun `getRuntimeChecks - initialized and no stored value - load empty json to memory`() =
         runTest {
             testee =
                 RealRuntimeChecksRepository(
@@ -57,7 +57,7 @@ class RuntimeChecksRepositoryTest {
         }
 
     @Test
-    fun whenInitializedAndHasStoredValueThenLoadStoredJsonToMemory() =
+    fun `load stored json to memory - initialized and has stored value`() =
         runTest {
             whenever(mockRuntimeChecksDao.get()).thenReturn(runtimeChecksEntity)
             testee =
@@ -73,7 +73,7 @@ class RuntimeChecksRepositoryTest {
         }
 
     @Test
-    fun whenUpdateAllThenUpdateAllCalled() =
+    fun `updateAll - update all called`() =
         runTest {
             testee =
                 RealRuntimeChecksRepository(

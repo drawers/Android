@@ -90,12 +90,12 @@ class AppTPCPUMonitorTest {
     }
 
     @Test
-    fun whenConfigEnabledStartWorker() {
+    fun `whenConfigEnabled - start worker`() {
         assertStartWorker()
     }
 
     @Test
-    fun whenVPNStoppedStopWorker() {
+    fun `onVpnStopped - stop worker`() {
         assertStartWorker()
 
         cpuMonitor.onVpnStopped(coroutineRule.testScope, SELF_STOP())
@@ -123,7 +123,7 @@ class AppTPCPUMonitorTest {
     }
 
     @Test
-    fun whenCPUBelow5NoAlert() {
+    fun `assertStartWorker - cpu below 5 no alert`() {
         whenever(mockCPUUsageReader.readCPUUsage()).thenReturn(2.0)
 
         assertStartWorker()

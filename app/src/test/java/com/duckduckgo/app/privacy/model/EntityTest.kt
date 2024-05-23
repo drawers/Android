@@ -25,12 +25,12 @@ import org.junit.Test
 class EntityTest {
 
     @Test
-    fun whenEntityPrevalenceIsGreaterThanMajorNetworkPrevalenceThenIsMajorIsTrue() {
+    fun `whenEntityPrevalenceIsGreaterThanMajorNetworkPrevalence - is major true`() {
         assertTrue(TdsEntity("", "", MAJOR_NETWORK_PREVALENCE + 1).isMajor)
     }
 
     @Test
-    fun whenEntityPrevalenceLessOrEqualThanMajorNetworkPrevalenceThenIsMajorIsFalse() {
+    fun `whenEntityPrevalenceLessOrEqualThanMajorNetworkPrevalence - is major false`() {
         assertFalse(TdsEntity("", "", MAJOR_NETWORK_PREVALENCE).isMajor)
     }
 }

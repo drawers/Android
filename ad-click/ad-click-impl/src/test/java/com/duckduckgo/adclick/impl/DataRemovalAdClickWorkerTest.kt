@@ -44,7 +44,7 @@ class DataRemovalAdClickWorkerTest {
     }
 
     @Test
-    fun whenDoWorkThenCallClearAllExpiredAsyncAndReturnSuccess() =
+    fun `doWork - clear all expired async - success`() =
         runTest {
             val worker = TestListenableWorkerBuilder<DataRemovalAdClickWorker>(context = context).build()
             worker.adClickManager = mockAdClickManager

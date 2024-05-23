@@ -53,19 +53,19 @@ class DefaultAutofillEngagementRepositoryTest {
     )
 
     @Test
-    fun whenAutofilledButNotSearchedThenActiveUserPixelNotSent() = runTest {
+    fun `recordAutofilled - active user pixel not sent`() = runTest {
         testee.recordAutofilledToday()
         AUTOFILL_ENGAGEMENT_ACTIVE_USER.verifyNotSent()
     }
 
     @Test
-    fun whenSearchedButNotNotAutofilledThenActiveUserPixelNotSent() = runTest {
+    fun `recordSearchedToday - active user pixel not sent`() = runTest {
         testee.recordSearchedToday()
         AUTOFILL_ENGAGEMENT_ACTIVE_USER.verifyNotSent()
     }
 
     @Test
-    fun whenSearchedAndAutofilledThenActiveUserPixelSent() = runTest {
+    fun `recordSearchedAndAutofilled - active user pixel sent`() = runTest {
         testee.recordSearchedToday()
         testee.recordAutofilledToday()
         AUTOFILL_ENGAGEMENT_ACTIVE_USER.verifySent()

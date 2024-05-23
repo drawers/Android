@@ -69,7 +69,7 @@ class EnqueuedPixelWorkerTest {
     }
 
     @Test
-    fun whenOnCreateAndPendingPixelCountClearDataThenScheduleWorkerToFireMf() {
+    fun `onCreate - pending pixel count clear data - schedule worker to fire MF`() {
         whenever(unsentForgetAllPixelStore.pendingPixelCountClearData).thenReturn(2)
         enqueuedPixelWorker.onCreate(lifecycleOwner)
 
@@ -81,7 +81,7 @@ class EnqueuedPixelWorkerTest {
     }
 
     @Test
-    fun whenOnCreateAndPendingPixelCountClearDataIsZeroThenDoNotFireMf() {
+    fun `onCreate - pending pixel count clear data zero - do not fire mf`() {
         whenever(unsentForgetAllPixelStore.pendingPixelCountClearData).thenReturn(0)
         enqueuedPixelWorker.onCreate(lifecycleOwner)
 
@@ -89,7 +89,7 @@ class EnqueuedPixelWorkerTest {
     }
 
     @Test
-    fun whenOnStartAndLaunchByFireActionThenDoNotSendAppLaunchPixel() {
+    fun `onStart - launch by fire action - do not send app launch pixel`() {
         whenever(unsentForgetAllPixelStore.pendingPixelCountClearData).thenReturn(1)
         whenever(unsentForgetAllPixelStore.lastClearTimestamp).thenReturn(System.currentTimeMillis())
 
@@ -100,7 +100,7 @@ class EnqueuedPixelWorkerTest {
     }
 
     @Test
-    fun whenOnStartAndAppLaunchThenSendAppLaunchPixel() {
+    fun `onStart - app launch - send app launch pixel`() {
         whenever(unsentForgetAllPixelStore.pendingPixelCountClearData).thenReturn(1)
         whenever(webViewVersionProvider.getMajorVersion()).thenReturn("91")
         whenever(defaultBrowserDetector.isDefaultBrowser()).thenReturn(false)
@@ -118,7 +118,7 @@ class EnqueuedPixelWorkerTest {
     }
 
     @Test
-    fun whenOnStartAndInCustomTabAndAppLaunchThenDoNotSendAppLaunchPixel() {
+    fun `onStart - in custom tab and app launch - do not send app launch pixel`() {
         whenever(customTabDetector.isCustomTab()).thenReturn(true)
         whenever(unsentForgetAllPixelStore.pendingPixelCountClearData).thenReturn(1)
         whenever(webViewVersionProvider.getMajorVersion()).thenReturn("91")
@@ -137,7 +137,7 @@ class EnqueuedPixelWorkerTest {
     }
 
     @Test
-    fun whenOnStartAndAppLaunchAndShouldCollectOnAppLaunchIsTrueThenSendAppLaunchPixelWithFullWebViewVersion() {
+    fun `onStart - app launch - send app launch pixel with full web view version`() {
         whenever(unsentForgetAllPixelStore.pendingPixelCountClearData).thenReturn(1)
         whenever(webViewVersionProvider.getMajorVersion()).thenReturn("91")
         whenever(webViewVersionProvider.getFullVersion()).thenReturn("91.0.4472.101")
@@ -158,7 +158,7 @@ class EnqueuedPixelWorkerTest {
     }
 
     @Test
-    fun whenOnStartAndAppLaunchAndShouldCollectOnAppLaunchIsFalseThenNeverSendAppLaunchPixelWithFullWebViewVersion() {
+    fun `onStart - should collect on app launch is false - never send app launch pixel with full web view version`() {
         whenever(unsentForgetAllPixelStore.pendingPixelCountClearData).thenReturn(1)
         whenever(webViewVersionProvider.getMajorVersion()).thenReturn("91")
         whenever(webViewVersionProvider.getFullVersion()).thenReturn("91.0.4472.101")
@@ -179,7 +179,7 @@ class EnqueuedPixelWorkerTest {
     }
 
     @Test
-    fun whenOnStartAndLaunchByFireActionFollowedByAppLaunchThenSendOneAppLaunchPixel() {
+    fun `onStart - launch by fire action followed by app launch - send one app launch pixel`() {
         whenever(unsentForgetAllPixelStore.pendingPixelCountClearData).thenReturn(1)
         whenever(unsentForgetAllPixelStore.lastClearTimestamp).thenReturn(System.currentTimeMillis())
         whenever(webViewVersionProvider.getMajorVersion()).thenReturn("91")
@@ -199,7 +199,7 @@ class EnqueuedPixelWorkerTest {
     }
 
     @Test
-    fun whenSendingAppLaunchPixelThenIncludePrivacyProtectionsPopupExperimentParams() {
+    fun `whenSendingAppLaunchPixel - include privacy protections popup experiment params`() {
         whenever(unsentForgetAllPixelStore.pendingPixelCountClearData).thenReturn(1)
         whenever(webViewVersionProvider.getMajorVersion()).thenReturn("91")
         whenever(defaultBrowserDetector.isDefaultBrowser()).thenReturn(false)

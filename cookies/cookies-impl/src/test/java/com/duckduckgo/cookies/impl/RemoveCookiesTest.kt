@@ -31,7 +31,7 @@ class RemoveCookiesTest {
     private val removeCookies = RemoveCookies(cookieManagerRemover, selectiveCookieRemover)
 
     @Test
-    fun whenSelectiveCookieRemoverSucceedsThenNoMoreInteractions() = runTest {
+    fun `selectiveCookieRemover - succeeds - no more interactions`() = runTest {
         selectiveCookieRemover.succeeds()
 
         removeCookies.removeCookies()
@@ -40,7 +40,7 @@ class RemoveCookiesTest {
     }
 
     @Test
-    fun whenSelectiveCookieRemoverFailsThenFallbackToCookieManagerRemover() = runTest {
+    fun `whenSelectiveCookieRemoverFails - fallback to cookie manager remover`() = runTest {
         selectiveCookieRemover.fails()
 
         removeCookies.removeCookies()

@@ -22,21 +22,21 @@ import org.junit.Test
 class FireproofWebsiteEntityKtTest {
 
     @Test
-    fun whenDomainStartsWithWWWThenDropPrefix() {
+    fun `whenDomainStartsWithWWW - drop prefix`() {
         val fireproofWebsiteEntity = FireproofWebsiteEntity("www.example.com")
         val website = fireproofWebsiteEntity.website()
         assertEquals("example.com", website)
     }
 
     @Test
-    fun whenDomainStartsWithWWWUppercaseThenDropPrefix() {
+    fun `website - domain starts with www uppercase - drops prefix`() {
         val fireproofWebsiteEntity = FireproofWebsiteEntity("WWW.example.com")
         val website = fireproofWebsiteEntity.website()
         assertEquals("example.com", website)
     }
 
     @Test
-    fun whenDomainDoesNotStartWithWWWThenDomainUnchanged() {
+    fun `website - domain unchanged`() {
         val fireproofWebsiteEntity = FireproofWebsiteEntity("mobile.example.com")
         val website = fireproofWebsiteEntity.website()
         assertEquals("mobile.example.com", website)

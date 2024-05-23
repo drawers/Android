@@ -97,36 +97,6 @@ class TestFunctionNameDetector : Detector(), SourceCodeScanner {
         )
     }
 
-    private fun String.backticksErrorOrNull(): Error? {
-        if (this.startsWith('`') && this.endsWith('`')) return null
-        return Error.BACKTICKS
-    }
-
-    private fun String.partsErrorOrNull(): Error? {
-        val splits = this.split(" - ")
-        return if (splits.size < 2) Error.PARTS else null
-    }
-
-    private fun String.capitalizationErrorOrNull(): Error? {
-        val trimmed = trim('`')
-        val splits = trimmed.split(" - ")
-        return if (splits.all {
-                it.firstOrNull()?.isUpperCase() == true
-            }) {
-            Error.CAPITALIZATION
-        } else {
-            null
-        }
-    }
-
-    enum class Error(val message: String) {
-        BACKTICKS("Test name should be in backticks."),
-        PARTS("Test name should have two or three parts separated by a spaced hyphen in the form `functionUnderTest - state - expected outcome`"),
-        CAPITALIZATION("Test name parts should not be capitalized")
-    }
-
-    private fun JavaContext.isAndroidTest() = Path("androidTest") in file.toPath()
-
     private fun getLintFix(
         method: KotlinUMethod,
         context: JavaContext
@@ -163,8 +133,45 @@ class TestFunctionNameDetector : Detector(), SourceCodeScanner {
             return null
         }
 
-        return LintFix.create().name("Use name suggested by language model").replace().all().with(sanitizedFunctionName).autoFix().build()
+        return LintFix.create().name("Use name suggested by language model")
+            .replace()
+            .all()
+            .with(sanitizedFunctionName)
+            .autoFix()
+            .build()
     }
+
+    private fun String.backticksErrorOrNull(): Error? {
+        if (this.startsWith('`') && this.endsWith('`')) return null
+        return Error.BACKTICKS
+    }
+
+    private fun String.partsErrorOrNull(): Error? {
+        val splits = this.split(" - ")
+        return if (splits.size < 2) Error.PARTS else null
+    }
+
+    private fun String.capitalizationErrorOrNull(): Error? {
+        val trimmed = trim('`')
+        val splits = trimmed.split(" - ")
+        return if (splits.all {
+                it.firstOrNull()?.isUpperCase() == true
+            }) {
+            Error.CAPITALIZATION
+        } else {
+            null
+        }
+    }
+
+    enum class Error(val message: String) {
+        BACKTICKS("Test name should be in backticks."),
+        PARTS("Test name should have two or three parts separated by a spaced hyphen in the form `functionUnderTest - state - expected outcome`"),
+        CAPITALIZATION("Test name parts should not be capitalized")
+    }
+
+    private fun JavaContext.isAndroidTest() = Path("androidTest") in file.toPath()
+
+
 
     companion object {
 

@@ -72,7 +72,7 @@ class RealContentScopeScriptsTest {
     }
 
     @Test
-    fun whenGetScriptWhenVariablesAreCachedAndNoChangesThenUseCachedVariables() {
+    fun `getScript - variables cached and no changes - use cached variables`() {
         var js = testee.getScript(null)
         verifyJsScript(js)
 
@@ -85,7 +85,7 @@ class RealContentScopeScriptsTest {
     }
 
     @Test
-    fun whenGetScriptAndVariablesAreCachedAndAllowListChangedThenUseNewAllowListValue() {
+    fun `getScript - allow list changed - use new allow list value`() {
         var js = testee.getScript(null)
         verifyJsScript(js)
 
@@ -111,7 +111,7 @@ class RealContentScopeScriptsTest {
     }
 
     @Test
-    fun whenGetScriptAndVariablesAreCachedAndGpcChangedThenUseNewGpcValue() {
+    fun `getScript - gpc changed - use new gpc value`() {
         var js = testee.getScript(null)
         verifyJsScript(js)
 
@@ -137,7 +137,7 @@ class RealContentScopeScriptsTest {
     }
 
     @Test
-    fun whenGetScriptAndVariablesAreCachedAndConfigChangedThenUseNewConfigValue() {
+    fun `getScript - config changed - use new config value`() {
         var js = testee.getScript(null)
         verifyJsScript(js)
 
@@ -163,7 +163,7 @@ class RealContentScopeScriptsTest {
     }
 
     @Test
-    fun whenGetScriptAndVariablesAreCachedAndUnprotectedTemporaryChangedThenUseNewUnprotectedTemporaryValue() {
+    fun `getScript - script and variables cached and unprotected temporary changed - use new unprotected temporary value`() {
         var js = testee.getScript(null)
         verifyJsScript(js)
 
@@ -188,7 +188,7 @@ class RealContentScopeScriptsTest {
     }
 
     @Test
-    fun whenGetScriptAndVariablesAreCachedAndDesktopModeChangedThenUseNewDesktopModeValue() {
+    fun `getScript - desktop mode changed - use new desktop mode value`() {
         var js = testee.getScript(null)
         verifyJsScript(js)
 
@@ -212,19 +212,19 @@ class RealContentScopeScriptsTest {
     }
 
     @Test
-    fun whenContentScopeScriptsIsEnabledThenReturnTrue() {
+    fun `isEnabled - content scope scripts enabled - true`() {
         whenever(mockContentScopeScriptsFeature.self()).thenReturn(EnabledToggle())
         assertTrue(testee.isEnabled())
     }
 
     @Test
-    fun whenContentScopeScriptsIsDisabledThenReturnFalse() {
+    fun `self - content scope scripts disabled - returns false`() {
         whenever(mockContentScopeScriptsFeature.self()).thenReturn(DisabledToggle())
         assertFalse(testee.isEnabled())
     }
 
     @Test
-    fun whenGetScriptThenPopulateMessagingParameters() {
+    fun `getScript - populate messaging parameters`() {
         val js = testee.getScript(null)
         verifyJsScript(js)
         verify(mockContentScopeJsReader).getContentScopeJS()

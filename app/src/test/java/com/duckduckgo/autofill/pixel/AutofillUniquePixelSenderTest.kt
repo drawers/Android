@@ -58,37 +58,37 @@ class AutofillUniquePixelSenderTest {
     }
 
     @Test
-    fun whenSharedPreferencesHasNoValueThenReturnsFalse() = runTest {
+    fun `hasDeterminedCapabilities - shared preferences has no value - returns false`() = runTest {
         configureSharePreferencesMissingKey()
         assertFalse(testee.hasDeterminedCapabilities())
     }
 
     @Test
-    fun whenPixelSentThenSharedPreferencesRecordsPixelWasSentBefore() = runTest {
+    fun `sendCapabilitiesPixel - shared preferences records pixel was sent before`() = runTest {
         testee.sendCapabilitiesPixel(secureStorageAvailable = true, deviceAuthAvailable = true)
         assertTrue(testee.hasDeterminedCapabilities())
     }
 
     @Test
-    fun whenSecureStorageIsAvailableAndDeviceAuthEnabledThenSendCorrectPixel() {
+    fun `sendCapabilitiesPixel - secure storage available and device auth enabled - send correct pixel`() {
         testee.sendCapabilitiesPixel(secureStorageAvailable = true, deviceAuthAvailable = true)
         verify(mockPixel).fire(AUTOFILL_DEVICE_CAPABILITY_CAPABLE)
     }
 
     @Test
-    fun whenSecureStorageIsAvailableButDeviceAuthDisabledThenSendCorrectPixel() {
+    fun `sendCapabilitiesPixel - secure storage available but device auth disabled - send correct pixel`() {
         testee.sendCapabilitiesPixel(secureStorageAvailable = true, deviceAuthAvailable = false)
         verify(mockPixel).fire(AUTOFILL_DEVICE_CAPABILITY_DEVICE_AUTH_DISABLED)
     }
 
     @Test
-    fun whenDeviceAuthEnabledButSecureStorageIsNotAvailableThenSendCorrectPixel() {
+    fun `sendCapabilitiesPixel - device auth enabled but secure storage is not available - send correct pixel`() {
         testee.sendCapabilitiesPixel(secureStorageAvailable = false, deviceAuthAvailable = true)
         verify(mockPixel).fire(AUTOFILL_DEVICE_CAPABILITY_SECURE_STORAGE_UNAVAILABLE)
     }
 
     @Test
-    fun whenDeviceAuthDisabledAndSecureStorageIsNotAvailableThenSendCorrectPixel() {
+    fun `sendCapabilitiesPixel - device auth disabled and secure storage not available - send correct pixel`() {
         testee.sendCapabilitiesPixel(secureStorageAvailable = false, deviceAuthAvailable = false)
         verify(mockPixel).fire(AUTOFILL_DEVICE_CAPABILITY_SECURE_STORAGE_UNAVAILABLE_AND_DEVICE_AUTH_DISABLED)
     }

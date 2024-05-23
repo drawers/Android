@@ -73,7 +73,7 @@ class AppTPCompanyTrackersViewModelTest {
 
     @Ignore
     @Test
-    fun whenLoadsDataReturnsTrackersForAppFromDate() = runBlocking {
+    fun `loadData - state - returns trackers for app from date`() = runBlocking {
         val date = "2020-10-21"
         val packageName = "com.duckduckgo.android"
 
@@ -88,7 +88,7 @@ class AppTPCompanyTrackersViewModelTest {
     }
 
     @Test
-    fun whenAppIsUnprotectedThroughNetpThenReturnViewStateWithtoggleUncheckedDisabledAndShowCorrectBanner() = runTest {
+    fun `loadData - app is unprotected through netp - show correct banner`() = runTest {
         val date = "2020-10-21"
         val packageName = "com.duckduckgo.android"
 
@@ -113,7 +113,7 @@ class AppTPCompanyTrackersViewModelTest {
     }
 
     @Test
-    fun whenAppIsProtectedThenReturnViewStateWithtoggleCheckedEnabledAndShowCorrectBanner() = runTest {
+    fun `loadData - app protected - returns view state with toggle checked enabled and show correct banner`() = runTest {
         val date = "2020-10-21"
         val packageName = "com.duckduckgo.android"
 
@@ -138,7 +138,7 @@ class AppTPCompanyTrackersViewModelTest {
     }
 
     @Test
-    fun whenAppIsUnProtectedThenReturnViewStateWithtoggleUnCheckedEnabledAndShowCorrectBanner() = runTest {
+    fun `loadData - app unprotected - return view state with toggle unchecked enabled and show correct banner`() = runTest {
         val date = "2020-10-21"
         val packageName = "com.duckduckgo.android"
 

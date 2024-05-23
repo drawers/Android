@@ -40,19 +40,19 @@ class DrmPluginTest {
     }
 
     @Test
-    fun whenFeatureNameDoesNotMatchEmeThenReturnFalse() {
+    fun `store - feature name does not match EME - returns false`() {
         PrivacyFeatureName.values().filter { it != FEATURE_NAME }.forEach {
             assertFalse(testee.store(it.value, EMPTY_JSON_STRING))
         }
     }
 
     @Test
-    fun whenFeatureNameMatchesEmeThenReturnTrue() {
+    fun `store - feature name matches eme - returns true`() {
         assertTrue(testee.store(FEATURE_NAME_VALUE, EMPTY_JSON_STRING))
     }
 
     @Test
-    fun whenFeatureNameMatchesEmeAndIsEnabledThenStoreFeatureEnabled() {
+    fun `store - feature name matches EME and is enabled - store feature enabled`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/drm.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -61,7 +61,7 @@ class DrmPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesEmeAndIsNotEnabledThenStoreFeatureDisabled() {
+    fun `store - feature name matches eme and is not enabled - store feature disabled`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/drm_disabled.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -70,7 +70,7 @@ class DrmPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesEmeAndHasMinSupportedVersionThenStoreMinSupportedVersion() {
+    fun `store - feature name matches eme and has min supported version - stores min supported version`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/drm_min_supported_version.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -79,7 +79,7 @@ class DrmPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesEmeThenUpdateAllExistingExceptions() {
+    fun `store - eme feature name matches - update all existing exceptions`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/drm.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)

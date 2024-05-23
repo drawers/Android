@@ -65,19 +65,19 @@ class GlobalPrivacyControlViewModelTest {
     }
 
     @Test
-    fun whenViewModelCreateThenInitialisedWithDefaultViewState() {
+    fun `whenViewModelCreate - initialised with default view state`() {
         val defaultViewState = GlobalPrivacyControlViewModel.ViewState()
         verify(mockViewStateObserver, atLeastOnce()).onChanged(viewStateCaptor.capture())
         assertEquals(defaultViewState, viewStateCaptor.value)
     }
 
     @Test
-    fun whenViewModelCreateThenPixelSent() {
+    fun `viewModelCreate - pixel sent`() {
         verify(mockPixel).fire(AppPixelName.SETTINGS_DO_NOT_SELL_SHOWN)
     }
 
     @Test
-    fun whenOnLearnMoreSelectedThenOpenLearnMoreCommandIssuedWithCorrectUrl() {
+    fun `onLearnMoreSelected - open learn more command issued with correct url`() {
         testee.onLearnMoreSelected()
 
         verify(mockCommandObserver, atLeastOnce()).onChanged(commandCaptor.capture())
@@ -85,35 +85,35 @@ class GlobalPrivacyControlViewModelTest {
     }
 
     @Test
-    fun whenOnUserToggleGlobalPrivacyControlThenDoNotSellOnPixelSent() {
+    fun `onUserToggleGlobalPrivacyControl - do not sell on pixel sent`() {
         testee.onUserToggleGlobalPrivacyControl(true)
 
         verify(mockPixel).fire(AppPixelName.SETTINGS_DO_NOT_SELL_ON)
     }
 
     @Test
-    fun whenOnUserToggleGlobalPrivacyControlThenDoNotSellOffPixelSent() {
+    fun `onUserToggleGlobalPrivacyControl - do not sell off pixel sent`() {
         testee.onUserToggleGlobalPrivacyControl(false)
 
         verify(mockPixel).fire(AppPixelName.SETTINGS_DO_NOT_SELL_OFF)
     }
 
     @Test
-    fun whenOnUserToggleGlobalPrivacyControlSwitchedOnThenValueStoredInSettings() {
+    fun `onUserToggleGlobalPrivacyControl - gpc enabled`() {
         testee.onUserToggleGlobalPrivacyControl(true)
 
         verify(mockGpc).enableGpc()
     }
 
     @Test
-    fun whenOnUserToggleGlobalPrivacyControlSwitchedOffThenValueStoredInSettings() {
+    fun `onUserToggleGlobalPrivacyControl - gpc disabled`() {
         testee.onUserToggleGlobalPrivacyControl(false)
 
         verify(mockGpc).disableGpc()
     }
 
     @Test
-    fun whenOnUserToggleGlobalPrivacyControlSwitchedOnThenViewStateUpdatedToTrue() {
+    fun `onUserToggleGlobalPrivacyControl - view state updated to true`() {
         testee.onUserToggleGlobalPrivacyControl(true)
 
         verify(mockViewStateObserver, atLeastOnce()).onChanged(viewStateCaptor.capture())
@@ -121,7 +121,7 @@ class GlobalPrivacyControlViewModelTest {
     }
 
     @Test
-    fun whenOnUserToggleGlobalPrivacyControlSwitchedOnThenViewStateUpdatedToFalse() {
+    fun `onUserToggleGlobalPrivacyControl - view state updated to false`() {
         testee.onUserToggleGlobalPrivacyControl(false)
 
         verify(mockViewStateObserver, atLeastOnce()).onChanged(viewStateCaptor.capture())

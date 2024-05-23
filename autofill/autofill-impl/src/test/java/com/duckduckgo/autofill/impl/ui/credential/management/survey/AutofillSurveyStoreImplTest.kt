@@ -22,24 +22,24 @@ class AutofillSurveyStoreImplTest {
     )
 
     @Test
-    fun whenSurveyIdNeverRecordedBeforeThenReturnsFalse() = runTest {
+    fun `hasSurveyBeenTaken - survey id never recorded before - returns false`() = runTest {
         assertFalse(testee.hasSurveyBeenTaken("surveyId-1"))
     }
 
     @Test
-    fun whenAnotherSurveyIdWasRecordedButNotThisOneThenReturnsFalse() = runTest {
+    fun `recordSurveyWasShown - has survey been taken - returns false`() = runTest {
         testee.recordSurveyWasShown("surveyId-1")
         assertFalse(testee.hasSurveyBeenTaken("surveyId-2"))
     }
 
     @Test
-    fun whenSurveyRecordedBeforeThenReturnsTrue() = runTest {
+    fun `recordSurvey - has survey been taken`() = runTest {
         testee.recordSurveyWasShown("surveyId-1")
         assertTrue(testee.hasSurveyBeenTaken("surveyId-1"))
     }
 
     @Test
-    fun whenMultipleSurveysRecordedAndQueriedOneInListThenReturnsTrue() = runTest {
+    fun `recordSurveys - has survey been taken - true`() = runTest {
         testee.recordSurveyWasShown("surveyId-1")
         testee.recordSurveyWasShown("surveyId-2")
         testee.recordSurveyWasShown("surveyId-3")

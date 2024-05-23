@@ -34,7 +34,7 @@ class SyncShowRecoveryCodeViewModelTest {
     )
 
     @Test
-    fun whenNextClickedThenEmitFinishSetupCommand() = runTest {
+    fun `onDoneClicked - emit finish setup command`() = runTest {
         testee.onDoneClicked()
 
         testee.commands().test {

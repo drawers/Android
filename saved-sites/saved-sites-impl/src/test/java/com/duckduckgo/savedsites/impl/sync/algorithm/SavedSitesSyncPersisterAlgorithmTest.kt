@@ -82,7 +82,7 @@ class SavedSitesSyncPersisterAlgorithmTest {
     }
 
     @Test
-    fun whenProcessingEntriesWithDeduplicationStrategyThenDeduplicationPersisterIsUsed() {
+    fun `processEntries - deduplication strategy used`() {
         val rootFolder = BookmarkFolder(
             id = SavedSitesNames.BOOKMARKS_ROOT,
             name = SavedSitesNames.BOOKMARKS_NAME,
@@ -110,7 +110,7 @@ class SavedSitesSyncPersisterAlgorithmTest {
     }
 
     @Test
-    fun whenProcessingEntriesWithTimestampStrategyThenTimestampPersisterIsUsed() {
+    fun `processEntries - processing entries with timestamp strategy - uses timestamp persister`() {
         val rootFolder = BookmarkFolder(
             id = SavedSitesNames.BOOKMARKS_ROOT,
             name = SavedSitesNames.BOOKMARKS_NAME,
@@ -138,7 +138,7 @@ class SavedSitesSyncPersisterAlgorithmTest {
     }
 
     @Test
-    fun whenProcessingEntriesWithRemoteStrategyThenRemotePersisterIsUsed() {
+    fun `processEntries - remote strategy used - remote persister used`() {
         val rootFolder = BookmarkFolder(
             id = SavedSitesNames.BOOKMARKS_ROOT,
             name = SavedSitesNames.BOOKMARKS_NAME,
@@ -166,7 +166,7 @@ class SavedSitesSyncPersisterAlgorithmTest {
     }
 
     @Test
-    fun whenProcessingEntriesWithLocalStrategyThenLocalPersisterIsUsed() {
+    fun `processEntries - local strategy used - success`() {
         val rootFolder = BookmarkFolder(
             id = SavedSitesNames.BOOKMARKS_ROOT,
             name = SavedSitesNames.BOOKMARKS_NAME,
@@ -199,7 +199,7 @@ class SavedSitesSyncPersisterAlgorithmTest {
     }
 
     @Test
-    fun whenProcessingOrphansThenResultIsSuccess() {
+    fun `processOrphans - result is success`() {
         val folder = BookmarkFolder(id = "folder1", name = "name", lastModified = twoHoursAgo, parentId = SavedSitesNames.BOOKMARKS_ROOT)
         val bookmark = Bookmark(id = "bookmark1", title = "title", url = "foo.com", lastModified = twoHoursAgo, parentId = folder.id)
         val someEntries = SyncBookmarkEntries(

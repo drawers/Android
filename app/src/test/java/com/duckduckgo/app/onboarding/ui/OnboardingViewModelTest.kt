@@ -45,7 +45,7 @@ class OnboardingViewModelTest {
     }
 
     @Test
-    fun whenOnboardingDoneThenCompleteStage() = runTest {
+    fun `onOnboardingDone - stage completed - new stage`() = runTest {
         testee.onOnboardingDone()
         verify(userStageStore).stageCompleted(AppStage.NEW)
     }

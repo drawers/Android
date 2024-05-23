@@ -65,7 +65,7 @@ class NetworkProtectionAccessStateImplTest {
     }
 
     @Test
-    fun whenSubscriptionsEnabledAndVpnInactiveAndNetpDisabledThenReturnNotUnlocked() = runTest {
+    fun `getState - subscriptions enabled and vpn inactive and netp disabled - not unlocked`() = runTest {
         whenever(netpSubscriptionManager.getVpnStatus()).thenReturn(INACTIVE)
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
         testee.getState().also {
@@ -75,7 +75,7 @@ class NetworkProtectionAccessStateImplTest {
     }
 
     @Test
-    fun whenSubscriptionsEnabledAndVpnExpiredAndNetpDisabledThenReturnNotUnlocked() = runTest {
+    fun `getNetpState - subscriptions enabled and vpn expired and netp disabled - not unlocked`() = runTest {
         whenever(netpSubscriptionManager.getVpnStatus()).thenReturn(EXPIRED)
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
         testee.getState().also {
@@ -85,7 +85,7 @@ class NetworkProtectionAccessStateImplTest {
     }
 
     @Test
-    fun whenSubscriptionsEnabledAndVpnSignedOutAndNetpDisabledThenReturnNotUnlocked() = runTest {
+    fun `getState - subscriptions enabled and vpn signed out and netp disabled - not unlocked`() = runTest {
         whenever(netpSubscriptionManager.getVpnStatus()).thenReturn(SIGNED_OUT)
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
         testee.getState().also {
@@ -95,7 +95,7 @@ class NetworkProtectionAccessStateImplTest {
     }
 
     @Test
-    fun whenSubscriptionsEnabledAndVpnInactiveAndNetpEnabledThenReturnNotUnlockedAndResetVpnState() = runTest {
+    fun `getState - subscriptions enabled and vpn inactive and netp enabled - not unlocked and reset vpn state`() = runTest {
         whenever(netpSubscriptionManager.getVpnStatus()).thenReturn(INACTIVE)
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
         testee.getState().also {
@@ -105,7 +105,7 @@ class NetworkProtectionAccessStateImplTest {
     }
 
     @Test
-    fun whenSubscriptionsEnabledAndVpnExpiredAndNetpEnabledThenReturnNotUnlockedAndResetVpnState() = runTest {
+    fun `getNetpState - subscriptions enabled and vpn expired and netp enabled - not unlocked and reset vpn state`() = runTest {
         whenever(netpSubscriptionManager.getVpnStatus()).thenReturn(EXPIRED)
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
         testee.getState().also {
@@ -115,7 +115,7 @@ class NetworkProtectionAccessStateImplTest {
     }
 
     @Test
-    fun whenSubscriptionsEnabledAndVpnSignedOutAndNetpEnabledThenReturnNotUnlockedAndResetVpnState() = runTest {
+    fun `getNetpState - subscriptions enabled and vpn signed out and netp enabled - not unlocked and reset vpn state`() = runTest {
         whenever(netpSubscriptionManager.getVpnStatus()).thenReturn(SIGNED_OUT)
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
         testee.getState().also {
@@ -125,7 +125,7 @@ class NetworkProtectionAccessStateImplTest {
     }
 
     @Test
-    fun whenSubscriptionsEnabledAndVpnInactiveAndNetpDisabledThenReturnFlowEmitsNotUnlocked() = runTest {
+    fun `getStateFlow - subscriptions enabled - vpn inactive and netp disabled - not unlocked`() = runTest {
         whenever(netpSubscriptionManager.vpnStatus()).thenReturn(flowOf(INACTIVE))
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
         testee.getStateFlow().test {
@@ -135,7 +135,7 @@ class NetworkProtectionAccessStateImplTest {
     }
 
     @Test
-    fun whenSubscriptionsEnabledAndVpnExpiredAndNetpDisabledThenReturnFlowEmitsNotUnlocked() = runTest {
+    fun `getStateFlow - subscriptions enabled - vpn expired and netp disabled - not unlocked`() = runTest {
         whenever(netpSubscriptionManager.vpnStatus()).thenReturn(flowOf(EXPIRED))
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
         testee.getStateFlow().test {
@@ -145,7 +145,7 @@ class NetworkProtectionAccessStateImplTest {
     }
 
     @Test
-    fun whenSubscriptionsEnabledAndVpnSingedOutAndNetpDisabledThenReturnFlowEmitsNotUnlocked() = runTest {
+    fun `getStateFlow - subscriptions enabled - vpn signed out - netp disabled - returns not unlocked`() = runTest {
         whenever(netpSubscriptionManager.vpnStatus()).thenReturn(flowOf(SIGNED_OUT))
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
         testee.getStateFlow().test {
@@ -155,7 +155,7 @@ class NetworkProtectionAccessStateImplTest {
     }
 
     @Test
-    fun whenSubscriptionsEnabledAndVpnInactiveAndNetpEnabledThenReturnFlowEmitNotUnlockedAndResetVpnState() = runTest {
+    fun `getStateFlow - subscriptions enabled - vpn inactive and netp enabled - return flow emit not unlocked and reset vpn state`() = runTest {
         whenever(netpSubscriptionManager.vpnStatus()).thenReturn(flowOf(INACTIVE))
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
         testee.getStateFlow().test {
@@ -165,7 +165,7 @@ class NetworkProtectionAccessStateImplTest {
     }
 
     @Test
-    fun whenSubscriptionsEnabledAndVpnExpiredAndNetpEnabledThenReturnFlowEmitNotUnlockedAndResetVpnState() = runTest {
+    fun `getStateFlow - subscriptions enabled and vpn expired and netp enabled - return flow emit not unlocked and reset vpn state`() = runTest {
         whenever(netpSubscriptionManager.vpnStatus()).thenReturn(flowOf(EXPIRED))
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
         testee.getStateFlow().test {
@@ -175,7 +175,7 @@ class NetworkProtectionAccessStateImplTest {
     }
 
     @Test
-    fun whenSubscriptionsEnabledAndVpnSignedOutAndNetpEnabledThenReturnFlowEmitNotUnlockedAndResetVpnState() = runTest {
+    fun `getStateFlow - subscriptions enabled - vpn signed out and netp enabled - return flow emit not unlocked and reset vpn state`() = runTest {
         whenever(netpSubscriptionManager.vpnStatus()).thenReturn(flowOf(SIGNED_OUT))
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
         testee.getStateFlow().test {

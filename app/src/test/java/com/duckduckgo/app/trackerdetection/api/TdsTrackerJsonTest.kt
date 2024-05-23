@@ -34,14 +34,14 @@ class TdsTrackerJsonTest {
     private val jsonAdapter: JsonAdapter<TdsJson> = moshi.adapter(TdsJson::class.java)
 
     @Test
-    fun whenFormatIsValidThenTrackersAreCreated() {
+    fun `formatIsValid - track creation`() {
         val json = loadText(javaClass.classLoader!!, "json/tds_trackers.json")
         val trackers = jsonAdapter.fromJson(json)!!.jsonToTrackers()
         assertEquals(3, trackers.count())
     }
 
     @Test
-    fun whenFormatIsValidThenBasicElementsAreConvertedCorrectly() {
+    fun `formatIsValid - basic elements converted correctly`() {
         val json = loadText(javaClass.classLoader!!, "json/tds_trackers.json")
         val trackers = jsonAdapter.fromJson(json)!!.jsonToTrackers()
         val tracker = trackers["1dmp.io"]
@@ -49,7 +49,7 @@ class TdsTrackerJsonTest {
     }
 
     @Test
-    fun whenTrackerHasInvalidDefaultActionThenTrackerConvertedCorrectly() {
+    fun `whenTrackerHasInvalidDefaultAction - tracker converted correctly`() {
         val json = loadText(javaClass.classLoader!!, "json/tds_trackers_action_invalid.json")
         val jsonTrackers = jsonAdapter.fromJson(json)!!
         val trackers = jsonTrackers.jsonToTrackers()
@@ -58,7 +58,7 @@ class TdsTrackerJsonTest {
     }
 
     @Test
-    fun whenTrackerIsMissingDefaultActionThenTrackerNotCreated() {
+    fun `whenTrackerIsMissingDefaultActionThenTrackerNotCreated - tracker not created`() {
         val json = loadText(javaClass.classLoader!!, "json/tds_trackers_action_missing.json")
         val trackers = jsonAdapter.fromJson(json)!!.jsonToTrackers()
         assertEquals(2, trackers.count())

@@ -44,7 +44,7 @@ class RealFingerprintingBatteryRepositoryTest {
     }
 
     @Test
-    fun whenInitializedAndDoesNotHaveStoredValueThenLoadEmptyJsonToMemory() =
+    fun `loadFingerprintingBattery - initialized and no stored value - load empty json to memory`() =
         runTest {
             testee =
                 RealFingerprintingBatteryRepository(
@@ -59,7 +59,7 @@ class RealFingerprintingBatteryRepositoryTest {
         }
 
     @Test
-    fun whenInitializedAndHasStoredValueThenLoadStoredJsonToMemory() =
+    fun `whenInitializedAndHasStoredValue - load stored json to memory`() =
         runTest {
             whenever(mockFingerprintingBatteryDao.get()).thenReturn(fingerprintingBatteryEntity)
             testee =
@@ -75,7 +75,7 @@ class RealFingerprintingBatteryRepositoryTest {
         }
 
     @Test
-    fun whenUpdateAllThenUpdateAllCalled() =
+    fun `updateAll - update all called`() =
         runTest {
             testee =
                 RealFingerprintingBatteryRepository(

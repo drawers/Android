@@ -39,7 +39,7 @@ class NetpCohortPixelInterceptorTest {
     }
 
     @Test
-    fun whenCohortLocalDateIsNotSetThenDropNetpPixelUrl() {
+    fun `intercept - cohort local date not set - dropped netp pixel`() {
         whenever(netpCohortStore.cohortLocalDate).thenReturn(null)
         val pixelUrl = String.format(PIXEL_TEMPLATE, "m_netp_ev_enabled_d")
 
@@ -50,7 +50,7 @@ class NetpCohortPixelInterceptorTest {
     }
 
     @Test
-    fun whenCohortLocalDateIsSetThenFireNetpEvPixelUrl() {
+    fun `intercept - cohort local date set - fire netp ev pixel url`() {
         whenever(netpCohortStore.cohortLocalDate).thenReturn(LocalDate.of(2023, 1, 1))
         val pixelUrl = String.format(PIXEL_TEMPLATE, "m_netp_ev_enabled_d")
 
@@ -62,7 +62,7 @@ class NetpCohortPixelInterceptorTest {
     }
 
     @Test
-    fun whenCohortLocalDateIsSetThenFireNetpImpPixelUrl() {
+    fun `intercept - cohort local date set - fire netp imp pixel url`() {
         whenever(netpCohortStore.cohortLocalDate).thenReturn(LocalDate.of(2023, 1, 1))
         val pixelUrl = String.format(PIXEL_TEMPLATE, "m_netp_imp_dialog_d")
 
@@ -74,7 +74,7 @@ class NetpCohortPixelInterceptorTest {
     }
 
     @Test
-    fun whenCohortLocalDateIsNotSetButPixelUrlIsNotNetpThenFireNonNetpPixelUrl() {
+    fun `intercept - cohort local date not set but pixel url is not netp - fire non netp pixel url`() {
         whenever(netpCohortStore.cohortLocalDate).thenReturn(null)
         val pixelUrl = String.format(PIXEL_TEMPLATE, "m_atp_ev_enabled_d")
 
@@ -86,7 +86,7 @@ class NetpCohortPixelInterceptorTest {
     }
 
     @Test
-    fun whenCohortLocalDateIsNotSetThenSendExemptedBackendApiErrorNetpPixelUrl() {
+    fun `intercept - cohort local date not set - send exempted backend api error netp pixel url`() {
         whenever(netpCohortStore.cohortLocalDate).thenReturn(null)
         val pixelUrl = String.format(PIXEL_TEMPLATE, "m_netp_ev_backend_api_error_device_registration_failed_c")
 
@@ -98,7 +98,7 @@ class NetpCohortPixelInterceptorTest {
     }
 
     @Test
-    fun whenCohortLocalDateIsNotSetThenSendExemptedWgErrorNetpPixelUrl() {
+    fun `intercept - cohort local date not set - send exempted wg error netp pixel url`() {
         whenever(netpCohortStore.cohortLocalDate).thenReturn(null)
         val pixelUrl = String.format(PIXEL_TEMPLATE, "m_netp_ev_wireguard_error_unable_to_load_wireguard_library_d")
 
@@ -110,7 +110,7 @@ class NetpCohortPixelInterceptorTest {
     }
 
     @Test
-    fun whenCohortLocalDateIsNotSetThenSendExemptedVpnConflictPixelUrl() {
+    fun `intercept - cohort local date not set - send exempted vpn conflict pixel url`() {
         whenever(netpCohortStore.cohortLocalDate).thenReturn(null)
         val pixelUrl = String.format(PIXEL_TEMPLATE, "m_netp_imp_vpn_conflict_dialog_c")
 
@@ -122,7 +122,7 @@ class NetpCohortPixelInterceptorTest {
     }
 
     @Test
-    fun whenCohortLocalDateIsNotSetThenSendExemptedAlwaysOnConflictPixelUrl() {
+    fun `intercept - cohort local date not set - send exempted always on conflict pixel url`() {
         whenever(netpCohortStore.cohortLocalDate).thenReturn(null)
         val pixelUrl = String.format(PIXEL_TEMPLATE, "m_netp_imp_always_on_conflict_dialog_d")
 
@@ -134,7 +134,7 @@ class NetpCohortPixelInterceptorTest {
     }
 
     @Test
-    fun whenCohortLocalDateIsNotSetThenSendExemptedInfoVpnPixelUrl() {
+    fun `intercept - cohort local date not set - send exempted info vpn pixel url`() {
         whenever(netpCohortStore.cohortLocalDate).thenReturn(null)
         val pixelUrl = String.format(PIXEL_TEMPLATE, "m_netp_imp_info_vpn_c")
 
@@ -146,7 +146,7 @@ class NetpCohortPixelInterceptorTest {
     }
 
     @Test
-    fun whenCohortLocalDateIsNotSetThenSendExemptedFaqsPixelUrl() {
+    fun `intercept - cohort local date not set - send exempted faqs pixel url`() {
         whenever(netpCohortStore.cohortLocalDate).thenReturn(null)
         val pixelUrl = String.format(PIXEL_TEMPLATE, "m_netp_imp_faqs_d")
 

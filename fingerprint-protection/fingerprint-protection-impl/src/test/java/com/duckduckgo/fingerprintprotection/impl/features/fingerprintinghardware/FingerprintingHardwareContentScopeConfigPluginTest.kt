@@ -37,13 +37,13 @@ class FingerprintingHardwareContentScopeConfigPluginTest {
     }
 
     @Test
-    fun whenGetConfigThenReturnCorrectlyFormattedJson() {
+    fun `getConfig - return correctly formatted json`() {
         whenever(mockFingerprintingHardwareRepository.fingerprintingHardwareEntity).thenReturn(FingerprintingHardwareEntity(json = config))
         assertEquals("\"fingerprintingHardware\":$config", testee.config())
     }
 
     @Test
-    fun whenGetPreferencesThenReturnNull() {
+    fun `getPreferences - returns null`() {
         assertNull(testee.preferences())
     }
 

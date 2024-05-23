@@ -31,14 +31,14 @@ class TdsDomainEntityJsonTest {
     private val jsonAdapter: JsonAdapter<TdsJson> = moshi.adapter(TdsJson::class.java)
 
     @Test
-    fun whenFormatIsValidThenDomainEntitiesAreCreated() {
+    fun `formatIsValid - domain entities created`() {
         val json = loadText(javaClass.classLoader!!, "json/tds_domain_entities.json")
         val domains = jsonAdapter.fromJson(json)!!.jsonToDomainEntities()
         assertEquals(3, domains.count())
     }
 
     @Test
-    fun whenFormatIsValidThenDomainEntitiesAreConvertedCorrectly() {
+    fun `formatIsValid - domain entities converted correctly`() {
         val json = loadText(javaClass.classLoader!!, "json/tds_domain_entities.json")
         val domains = jsonAdapter.fromJson(json)!!.jsonToDomainEntities()
         val domain = domains.first()
@@ -46,7 +46,7 @@ class TdsDomainEntityJsonTest {
     }
 
     @Test
-    fun whenValueIsNullThenDomainEntitiesNotCreated() {
+    fun `fromJson - value is null - domain entities not created`() {
         val json = loadText(javaClass.classLoader!!, "json/tds_domain_entities_null_value.json")
         val domains = jsonAdapter.fromJson(json)!!.jsonToDomainEntities()
         assertEquals(2, domains.count())

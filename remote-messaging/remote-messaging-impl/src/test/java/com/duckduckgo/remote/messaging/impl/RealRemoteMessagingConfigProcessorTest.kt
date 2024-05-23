@@ -67,7 +67,7 @@ class RealRemoteMessagingConfigProcessorTest {
     }
 
     @Test
-    fun whenNewVersionThenEvaluate() = runTest {
+    fun `process - new version - evaluate`() = runTest {
         whenever(remoteMessagingConfigRepository.get()).thenReturn(
             aRemoteMessagingConfig(version = 0L),
         )
@@ -78,7 +78,7 @@ class RealRemoteMessagingConfigProcessorTest {
     }
 
     @Test
-    fun whenSameVersionThenDoNothing() = runTest {
+    fun `process - same version - do nothing`() = runTest {
         val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
         whenever(remoteMessagingConfigRepository.get()).thenReturn(
             aRemoteMessagingConfig(
@@ -93,7 +93,7 @@ class RealRemoteMessagingConfigProcessorTest {
     }
 
     @Test
-    fun whenSameVersionButExpiredThenEvaluate() = runTest {
+    fun `process - same version but expired - evaluate`() = runTest {
         val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
 
         whenever(remoteMessagingConfigRepository.get()).thenReturn(
@@ -109,7 +109,7 @@ class RealRemoteMessagingConfigProcessorTest {
     }
 
     @Test
-    fun whenSameVersionButInvalidatedThenEvaluate() = runTest {
+    fun `process - same version invalidated - evaluate`() = runTest {
         whenever(remoteMessagingConfigRepository.get()).thenReturn(
             aRemoteMessagingConfig(
                 version = 1L,

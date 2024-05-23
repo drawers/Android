@@ -55,7 +55,7 @@ internal class SyncApiClientTest {
     }
 
     @Test
-    fun whenPatchAndTokenEmptyThenReturnError() {
+    fun `patch - token empty - return error`() {
         whenever(syncStore.token).thenReturn("")
 
         val result = apiClient.patch(SyncChangesRequest.empty())
@@ -65,7 +65,7 @@ internal class SyncApiClientTest {
     }
 
     @Test
-    fun whenPatchAndChangesEmptyThenReturnError() {
+    fun `patch - changes empty - return error`() {
         whenever(syncStore.token).thenReturn(TestSyncFixtures.token)
 
         val result = apiClient.patch(SyncChangesRequest.empty())
@@ -75,7 +75,7 @@ internal class SyncApiClientTest {
     }
 
     @Test
-    fun whenPatchAndBookmarkChangesThenApiIsSuccessful() {
+    fun `patchAndBookmarkChanges - api successful`() {
         val updatesJSON = FileUtilities.loadText(javaClass.classLoader!!, "data_sync_sent_bookmarks.json")
         val bookmarksChanges = SyncChangesRequest(BOOKMARKS, updatesJSON, FirstSync)
         whenever(syncStore.token).thenReturn(TestSyncFixtures.token)
@@ -87,7 +87,7 @@ internal class SyncApiClientTest {
     }
 
     @Test
-    fun whenPatchAndBookmarkChangesThenApiFailsAndApiErrorIsRecorded() {
+    fun `patchAndBookmarkChanges - api fails and api error recorded`() {
         val updatesJSON = FileUtilities.loadText(javaClass.classLoader!!, "data_sync_sent_bookmarks.json")
         val bookmarksChanges = SyncChangesRequest(BOOKMARKS, updatesJSON, FirstSync)
         whenever(syncStore.token).thenReturn(TestSyncFixtures.token)
@@ -99,7 +99,7 @@ internal class SyncApiClientTest {
     }
 
     @Test
-    fun whenMappingChangesThenGeneratedObjectIsCorrect() {
+    fun `mapRequest - mapping changes - generated object is correct`() {
         val updatesJSON = FileUtilities.loadText(javaClass.classLoader!!, "data_sync_sent_bookmarks.json")
         val bookmarksChanges = SyncChangesRequest(BOOKMARKS, updatesJSON, FirstSync)
         val changes = apiClient.mapRequest(listOf(bookmarksChanges))
@@ -108,7 +108,7 @@ internal class SyncApiClientTest {
     }
 
     @Test
-    fun whenGetBookmarksAndTokenEmptyThenReturnError() {
+    fun `get - get bookmarks and token empty - return error`() {
         whenever(syncStore.token).thenReturn("")
 
         val result = apiClient.get(BOOKMARKS, "")
@@ -118,7 +118,7 @@ internal class SyncApiClientTest {
     }
 
     @Test
-    fun whenGetCredentialsBookmarksAndTokenEmptyThenReturnError() {
+    fun `get - token empty - return error`() {
         whenever(syncStore.token).thenReturn("")
 
         val result = apiClient.get(CREDENTIALS, "")
@@ -128,7 +128,7 @@ internal class SyncApiClientTest {
     }
 
     @Test
-    fun whenGetBookmarksAndApiFailsThenResultIsErrorAndErrorIsRecorded() {
+    fun `getBookmarks - api fails - error recorded`() {
         whenever(syncStore.token).thenReturn(TestSyncFixtures.token)
         whenever(syncApi.getBookmarks(any(), any())).thenReturn(getAllError)
 
@@ -138,7 +138,7 @@ internal class SyncApiClientTest {
     }
 
     @Test
-    fun whenGetCredentialsAndApiFailsThenResultIsErrorAndErrorIsRecorded() {
+    fun `getCredentials - api fails - error recorded`() {
         whenever(syncStore.token).thenReturn(TestSyncFixtures.token)
         whenever(syncApi.getCredentials(any(), any())).thenReturn(getAllError)
 
@@ -148,7 +148,7 @@ internal class SyncApiClientTest {
     }
 
     @Test
-    fun whenGetBookmarksAndApiCountLimitFailsThenResultIsErrorAndErrorIsRecorded() {
+    fun `getBookmarks - api count limit fails - error recorded`() {
         whenever(syncStore.token).thenReturn(TestSyncFixtures.token)
         whenever(syncApi.getBookmarks(any(), any())).thenReturn(getCountLimitError)
 
@@ -158,7 +158,7 @@ internal class SyncApiClientTest {
     }
 
     @Test
-    fun whenGetCredentialsAndApiCountLimitFailsThenResultIsErrorAndErrorIsRecorded() {
+    fun `getCredentials - api count limit fails - error recorded`() {
         whenever(syncStore.token).thenReturn(TestSyncFixtures.token)
         whenever(syncApi.getCredentials(any(), any())).thenReturn(getCountLimitError)
 
