@@ -32,17 +32,14 @@ import com.android.tools.lint.detector.api.SourceCodeScanner
 import dev.langchain4j.data.message.SystemMessage
 import dev.langchain4j.data.message.UserMessage
 import dev.langchain4j.model.chat.ChatLanguageModel
-import dev.langchain4j.model.ollama.OllamaChatModel
 import dev.langchain4j.model.openai.OpenAiChatModel
 import org.jetbrains.kotlin.psi.KtNamedDeclaration
-import org.jetbrains.kotlin.toKtPsiSourceElement
 import org.jetbrains.uast.UClass
 import org.jetbrains.uast.UElement
 import org.jetbrains.uast.getParentOfType
 import org.jetbrains.uast.kotlin.KotlinUMethod
-import org.jetbrains.uast.skipParentOfType
+import java.io.IOException
 import java.util.EnumSet
-import java.util.Properties
 import kotlin.LazyThreadSafetyMode.SYNCHRONIZED
 import kotlin.io.path.Path
 
@@ -133,14 +130,14 @@ class TestFunctionNameDetector : Detector(), SourceCodeScanner {
         method: KotlinUMethod,
         context: JavaContext
     ): LintFix? {
-        Thread.sleep(200) // account for rate limit in Open AI APIs
-
         if (Scope.ALL_JAVA_FILES !in context.scope) {
             // We're in the IDE so don't try and use the LLM to generate a LintFix.
             return null
         }
 
-        val response = model.generate(prompt, UserMessage.from(method.sourcePsi!!.text)).content().text()
+        val response = retryWithExponentialBackoff {
+            getResponse(method.sourcePsi!!.text)
+        }
         context.log(null, "Response from LM: ")
         context.log(null, response)
 
@@ -168,6 +165,37 @@ class TestFunctionNameDetector : Detector(), SourceCodeScanner {
         }
 
         return LintFix.create().name("Use name suggested by language model").replace().all().with(sanitizedFunctionName).autoFix().build()
+    }
+
+    private fun getResponse(
+        message: String?
+    ): String =
+        model.generate(prompt, UserMessage.from(message)).content().text()
+
+    private fun <T> retryWithExponentialBackoff(
+        initialDelay: Long = 1000L, // Initial delay in milliseconds
+        maxDelay: Long = 16000L, // Maximum delay in milliseconds
+        factor: Double = 2.0, // Exponential factor
+        maxAttempts: Int = 5, // Maximum number of attempts
+        action: () -> T
+    ): T {
+        var currentDelay = initialDelay
+        var attempt = 0
+
+        while (attempt < maxAttempts) {
+            try {
+                return action()
+            } catch (e: Exception) {
+                attempt++
+                if (attempt >= maxAttempts) {
+                    throw e // Rethrow the exception if maximum attempts are reached
+                }
+                // Just sleep since we're running in batch mode
+                Thread.sleep(currentDelay)
+                currentDelay = (currentDelay * factor).toLong().coerceAtMost(maxDelay)
+            }
+        }
+        throw IOException("Failed after $maxAttempts attempts")
     }
 
     companion object {
