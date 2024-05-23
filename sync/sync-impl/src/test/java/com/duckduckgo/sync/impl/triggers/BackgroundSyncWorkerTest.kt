@@ -49,7 +49,7 @@ internal class BackgroundSyncWorkerTest {
     }
 
     @Test
-    fun whenDoWorkTriggeredAndSyncEnabledThenSyncTriggeredReturnSuccess() =
+    fun `doWork - sync enabled - sync triggered and return success`() =
         runTest {
             val worker = TestListenableWorkerBuilder<SyncBackgroundWorker>(context = context).build()
             worker.syncEngine = mockSyncEngine
@@ -65,7 +65,7 @@ internal class BackgroundSyncWorkerTest {
         }
 
     @Test
-    fun whenDoWorkTriggeredAndSyncDisabledThenSyncNotTriggeredReturnSuccess() =
+    fun `doWork - sync disabled - sync not triggered and return success`() =
         runTest {
             val worker = TestListenableWorkerBuilder<SyncBackgroundWorker>(context = context).build()
             worker.syncEngine = mockSyncEngine

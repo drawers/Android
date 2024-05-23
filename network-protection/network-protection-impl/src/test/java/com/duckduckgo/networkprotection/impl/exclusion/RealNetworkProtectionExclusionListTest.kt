@@ -45,7 +45,7 @@ class RealNetworkProtectionExclusionListTest {
     }
 
     @Test
-    fun whenNetpIsEnabledAndAppIsInExcludedPackagesThenReturnIsExcludedTrue() = runTest {
+    fun `isExcluded - netp enabled and app in excluded packages - is excluded true`() = runTest {
         whenever(netPExclusionListRepository.getExcludedAppPackages()).thenReturn(listOf("com.test.app"))
         whenever(vpnFeaturesRegistry.isFeatureRegistered(NetPVpnFeature.NETP_VPN)).thenReturn(true)
 
@@ -53,7 +53,7 @@ class RealNetworkProtectionExclusionListTest {
     }
 
     @Test
-    fun whenNetpIsDisabledAndAppIsInExcludedPackagesThenReturnIsExcludedFalse() = runTest {
+    fun `isExcluded - netp disabled and app in excluded packages - is excluded false`() = runTest {
         whenever(netPExclusionListRepository.getExcludedAppPackages()).thenReturn(listOf("com.test.app"))
         whenever(vpnFeaturesRegistry.isFeatureRegistered(NetPVpnFeature.NETP_VPN)).thenReturn(false)
 
@@ -61,7 +61,7 @@ class RealNetworkProtectionExclusionListTest {
     }
 
     @Test
-    fun whenNetpIsEnabledAndAppIsNotInExcludedPackagesThenReturnIsExcludedFalse() = runTest {
+    fun `isExcluded - netp enabled and app not in excluded packages - return false`() = runTest {
         whenever(netPExclusionListRepository.getExcludedAppPackages()).thenReturn(emptyList())
         whenever(vpnFeaturesRegistry.isFeatureRegistered(NetPVpnFeature.NETP_VPN)).thenReturn(true)
 
@@ -69,7 +69,7 @@ class RealNetworkProtectionExclusionListTest {
     }
 
     @Test
-    fun whenNetpIsNotEnabledAndAppIsNotInExcludedPackagesThenReturnIsExcludedFalse() = runTest {
+    fun `isExcluded - netp not enabled and app not in excluded packages - return false`() = runTest {
         whenever(netPExclusionListRepository.getExcludedAppPackages()).thenReturn(emptyList())
         whenever(vpnFeaturesRegistry.isFeatureRegistered(NetPVpnFeature.NETP_VPN)).thenReturn(false)
 

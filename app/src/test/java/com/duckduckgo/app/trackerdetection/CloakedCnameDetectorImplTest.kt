@@ -44,20 +44,20 @@ class CloakedCnameDetectorImplTest {
     }
 
     @Test
-    fun whenDetectCnameAndHostIsNullThenReturnNull() {
+    fun `detectCnameCloakedHost - host is null - return null`() {
         whenever(mockUri.host).thenReturn(null)
         assertNull(testee.detectCnameCloakedHost("foo.com", mockUri))
     }
 
     @Test
-    fun whenDetectCnameAndCnameDetectedThenReturnUncloakedHost() {
+    fun `detectCnameCloakedHost - cname detected - return uncloaked host`() {
         whenever(mockUri.host).thenReturn("host.com")
         whenever(mockCnameEntityDao.get(any())).thenReturn(TdsCnameEntity("host.com", "uncloaked-host.com"))
         assertEquals("http://uncloaked-host.com", testee.detectCnameCloakedHost("foo.com", mockUri))
     }
 
     @Test
-    fun whenDetectCnameAndCnameDetectedAndHasSchemeThenReturnUncloakedHostWithScheme() {
+    fun `detectCnameCloakedHost - cname detected with scheme - return uncloaked host with scheme`() {
         whenever(mockUri.host).thenReturn("host.com")
         whenever(mockUri.scheme).thenReturn("https")
         whenever(mockCnameEntityDao.get(any())).thenReturn(TdsCnameEntity("host.com", "uncloaked-host.com"))
@@ -65,14 +65,14 @@ class CloakedCnameDetectorImplTest {
     }
 
     @Test
-    fun whenDetectCnameAndCnameNotDetectedThenReturnNull() {
+    fun `detectCnameCloakedHost - cname not detected - return null`() {
         whenever(mockUri.host).thenReturn("host.com")
         whenever(mockCnameEntityDao.get(any())).thenReturn(null)
         assertEquals(null, testee.detectCnameCloakedHost("foo.com", mockUri))
     }
 
     @Test
-    fun whenDetectCnameAndCnameDetectedAndHasPathThenReturnUncloakedHostWithPathAppended() {
+    fun `detectCnameCloakedHost - cname detected with path - return uncloaked host with path appended`() {
         whenever(mockUri.host).thenReturn("host.com")
         whenever(mockUri.path).thenReturn("/path")
         whenever(mockCnameEntityDao.get(any())).thenReturn(TdsCnameEntity("host.com", "uncloaked-host.com"))
@@ -80,7 +80,7 @@ class CloakedCnameDetectorImplTest {
     }
 
     @Test
-    fun whenDetectCnameAndCnameDetectedAndHasSchemeAndPathThenReturnUncloakedHostWithSchemeAndPathAppended() {
+    fun `detectCnameCloakedHost - cname detected with scheme and path - return uncloaked host with scheme and path appended`() {
         whenever(mockUri.host).thenReturn("host.com")
         whenever(mockUri.path).thenReturn("/path")
         whenever(mockUri.scheme).thenReturn("https")
@@ -89,13 +89,13 @@ class CloakedCnameDetectorImplTest {
     }
 
     @Test
-    fun whenRequestUrlIsInAllowListThenReturnNull() {
+    fun `detectCnameCloakedHost - request URL in allow list - return null`() {
         whenever(mockTrackerAllowList.isAnException(anyString(), anyString())).thenReturn(true)
         assertEquals(null, testee.detectCnameCloakedHost("foo.com", mockUri))
     }
 
     @Test
-    fun whenDetectCnameCloakedHostAndUrlIsInUserAllowListThenReturnNull() {
+    fun `detectCnameCloakedHost - url in user allow list - return null`() {
         whenever(mockUserAllowListRepository.isUriInUserAllowList(any())).thenReturn(true)
         assertNull(testee.detectCnameCloakedHost("foo.com", mockUri))
     }

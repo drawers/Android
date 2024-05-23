@@ -72,7 +72,7 @@ class DownloadsViewModelTest {
     }
 
     @Test
-    fun whenNoDownloadsAndVisibilityChangedCalledWithValueFalseThenViewStateEmittedWithEmptyItem() = runTest {
+    fun `onItemVisibilityChanged - no downloads and visibility false - viewState emitted with empty item`() = runTest {
         val visible = false
         val list = emptyList<DownloadItem>()
         whenever(mockDownloadsRepository.getDownloadsAsFlow()).thenReturn(flowOf(list))
@@ -86,7 +86,7 @@ class DownloadsViewModelTest {
     }
 
     @Test
-    fun whenNoDownloadsAndVisibilityChangedCalledWithValueTrueThenViewStateEmittedWithNotifyMeAndEmptyItems() = runTest {
+    fun `onItemVisibilityChanged - no downloads and visibility true - viewState emitted with notify me and empty items`() = runTest {
         val visible = true
         val list = emptyList<DownloadItem>()
         whenever(mockDownloadsRepository.getDownloadsAsFlow()).thenReturn(flowOf(list))
@@ -101,7 +101,7 @@ class DownloadsViewModelTest {
     }
 
     @Test
-    fun whenOneDownloadAndVisibilityChangedCalledWithValueFalseThenViewStateEmittedWithHeaderAndOneItem() = runTest {
+    fun `onItemVisibilityChanged - visibility false - viewState emitted with header and one item`() = runTest {
         val visible = false
         val list = listOf(oneItem())
         whenever(mockDownloadsRepository.getDownloadsAsFlow()).thenReturn(flowOf(list))
@@ -117,7 +117,7 @@ class DownloadsViewModelTest {
     }
 
     @Test
-    fun whenOneDownloadAndVisibilityChangedCalledWithValueTrueThenViewStateEmittedWithNotifyMeAndHeaderAndOneItem() = runTest {
+    fun `onItemVisibilityChanged - visibility true - viewState emitted with notifyMe, header, and one item`() = runTest {
         val visible = true
         val list = listOf(oneItem())
         whenever(mockDownloadsRepository.getDownloadsAsFlow()).thenReturn(flowOf(list))

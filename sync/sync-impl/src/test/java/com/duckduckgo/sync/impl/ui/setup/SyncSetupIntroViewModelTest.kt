@@ -38,7 +38,7 @@ class SyncSetupIntroViewModelTest {
     private val testee = SyncSetupIntroViewModel()
 
     @Test
-    fun whenSyncIntroArgumentThenIntroCreateAccountScreenShown() = runTest {
+    fun `viewState - sync intro argument - intro create account screen shown`() = runTest {
         testee.viewState(SYNC_INTRO).test {
             val viewState = awaitItem()
             Assert.assertTrue(viewState.viewMode is CreateAccountIntro)
@@ -47,7 +47,7 @@ class SyncSetupIntroViewModelTest {
     }
 
     @Test
-    fun whenRecoverIntroArgumentThenIntroRecoveryScreenShown() = runTest {
+    fun `viewState - recovery intro argument - intro recovery screen shown`() = runTest {
         testee.viewState(RECOVERY_INTRO).test {
             val viewState = awaitItem()
             Assert.assertTrue(viewState.viewMode is RecoverAccountIntro)

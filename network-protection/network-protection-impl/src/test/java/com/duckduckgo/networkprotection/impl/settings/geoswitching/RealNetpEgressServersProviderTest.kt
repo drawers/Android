@@ -51,7 +51,7 @@ class RealNetpEgressServersProviderTest {
     }
 
     @Test
-    fun whenDownloadDateThenParseAndReplaceStoredLocations() = runTest {
+    fun `updateServerLocationsAndReturnPreferred - download date - parse and replace stored locations`() = runTest {
         assertNull(testee.updateServerLocationsAndReturnPreferred())
         val expectedResult = listOf(
             NetPGeoswitchingLocation(
@@ -74,7 +74,7 @@ class RealNetpEgressServersProviderTest {
     }
 
     @Test
-    fun whenUpdateLocationsUpdateUserPreferredIfNotPresent() = runTest {
+    fun `updateServerLocationsAndReturnPreferred - user preferred location not present - update user preferred`() = runTest {
         netPGeoswitchingRepository.setUserPreferredLocation(
             UserPreferredLocation(
                 countryCode = "se",
@@ -134,7 +134,7 @@ class RealNetpEgressServersProviderTest {
     }
 
     @Test
-    fun whenUpdateLocationsUpdateUserPreferredIfNotPresentGoneCountry() = runTest {
+    fun `updateServerLocationsAndReturnPreferred - user preferred location not present - returns null`() = runTest {
         netPGeoswitchingRepository.setUserPreferredLocation(
             UserPreferredLocation(
                 countryCode = "zz",
@@ -164,7 +164,7 @@ class RealNetpEgressServersProviderTest {
     }
 
     @Test
-    fun whenUpdateLocationsUpdateUserPreferredIfNotPresentGoneCountryAndCity() = runTest {
+    fun `updateServerLocationsAndReturnPreferred - user preferred location not present - gone country and city`() = runTest {
         netPGeoswitchingRepository.setUserPreferredLocation(
             UserPreferredLocation(
                 countryCode = "zz",

@@ -27,32 +27,32 @@ class RegexBasedUrlIdentifierTest {
     private val testee = RegexBasedUrlIdentifier()
 
     @Test
-    fun whenUrlIsNullThenNotClassedAsUrl() {
+    fun `isLikelyAUrl - url is null - not classed as url`() {
         assertFalse(testee.isLikelyAUrl(null))
     }
 
     @Test
-    fun whenUrlIsEmptyStringThenNotClassedAsUrl() {
+    fun `isLikelyAUrl - empty string - not classed as URL`() {
         assertFalse(testee.isLikelyAUrl(""))
     }
 
     @Test
-    fun whenUrlIsBlankStringThenNotClassedAsUrl() {
+    fun `isLikelyAUrl - blank string - not classed as url`() {
         assertFalse(testee.isLikelyAUrl("   "))
     }
 
     @Test
-    fun whenUrlIsAnIpAddressThenIsClassedAsUrl() {
+    fun `isLikelyAUrl - IP address - classed as URL`() {
         assertTrue(testee.isLikelyAUrl("192.168.1.100"))
     }
 
     @Test
-    fun whenUrlIsSimpleUrlThenIsClassedAsUrl() {
+    fun `isLikelyAUrl - simple URL - classed as URL`() {
         assertTrue(testee.isLikelyAUrl("example.com"))
     }
 
     @Test
-    fun whenUrlHasPortThenIsClassedAsUrl() {
+    fun `isLikelyAUrl - url has port - classed as url`() {
         assertTrue(testee.isLikelyAUrl("example.com:1234"))
     }
 }

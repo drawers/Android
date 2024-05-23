@@ -49,7 +49,7 @@ class AppTPVpnConnectivityLossListenerTest {
     }
 
     @Test
-    fun onVpnConnectivityLossThenRestartAppTPThirdConsecutiveTime() = runTest {
+    fun `onVpnConnectivityLoss - third consecutive time - restart app tracking protection`() = runTest {
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
         whenever(appTrackingProtection.isEnabled()).thenReturn(true)
 

@@ -43,7 +43,7 @@ class MissingEntitiesRelationReconcilerTest {
     }
 
     @Test
-    fun whenInvalidEntitiesAreConsecutiveThenResultListKeepsCorrectPositions() = runTest {
+    fun `reconcileRelations - invalid entities consecutive - keeps correct positions`() = runTest {
         val initialEntities = listOf("A", "Inv1", "Inv2", "B")
 
         initialEntities.forEachIndexed { index, entityId ->
@@ -58,7 +58,7 @@ class MissingEntitiesRelationReconcilerTest {
     }
 
     @Test
-    fun whenInvalidEntitiesBetweenValidEntitiesThenResultListKeepsCorrectPositions() = runTest {
+    fun `reconcileRelations - invalid entities between valid entities - keeps correct positions`() = runTest {
         val initialEntities = listOf("A", "Inv1", "C", "Inv2", "D")
 
         initialEntities.forEachIndexed { index, entityId ->
@@ -88,7 +88,7 @@ class MissingEntitiesRelationReconcilerTest {
     }
 
     @Test
-    fun whenInvalidEntitiesAndValidItemRemovedThenResultListKeepsCorrectPositions() = runTest {
+    fun `reconcileRelations - invalid entities and valid item removed - keeps correct positions`() = runTest {
         val initialEntities = listOf("A", "B", "Inv1", "C", "D", "Inv2", "E", "F")
 
         initialEntities.forEachIndexed { index, entityId ->
@@ -103,7 +103,7 @@ class MissingEntitiesRelationReconcilerTest {
     }
 
     @Test
-    fun whenInvalidEntitiesAndValidItemAddedAtTheEndOfListThenResultListKeepsCorrectPositions() = runTest {
+    fun `reconcileRelations - invalid entities and valid item added at end - keeps correct positions`() = runTest {
         val initialEntities = listOf("A", "B", "Inv1", "C", "D", "Inv2", "E", "F")
 
         initialEntities.forEachIndexed { index, entityId ->
@@ -118,7 +118,7 @@ class MissingEntitiesRelationReconcilerTest {
     }
 
     @Test
-    fun whenInvalidEntitiesAndValidItemAddedInTheMiddleOfListThenResultListKeepsCorrectPositions() = runTest {
+    fun `reconcileRelations - invalid entities and valid item added in the middle - keeps correct positions`() = runTest {
         val initialEntities = listOf("A", "B", "Inv1", "C", "D", "Inv2", "E", "F")
 
         initialEntities.forEachIndexed { index, entityId ->
@@ -133,7 +133,7 @@ class MissingEntitiesRelationReconcilerTest {
     }
 
     @Test
-    fun whenInvalidEntitiesIsFirstItemThenResultListKeepsCorrectPositions() = runTest {
+    fun `reconcileRelations - invalid entities first - keeps correct positions`() = runTest {
         val initialEntities = listOf("Inv0", "A", "B", "Inv1", "C", "D", "Inv2", "E", "F")
 
         initialEntities.forEachIndexed { index, entityId ->
@@ -148,7 +148,7 @@ class MissingEntitiesRelationReconcilerTest {
     }
 
     @Test
-    fun whenInvalidEntitiesIsFirstItemAndItemsReorderedThenResultListKeepsCorrectPositions() = runTest {
+    fun `reconcileRelations - items reordered - keeps correct positions`() = runTest {
         val initialEntities = listOf("Inv0", "A", "B", "Inv1", "C", "D", "Inv2", "E", "F")
 
         initialEntities.forEachIndexed { index, entityId ->
@@ -163,7 +163,7 @@ class MissingEntitiesRelationReconcilerTest {
     }
 
     @Test
-    fun whenInvalidMultipleEntitiesStartListThenResultListKeepsCorrectPositions() = runTest {
+    fun `reconcileRelations - invalid multiple entities start list - keeps correct positions`() = runTest {
         val initialEntities = listOf("Inv0", "Inv1", "Inv2", "A", "B", "C", "D", "E", "F")
 
         initialEntities.forEachIndexed { index, entityId ->
@@ -178,7 +178,7 @@ class MissingEntitiesRelationReconcilerTest {
     }
 
     @Test
-    fun whenNoInvalidEntitiesThenReturnSameList() = runTest {
+    fun `reconcileRelations - no invalid entities - return same list`() = runTest {
         val initialEntities = listOf("A", "B", "C", "D", "E", "F")
 
         initialEntities.forEachIndexed { index, entityId ->

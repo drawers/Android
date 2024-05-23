@@ -27,14 +27,14 @@ class RealFeatureToggleImplTest {
         RealFeatureToggleImpl(FakeFeatureTogglePluginPoint())
 
     @Test
-    fun whenFeatureNameCanBeHandledByPluginThenReturnTheCorrectValue() {
+    fun `isFeatureEnabled - feature name can be handled by plugin - return correct value`() {
         val result = testee.isFeatureEnabled(TrueFeatureName().value, false)
         assertNotNull(result)
         assertTrue(result)
     }
 
     @Test(expected = IllegalArgumentException::class)
-    fun whenFeatureNameCannotBeHandledByAnyPluginThenThrowException() {
+    fun `isFeatureEnabled - feature name cannot be handled - throw exception`() {
         testee.isFeatureEnabled(NullFeatureName().value, false)
     }
 

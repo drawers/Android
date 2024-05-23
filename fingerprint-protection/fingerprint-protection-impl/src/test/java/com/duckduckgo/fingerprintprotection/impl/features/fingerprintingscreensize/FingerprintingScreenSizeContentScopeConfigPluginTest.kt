@@ -37,13 +37,13 @@ class FingerprintingScreenSizeContentScopeConfigPluginTest {
     }
 
     @Test
-    fun whenGetConfigThenReturnCorrectlyFormattedJson() {
+    fun `config - return correctly formatted json`() {
         whenever(mockFingerprintingScreenSizeRepository.fingerprintingScreenSizeEntity).thenReturn(FingerprintingScreenSizeEntity(json = config))
         assertEquals("\"fingerprintingScreenSize\":$config", testee.config())
     }
 
     @Test
-    fun whenGetPreferencesThenReturnNull() {
+    fun `preferences - return null`() {
         assertNull(testee.preferences())
     }
 

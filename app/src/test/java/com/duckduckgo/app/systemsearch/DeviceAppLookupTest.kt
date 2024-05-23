@@ -35,7 +35,7 @@ class DeviceAppLookupTest {
     private val testee = InstalledDeviceAppLookup(mockAppProvider)
 
     @Test
-    fun whenQueryMatchesWordInShortNameThenMatchesAreReturned() {
+    fun `query - matches word in short name - matches returned`() {
         whenever(mockAppProvider.get()).thenReturn(apps)
         val result = testee.query("DDG")
         assertEquals(3, result.size)
@@ -45,7 +45,7 @@ class DeviceAppLookupTest {
     }
 
     @Test
-    fun whenQueryMatchesWordPrefixInShortNameThenMatchesAreReturned() {
+    fun `query - matches word prefix in short name - matches returned`() {
         whenever(mockAppProvider.get()).thenReturn(apps)
         val result = testee.query("DDG")
         assertEquals(3, result.size)
@@ -55,7 +55,7 @@ class DeviceAppLookupTest {
     }
 
     @Test
-    fun whenQueryMatchesPastShortNameWordBoundaryToNextPrefixThenMatchesAreReturned() {
+    fun `query - matches past short name word boundary to next prefix - matches returned`() {
         whenever(mockAppProvider.get()).thenReturn(apps)
         val result = testee.query("DDG M")
         assertEquals(2, result.size)
@@ -64,7 +64,7 @@ class DeviceAppLookupTest {
     }
 
     @Test
-    fun whenQueryMatchesWordPrefixInShortNameWithDifferentCaseThenMatchesAreReturned() {
+    fun `query - matches word prefix in short name with different case - matches returned`() {
         whenever(mockAppProvider.get()).thenReturn(apps)
         val result = testee.query("ddg")
         assertEquals(3, result.size)
@@ -74,35 +74,35 @@ class DeviceAppLookupTest {
     }
 
     @Test
-    fun whenQueryMatchesMiddleOrSuffixOfAppNameWordThenNoAppsReturned() {
+    fun `query - matches middle or suffix of app name word - no apps returned`() {
         whenever(mockAppProvider.get()).thenReturn(apps)
         val result = testee.query("DG")
         assertTrue(result.isEmpty())
     }
 
     @Test
-    fun whenQueryDoesNotMatchAnyPartOfAppNameThenNoAppsReturned() {
+    fun `query - no match for app name - no apps returned`() {
         whenever(mockAppProvider.get()).thenReturn(apps)
         val result = testee.query("nonmatching")
         assertTrue(result.isEmpty())
     }
 
     @Test
-    fun whenQueryIsEmptyThenNoAppsReturned() {
+    fun `query - empty query - no apps returned`() {
         whenever(mockAppProvider.get()).thenReturn(apps)
         val result = testee.query("")
         assertTrue(result.isEmpty())
     }
 
     @Test
-    fun whenAppsListIsEmptyThenNoAppsReturned() {
+    fun `query - apps list is empty - no apps returned`() {
         whenever(mockAppProvider.get()).thenReturn(noApps)
         val result = testee.query("DDG")
         assertTrue(result.isEmpty())
     }
 
     @Test
-    fun whenQueryMatchesAppNameWithSpecialRegexCharactersThenAppReturnedWithoutCrashing() {
+    fun `query - matches app name with special regex characters - app returned without crashing`() {
         whenever(mockAppProvider.get()).thenReturn(apps)
         val result = testee.query(APP_WITH_RESERVED_CHARS)
         assertEquals(1, result.size)

@@ -66,7 +66,7 @@ class RealNetworkProtectionPixelTest {
     }
 
     @Test
-    fun whenReportErrorInRegistrationIsCalledTwiceThenFireCountPixelTwiceAndDailyPixelOnce() {
+    fun `reportErrorInRegistration - called twice - fire count pixel twice and daily pixel once`() {
         testee.reportErrorInRegistration()
         testee.reportErrorInRegistration()
 
@@ -75,7 +75,7 @@ class RealNetworkProtectionPixelTest {
     }
 
     @Test
-    fun whenReportErrorWgInvalidStateIsCalledTwiceThenFireCountPixelTwiceAndDailyPixelOnce() {
+    fun `reportErrorWgInvalidState - called twice - fire count pixel twice and daily pixel once`() {
         testee.reportErrorWgInvalidState()
         testee.reportErrorWgInvalidState()
 
@@ -84,7 +84,7 @@ class RealNetworkProtectionPixelTest {
     }
 
     @Test
-    fun whenReportErrorWgBackendCantStartIsCalledTwiceThenFireCountPixelTwiceAndDailyPixelOnce() {
+    fun `reportErrorWgBackendCantStart - called twice - fire count pixel twice and daily pixel once`() {
         testee.reportErrorWgBackendCantStart()
         testee.reportErrorWgBackendCantStart()
 
@@ -93,7 +93,7 @@ class RealNetworkProtectionPixelTest {
     }
 
     @Test
-    fun whenReportEnabledCalledTwiceThenFireDailyPixelOnce() {
+    fun `reportEnabled - called twice - fire daily pixel once`() {
         testee.reportEnabled()
         testee.reportEnabled()
         val baseDate = LocalDate.of(2023, 1, 1)
@@ -110,7 +110,7 @@ class RealNetworkProtectionPixelTest {
     }
 
     @Test
-    fun `whenReportEnabledThenSendCohortFrom2023-01-01`() {
+    fun `reportEnabled - send cohort from 2023-01-01`() {
         testee.reportEnabled()
         val baseDate = LocalDate.of(2023, 1, 1)
         val week = ChronoUnit.WEEKS.between(baseDate, fakeNetpCohortStore.cohortLocalDate!!) + 1
@@ -126,7 +126,7 @@ class RealNetworkProtectionPixelTest {
     }
 
     @Test
-    fun doNotCoalesceCohortAtTheBoundary() {
+    fun `reportEnabled - cohort at boundary - do not coalesce`() {
         fakeNetpCohortStore.cohortLocalDate = LocalDate.now().minusWeeks(6)
         testee.reportEnabled()
         val baseDate = LocalDate.of(2023, 1, 1)
@@ -143,7 +143,7 @@ class RealNetworkProtectionPixelTest {
     }
 
     @Test
-    fun coalesceCohortWhenPastTheWeekBoundary() {
+    fun `reportEnabled - past the week boundary - coalesce cohort`() {
         fakeNetpCohortStore.cohortLocalDate = LocalDate.now().minusWeeks(7)
         testee.reportEnabled()
 
@@ -158,7 +158,7 @@ class RealNetworkProtectionPixelTest {
     }
 
     @Test
-    fun whenReportDisabledCalledTwiceThenFireDailyPixelOnce() {
+    fun `reportDisabled - called twice - fire daily pixel once`() {
         testee.reportDisabled()
         testee.reportDisabled()
 
@@ -166,7 +166,7 @@ class RealNetworkProtectionPixelTest {
     }
 
     @Test
-    fun whenReportWireguardLibraryLoadFailedCalledTwiceThenFireCountPixelTwiceAndDailyPixelOnce() {
+    fun `reportWireguardLibraryLoadFailed - called twice - fire count pixel twice and daily pixel once`() {
         testee.reportWireguardLibraryLoadFailed()
         testee.reportWireguardLibraryLoadFailed()
 
@@ -175,7 +175,7 @@ class RealNetworkProtectionPixelTest {
     }
 
     @Test
-    fun whenReportRekeyCompletedCalledTwiceThenFireDailyPixelOnce() {
+    fun `reportRekeyCompleted - called twice - fire daily pixel once`() {
         testee.reportRekeyCompleted()
         testee.reportRekeyCompleted()
 
@@ -184,7 +184,7 @@ class RealNetworkProtectionPixelTest {
     }
 
     @Test
-    fun whenReportVpnConflictDialogShownCalledTwiceThenFireDailyPixelOnce() {
+    fun `reportVpnConflictDialogShown - called twice - fire daily pixel once`() {
         testee.reportVpnConflictDialogShown()
         testee.reportVpnConflictDialogShown()
 
@@ -193,7 +193,7 @@ class RealNetworkProtectionPixelTest {
     }
 
     @Test
-    fun whenReportAlwaysOnConflictDialogShownCalledTwiceThenFireDailyPixelOnce() {
+    fun `reportAlwaysOnConflictDialogShown - called twice - fire daily pixel once`() {
         testee.reportAlwaysOnConflictDialogShown()
         testee.reportAlwaysOnConflictDialogShown()
 
@@ -202,7 +202,7 @@ class RealNetworkProtectionPixelTest {
     }
 
     @Test
-    fun whenReportAlwaysOnPromotionDialogShownCalledTwiceThenFireDailyPixelOnce() {
+    fun `reportAlwaysOnPromotionDialogShown - called twice - fire daily pixel once`() {
         testee.reportAlwaysOnPromotionDialogShown()
         testee.reportAlwaysOnPromotionDialogShown()
 
@@ -211,7 +211,7 @@ class RealNetworkProtectionPixelTest {
     }
 
     @Test
-    fun whenReportAlwaysOnLockdownDialogShownCalledTwiceThenFireDailyPixelOnce() {
+    fun `reportAlwaysOnLockdownDialogShown - called twice - fire daily pixel once`() {
         testee.reportAlwaysOnLockdownDialogShown()
         testee.reportAlwaysOnLockdownDialogShown()
 
@@ -220,7 +220,7 @@ class RealNetworkProtectionPixelTest {
     }
 
     @Test
-    fun whenReportOpenSettingsFromAlwaysOnPromotionCalledTwiceThenFireDailyPixelOnce() {
+    fun `reportOpenSettingsFromAlwaysOnPromotion - called twice - fire daily pixel once`() {
         testee.reportOpenSettingsFromAlwaysOnPromotion()
         testee.reportOpenSettingsFromAlwaysOnPromotion()
 
@@ -229,7 +229,7 @@ class RealNetworkProtectionPixelTest {
     }
 
     @Test
-    fun whenReportOpenSettingsFromAlwaysOnLockdownCalledTwiceThenFireDailyPixelOnce() {
+    fun `reportOpenSettingsFromAlwaysOnLockdown - called twice - fire daily pixel once`() {
         testee.reportOpenSettingsFromAlwaysOnLockdown()
         testee.reportOpenSettingsFromAlwaysOnLockdown()
 
@@ -238,7 +238,7 @@ class RealNetworkProtectionPixelTest {
     }
 
     @Test
-    fun whenReportExclusionListShownCalledTwiceThenFireDailyPixelOnce() {
+    fun `reportExclusionListShown - called twice - fire daily pixel once`() {
         testee.reportExclusionListShown()
         testee.reportExclusionListShown()
 
@@ -247,7 +247,7 @@ class RealNetworkProtectionPixelTest {
     }
 
     @Test
-    fun whenReportAppAddedToExclusionListCalledTwiceThenFirePixelTwice() {
+    fun `reportAppAddedToExclusionList - called twice - fire pixel twice`() {
         testee.reportAppAddedToExclusionList()
         testee.reportAppAddedToExclusionList()
 
@@ -255,7 +255,7 @@ class RealNetworkProtectionPixelTest {
     }
 
     @Test
-    fun whenReportAppRemovedFromExclusionListCalledTwiceThenFirePixelTwice() {
+    fun `reportAppRemovedFromExclusionList - called twice - fire pixel twice`() {
         testee.reportAppRemovedFromExclusionList()
         testee.reportAppRemovedFromExclusionList()
 
@@ -263,7 +263,7 @@ class RealNetworkProtectionPixelTest {
     }
 
     @Test
-    fun whenReportSkippedReportAfterExcludingAppCalledTwiceThenFireDailyPixelOnce() {
+    fun `reportSkippedReportAfterExcludingApp - called twice - fire daily pixel once`() {
         testee.reportSkippedReportAfterExcludingApp()
         testee.reportSkippedReportAfterExcludingApp()
 
@@ -272,7 +272,7 @@ class RealNetworkProtectionPixelTest {
     }
 
     @Test
-    fun whenReportExclusionListRestoreDefaultsCalledTwiceThenFireDailyPixelOnce() {
+    fun `reportExclusionListRestoreDefaults - called twice - fire daily pixel once`() {
         testee.reportExclusionListRestoreDefaults()
         testee.reportExclusionListRestoreDefaults()
 
@@ -281,7 +281,7 @@ class RealNetworkProtectionPixelTest {
     }
 
     @Test
-    fun whenReportExclusionListLaunchBreakageReportCalledTwiceThenFireDailyPixelOnce() {
+    fun `reportExclusionListLaunchBreakageReport - called twice - fire daily pixel once`() {
         testee.reportExclusionListLaunchBreakageReport()
         testee.reportExclusionListLaunchBreakageReport()
 
@@ -290,7 +290,7 @@ class RealNetworkProtectionPixelTest {
     }
 
     @Test
-    fun whenReportFaqsShownCalledTwiceThenFireDailyPixelOnce() {
+    fun `reportFaqsShown - called twice - fire daily pixel once`() {
         testee.reportFaqsShown()
         testee.reportFaqsShown()
 

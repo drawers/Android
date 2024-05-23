@@ -47,21 +47,21 @@ class DuckDuckGoAdClickManagerTest {
     }
 
     @Test
-    fun whenDetectAdClickCalledForNullUrlThenReturn() {
+    fun `detectAdClick - null URL - return`() {
         testee.detectAdClick(url = null, isMainFrame = false)
 
         verifyNoInteractions(mockAdClickData)
     }
 
     @Test
-    fun whenDetectAdClickCalledForNonNullUrlAndNotMainFrameThenReturn() {
+    fun `detectAdClick - non-null URL and not main frame - return`() {
         testee.detectAdClick(url = "url", isMainFrame = false)
 
         verifyNoInteractions(mockAdClickData)
     }
 
     @Test
-    fun whenDetectAdClickCalledForAdUrlAndIsMainFrameAndOnlyHeuristicDetectionEnabledThenUpdateAdDomainWithEmptyString() {
+    fun `detectAdClick - ad URL, main frame, heuristic detection enabled - update ad domain with empty string`() {
         whenever(mockAdClickAttribution.isAdClick(any())).thenReturn(Pair(true, null))
         whenever(mockAdClickAttribution.isDomainDetectionEnabled()).thenReturn(false)
         whenever(mockAdClickAttribution.isHeuristicDetectionEnabled()).thenReturn(true)
@@ -73,7 +73,7 @@ class DuckDuckGoAdClickManagerTest {
     }
 
     @Test
-    fun whenDetectAdClickCalledForAdUrlAndIsMainFrameAndOnlyDomainDetectionEnabledThenUpdateAdDomainWithValue() {
+    fun `detectAdClick - ad url and main frame with only domain detection enabled - update ad domain`() {
         whenever(mockAdClickAttribution.isAdClick(any())).thenReturn(Pair(true, "domain.com"))
         whenever(mockAdClickAttribution.isDomainDetectionEnabled()).thenReturn(true)
         whenever(mockAdClickAttribution.isHeuristicDetectionEnabled()).thenReturn(false)
@@ -85,7 +85,7 @@ class DuckDuckGoAdClickManagerTest {
     }
 
     @Test
-    fun whenDetectAdClickCalledForAdUrlAndIsMainFrameAndBothDetectionsEnabledAndDomainPresentThenUpdateAdDomainWithValue() {
+    fun `detectAdClick - ad url, main frame, detections enabled, domain present - update ad domain`() {
         whenever(mockAdClickAttribution.isAdClick(any())).thenReturn(Pair(true, "domain.com"))
         whenever(mockAdClickAttribution.isDomainDetectionEnabled()).thenReturn(true)
         whenever(mockAdClickAttribution.isHeuristicDetectionEnabled()).thenReturn(true)
@@ -97,7 +97,7 @@ class DuckDuckGoAdClickManagerTest {
     }
 
     @Test
-    fun whenDetectAdClickCalledForAdUrlAndIsMainFrameAndBothDetectionsEnabledAndNoDomainPresentThenUpdateAdDomainWithEmptyString() {
+    fun `detectAdClick - ad url, main frame, detections enabled, no domain - update ad domain with empty string`() {
         whenever(mockAdClickAttribution.isAdClick(any())).thenReturn(Pair(true, null))
         whenever(mockAdClickAttribution.isDomainDetectionEnabled()).thenReturn(true)
         whenever(mockAdClickAttribution.isHeuristicDetectionEnabled()).thenReturn(true)
@@ -109,7 +109,7 @@ class DuckDuckGoAdClickManagerTest {
     }
 
     @Test
-    fun whenDetectAdClickCalledForNonAdUrlAndIsMainFrameAndExemptionExpiredThenUpdateExemptionsMap() {
+    fun `detectAdClick - non ad URL, main frame, exemption expired - update exemptions map`() {
         whenever(mockAdClickAttribution.isAdClick(any())).thenReturn(Pair(false, null))
         whenever(mockAdClickData.getExemption()).thenReturn(expired("host.com"))
         val url = "non_ad_url.com"
@@ -121,7 +121,7 @@ class DuckDuckGoAdClickManagerTest {
     }
 
     @Test
-    fun whenDetectAdClickCalledForNonAdUrlAndIsMainFrameAndExemptionNotExpiredThenUpdateExemptionsMap() {
+    fun `detectAdClick - non ad url and is main frame and exemption not expired - update exemptions map`() {
         whenever(mockAdClickAttribution.isAdClick(any())).thenReturn(Pair(false, null))
         whenever(mockAdClickData.getExemption()).thenReturn(notExpired("host.com"))
         val url = "non_ad_url.com"
@@ -133,7 +133,7 @@ class DuckDuckGoAdClickManagerTest {
     }
 
     @Test
-    fun whenSetActiveTabIdCalledWithNoSourceTabIdThenSetActiveTab() {
+    fun `setActiveTabId - no source tab id - set active tab`() {
         val tabId = "tab_id"
 
         testee.setActiveTabId(tabId = tabId, url = "url", sourceTabId = null, sourceTabUrl = null)
@@ -143,7 +143,7 @@ class DuckDuckGoAdClickManagerTest {
     }
 
     @Test
-    fun whenSetActiveTabIdCalledWithSourceTabInfoThenSetActiveTabAndPropagateExemption() {
+    fun `setActiveTabId - with source tab info - set active tab and propagate exemption`() {
         val tabId = "tab_id"
         val url = "https://asos.com/"
         val sourceTabId = "source_tab_id"
@@ -158,7 +158,7 @@ class DuckDuckGoAdClickManagerTest {
     }
 
     @Test
-    fun whenSetActiveTabIdCalledWithSourceTabInfoAndExemptionExistsThenSetActiveTabAndDoNotPropagateExemptionFromSource() {
+    fun `setActiveTabId - exemption exists - set active tab and do not propagate exemption`() {
         val tabId = "tab_id"
         val url = "https://asos.com/"
         val sourceTabId = "source_tab_id"
@@ -174,7 +174,7 @@ class DuckDuckGoAdClickManagerTest {
     }
 
     @Test
-    fun whenDetectAdDomainCalledWithNoAdUrlThenRemoveAdDomain() {
+    fun `detectAdDomain - no ad URL - remove ad domain`() {
         testee.detectAdDomain(url = "https://no_ad.com/")
 
         verify(mockAdClickData).removeAdDomain()
@@ -182,14 +182,14 @@ class DuckDuckGoAdClickManagerTest {
     }
 
     @Test
-    fun whenDetectAdDomainCalledWithDuckDuckGoUrlThenReturn() {
+    fun `detectAdDomain - DuckDuckGo URL - return`() {
         testee.detectAdDomain(url = "https://duckduckgo.com")
 
         verify(mockAdClickData, never()).addExemption(any())
     }
 
     @Test
-    fun whenDetectAdDomainCalledWithAdUrlThenAddExemptionAndRemoveAdDomain() {
+    fun `detectAdDomain - ad URL - add exemption and remove ad domain`() {
         whenever(mockAdClickData.getAdDomainTldPlusOne()).thenReturn("landing_page.com")
 
         testee.detectAdDomain(url = "https://landing_page.com/")
@@ -199,7 +199,7 @@ class DuckDuckGoAdClickManagerTest {
     }
 
     @Test
-    fun whenDetectAdDomainCalledWithAdUrlAndSerpDomainMatchesUrlDomainThenDomainDetectionPixelSentWithMatched() {
+    fun `detectAdDomain - ad URL and SERP domain match - pixel sent with matched`() {
         whenever(mockAdClickData.getAdDomainTldPlusOne()).thenReturn("landing_page.com")
 
         testee.detectAdDomain(url = "https://landing_page.com/")
@@ -213,7 +213,7 @@ class DuckDuckGoAdClickManagerTest {
     }
 
     @Test
-    fun whenDetectAdDomainCalledWithAdUrlAndSerpDomainNotMatchesUrlDomainThenDomainDetectionPixelSentWithMismatch() {
+    fun `detectAdDomain - ad url and serp domain not match - domain detection pixel sent with mismatch`() {
         whenever(mockAdClickData.getAdDomainTldPlusOne()).thenReturn("landing_page.com")
 
         testee.detectAdDomain(url = "https://other_landing_page.com/")
@@ -227,7 +227,7 @@ class DuckDuckGoAdClickManagerTest {
     }
 
     @Test
-    fun whenDetectAdDomainCalledWithAdUrlAndSerpDomainAndBrokenUrlDomainThenDomainDetectionPixelSentWithSerpOnly() {
+    fun `detectAdDomain - ad URL and SERP domain and broken URL domain - domain detection pixel sent with SERP only`() {
         whenever(mockAdClickData.getAdDomainTldPlusOne()).thenReturn("landing_page")
 
         testee.detectAdDomain(url = "https://")
@@ -241,7 +241,7 @@ class DuckDuckGoAdClickManagerTest {
     }
 
     @Test
-    fun whenDetectAdDomainCalledWithAdUrlAndNoSerpDomainAndUrlDomainThenDomainDetectionPixelSentWithHeuristicOnly() {
+    fun `detectAdDomain - ad URL with no SERP domain and URL domain - domain detection pixel sent with heuristic only`() {
         whenever(mockAdClickData.getAdDomainTldPlusOne()).thenReturn("")
 
         testee.detectAdDomain(url = "https://landing_page.com/")
@@ -255,7 +255,7 @@ class DuckDuckGoAdClickManagerTest {
     }
 
     @Test
-    fun whenDetectAdDomainCalledWithAdUrlAndNoSerpDomainAndEmptyUrlDomainThenDomainDetectionPixelSentWithNone() {
+    fun `detectAdDomain - ad URL with no SERP domain and empty URL domain - domain detection pixel sent with none`() {
         whenever(mockAdClickData.getAdDomainTldPlusOne()).thenReturn("")
 
         testee.detectAdDomain(url = "https://")
@@ -269,7 +269,7 @@ class DuckDuckGoAdClickManagerTest {
     }
 
     @Test
-    fun whenDetectAdDomainCalledAndHeuristicsEnabledThenDomainDetectionPixelSentWithHeuristicsToTrue() {
+    fun `detectAdDomain - heuristics enabled - domain detection pixel sent with heuristics true`() {
         whenever(mockAdClickData.getAdDomainTldPlusOne()).thenReturn("")
         whenever(mockAdClickAttribution.isHeuristicDetectionEnabled()).thenReturn(true)
 
@@ -284,7 +284,7 @@ class DuckDuckGoAdClickManagerTest {
     }
 
     @Test
-    fun whenDetectAdDomainCalledAndDomainDetectionEnabledThenDomainDetectionPixelSentWithDomainDetectionToTrue() {
+    fun `detectAdDomain - domain detection enabled - pixel sent with domain detection true`() {
         whenever(mockAdClickData.getAdDomainTldPlusOne()).thenReturn("")
         whenever(mockAdClickAttribution.isDomainDetectionEnabled()).thenReturn(true)
 
@@ -299,7 +299,7 @@ class DuckDuckGoAdClickManagerTest {
     }
 
     @Test
-    fun whenClearTabIdCalledForTabThenRemoveDataForTab() {
+    fun `clearTabId - called for tab - remove data for tab`() {
         val tabId = "tab_id"
 
         testee.clearTabId(tabId)
@@ -308,21 +308,21 @@ class DuckDuckGoAdClickManagerTest {
     }
 
     @Test
-    fun whenClearAllCalledThenRemoveAllData() {
+    fun `clearAll - remove all data`() {
         testee.clearAll()
 
         verify(mockAdClickData).removeAll()
     }
 
     @Test
-    fun whenClearAllExpiredCalledThenRemoveAllExpiredData() {
+    fun `clearAllExpiredAsync - remove all expired data`() {
         testee.clearAllExpiredAsync()
 
         verify(mockAdClickData).removeAllExpired()
     }
 
     @Test
-    fun whenIsExemptionCalledWithDuckDuckGoDocumentUrlThenReturnFalse() {
+    fun `isExemption - DuckDuckGo document URL - return false`() {
         val documentUrl = "https://duckduckgo.com"
         val url = "https://tracker.com"
 
@@ -332,7 +332,7 @@ class DuckDuckGoAdClickManagerTest {
     }
 
     @Test
-    fun whenIsExemptionCalledWithUrlMatchingExpiredExemptionThenReturnFalse() {
+    fun `isExemption - url matching expired exemption - return false`() {
         val documentUrl = "https://asos.com"
         val documentUrlHost = "asos.com"
         val url = "https://tracker.com"
@@ -348,7 +348,7 @@ class DuckDuckGoAdClickManagerTest {
     }
 
     @Test
-    fun whenIsExemptionCalledWithUrlNotMatchingExpiredExemptionNotMatchingTrackerThenReturnFalse() {
+    fun `isExemption - url not matching expired exemption and not matching tracker - return false`() {
         val documentUrl = "https://asos.com"
         val documentUrlHost = "asos.com"
         val url = "https://tracker.com"
@@ -365,7 +365,7 @@ class DuckDuckGoAdClickManagerTest {
     }
 
     @Test
-    fun whenIsExemptionCalledWithUrlNotMatchingExpiredExemptionAndMatchingTrackerThenSendPixelAndReturnTrue() {
+    fun `isExemption - url not matching expired exemption and matching tracker - send pixel and return true`() {
         val documentUrl = "https://asos.com"
         val documentUrlHost = "asos.com"
         val url = "https://bat.bing.com"

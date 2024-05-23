@@ -42,7 +42,7 @@ internal class AppProtectionStatusViewStateMapperTest {
     private val testee = AppProtectionStatusViewStateMapper(mockContentBlocking, mockUnprotectedTemporary)
 
     @Test
-    fun whenSiteUrlIsAContentBlockingExceptionThenFeatureNotEnabled() {
+    fun `mapFromSite - site URL is a content blocking exception - feature not enabled`() {
         whenever(mockContentBlocking.isAnException(any())).thenReturn(true)
 
         val viewState = testee.mapFromSite(site())
@@ -51,7 +51,7 @@ internal class AppProtectionStatusViewStateMapperTest {
     }
 
     @Test
-    fun whenContentBlockingEnabledThenFeatureEnabled() {
+    fun `mapFromSite - content blocking enabled - feature enabled`() {
         whenever(mockContentBlocking.isAnException(any())).thenReturn(false)
 
         val viewState = testee.mapFromSite(site())
@@ -60,14 +60,14 @@ internal class AppProtectionStatusViewStateMapperTest {
     }
 
     @Test
-    fun whenSiteIsInUserAllowListThenAllowListedIsTrue() {
+    fun `mapFromSite - site in user allow list - allowListed is true`() {
         val viewState = testee.mapFromSite(site(allowListed = true))
 
         assertTrue(viewState.allowlisted)
     }
 
     @Test
-    fun whenSiteIsUnprotectedTemporaryThenUnprotectedIsTrue() {
+    fun `mapFromSite - site is unprotected temporary - unprotected is true`() {
         whenever(mockUnprotectedTemporary.isAnException(any())).thenReturn(true)
 
         val viewState = testee.mapFromSite(site())
@@ -76,7 +76,7 @@ internal class AppProtectionStatusViewStateMapperTest {
     }
 
     @Test
-    fun whenContentBlockingEnabledThenViewStateProtectionsEnabled() {
+    fun `mapFromSite - content blocking enabled - viewState protections enabled`() {
         val viewState = testee.mapFromSite(site())
 
         assertFalse(viewState.allowlisted)

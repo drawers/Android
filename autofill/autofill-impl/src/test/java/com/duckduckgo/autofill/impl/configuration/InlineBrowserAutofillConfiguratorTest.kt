@@ -56,7 +56,7 @@ class InlineBrowserAutofillConfiguratorTest {
     }
 
     @Test
-    fun whenFeatureIsNotEnabledThenDoNotInject() = runTest {
+    fun `configureAutofillForCurrentPage - feature not enabled - do not inject`() = runTest {
         givenFeatureIsDisabled()
         inlineBrowserAutofillConfigurator.configureAutofillForCurrentPage(webView, "https://example.com")
 
@@ -64,7 +64,7 @@ class InlineBrowserAutofillConfiguratorTest {
     }
 
     @Test
-    fun whenFeatureIsEnabledThenInject() = runTest {
+    fun `configureAutofillForCurrentPage - feature enabled - inject`() = runTest {
         givenFeatureIsEnabled()
         inlineBrowserAutofillConfigurator.configureAutofillForCurrentPage(webView, "https://example.com")
 

@@ -61,7 +61,7 @@ class RealGpcRepositoryTest {
     }
 
     @Test
-    fun whenRepositoryIsCreatedThenExceptionsLoadedIntoMemory() {
+    fun `RealGpcRepository - repository created - exceptions loaded into memory`() {
         givenGpcDaoContainsExceptions()
 
         testee =
@@ -77,7 +77,7 @@ class RealGpcRepositoryTest {
     }
 
     @Test
-    fun whenUpdateAllThenUpdateAllCalled() =
+    fun `updateAll - calls updateAll on DAOs`() =
         runTest {
             testee =
                 RealGpcRepository(

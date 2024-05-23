@@ -56,7 +56,7 @@ class RealAdClickPixelsTest {
     }
 
     @Test
-    fun whenFireAdClickActivePixelCalledWithNullExemptionThenReturnFalse() {
+    fun `fireAdClickActivePixel - null exemption - return false`() {
         val exemption = null
 
         val result = testee.fireAdClickActivePixel(exemption)
@@ -65,7 +65,7 @@ class RealAdClickPixelsTest {
     }
 
     @Test
-    fun whenFireAdClickActivePixelCalledWithNonNullExemptionAndPixelAlreadyFiredThenReturnFalse() {
+    fun `fireAdClickActivePixel - non-null exemption and pixel already fired - return false`() {
         val exemption = Exemption(
             hostTldPlusOne = "ad_domain",
             navigationExemptionDeadline = 0L,

@@ -71,7 +71,7 @@ class SiteMonitorTest {
     private val mockBypassedSSLCertificatesRepository: BypassedSSLCertificatesRepository = mock()
 
     @Test
-    fun whenUrlIsHttpsThenHttpsStatusIsSecure() {
+    fun `https - url is https - status is secure`() {
         val testee = SiteMonitor(
             url = httpsDocument,
             title = null,
@@ -85,7 +85,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenUrlIsHttpThenHttpsStatusIsNone() {
+    fun `https - url is http - status is none`() {
         val testee = SiteMonitor(
             url = httpDocument,
             title = null,
@@ -99,7 +99,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenUrlIsHttpsWithHttpResourcesThenHttpsStatusIsMixed() {
+    fun `https - url with http resources - mixed status`() {
         val testee = SiteMonitor(
             url = httpsDocument,
             title = null,
@@ -114,7 +114,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenUrlIsMalformedThenHttpsStatusIsNone() {
+    fun `https - malformed URL - status is none`() {
         val testee = SiteMonitor(
             url = malformedDocument,
             title = null,
@@ -128,7 +128,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenSiteMonitorCreatedThenUrlIsCorrect() {
+    fun `SiteMonitor - created - url is correct`() {
         val testee = SiteMonitor(
             url = document,
             title = null,
@@ -142,7 +142,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenSiteMonitorCreatedThenTrackerCountIsZero() {
+    fun `SiteMonitor - created - tracker count is zero`() {
         val testee = SiteMonitor(
             url = document,
             title = null,
@@ -156,7 +156,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenTrackersBlockedOrAllowedByUserAreDetectedThenTrackerCountIsIncremented() {
+    fun `trackerDetected - trackers blocked or allowed by user - tracker count incremented`() {
         val testee = SiteMonitor(
             url = document,
             title = null,
@@ -203,7 +203,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenNoTrackersAllowedByUserAreDetectedThenAllTrackersBlockedIsTrue() {
+    fun `allTrackersBlocked - no trackers allowed by user detected - true`() {
         val testee = SiteMonitor(
             url = document,
             title = null,
@@ -250,7 +250,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenAtLeastOneTrackersAllowedByUserIsDetectedThenAllTrackersBlockedIsFalse() {
+    fun `trackerDetected - at least one tracker allowed by user - all trackers blocked is false`() {
         val testee = SiteMonitor(
             url = document,
             title = null,
@@ -297,7 +297,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenNonMajorNetworkTrackerIsDetectedThenMajorNetworkCountIsZero() {
+    fun `trackerDetected - non-major network tracker - major network count is zero`() {
         val testee = SiteMonitor(
             url = document,
             title = null,
@@ -322,7 +322,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenMajorNetworkTrackerIsDetectedThenMajorNetworkCountIsOne() {
+    fun `trackerDetected - major network tracker detected - major network count is one`() {
         val testee = SiteMonitor(
             url = document,
             title = null,
@@ -347,7 +347,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenDuplicateMajorNetworkIsDetectedThenMajorNetworkCountIsStillOne() {
+    fun `trackerDetected - duplicate major network - major network count is still one`() {
         val testee = SiteMonitor(
             url = document,
             title = null,
@@ -383,7 +383,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenSiteCreatedThenUpgradedHttpsIsFalse() {
+    fun `SiteMonitor - site created - upgradedHttps is false`() {
         val testee = SiteMonitor(
             url = document,
             title = null,
@@ -397,7 +397,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenSiteCreatedThenSurrogatesSizeIsZero() {
+    fun `SiteMonitor - site created - surrogates size is zero`() {
         val testee = SiteMonitor(
             url = document,
             title = null,
@@ -411,7 +411,7 @@ class SiteMonitorTest {
     }
 
     @Test
-    fun whenSurrogatesAreDetectedThenSurrogatesListIsIncremented() {
+    fun `surrogateDetected - surrogates detected - surrogates list incremented`() {
         val testee = SiteMonitor(
             url = document,
             title = null,

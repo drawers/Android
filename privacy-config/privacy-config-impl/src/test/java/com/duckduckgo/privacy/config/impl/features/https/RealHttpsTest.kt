@@ -42,28 +42,28 @@ class RealHttpsTest {
     }
 
     @Test
-    fun whenIsAnExceptionAndDomainIsListedInTheExceptionsListThenReturnTrue() {
+    fun `isAnException - domain listed in exceptions - return true`() {
         givenThereAreExceptions()
 
         assertTrue(testee.isAnException("http://www.example.com"))
     }
 
     @Test
-    fun whenIsAnExceptionWithSubdomainAndDomainIsListedInTheExceptionsListThenReturnTrue() {
+    fun `isAnException - subdomain and domain in exceptions list - return true`() {
         givenThereAreExceptions()
 
         assertTrue(testee.isAnException("http://test.example.com"))
     }
 
     @Test
-    fun whenIsAnExceptionAndDomainIsNotListedInTheExceptionsListThenReturnFalse() {
+    fun `isAnException - domain not listed in exceptions - return false`() {
         whenever(mockHttpsRepository.exceptions).thenReturn(CopyOnWriteArrayList())
 
         assertFalse(testee.isAnException("http://test.example.com"))
     }
 
     @Test
-    fun whenIsAnExceptionAndDomainIsListedInTheUnprotectedTemporaryListThenReturnTrue() {
+    fun `isAnException - domain in unprotected temporary list - return true`() {
         val url = "http://example.com"
         whenever(mockUnprotectedTemporary.isAnException(url)).thenReturn(true)
         whenever(mockHttpsRepository.exceptions).thenReturn(CopyOnWriteArrayList())
@@ -72,7 +72,7 @@ class RealHttpsTest {
     }
 
     @Test
-    fun whenIsAnExceptionAndDomainIsListedInTheUserAllowListThenReturnTrue() {
+    fun `isAnException - domain in user allow list - return true`() {
         val url = "http://example.com"
         whenever(mockUserAllowListRepository.isUrlInUserAllowList(url)).thenReturn(true)
         whenever(mockHttpsRepository.exceptions).thenReturn(CopyOnWriteArrayList())

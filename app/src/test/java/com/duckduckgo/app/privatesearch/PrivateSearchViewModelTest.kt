@@ -60,21 +60,21 @@ internal class PrivateSearchViewModelTest {
     }
 
     @Test
-    fun whenAutocompleteSwitchedOnThenDataStoreIsUpdated() {
+    fun `onAutocompleteSettingChanged - switched on - data store updated`() {
         testee.onAutocompleteSettingChanged(true)
 
         verify(mockAppSettingsDataStore).autoCompleteSuggestionsEnabled = true
     }
 
     @Test
-    fun whenAutocompleteSwitchedOffThenDataStoreIsUpdated() {
+    fun `onAutocompleteSettingChanged - switched off - data store updated`() {
         testee.onAutocompleteSettingChanged(false)
 
         verify(mockAppSettingsDataStore).autoCompleteSuggestionsEnabled = false
     }
 
     @Test
-    fun whenMoreSearchSettingsClickedThenCommandLaunchCustomizeSearchWebPageAndPixelIsSent() = runTest {
+    fun `onPrivateSearchMoreSearchSettingsClicked - command launch customize search web page - pixel is sent`() = runTest {
         testee.commands().test {
             testee.onPrivateSearchMoreSearchSettingsClicked()
 

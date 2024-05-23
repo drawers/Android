@@ -62,12 +62,12 @@ class ProtectionsStateProviderTest {
     }
 
     @Test
-    fun whenContentBlockingIsEnabledAndDomainIsNotAnExceptionThenProtectionsAreEnabled() = runTest {
+    fun `areProtectionsEnabled - content blocking enabled and domain not an exception - protections enabled`() = runTest {
         assertTrue(areProtectionsEnabled(domain = "www.example.com"))
     }
 
     @Test
-    fun whenContentBlockingFeatureIsDisabledThenProtectionsAreDisabled() = runTest {
+    fun `areProtectionsEnabled - content blocking feature disabled - protections are disabled`() = runTest {
         val domain = "www.example.com"
         whenever(featureToggle.isFeatureEnabled(PrivacyFeatureName.ContentBlockingFeatureName.value)).thenReturn(false)
 
@@ -75,7 +75,7 @@ class ProtectionsStateProviderTest {
     }
 
     @Test
-    fun whenDomainIsOnContentBlockingExceptionListThenProtectionsAreDisabled() = runTest {
+    fun `areProtectionsEnabled - domain on content blocking exception list - protections are disabled`() = runTest {
         val domain = "www.example.com"
         whenever(contentBlocking.isAnException(domain)).thenReturn(true)
 
@@ -83,7 +83,7 @@ class ProtectionsStateProviderTest {
     }
 
     @Test
-    fun whenDomainIsOnUnprotectedTemporaryExceptionListThenProtectionsAreDisabled() = runTest {
+    fun `areProtectionsEnabled - domain on unprotected temporary exception list - protections are disabled`() = runTest {
         val domain = "www.example.com"
         whenever(unprotectedTemporary.isAnException(domain)).thenReturn(true)
 
@@ -91,7 +91,7 @@ class ProtectionsStateProviderTest {
     }
 
     @Test
-    fun whenDomainIsInUserAllowlistThenProtectionsAreDisabled() = runTest {
+    fun `areProtectionsEnabled - domain in user allowlist - protections are disabled`() = runTest {
         val domain = "www.example.com"
         userAllowListRepository.addDomainToUserAllowList(domain)
 

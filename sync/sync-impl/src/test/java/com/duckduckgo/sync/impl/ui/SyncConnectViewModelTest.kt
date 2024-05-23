@@ -65,7 +65,7 @@ class SyncConnectViewModelTest {
     )
 
     @Test
-    fun whenScreenStartedThenShowQRCode() = runTest {
+    fun `viewState - screen started - show QR code`() = runTest {
         val bitmap = TestSyncFixtures.qrBitmap()
         whenever(syncRepository.getConnectQR()).thenReturn(Result.Success(jsonConnectKeyEncoded))
         whenever(qrEncoder.encodeAsBitmap(eq(jsonConnectKeyEncoded), any(), any())).thenReturn(bitmap)
@@ -78,7 +78,7 @@ class SyncConnectViewModelTest {
     }
 
     @Test
-    fun whenGenerateConnectQRFailsThenFinishWithError() = runTest {
+    fun `viewState - generate connect QR fails - finish with error`() = runTest {
         whenever(syncRepository.getConnectQR()).thenReturn(Result.Error(reason = "error"))
         whenever(syncRepository.pollConnectionKeys()).thenReturn(Result.Success(true))
         testee.viewState().test {
@@ -94,7 +94,7 @@ class SyncConnectViewModelTest {
     }
 
     @Test
-    fun whenConnectionKeysSuccessThenLoginSuccess() = runTest {
+    fun `viewState - connection keys success - login success`() = runTest {
         whenever(syncRepository.getConnectQR()).thenReturn(Result.Success(jsonConnectKeyEncoded))
         whenever(syncRepository.pollConnectionKeys()).thenReturn(Result.Success(true))
         testee.viewState().test {
@@ -111,7 +111,7 @@ class SyncConnectViewModelTest {
     }
 
     @Test
-    fun whenOnCopyCodeClickedThenShowMessage() = runTest {
+    fun `onCopyCodeClicked - show message`() = runTest {
         whenever(syncRepository.getConnectQR()).thenReturn(Result.Success(jsonConnectKeyEncoded))
 
         testee.onCopyCodeClicked()
@@ -124,7 +124,7 @@ class SyncConnectViewModelTest {
     }
 
     @Test
-    fun whenOnCopyCodeClickedThenCopyCodeToClipboard() = runTest {
+    fun `onCopyCodeClicked - copy code to clipboard`() = runTest {
         whenever(syncRepository.getConnectQR()).thenReturn(Result.Success(jsonConnectKeyEncoded))
 
         testee.onCopyCodeClicked()
@@ -133,7 +133,7 @@ class SyncConnectViewModelTest {
     }
 
     @Test
-    fun whenUserClicksOnReadTextCodeThenCommandIsReadTextCode() = runTest {
+    fun `onReadTextCodeClicked - command is read text code`() = runTest {
         testee.commands().test {
             testee.onReadTextCodeClicked()
             val command = awaitItem()
@@ -143,7 +143,7 @@ class SyncConnectViewModelTest {
     }
 
     @Test
-    fun whenUserScansConnectQRCodeAndConnectDeviceSucceedsThenCommandIsLoginSuccess() = runTest {
+    fun `onQRCodeScanned - connect device succeeds - command is login success`() = runTest {
         whenever(syncRepository.processCode(jsonConnectKeyEncoded)).thenReturn(Result.Success(true))
         testee.commands().test {
             testee.onQRCodeScanned(jsonConnectKeyEncoded)
@@ -155,7 +155,7 @@ class SyncConnectViewModelTest {
     }
 
     @Test
-    fun whenUserScansRecoveryCodeButSignedInThenCommandIsError() = runTest {
+    fun `onQRCodeScanned - signed in - command is error`() = runTest {
         whenever(syncRepository.processCode(jsonRecoveryKeyEncoded)).thenReturn(Result.Error(code = ALREADY_SIGNED_IN.code))
         testee.commands().test {
             testee.onQRCodeScanned(jsonRecoveryKeyEncoded)
@@ -167,7 +167,7 @@ class SyncConnectViewModelTest {
     }
 
     @Test
-    fun whenUserScansConnectQRCodeAndConnectDeviceFailsThenCommandIsError() = runTest {
+    fun `onQRCodeScanned - connect device fails - command is error`() = runTest {
         whenever(syncRepository.processCode(jsonConnectKeyEncoded)).thenReturn(Result.Error(code = CONNECT_FAILED.code))
         testee.commands().test {
             testee.onQRCodeScanned(jsonConnectKeyEncoded)
@@ -179,7 +179,7 @@ class SyncConnectViewModelTest {
     }
 
     @Test
-    fun whenLoginSucceedsThenCommandIsLoginSuccess() = runTest {
+    fun `onLoginSuccess - command is login success`() = runTest {
         testee.commands().test {
             testee.onLoginSuccess()
             val command = awaitItem()
@@ -190,7 +190,7 @@ class SyncConnectViewModelTest {
     }
 
     @Test
-    fun whenPollingIfConnectFailsThenShowError() = runTest {
+    fun `pollConnectionKeys - connect fails - show error`() = runTest {
         whenever(syncRepository.pollConnectionKeys()).thenReturn(Result.Error(CONNECT_FAILED.code))
         testee.viewState().test {
             awaitItem()
@@ -205,7 +205,7 @@ class SyncConnectViewModelTest {
     }
 
     @Test
-    fun whenPollingIfLoginFailsThenShowError() = runTest {
+    fun `pollConnectionKeys - login fails - show error`() = runTest {
         whenever(syncRepository.pollConnectionKeys()).thenReturn(Result.Error(LOGIN_FAILED.code))
         testee.viewState().test {
             awaitItem()
@@ -220,7 +220,7 @@ class SyncConnectViewModelTest {
     }
 
     @Test
-    fun whenPollingIfGenericErrorThenDoNothing() = runTest {
+    fun `pollConnectionKeys - generic error - do nothing`() = runTest {
         whenever(syncRepository.getConnectQR()).thenReturn(Result.Success(jsonConnectKeyEncoded))
         whenever(syncRepository.pollConnectionKeys())
             .thenReturn(Result.Error())

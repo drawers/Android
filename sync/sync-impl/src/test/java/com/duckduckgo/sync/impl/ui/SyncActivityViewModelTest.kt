@@ -103,7 +103,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenUserSignedInThenDeviceSyncViewStateIsEnabled() = runTest {
+    fun `viewState - user signed in - device sync enabled`() = runTest {
         givenAuthenticatedUser()
 
         testee.viewState().test {
@@ -114,20 +114,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenUserSignedInThenShowAccount() = runTest {
-        givenAuthenticatedUser()
-
-        testee.viewState().test {
-            val viewState = expectMostRecentItem()
-            assertTrue(viewState.showAccount)
-
-            verify(syncEngine).triggerSync(FEATURE_READ)
-            cancelAndIgnoreRemainingEvents()
-        }
-    }
-
-    @Test
-    fun whenUserSignedInThenLoginQRCodeIsNotNull() = runTest {
+    fun `viewState - user signed in - show account`() = runTest {
         givenAuthenticatedUser()
 
         testee.viewState().test {
@@ -140,7 +127,20 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenUserHasMultipleConnectedDevicesThenShowDevices() = runTest {
+    fun `viewState - user signed in - login QR code is not null`() = runTest {
+        givenAuthenticatedUser()
+
+        testee.viewState().test {
+            val viewState = expectMostRecentItem()
+            assertTrue(viewState.showAccount)
+
+            verify(syncEngine).triggerSync(FEATURE_READ)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `viewState - multiple connected devices - show devices`() = runTest {
         givenAuthenticatedUser()
 
         val connectedDevices = listOf(connectedDevice, connectedDevice)
@@ -154,7 +154,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenSyncWithAnotherDeviceThenEmitCommandSyncWithAnotherDevice() = runTest {
+    fun `onSyncWithAnotherDevice - emit command`() = runTest {
         givenUserHasDeviceAuthentication(true)
         testee.onSyncWithAnotherDevice()
 
@@ -165,7 +165,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenSyncWithAnotherDeviceWithoutDeviceAuthenticationThenEmitCommandRequestSetupAuthentication() = runTest {
+    fun `onSyncWithAnotherDevice - without device authentication - emit command request setup authentication`() = runTest {
         givenUserHasDeviceAuthentication(false)
         testee.onSyncWithAnotherDevice()
 
@@ -176,7 +176,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenScanAnotherDeviceQRCodeThenEmitCommandAddAnotherDevice() = runTest {
+    fun `onAddAnotherDevice - scan another device QR code - emit command add another device`() = runTest {
         givenUserHasDeviceAuthentication(true)
         testee.onAddAnotherDevice()
 
@@ -187,7 +187,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenScanAnotherDeviceQRCodeWithoutDeviceAuthenticationThenEmitCommandRequestSetupAuthentication() = runTest {
+    fun `onAddAnotherDevice - no device authentication - emit command request setup authentication`() = runTest {
         givenUserHasDeviceAuthentication(false)
         testee.onAddAnotherDevice()
 
@@ -198,7 +198,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenSyncThisDeviceThenLaunchCreateAccountFlow() = runTest {
+    fun `onSyncThisDevice - launch create account flow`() = runTest {
         givenUserHasDeviceAuthentication(true)
         testee.commands().test {
             testee.onSyncThisDevice()
@@ -208,7 +208,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenSyncThisDeviceWithoutDeviceAuthenticationThenEmitCommandRequestSetupAuthentication() = runTest {
+    fun `onSyncThisDevice - without device authentication - emit command request setup authentication`() = runTest {
         givenUserHasDeviceAuthentication(false)
         testee.commands().test {
             testee.onSyncThisDevice()
@@ -218,7 +218,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenRecoverDataThenRecoverDataCommandSent() = runTest {
+    fun `onRecoverYourSyncedData - recover data command sent`() = runTest {
         givenUserHasDeviceAuthentication(true)
         testee.onRecoverYourSyncedData()
 
@@ -229,7 +229,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenRecoverDataWithoutDeviceAuthenticationThenEmitCommandRequestSetupAuthentication() = runTest {
+    fun `onRecoverYourSyncedData - without device authentication - emit command request setup authentication`() = runTest {
         givenUserHasDeviceAuthentication(false)
         testee.onRecoverYourSyncedData()
 
@@ -240,7 +240,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenTurnOffClickedThenAskTurnOffCommandShown() = runTest {
+    fun `onTurnOffClicked - ask turn off command shown`() = runTest {
         givenAuthenticatedUser()
 
         testee.onTurnOffClicked()
@@ -252,7 +252,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenTurnOffSyncConfirmedThenLogoutLocalDevice() = runTest {
+    fun `onTurnOffSyncConfirmed - logout local device`() = runTest {
         whenever(syncAccountRepository.getThisConnectedDevice()).thenReturn(connectedDevice)
         whenever(syncAccountRepository.logout(deviceId)).thenReturn(Result.Success(true))
 
@@ -262,7 +262,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenLogoutSuccessThenUpdateViewState() = runTest {
+    fun `onTurnOffSyncConfirmed - logout success - update viewState`() = runTest {
         givenAuthenticatedUser()
 
         whenever(syncAccountRepository.logout(deviceId)).thenReturn(Result.Success(true))
@@ -278,7 +278,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenLogoutErrorThenUpdateViewState() = runTest {
+    fun `onTurnOffSyncConfirmed - logout error - update viewState`() = runTest {
         givenAuthenticatedUser()
 
         whenever(syncAccountRepository.logout(deviceId)).thenReturn(Result.Error(reason = "error"))
@@ -293,7 +293,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenTurnOffSyncCancelledThenDeviceSyncViewStateIsEnabled() = runTest {
+    fun `onTurnOffSyncCancelled - device sync view state is enabled`() = runTest {
         givenAuthenticatedUser()
 
         testee.viewState().test {
@@ -305,7 +305,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenDeleteAccountClickedThenAskDeleteAccount() = runTest {
+    fun `onDeleteAccountClicked - ask delete account`() = runTest {
         testee.onDeleteAccountClicked()
 
         testee.commands().test {
@@ -315,7 +315,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenDeleteAccountSuccessThenUpdateViewState() = runTest {
+    fun `onDeleteAccountConfirmed - delete account success - update viewState`() = runTest {
         givenAuthenticatedUser()
 
         whenever(syncAccountRepository.deleteAccount()).thenReturn(Result.Success(true))
@@ -331,7 +331,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenDeleteAccountErrorThenUpdateViewState() = runTest {
+    fun `onDeleteAccountConfirmed - delete account error - update viewState`() = runTest {
         givenAuthenticatedUser()
 
         whenever(syncAccountRepository.deleteAccount()).thenReturn(Result.Error(reason = "error"))
@@ -346,7 +346,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenDeleteAccountConfirmedThenDeleteAccount() = runTest {
+    fun `onDeleteAccountConfirmed - delete account`() = runTest {
         whenever(syncAccountRepository.getThisConnectedDevice()).thenReturn(connectedDevice)
         whenever(syncAccountRepository.logout(deviceId)).thenReturn(Result.Success(true))
 
@@ -356,7 +356,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenDeleteAccountCancelledThenDeviceSyncViewStateIsEnabled() = runTest {
+    fun `onDeleteAccountCancelled - device sync view state is enabled`() = runTest {
         givenAuthenticatedUser()
 
         testee.viewState().test {
@@ -368,7 +368,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenOnRemoveDeviceClickedThenAskRemoveDevice() = runTest {
+    fun `onRemoveDeviceClicked - ask remove device`() = runTest {
         testee.onRemoveDeviceClicked(connectedDevice)
 
         testee.commands().test {
@@ -378,7 +378,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenOnRemoveDeviceConfirmedThenRemoveDevice() = runTest {
+    fun `onRemoveDeviceConfirmed - authenticated user - remove device`() = runTest {
         givenAuthenticatedUser()
 
         whenever(syncAccountRepository.logout(deviceId)).thenReturn(Result.Success(true))
@@ -389,7 +389,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenOnRemoveDeviceSucceedsThenFetchRemoteDevices() = runTest {
+    fun `onRemoveDeviceConfirmed - remove device succeeds - fetch remote devices`() = runTest {
         givenAuthenticatedUser()
 
         whenever(syncAccountRepository.logout(deviceId)).thenReturn(Result.Success(true))
@@ -400,7 +400,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenOnRemoveDeviceSucceedsThenReturnUpdateDevices() = runTest {
+    fun `onRemoveDeviceConfirmed - succeeds - return update devices`() = runTest {
         givenAuthenticatedUser()
 
         whenever(syncAccountRepository.logout(deviceId)).thenReturn(Result.Success(true))
@@ -417,7 +417,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenOnRemoveDeviceFailsThenRestorePreviousList() = runTest {
+    fun `onRemoveDeviceConfirmed - remove device fails - restore previous list`() = runTest {
         givenAuthenticatedUser()
 
         whenever(syncAccountRepository.logout(deviceId)).thenReturn(Result.Error(reason = "error"))
@@ -431,7 +431,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenOnDeviceEditedThenUpdateDevice() = runTest {
+    fun `onDeviceEdited - authenticated user - update device`() = runTest {
         givenAuthenticatedUser()
 
         whenever(syncAccountRepository.renameDevice(any())).thenReturn(Result.Success(true))
@@ -448,7 +448,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenUserClicksOnSaveRecoveryCodeThenEmitCheckIfUserHasPermissionCommand() = runTest {
+    fun `onSaveRecoveryCodeClicked - emit check if user has permission command`() = runTest {
         givenUserHasDeviceAuthentication(true)
         whenever(syncAccountRepository.getRecoveryCode()).thenReturn(Result.Success(jsonRecoveryKeyEncoded))
         testee.commands().test {
@@ -460,7 +460,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenUserClicksOnSaveRecoveryCodeWithoutDeviceAuthenticationThenEmitCommandRequestSetupAuthentication() = runTest {
+    fun `onSaveRecoveryCodeClicked - without device authentication - emit command request setup authentication`() = runTest {
         givenUserHasDeviceAuthentication(false)
         whenever(syncAccountRepository.getRecoveryCode()).thenReturn(Result.Success(jsonRecoveryKeyEncoded))
         testee.commands().test {
@@ -472,7 +472,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenGenerateRecoveryCodeThenGenerateFileAndEmitSuccessCommand() = runTest {
+    fun `generateRecoveryCode - generate file - emit success command`() = runTest {
         whenever(syncAccountRepository.getRecoveryCode()).thenReturn(Result.Success(jsonRecoveryKeyEncoded))
         whenever(recoveryPDF.generateAndStoreRecoveryCodePDF(any(), eq(jsonRecoveryKeyEncoded))).thenReturn(TestSyncFixtures.pdfFile())
 
@@ -485,7 +485,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenOnDeviceConnectedThenFetchRemoteDevices() = runTest {
+    fun `onDeviceConnected - fetch remote devices`() = runTest {
         givenAuthenticatedUser()
 
         val connectedDevices = listOf(connectedDevice, connectedDevice)
@@ -501,7 +501,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenSyncStateIsDisabledThenViewStateChanges() = runTest {
+    fun `viewState - sync state disabled - viewState changes`() = runTest {
         givenAuthenticatedUser()
 
         testee.viewState().test {
@@ -515,7 +515,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenSyncStateIsEnabledThenViewStateChanges() = runTest {
+    fun `viewState - sync state enabled - viewState changes`() = runTest {
         givenAuthenticatedUser()
         stateFlow.value = SyncState.OFF
 
@@ -530,7 +530,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenSyncStateIsInProgressEnabledThenViewStateDoesNotChange() = runTest {
+    fun `viewState - sync state in progress enabled - does not change`() = runTest {
         givenAuthenticatedUser()
 
         testee.viewState().test {
@@ -543,7 +543,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenUserSignedAndSetupFlowsDisabledThenAllSetupFlowsDisabledViewState() = runTest {
+    fun `viewState - user signed and setup flows disabled - all setup flows disabled`() = runTest {
         whenever(syncFeatureToggle.allowSetupFlows()).thenReturn(false)
         whenever(syncFeatureToggle.allowCreateAccount()).thenReturn(false)
         givenAuthenticatedUser()
@@ -557,7 +557,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenUserSignedAndCreateAccountDisabledThenOnlySignInFlowDisabledViewState() = runTest {
+    fun `viewState - user signed in and create account disabled - only sign in flow disabled`() = runTest {
         whenever(syncFeatureToggle.allowSetupFlows()).thenReturn(true)
         whenever(syncFeatureToggle.allowCreateAccount()).thenReturn(false)
         givenAuthenticatedUser()
@@ -571,7 +571,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenSetupFlowsDisabledThenAllSetupFlowsDisabledViewState() = runTest {
+    fun `viewState - setup flows disabled - all setup flows disabled`() = runTest {
         whenever(syncFeatureToggle.allowSetupFlows()).thenReturn(false)
         whenever(syncFeatureToggle.allowCreateAccount()).thenReturn(true)
 
@@ -584,7 +584,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenCreateAccountDisabledThenOnlySignInFlowDisabledViewState() = runTest {
+    fun `viewState - create account disabled - only sign in flow disabled`() = runTest {
         whenever(syncFeatureToggle.allowSetupFlows()).thenReturn(true)
         whenever(syncFeatureToggle.allowCreateAccount()).thenReturn(false)
 
@@ -597,7 +597,7 @@ class SyncActivityViewModelTest {
     }
 
     @Test
-    fun whenSyncNotSupportedThenEmitCommandShowDeviceUnsupported() = runTest {
+    fun `commands - sync not supported - show device unsupported`() = runTest {
         whenever(syncAccountRepository.isSyncSupported()).thenReturn(false)
 
         testee.commands().test {

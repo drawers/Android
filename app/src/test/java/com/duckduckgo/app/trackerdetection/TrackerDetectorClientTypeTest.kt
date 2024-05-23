@@ -68,7 +68,7 @@ class TrackerDetectorClientTypeTest {
     }
 
     @Test
-    fun whenUrlMatchesOnlyInBlockingClientThenEvaluateReturnsTrackingEvent() {
+    fun `evaluate - url matches only in blocking client - returns tracking event`() {
         val url = Url.BLOCKED
         val expected = TrackingEvent(
             documentUrl = documentUrl,
@@ -83,7 +83,7 @@ class TrackerDetectorClientTypeTest {
     }
 
     @Test
-    fun whenUrlDoesNotMatchInAnyClientsThenEvaluateReturnsAllowedDomain() {
+    fun `evaluate - url does not match in any clients - returns allowed domain`() {
         val url = Url.UNLISTED
         val expected = TrackingEvent(
             documentUrl = documentUrl,

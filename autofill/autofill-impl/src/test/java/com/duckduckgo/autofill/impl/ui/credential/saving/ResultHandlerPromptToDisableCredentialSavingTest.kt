@@ -43,32 +43,32 @@ class ResultHandlerPromptToDisableCredentialSavingTest {
     )
 
     @Test
-    fun whenResultProcessedThenFireproofNotifiedDialogNotVisible() {
+    fun `processResult - fireproof notified - dialog not visible`() {
         val result = bundleForAutofillDisablePrompt()
         testee.processResult(result, context, "tab-id-123", Fragment(), callback)
         verify(autofillFireproofDialogSuppressor).autofillSaveOrUpdateDialogVisibilityChanged(false)
     }
 
     @Test
-    fun whenUserChoosesToDisableAutofillThenStoreUpdatedToFalse() {
+    fun `onDisableAutofill - store updated to false`() {
         testee.onDisableAutofill(callback)
         verify(autofillStore).autofillEnabled = false
     }
 
     @Test
-    fun whenUserChoosesToDisableAutofillThenDeclineCounterDisabled() = runTest {
+    fun `onDisableAutofill - decline counter disabled`() = runTest {
         testee.onDisableAutofill(callback)
         verify(declineCounter).disableDeclineCounter()
     }
 
     @Test
-    fun whenUserChoosesToDisableAutofillThenPageRefreshRequested() = runTest {
+    fun `onDisableAutofill - page refresh requested`() = runTest {
         testee.onDisableAutofill(callback)
         verify(callback).onAutofillStateChange()
     }
 
     @Test
-    fun whenUserChoosesToKeepUsingAutofillThenDeclineCounterDisabled() = runTest {
+    fun `onKeepUsingAutofill - decline counter disabled`() = runTest {
         testee.onKeepUsingAutofill()
         verify(declineCounter).disableDeclineCounter()
     }

@@ -112,7 +112,7 @@ class RxPixelSenderTest {
     }
 
     @Test
-    fun whenPixelFiredThenPixelServiceCalledWithCorrectAtbAndVariant() {
+    fun `sendPixel - pixel fired - pixel service called with correct atb and variant`() {
         givenPixelApiSucceeds()
         givenAtbVariant(Atb("atb"))
         givenVariant("variant")
@@ -125,7 +125,7 @@ class RxPixelSenderTest {
     }
 
     @Test
-    fun whenPixelFiredTabletFormFactorThenPixelServiceCalledWithTabletParameter() {
+    fun `sendPixel - tablet form factor - pixel service called with tablet parameter`() {
         givenApiSendPixelSucceeds()
         givenFormFactor(DeviceInfo.FormFactor.TABLET)
 
@@ -136,7 +136,7 @@ class RxPixelSenderTest {
     }
 
     @Test
-    fun whenPixelFiredWithNoAtbThenPixelServiceCalledWithCorrectPixelNameAndNoAtb() {
+    fun `sendPixel - no atb - pixel service called with correct pixel name and no atb`() {
         givenApiSendPixelSucceeds()
         givenFormFactor(DeviceInfo.FormFactor.PHONE)
 
@@ -147,7 +147,7 @@ class RxPixelSenderTest {
     }
 
     @Test
-    fun whenPixelFiredWithAdditionalParametersThenPixelServiceCalledWithDefaultAndAdditionalParameters() {
+    fun `sendPixel - with additional parameters - pixel service called with default and additional parameters`() {
         givenPixelApiSucceeds()
         givenAtbVariant(Atb("atb"))
         givenVariant("variant")
@@ -163,7 +163,7 @@ class RxPixelSenderTest {
     }
 
     @Test
-    fun whenPixelFiredWithoutAdditionalParametersThenPixelServiceCalledWithOnlyDefaultParameters() {
+    fun `sendPixel - without additional parameters - called with only default parameters`() {
         givenPixelApiSucceeds()
         givenAtbVariant(Atb("atb"))
         givenVariant("variant")

@@ -44,7 +44,7 @@ class RealRequestFiltererRepositoryTest {
     }
 
     @Test
-    fun whenRepositoryIsCreatedThenValuesLoadedIntoMemory() {
+    fun `RealRequestFiltererRepository - repository created - values loaded into memory`() {
         givenRequestFiltererDaoHasContent()
 
         testee = RealRequestFiltererRepository(
@@ -59,7 +59,7 @@ class RealRequestFiltererRepositoryTest {
     }
 
     @Test
-    fun whenLoadToMemoryAndNoSettingsThenSetDefaultValues() {
+    fun `loadToMemory - no settings - set default values`() {
         whenever(mockRequestFiltererDao.getSettings()).thenReturn(null)
 
         testee = RealRequestFiltererRepository(
@@ -73,7 +73,7 @@ class RealRequestFiltererRepositoryTest {
     }
 
     @Test
-    fun whenUpdateAllThenUpdateAllCalled() {
+    fun `updateAll - update all called`() {
         val policy = SettingsEntity(2, 600)
 
         testee = RealRequestFiltererRepository(
@@ -89,7 +89,7 @@ class RealRequestFiltererRepositoryTest {
     }
 
     @Test
-    fun whenUpdateAllThenPreviousValuesAreCleared() {
+    fun `updateAll - previous values are cleared`() {
         givenRequestFiltererDaoHasContent()
 
         testee = RealRequestFiltererRepository(

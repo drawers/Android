@@ -55,7 +55,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenDefaultThenReturnFavoritesFromRootFolderFlow() = runTest {
+    fun `getFavorites - default - return favorites from root folder flow`() = runTest {
         givenFavoriteDelegate(syncDisabledFavoritesSettings)
         val favoriteone = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
         val favoritetwo = Favorite("favorite2", "Favorite2", "http://favexample.com", "timestamp", 1)
@@ -69,7 +69,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenUnifiedModeThenReturnFavoritesFromRootFolderFlow() = runTest {
+    fun `getFavorites - unified mode - return favorites from root folder flow`() = runTest {
         givenFavoriteDelegate(favoritesDisplayModeSettings.apply { favoritesDisplayMode = UNIFIED })
         val favoriteone = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
         val favoritetwo = Favorite("favorite2", "Favorite2", "http://favexample.com", "timestamp", 1)
@@ -83,7 +83,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenNativeModeThenReturnMobileFavoritesFolderFlow() = runTest {
+    fun `getFavorites - native mode - return mobile favorites folder flow`() = runTest {
         givenFavoriteDelegate(favoritesDisplayModeSettings.apply { favoritesDisplayMode = NATIVE })
         val favoriteone = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
         val favoritetwo = Favorite("favorite2", "Favorite2", "http://favexample.com", "timestamp", 1)
@@ -97,7 +97,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenViewModeChangesThenNewFlowEmitted() = runTest {
+    fun `getFavorites - view mode changes - new flow emitted`() = runTest {
         givenFavoriteDelegate(favoritesDisplayModeSettings.apply { favoritesDisplayMode = NATIVE })
         val favoriteone = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
         val favoritetwo = Favorite("favorite2", "Favorite2", "http://favexample.com", "timestamp", 1)
@@ -114,7 +114,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenDefaultThenReturnRootFavoritesFolderList() = runTest {
+    fun `getFavoritesSync - default - return root favorites folder list`() = runTest {
         givenFavoriteDelegate(syncDisabledFavoritesSettings)
         val favoriteone = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
         val favoritetwo = Favorite("favorite2", "Favorite2", "http://favexample.com", "timestamp", 1)
@@ -126,7 +126,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenUnifiedModeThenReturnRootFavoritesFolderList() = runTest {
+    fun `getFavoritesSync - unified mode - return root favorites folder list`() = runTest {
         givenFavoriteDelegate(favoritesDisplayModeSettings.apply { favoritesDisplayMode = UNIFIED })
         val favoriteone = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
         val favoritetwo = Favorite("favorite2", "Favorite2", "http://favexample.com", "timestamp", 1)
@@ -138,7 +138,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenNativeModeThenReturnMobileFavoritesFolderList() = runTest {
+    fun `getFavoritesSync - native mode - return mobile favorites folder list`() = runTest {
         givenFavoriteDelegate(favoritesDisplayModeSettings.apply { favoritesDisplayMode = NATIVE })
         val favoriteone = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
         val favoritetwo = Favorite("favorite2", "Favorite2", "http://favexample.com", "timestamp", 1)
@@ -150,7 +150,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenGetFavoritesCountByDomainThenOnlyCheckRootFolder() = runTest {
+    fun `getFavoritesCountByDomain - only check root folder`() = runTest {
         givenFavoriteDelegate(syncDisabledFavoritesSettings)
         val favoriteone = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
         val favoritetwo = Favorite("favorite2", "Favorite2", "http://favexample.com", "timestamp", 1)
@@ -162,7 +162,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenUnifiedModeGetFavoritesCountByDomainThenOnlyCheckRootFolder() = runTest {
+    fun `getFavoritesCountByDomain - unified mode - only check root folder`() = runTest {
         givenFavoriteDelegate(favoritesDisplayModeSettings.apply { favoritesDisplayMode = UNIFIED })
         val favoriteone = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
         val favoritetwo = Favorite("favorite2", "Favorite2", "http://favexample.com", "timestamp", 1)
@@ -174,7 +174,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenNativeModeGetFavoritesCountByDomainThenOnlyCheckMobileFolder() = runTest {
+    fun `getFavoritesCountByDomain - native mode - only checks mobile folder`() = runTest {
         givenFavoriteDelegate(favoritesDisplayModeSettings.apply { favoritesDisplayMode = NATIVE })
         val favoriteone = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
         val favoritetwo = Favorite("favorite2", "Favorite2", "http://favexample.com", "timestamp", 1)
@@ -185,7 +185,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenGetFavoriteByIdThenOnlyCheckRootFolder() = runTest {
+    fun `getFavoriteById - only check root folder`() = runTest {
         givenFavoriteDelegate(syncDisabledFavoritesSettings)
         val favoriteone = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
         val favoritetwo = Favorite("favorite2", "Favorite2", "http://favexample.com", "timestamp", 1)
@@ -197,7 +197,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenUnifiedModeGetFavoriteByIdThenOnlyCheckRootFolder() = runTest {
+    fun `getFavoriteById - unified mode - only checks root folder`() = runTest {
         givenFavoriteDelegate(favoritesDisplayModeSettings.apply { favoritesDisplayMode = UNIFIED })
         val favoriteone = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
         val favoritetwo = Favorite("favorite2", "Favorite2", "http://favexample.com", "timestamp", 1)
@@ -209,7 +209,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenNativeModeGetFavoriteByIdThenOnlyCheckMobileFolder() = runTest {
+    fun `getFavoriteById - native mode - only check mobile folder`() = runTest {
         givenFavoriteDelegate(favoritesDisplayModeSettings.apply { favoritesDisplayMode = NATIVE })
         val favoriteone = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
         val favoritetwo = Favorite("favorite2", "Favorite2", "http://favexample.com", "timestamp", 1)
@@ -221,7 +221,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenFavoritesCountThenOnlyCheckRootFolder() = runTest {
+    fun `favoritesCount - only check root folder`() = runTest {
         givenFavoriteDelegate(syncDisabledFavoritesSettings)
         val favoriteone = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
         val favoritetwo = Favorite("favorite2", "Favorite2", "http://favexample.com", "timestamp", 1)
@@ -233,7 +233,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenUnifiedModeFavoritesCountThenOnlyCheckRootFolder() = runTest {
+    fun `favoritesCount - unified mode - only check root folder`() = runTest {
         givenFavoriteDelegate(favoritesDisplayModeSettings.apply { favoritesDisplayMode = UNIFIED })
         val favoriteone = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
         val favoritetwo = Favorite("favorite2", "Favorite2", "http://favexample.com", "timestamp", 1)
@@ -245,7 +245,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenNativeModeFavoritesCountThenOnlyCheckMobileFolder() = runTest {
+    fun `favoritesCount - native mode - only check mobile folder`() = runTest {
         givenFavoriteDelegate(favoritesDisplayModeSettings.apply { favoritesDisplayMode = NATIVE })
         val favoriteone = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
         val favoritetwo = Favorite("favorite2", "Favorite2", "http://favexample.com", "timestamp", 1)
@@ -257,7 +257,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenUpdateWithPositionThenUpdateItemsOnRootFolder() {
+    fun `updateWithPosition - items on root folder - updated`() {
         givenFavoriteDelegate(syncDisabledFavoritesSettings)
         val favoriteone = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
         val favoritetwo = Favorite("favorite2", "Favorite2", "http://favexample.com", "timestamp", 1)
@@ -278,7 +278,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenUnifiedModeUpdateWithPositionThenUpdateItemsOnRootFolder() = runTest {
+    fun `updateWithPosition - unified mode - update items on root folder`() = runTest {
         givenFavoriteDelegate(favoritesDisplayModeSettings.apply { favoritesDisplayMode = UNIFIED })
         val favoriteone = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
         val favoritetwo = Favorite("favorite2", "Favorite2", "http://favexample.com", "timestamp", 1)
@@ -299,7 +299,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenNativeModeUpdateWithPositionThenUpdateItemsOnRootFolder() = runTest {
+    fun `updateWithPosition - native mode - update items on root folder`() = runTest {
         givenFavoriteDelegate(favoritesDisplayModeSettings.apply { favoritesDisplayMode = NATIVE })
         val favoriteone = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
         val favoritetwo = Favorite("favorite2", "Favorite2", "http://favexample.com", "timestamp", 1)
@@ -320,7 +320,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenInsertFavoriteThenUpdateItemsOnRootFolder() {
+    fun `insertFavorite - update items on root folder`() {
         givenFavoriteDelegate(syncDisabledFavoritesSettings)
 
         testee.insertFavorite("favorite1", "Favorite", "http://favexample.com", "timestamp")
@@ -330,7 +330,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenUnifiedModeInsertFavoriteThenUpdateItemsOnRootAndMobileFolder() = runTest {
+    fun `insertFavorite - unified mode - update items on root and mobile folder`() = runTest {
         givenFavoriteDelegate(favoritesDisplayModeSettings.apply { favoritesDisplayMode = UNIFIED })
         testee.insertFavorite("favorite1", "Favorite", "http://favexample.com", "timestamp")
 
@@ -339,7 +339,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenNativeModeInsertFavoriteThenUpdateItemsOnRootAndMobileFolder() = runTest {
+    fun `insertFavorite - native mode - update items on root and mobile folder`() = runTest {
         givenFavoriteDelegate(favoritesDisplayModeSettings.apply { favoritesDisplayMode = NATIVE })
         testee.insertFavorite("favorite1", "Favorite", "http://favexample.com", "timestamp")
 
@@ -348,7 +348,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenDeleteFavoriteThenDeleteFromRootFolder() = runTest {
+    fun `deleteFavorite - delete from root folder`() = runTest {
         givenFavoriteDelegate(syncDisabledFavoritesSettings)
 
         val favoriteone = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
@@ -364,7 +364,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenUnifiedModeDeleteFavoriteThenDeleteFromAllFolders() = runTest {
+    fun `deleteFavorite - unified mode - delete from all folders`() = runTest {
         givenFavoriteDelegate(favoritesDisplayModeSettings.apply { favoritesDisplayMode = UNIFIED })
         val favoriteone = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
         givenFavoriteStored(favoriteone, favoriteFolderId = SavedSitesNames.FAVORITES_ROOT)
@@ -379,7 +379,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenNativeModeDeleteNonDesktopFavoriteThenDeleteFromAllFolders() = runTest {
+    fun `deleteFavorite - native mode non-desktop favorite - delete from all folders`() = runTest {
         givenFavoriteDelegate(favoritesDisplayModeSettings.apply { favoritesDisplayMode = NATIVE })
         val favoriteone = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
         givenFavoriteStored(favoriteone, favoriteFolderId = SavedSitesNames.FAVORITES_ROOT)
@@ -393,7 +393,7 @@ class RealFavoritesDelegateTest {
     }
 
     @Test
-    fun whenDataSourceChangesThenNewListReceived() {
+    fun `getFavoritesObservable - data source changes - new list received`() {
         givenFavoriteDelegate(syncDisabledFavoritesSettings)
         givenNoFavoritesStored()
 

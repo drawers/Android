@@ -25,30 +25,30 @@ import org.junit.Test
 class HashUtilitiesTest {
 
     @Test
-    fun whenSha1HashCalledOnStringThenResultIsCorrect() {
+    fun `sha1 - result is correct`() {
         val result = helloWorldText.sha1
         assertEquals(helloWorldSha1, result)
     }
 
     @Test
-    fun whenSha256HashCalledOnBytesThenResultIsCorrect() {
+    fun `sha256Hash - bytes - result is correct`() {
         val result = helloWorldText.toByteArray().sha256
         assertEquals(helloWorldSha256, result)
     }
 
     @Test
-    fun whenSha256HashCalledOnStringThenResultIsCorrect() {
+    fun `sha256Hash - result is correct`() {
         val result = helloWorldText.sha256
         assertEquals(helloWorldSha256, result)
     }
 
     @Test
-    fun whenCorrectSha256HashUsedThenVerifyIsTrue() {
+    fun `verifySha256 - correct hash used - verify is true`() {
         assertTrue(helloWorldText.toByteArray().verifySha256(helloWorldSha256))
     }
 
     @Test
-    fun whenIncorrectByteSha256HashUsedThenVerifyIsFalse() {
+    fun `verifySha256 - incorrect byte hash - false`() {
         assertFalse(helloWorldText.toByteArray().verifySha256(otherSha256))
     }
 

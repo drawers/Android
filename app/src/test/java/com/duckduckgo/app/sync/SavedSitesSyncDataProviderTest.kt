@@ -176,13 +176,13 @@ class SavedSitesSyncDataProviderTest {
     }
 
     @Test
-    fun whenGettingAllContentAndUserHasNoBookmarksThenChangesAreEmpty() {
+    fun `allContent - user has no bookmarks - changes are empty`() {
         val syncChanges = parser.allContent()
         assertTrue(syncChanges.isEmpty())
     }
 
     @Test
-    fun whenGettingAllContentAndUsersHasFavoritesThenChangesAreNotEmpty() {
+    fun `allContent - users have favorites - changes are not empty`() {
         repository.insert(favourite1)
         repository.insert(bookmark1)
         repository.insert(bookmark3)
@@ -201,7 +201,7 @@ class SavedSitesSyncDataProviderTest {
     }
 
     @Test
-    fun whenFirstSyncAndUsersHasFavoritesThenFormFactorFolderPresent() {
+    fun `getChanges - first sync with favorites - form factor folder present`() {
         repository.insert(favourite1)
         repository.insert(bookmark3)
         repository.insert(bookmark4)
@@ -221,7 +221,7 @@ class SavedSitesSyncDataProviderTest {
     }
 
     @Test
-    fun whenNewBookmarksSinceLastSyncThenChangesContainData() {
+    fun `getChanges - new bookmarks since last sync - changes contain data`() {
         repository.insert(bookmark3)
         repository.insert(bookmark4)
 
@@ -235,7 +235,7 @@ class SavedSitesSyncDataProviderTest {
     }
 
     @Test
-    fun whenOnFirstSyncBookmarkIsInvalidThenChangesDoesNotContainInvalidEntity() {
+    fun `getChanges - first sync invalid bookmark - does not contain invalid entity`() {
         repository.insert(invalidBookmark)
 
         val syncChanges = parser.getChanges()
@@ -247,7 +247,7 @@ class SavedSitesSyncDataProviderTest {
     }
 
     @Test
-    fun whenOnFirstSyncFolderIsInvalidThenChangesContainDataFixed() {
+    fun `getChanges - first sync folder is invalid - data fixed`() {
         repository.insert(invalidBookmark)
         repository.insert(invalidFolder)
 
@@ -262,7 +262,7 @@ class SavedSitesSyncDataProviderTest {
     }
 
     @Test
-    fun whenNewBookmarkIsInvalidThenChangesDoesNotContainInvalidEntity() {
+    fun `getChanges - new bookmark is invalid - does not contain invalid entity`() {
         setLastSyncTime(DatabaseDateFormatter.iso8601(twoHoursAgo))
         repository.insert(invalidBookmark.copy(lastModified = DatabaseDateFormatter.iso8601(oneHourAgo)))
 
@@ -275,7 +275,7 @@ class SavedSitesSyncDataProviderTest {
     }
 
     @Test
-    fun whenNewFolderIsInvalidThenChangesContainDataFixed() {
+    fun `getChanges - new folder is invalid - changes contain data fixed`() {
         setLastSyncTime(DatabaseDateFormatter.iso8601(twoHoursAgo))
         repository.insert(invalidBookmark.copy(lastModified = DatabaseDateFormatter.iso8601(oneHourAgo)))
         repository.insert(invalidFolder.copy(lastModified = DatabaseDateFormatter.iso8601(oneHourAgo)))
@@ -289,7 +289,7 @@ class SavedSitesSyncDataProviderTest {
     }
 
     @Test
-    fun whenInvalidBookmarkPresentAndValidBookmarkAddedThenOnlyValidBookmarkIncluded() {
+    fun `getChanges - invalid bookmark present and valid bookmark added - only valid bookmark included`() {
         repository.insert(invalidBookmark)
         syncRepository.markSavedSitesAsInvalid(listOf(invalidBookmark.id))
         setLastSyncTime(DatabaseDateFormatter.iso8601(twoHoursAgo))
@@ -306,7 +306,7 @@ class SavedSitesSyncDataProviderTest {
     }
 
     @Test
-    fun whenNewFoldersAndBookmarksAndFavouritesSinceLastSyncThenChangesContainData() {
+    fun `getChanges - new folders and bookmarks and favourites since last sync - changes contain data`() {
         val modificationTimestamp = DatabaseDateFormatter.iso8601()
         val lastSyncTimestamp = DatabaseDateFormatter.iso8601(twoHoursAgo)
         setLastSyncTime(lastSyncTimestamp)
@@ -335,7 +335,7 @@ class SavedSitesSyncDataProviderTest {
     }
 
     @Test
-    fun whenNewFavouritesSinceLastSyncThenChangesContainData() {
+    fun `changesSince - new favourites since last sync - changes contain data`() {
         val modificationTimestamp = DatabaseDateFormatter.iso8601()
         val lastServerSyncTimestamp = DatabaseDateFormatter.iso8601(twoHoursAgo)
         setLastSyncTime(lastServerSyncTimestamp, modificationTimestamp)
@@ -365,7 +365,7 @@ class SavedSitesSyncDataProviderTest {
     }
 
     @Test
-    fun whenNoChangesAfterLastSyncThenChangesAreEmpty() {
+    fun `getChanges - no changes after last sync - changes are empty`() {
         val modificationTimestamp = DatabaseDateFormatter.iso8601(twoHoursAgo)
         val lastSyncTimestamp = DatabaseDateFormatter.iso8601()
         setLastSyncTime(lastSyncTimestamp)
@@ -379,7 +379,7 @@ class SavedSitesSyncDataProviderTest {
     }
 
     @Test
-    fun whenBookmarkDeletedAfterLastSyncThenChangesContainData() {
+    fun `changesSince - bookmark deleted after last sync - changes contain data`() {
         val modificationTimestamp = DatabaseDateFormatter.iso8601()
         val lastSyncTimestamp = DatabaseDateFormatter.iso8601(twoHoursAgo)
         setLastSyncTime(lastSyncTimestamp)
@@ -403,7 +403,7 @@ class SavedSitesSyncDataProviderTest {
     }
 
     @Test
-    fun whenFolderDeletedAfterLastSyncThenChangesContainData() {
+    fun `changesSince - folder deleted after last sync - changes contain data`() {
         val lastSyncTimestamp = DatabaseDateFormatter.iso8601(twoHoursAgo)
         setLastSyncTime(lastSyncTimestamp)
 
@@ -429,7 +429,7 @@ class SavedSitesSyncDataProviderTest {
     }
 
     @Test
-    fun whenFavouriteDeletedAfterLastSyncThenChangesContainData() {
+    fun `changesSince - favourite deleted after last sync - changes contain data`() {
         val lastSyncTimestamp = DatabaseDateFormatter.iso8601(twoHoursAgo)
         setLastSyncTime(lastSyncTimestamp)
 

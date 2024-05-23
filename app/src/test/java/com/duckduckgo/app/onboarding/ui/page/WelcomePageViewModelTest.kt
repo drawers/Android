@@ -81,7 +81,7 @@ class WelcomePageViewModelTest {
     }
 
     @Test
-    fun whenOnPrimaryCtaClickedAndShouldNotShowDialogThenFireAndFinish() = runTest {
+    fun `onPrimaryCtaClicked - should not show dialog - fire and finish`() = runTest {
         whenever(defaultRoleBrowserDialog.shouldShowDialog()).thenReturn(false)
 
         events.emit(WelcomePageView.Event.OnPrimaryCtaClicked)
@@ -92,7 +92,7 @@ class WelcomePageViewModelTest {
     }
 
     @Test
-    fun whenOnPrimaryCtaClickedAndShouldShowDialogAndShowThenFireAndEmitShowDialog() = runTest {
+    fun `onPrimaryCtaClicked - should show dialog - emit show dialog`() = runTest {
         whenever(defaultRoleBrowserDialog.shouldShowDialog()).thenReturn(true)
         val intent = Intent()
         whenever(defaultRoleBrowserDialog.createIntent(any())).thenReturn(intent)
@@ -105,7 +105,7 @@ class WelcomePageViewModelTest {
     }
 
     @Test
-    fun whenOnPrimaryCtaClickedAndShouldShowDialogNullIntentThenFireAndFinish() = runTest {
+    fun `onPrimaryCtaClicked - should show dialog null intent - fire and finish`() = runTest {
         whenever(defaultRoleBrowserDialog.shouldShowDialog()).thenReturn(true)
         whenever(defaultRoleBrowserDialog.createIntent(any())).thenReturn(null)
 

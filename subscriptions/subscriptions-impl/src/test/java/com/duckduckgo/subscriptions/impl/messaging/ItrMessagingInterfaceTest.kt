@@ -47,7 +47,7 @@ class ItrMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessUnknownMessageDoNothing() = runTest {
+    fun `process - unknown message - do nothing`() = runTest {
         givenInterfaceIsRegistered()
 
         messagingInterface.process("", "secret")
@@ -56,7 +56,7 @@ class ItrMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessUnknownSecretDoNothing() = runTest {
+    fun `process - unknown secret - do nothing`() = runTest {
         givenInterfaceIsRegistered()
 
         val message = """
@@ -69,7 +69,7 @@ class ItrMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessNoUrlDoNothing() = runTest {
+    fun `process - no URL - do nothing`() = runTest {
         messagingInterface.register(webView, callback)
 
         val message = """
@@ -82,7 +82,7 @@ class ItrMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessInterfaceNotRegisteredDoNothing() = runTest {
+    fun `process - interface not registered - do nothing`() = runTest {
         whenever(webView.url).thenReturn("https://duckduckgo.com/test")
 
         val message = """
@@ -95,7 +95,7 @@ class ItrMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessIfMethodDoesNotMatchDoNothing() = runTest {
+    fun `process - method does not match - do nothing`() = runTest {
         givenInterfaceIsRegistered()
         givenAccessTokenIsSuccess()
 
@@ -109,7 +109,7 @@ class ItrMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessAndGetAccessTokenIfNoIdDoNothing() = runTest {
+    fun `process - no id - do nothing`() = runTest {
         givenInterfaceIsRegistered()
         givenAccessTokenIsSuccess()
 
@@ -123,7 +123,7 @@ class ItrMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessAndGetAccessTokenMessageThenReturnResponse() = runTest {
+    fun `process - get access token message - return response`() = runTest {
         givenInterfaceIsRegistered()
         givenAccessTokenIsSuccess()
 
@@ -150,7 +150,7 @@ class ItrMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessAndGetAccessTokenMessageErrorThenReturnResponse() = runTest {
+    fun `process - access token message error - return response`() = runTest {
         givenInterfaceIsRegistered()
         givenAccessTokenIsFailure()
 
@@ -177,7 +177,7 @@ class ItrMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessAndGetAccessTokenMessageIfUrlNotInAllowListedDomainsThenDoNothing() = runTest {
+    fun `process - url not in allow listed domains - do nothing`() = runTest {
         messagingInterface.register(webView, callback)
         whenever(webView.url).thenReturn("https://duckduckgo.example.com")
         givenAccessTokenIsSuccess()

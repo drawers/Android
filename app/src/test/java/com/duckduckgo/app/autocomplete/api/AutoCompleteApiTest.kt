@@ -55,7 +55,7 @@ class AutoCompleteApiTest {
     }
 
     @Test
-    fun whenQueryIsBlankThenReturnAnEmptyList() {
+    fun `autoComplete - query is blank - return an empty list`() {
         val result = testee.autoComplete("").test()
         val value = result.values()[0] as AutoCompleteResult
 
@@ -63,7 +63,7 @@ class AutoCompleteApiTest {
     }
 
     @Test
-    fun whenReturnBookmarkSuggestionsThenPhraseIsURLBaseHost() {
+    fun `autoComplete - return bookmark suggestions - phrase is URL base host`() {
         whenever(mockAutoCompleteService.autoComplete("title")).thenReturn(Observable.just(emptyList()))
         whenever(mockSavedSitesRepository.getBookmarksObservable()).thenReturn(Single.just(bookmarks()))
         whenever(mockSavedSitesRepository.getFavoritesObservable()).thenReturn(Single.just(emptyList()))
@@ -75,7 +75,7 @@ class AutoCompleteApiTest {
     }
 
     @Test
-    fun whenAutoCompleteDoesNotMatchAnySavedSiteReturnEmptySavedSiteList() {
+    fun `autoComplete - no match - return empty saved site list`() {
         whenever(mockAutoCompleteService.autoComplete("wrong")).thenReturn(Observable.just(emptyList()))
 
         whenever(mockSavedSitesRepository.getBookmarksObservable()).thenReturn(
@@ -97,7 +97,7 @@ class AutoCompleteApiTest {
     }
 
     @Test
-    fun whenAutoCompleteReturnsMultipleBookmarkHitsThenLimitToMaxOfTwo() {
+    fun `autoComplete - multiple bookmark hits - limit to max of two`() {
         whenever(mockAutoCompleteService.autoComplete("title")).thenReturn(Observable.just(emptyList()))
         whenever(mockSavedSitesRepository.getBookmarksObservable()).thenReturn(
             Single.just(
@@ -124,7 +124,7 @@ class AutoCompleteApiTest {
     }
 
     @Test
-    fun whenAutoCompleteReturnsMultipleSavedSitesHitsThenLimitToMaxOfTwoFavoritesFirst() {
+    fun `autoComplete - multiple saved sites hits - limit to max of two favorites first`() {
         whenever(mockAutoCompleteService.autoComplete("title")).thenReturn(Observable.just(emptyList()))
         whenever(mockSavedSitesRepository.getBookmarksObservable()).thenReturn(
             Single.just(
@@ -160,7 +160,7 @@ class AutoCompleteApiTest {
     }
 
     @Test
-    fun whenAutoCompleteReturnsDuplicatedItemsThenDedup() {
+    fun `autoComplete - returns duplicated items - dedup`() {
         whenever(mockAutoCompleteService.autoComplete("title")).thenReturn(
             Observable.just(
                 listOf(
@@ -212,7 +212,7 @@ class AutoCompleteApiTest {
     }
 
     @Test
-    fun whenReturnOneBookmarkAndOneFavoriteSuggestionsThenShowBothFavoriteFirst() {
+    fun `autoComplete - one bookmark and one favorite - show both favorite first`() {
         whenever(mockAutoCompleteService.autoComplete("title")).thenReturn(Observable.just(emptyList()))
         whenever(mockSavedSitesRepository.getBookmarksObservable()).thenReturn(
             Single.just(
@@ -248,7 +248,7 @@ class AutoCompleteApiTest {
     }
 
     @Test
-    fun whenAutoCompleteReturnsDuplicatedItemsThenDedupConsideringQueryParams() {
+    fun `autoComplete - returns duplicated items - dedup considering query params`() {
         whenever(mockAutoCompleteService.autoComplete("title")).thenReturn(
             Observable.just(
                 listOf(
@@ -290,7 +290,7 @@ class AutoCompleteApiTest {
     }
 
     @Test
-    fun whenBookmarkTitleStartsWithQueryThenScoresHigher() {
+    fun `autoComplete - bookmark title starts with query - scores higher`() {
         whenever(mockAutoCompleteService.autoComplete("title")).thenReturn(Observable.just(listOf()))
         whenever(mockSavedSitesRepository.getBookmarksObservable()).thenReturn(
             Single.just(
@@ -321,7 +321,7 @@ class AutoCompleteApiTest {
     }
 
     @Test
-    fun whenSingleTokenQueryAndBookmarkDomainStartsWithItThenScoreHigher() {
+    fun `autoComplete - single token query and bookmark domain starts with it - score higher`() {
         whenever(mockAutoCompleteService.autoComplete("foo")).thenReturn(Observable.just(listOf()))
         whenever(mockSavedSitesRepository.getBookmarksObservable()).thenReturn(
             Single.just(
@@ -347,7 +347,7 @@ class AutoCompleteApiTest {
     }
 
     @Test
-    fun whenSingleTokenQueryAndBookmarkReturnsDuplicatedItemsThenDedup() {
+    fun `autoComplete - single token query and duplicated bookmark items - dedup`() {
         whenever(mockAutoCompleteService.autoComplete("cnn")).thenReturn(Observable.just(listOf()))
         whenever(mockSavedSitesRepository.getBookmarksObservable()).thenReturn(
             Single.just(
@@ -377,7 +377,7 @@ class AutoCompleteApiTest {
     }
 
     @Test
-    fun whenSingleTokenQueryEndsWithSlashThenIgnoreItWhileMatching() {
+    fun `autoComplete - single token query ends with slash - ignore while matching`() {
         whenever(mockAutoCompleteService.autoComplete("reddit.com/")).thenReturn(Observable.just(listOf()))
         whenever(mockSavedSitesRepository.getBookmarksObservable()).thenReturn(
             Single.just(
@@ -406,7 +406,7 @@ class AutoCompleteApiTest {
     }
 
     @Test
-    fun whenSingleTokenQueryEndsWithMultipleSlashThenIgnoreThemWhileMatching() {
+    fun `autoComplete - single token query ends with multiple slashes - ignore them while matching`() {
         whenever(mockAutoCompleteService.autoComplete("reddit.com///")).thenReturn(Observable.just(listOf()))
         whenever(mockSavedSitesRepository.getBookmarksObservable()).thenReturn(
             Single.just(
@@ -435,7 +435,7 @@ class AutoCompleteApiTest {
     }
 
     @Test
-    fun whenSingleTokenQueryContainsMultipleSlashThenIgnoreThemWhileMatching() {
+    fun `autoComplete - single token query with multiple slashes - ignore them while matching`() {
         whenever(mockAutoCompleteService.autoComplete("reddit.com/r//")).thenReturn(Observable.just(listOf()))
         whenever(mockSavedSitesRepository.getBookmarksObservable()).thenReturn(
             Single.just(
@@ -463,7 +463,7 @@ class AutoCompleteApiTest {
     }
 
     @Test
-    fun whenSingleTokenQueryDomainContainsWwwThenResultMathUrl() {
+    fun `autoComplete - single token query domain contains www - result matches url`() {
         whenever(mockAutoCompleteService.autoComplete("reddit")).thenReturn(Observable.just(listOf()))
         whenever(mockSavedSitesRepository.getBookmarksObservable()).thenReturn(
             Single.just(
@@ -492,7 +492,7 @@ class AutoCompleteApiTest {
     }
 
     @Test
-    fun whenMultipleTokenQueryAndNoTokenMatchThenReturnEmpty() {
+    fun `autoComplete - multiple token query with no token match - return empty`() {
         val query = "example title foo"
         whenever(mockAutoCompleteService.autoComplete(query)).thenReturn(Observable.just(listOf()))
         whenever(mockSavedSitesRepository.getBookmarksObservable()).thenReturn(
@@ -514,7 +514,7 @@ class AutoCompleteApiTest {
     }
 
     @Test
-    fun whenMultipleTokenQueryAndMultipleMatchesThenReturnCorrectScore() {
+    fun `autoComplete - multiple token query and multiple matches - return correct score`() {
         val query = "title foo"
         whenever(mockAutoCompleteService.autoComplete(query)).thenReturn(Observable.just(listOf()))
         whenever(mockSavedSitesRepository.getBookmarksObservable()).thenReturn(

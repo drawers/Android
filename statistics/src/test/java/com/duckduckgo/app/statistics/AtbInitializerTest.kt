@@ -41,7 +41,7 @@ class AtbInitializerTest {
     private var atbInitializerListener = FakeAtbInitializerListener()
 
     @Test
-    fun whenReferrerInformationInstantlyAvailableThenAtbInitialized() = runTest {
+    fun `onPrivacyConfigDownloaded - referrer information instantly available - atb initialized`() = runTest {
         configureNeverInitialized()
 
         testee.onPrivacyConfigDownloaded()
@@ -50,7 +50,7 @@ class AtbInitializerTest {
     }
 
     @Test
-    fun whenReferrerInformationQuicklyAvailableThenAtbInitialized() = runTest {
+    fun `onPrivacyConfigDownloaded - referrer information quickly available - atb initialized`() = runTest {
         whenever(statisticsDataStore.hasInstallationStatistics).thenReturn(false)
         atbInitializerListener.delay = 1.seconds
         testee = AtbInitializer(
@@ -67,7 +67,7 @@ class AtbInitializerTest {
     }
 
     @Test
-    fun whenReferrerInformationTimesOutThenRefreshAtbNotCalled() = runTest {
+    fun `initialize - referrer information times out - refresh atb not called`() = runTest {
         whenever(statisticsDataStore.hasInstallationStatistics).thenReturn(false)
         atbInitializerListener.delay = Duration.INFINITE
         testee = AtbInitializer(
@@ -84,7 +84,7 @@ class AtbInitializerTest {
     }
 
     @Test
-    fun whenAlreadyInitializedThenRefreshCalled() = runTest {
+    fun `initialize - already initialized - refresh called`() = runTest {
         configureAlreadyInitialized()
 
         testee.initialize()
@@ -93,7 +93,7 @@ class AtbInitializerTest {
     }
 
     @Test
-    fun givenHasInstallationStatisticsWhenOnPrivacyConfigDownloadedThenAtbInitializedNeverCalled() = runTest {
+    fun `onPrivacyConfigDownloaded - has installation statistics - atb initialized never called`() = runTest {
         configureAlreadyInitialized()
 
         testee.onPrivacyConfigDownloaded()
@@ -102,7 +102,7 @@ class AtbInitializerTest {
     }
 
     @Test
-    fun givenNeverInstallationStatisticsWhenOnPrivacyConfigDownloadedThenAtbInitialized() = runTest {
+    fun `onPrivacyConfigDownloaded - never installation statistics - atb initialized`() = runTest {
         configureNeverInitialized()
 
         testee.onPrivacyConfigDownloaded()

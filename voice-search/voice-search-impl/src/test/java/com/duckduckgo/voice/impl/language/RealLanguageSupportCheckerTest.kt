@@ -59,7 +59,7 @@ class RealLanguageSupportCheckerTest {
     }
 
     @Test
-    fun whenLanguageInstalledThenLanguageIsSupported() {
+    fun `isLanguageSupported - language installed - language is supported`() {
         instantiate()
 
         val callbackCaptor = argumentCaptor<RecognitionSupportCallback>()
@@ -74,7 +74,7 @@ class RealLanguageSupportCheckerTest {
     }
 
     @Test
-    fun whenLanguageNotInstalledThenLanguageIsNotSupported() {
+    fun `isLanguageSupported - language not installed - language is not supported`() {
         instantiate()
 
         val callbackCaptor = argumentCaptor<RecognitionSupportCallback>()
@@ -89,7 +89,7 @@ class RealLanguageSupportCheckerTest {
     }
 
     @Test
-    fun whenSpeechRecognizerErrorThenLanguageIsNotSupported() {
+    fun `checkRecognitionSupport - speech recognizer error - language not supported`() {
         instantiate()
 
         val callbackCaptor = argumentCaptor<RecognitionSupportCallback>()
@@ -101,7 +101,7 @@ class RealLanguageSupportCheckerTest {
     }
 
     @Test
-    fun whenSdkLowerThanTiramisuThenLanguageIsNotSupported() {
+    fun `isLanguageSupported - SDK lower than Tiramisu - language not supported`() {
         val config = VoiceSearchAvailabilityConfig("Samsung", 32, "en-US", true)
         whenever(configProvider.get()).thenReturn(config)
 

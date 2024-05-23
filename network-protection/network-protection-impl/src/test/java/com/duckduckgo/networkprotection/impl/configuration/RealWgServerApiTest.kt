@@ -66,7 +66,7 @@ class RealWgServerApiTest {
     }
 
     @Test
-    fun whenRegisterInProductionThenReturnTheFirstServer() = runTest {
+    fun `registerPublicKey - production - returns first server`() = runTest {
         assertEquals(
             WgServerData(
                 serverName = "egress.usw.1",
@@ -81,7 +81,7 @@ class RealWgServerApiTest {
     }
 
     @Test
-    fun whenRegisterInInternalAndServerSelectedThenReturnSelectedServer() = runTest {
+    fun `registerPublicKey - internal and server selected - return selected server`() = runTest {
         whenever(appBuildConfig.flavor).thenReturn(INTERNAL)
         internalWgServerDebugProvider.selectedServer = "egress.euw.2"
 
@@ -99,7 +99,7 @@ class RealWgServerApiTest {
     }
 
     @Test
-    fun whenRegisterInInternalAndServerSelectedWithNoServerCountryThenReturnSelectedServerWithNullLocation() = runTest {
+    fun `registerPublicKey - internal and server selected with no server country - return selected server with null location`() = runTest {
         whenever(appBuildConfig.flavor).thenReturn(INTERNAL)
         internalWgServerDebugProvider.selectedServer = "egress.euw"
 
@@ -117,7 +117,7 @@ class RealWgServerApiTest {
     }
 
     @Test
-    fun whenRegisterInInternalAndWrongServerSelectedThenReturnFirstServer() = runTest {
+    fun `registerPublicKey - wrong server selected - return first server`() = runTest {
         internalWgServerDebugProvider.selectedServer = "egress.wrong"
 
         assertEquals(
@@ -134,14 +134,14 @@ class RealWgServerApiTest {
     }
 
     @Test
-    fun whenRegisterInProductionThenDoNotCacheServers() = runTest {
+    fun `registerPublicKey - production - do not cache servers`() = runTest {
         productionApi.registerPublicKey("testpublickey")
 
         assertTrue(internalWgServerDebugProvider.cachedServers.isEmpty())
     }
 
     @Test
-    fun whenInternalFlavorGetWgServerDataThenStoreReturnedServers() = runTest {
+    fun `getWgServerData - internal flavor - store returned servers`() = runTest {
         whenever(appBuildConfig.flavor).thenReturn(INTERNAL)
         internalApi.registerPublicKey("testpublickey")
 
@@ -149,21 +149,21 @@ class RealWgServerApiTest {
     }
 
     @Test
-    fun whenRegisterInProductionThenDownloadGeoswitchingData() = runTest {
+    fun `registerPublicKey - production - download geoswitching data`() = runTest {
         productionApi.registerPublicKey("testpublickey")
 
         verify(netpEgressServersProvider).updateServerLocationsAndReturnPreferred()
     }
 
     @Test
-    fun whenRegisterInInternalThenDownloadGeoswitchingData() = runTest {
+    fun `registerPublicKey - internal - download geoswitching data`() = runTest {
         internalApi.registerPublicKey("testpublickey")
 
         verify(netpEgressServersProvider).updateServerLocationsAndReturnPreferred()
     }
 
     @Test
-    fun whenUserPreferredCountrySetThenRegisterPublicKeyShouldRequestForCountry() = runTest {
+    fun `registerPublicKey - user preferred country set - requests for country`() = runTest {
         whenever(netpEgressServersProvider.updateServerLocationsAndReturnPreferred()).thenReturn(PreferredLocation("nl"))
 
         assertEquals(
@@ -180,7 +180,7 @@ class RealWgServerApiTest {
     }
 
     @Test
-    fun whenUserPreferredLocationSetThenRegisterPublicKeyShouldRequestForCountryAndCity() = runTest {
+    fun `registerPublicKey - user preferred location set - requests for country and city`() = runTest {
         whenever(netpEgressServersProvider.updateServerLocationsAndReturnPreferred()).thenReturn(
             PreferredLocation(countryCode = "us", cityName = "Des Moines"),
         )
@@ -199,7 +199,7 @@ class RealWgServerApiTest {
     }
 
     @Test
-    fun whenUserPreferredLocationSetAndInternalDebugServerSelectedThenRegisterPublicKeyShouldReturnDebugServer() = runTest {
+    fun `registerPublicKey - internal debug server selected - return debug server`() = runTest {
         whenever(appBuildConfig.flavor).thenReturn(INTERNAL)
         internalWgServerDebugProvider.selectedServer = "egress.euw.2"
         whenever(netpEgressServersProvider.updateServerLocationsAndReturnPreferred()).thenReturn(

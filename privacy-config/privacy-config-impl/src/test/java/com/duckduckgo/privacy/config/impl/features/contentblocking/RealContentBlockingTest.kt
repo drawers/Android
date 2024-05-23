@@ -52,28 +52,28 @@ class RealContentBlockingTest {
     }
 
     @Test
-    fun whenIsAnExceptionAndDomainIsListedInTheExceptionsListThenReturnTrue() {
+    fun `isAnException - domain in exceptions list - return true`() {
         givenThereAreExceptions()
 
         assertTrue(testee.isAnException("http://www.example.com"))
     }
 
     @Test
-    fun whenIsAnExceptionWithSubdomainAndDomainIsListedInTheExceptionsListThenReturnTrue() {
+    fun `isAnException - subdomain and domain in exceptions list - return true`() {
         givenThereAreExceptions()
 
         assertTrue(testee.isAnException("http://test.example.com"))
     }
 
     @Test
-    fun whenIsAnExceptionAndDomainIsNotListedInTheExceptionsListThenReturnFalse() {
+    fun `isAnException - domain not in exceptions list - return false`() {
         whenever(mockContentBlockingRepository.exceptions).thenReturn(CopyOnWriteArrayList())
 
         assertFalse(testee.isAnException("http://test.example.com"))
     }
 
     @Test
-    fun whenIsAnExceptionAndDomainIsInTheUnprotectedTemporaryListThenReturnTrue() {
+    fun `isAnException - domain in unprotected temporary list - return true`() {
         val url = "http://test.example.com"
         whenever(mockUnprotectedTemporary.isAnException(url)).thenReturn(true)
         whenever(mockContentBlockingRepository.exceptions).thenReturn(CopyOnWriteArrayList())
@@ -82,7 +82,7 @@ class RealContentBlockingTest {
     }
 
     @Test
-    fun whenIsAnExceptionAndFeatureIsDisabledThenReturnFalse() {
+    fun `isAnException - feature is disabled - return false`() {
         givenThereAreExceptions()
         givenFeatureIsDisabled()
 

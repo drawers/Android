@@ -45,7 +45,7 @@ class RestoreSubscriptionViewModelTest {
     }
 
     @Test
-    fun whenRestoreFromEmailThenSendCommand() = runTest {
+    fun `restoreFromEmail - send command`() = runTest {
         viewModel.commands().test {
             viewModel.restoreFromEmail()
             assertTrue(awaitItem() is RestoreFromEmail)
@@ -53,7 +53,7 @@ class RestoreSubscriptionViewModelTest {
     }
 
     @Test
-    fun whenRestoreFromStoreIfFailureThenReturnError() = runTest {
+    fun `restoreFromStore - failure - return error`() = runTest {
         whenever(subscriptionsManager.recoverSubscriptionFromStore()).thenReturn(
             RecoverSubscriptionResult.Failure("error"),
         )
@@ -66,7 +66,7 @@ class RestoreSubscriptionViewModelTest {
     }
 
     @Test
-    fun whenRestoreFromStoreIfNoSubscriptionFoundThenReturnNotFound() = runTest {
+    fun `restoreFromStore - no subscription found - return not found`() = runTest {
         whenever(subscriptionsManager.recoverSubscriptionFromStore()).thenReturn(
             RecoverSubscriptionResult.Failure(SUBSCRIPTION_NOT_FOUND_ERROR),
         )
@@ -79,7 +79,7 @@ class RestoreSubscriptionViewModelTest {
     }
 
     @Test
-    fun whenRestoreFromStoreIfNotActiveThenReturnNotFound() = runTest {
+    fun `restoreFromStore - subscription not active - return not found`() = runTest {
         whenever(subscriptionsManager.recoverSubscriptionFromStore()).thenReturn(
             RecoverSubscriptionResult.Success(subscriptionNotActive()),
         )
@@ -92,7 +92,7 @@ class RestoreSubscriptionViewModelTest {
     }
 
     @Test
-    fun whenRestoreFromStoreIfActiveThenReturnSuccess() = runTest {
+    fun `restoreFromStore - active subscription - return success`() = runTest {
         whenever(subscriptionsManager.recoverSubscriptionFromStore()).thenReturn(
             RecoverSubscriptionResult.Success(subscriptionActive()),
         )
@@ -105,19 +105,19 @@ class RestoreSubscriptionViewModelTest {
     }
 
     @Test
-    fun whenRestoreFromStoreClickThenPixelIsSent() = runTest {
+    fun `restoreFromStore - pixel sent`() = runTest {
         viewModel.restoreFromStore()
         verify(pixelSender).reportActivateSubscriptionRestorePurchaseClick()
     }
 
     @Test
-    fun whenRestoreFromEmailClickThenPixelIsSent() = runTest {
+    fun `restoreFromEmail - pixel is sent`() = runTest {
         viewModel.restoreFromEmail()
         verify(pixelSender).reportActivateSubscriptionEnterEmailClick()
     }
 
     @Test
-    fun whenRestoreFromStoreSuccessThenPixelIsSent() = runTest {
+    fun `restoreFromStore - success - pixel is sent`() = runTest {
         whenever(subscriptionsManager.recoverSubscriptionFromStore()).thenReturn(
             RecoverSubscriptionResult.Success(subscriptionActive()),
         )
@@ -127,7 +127,7 @@ class RestoreSubscriptionViewModelTest {
     }
 
     @Test
-    fun whenRestoreFromStoreFailsBecauseThereAreNoEntitlementsThenPixelIsSent() = runTest {
+    fun `restoreFromStore - no entitlements - pixel sent`() = runTest {
         whenever(subscriptionsManager.recoverSubscriptionFromStore()).thenReturn(
             RecoverSubscriptionResult.Success(subscriptionNotActive()),
         )
@@ -137,7 +137,7 @@ class RestoreSubscriptionViewModelTest {
     }
 
     @Test
-    fun whenRestoreFromStoreFailsBecauseThereIsNoSubscriptionThenPixelIsSent() = runTest {
+    fun `restoreFromStore - no subscription - pixel sent`() = runTest {
         whenever(subscriptionsManager.recoverSubscriptionFromStore()).thenReturn(
             RecoverSubscriptionResult.Failure(SUBSCRIPTION_NOT_FOUND_ERROR),
         )
@@ -147,7 +147,7 @@ class RestoreSubscriptionViewModelTest {
     }
 
     @Test
-    fun whenRestoreFromStoreFailsForOtherReasonThenPixelIsSent() = runTest {
+    fun `restoreFromStore - failure for other reason - pixel is sent`() = runTest {
         whenever(subscriptionsManager.recoverSubscriptionFromStore()).thenReturn(
             RecoverSubscriptionResult.Failure("bad stuff happened"),
         )

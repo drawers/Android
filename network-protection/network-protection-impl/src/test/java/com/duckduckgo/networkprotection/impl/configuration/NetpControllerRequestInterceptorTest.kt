@@ -38,7 +38,7 @@ class NetpControllerRequestInterceptorTest {
     }
 
     @Test
-    fun whenInterceptNotNetPUrlThenDoNothing() {
+    fun `intercept - not NetP URL - do nothing`() {
         val chain = FakeChain("https://this.is.not.the.url/servers")
 
         val headers = interceptor.intercept(chain).headers
@@ -47,7 +47,7 @@ class NetpControllerRequestInterceptorTest {
     }
 
     @Test
-    fun whenInterceptServersCallThenAddAuthHeader() {
+    fun `intercept - servers call - add auth header`() {
         val chain = FakeChain("https://staging.netp.duckduckgo.com/servers")
 
         val headers = interceptor.intercept(chain).headers
@@ -58,7 +58,7 @@ class NetpControllerRequestInterceptorTest {
     }
 
     @Test
-    fun whenInterceptRegisterCallThenAddAuthHeader() {
+    fun `intercept - register call - add auth header`() {
         val chain = FakeChain("https://staging.netp.duckduckgo.com/register")
 
         val headers = interceptor.intercept(chain).headers
@@ -69,7 +69,7 @@ class NetpControllerRequestInterceptorTest {
     }
 
     @Test
-    fun whenInterceptServersCallInternalBuildThenAddAuthAndDebugHeaders() {
+    fun `intercept - internal build - add auth and debug headers`() {
         whenever(appBuildConfig.flavor).thenReturn(BuildFlavor.INTERNAL)
 
         val chain = FakeChain("https://staging.netp.duckduckgo.com/servers")
@@ -95,7 +95,7 @@ class NetpControllerRequestInterceptorTest {
     }
 
     @Test
-    fun whenInterceptServersCallPlayBuildThenAddAuthHeader() {
+    fun `intercept - play build - add auth header`() {
         whenever(appBuildConfig.flavor).thenReturn(BuildFlavor.PLAY)
 
         val chain = FakeChain("https://staging.netp.duckduckgo.com/servers")

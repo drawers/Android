@@ -123,7 +123,7 @@ class WgVpnNetworkStackTest {
     }
 
     @Test
-    fun whenOnPrepareVpnThenReturnVpnTunnelConfigAndStoreServerDetails() = runTest {
+    fun `onPrepareVpn - return vpn tunnel config and store server details`() = runTest {
         whenever(wgTunnel.createAndSetWgConfig()).thenReturn(wgConfig.success())
 
         val actual = wgVpnNetworkStack.onPrepareVpn().getOrNull()
@@ -140,7 +140,7 @@ class WgVpnNetworkStackTest {
     }
 
     @Test
-    fun whenOnPrepareVpnAndPrivateDnsConfiguredThenReturnEmptyDnsList() = runTest {
+    fun `onPrepareVpn - private DNS configured - return empty DNS list`() = runTest {
         whenever(wgTunnel.createAndSetWgConfig()).thenReturn(wgConfig.success())
         privateDnsProvider.mutablePrivateDns.add(InetAddress.getByName("1.1.1.1"))
 
@@ -153,7 +153,7 @@ class WgVpnNetworkStackTest {
     }
 
     @Test
-    fun whenOnStartVpnAndEnabledTimeHasBeenResetThenSetEnabledTimeInMillis() = runTest {
+    fun `onStartVpn - enabled time reset - set enabled time in millis`() = runTest {
         whenever(wgTunnel.createAndSetWgConfig()).thenReturn(wgConfig.success())
         whenever(currentTimeProvider.getTimeInMillis()).thenReturn(1672229650358L)
 
@@ -171,7 +171,7 @@ class WgVpnNetworkStackTest {
     }
 
     @Test
-    fun whenOnStartVpnAndEnabledTimeHasBeenSetThenDoNotUpdateEnabledTime() = runTest {
+    fun `onStartVpn - enabled time has been set - do not update enabled time`() = runTest {
         whenever(wgTunnel.createAndSetWgConfig()).thenReturn(Result.success(wgConfig))
         whenever(currentTimeProvider.getTimeInMillis()).thenReturn(1672229650358L)
 
@@ -197,7 +197,7 @@ class WgVpnNetworkStackTest {
     }
 
     @Test
-    fun whenNoWgTunnelDataThenOnStartVpnReturnsFailure() = runTest {
+    fun `onStartVpn - no wg tunnel data - returns failure`() = runTest {
         val result = wgVpnNetworkStack.onStartVpn(mock())
         assertTrue(result.isFailure)
 
@@ -208,7 +208,7 @@ class WgVpnNetworkStackTest {
     }
 
     @Test
-    fun whenOnStopVpnWithSelfStopThenResetEnabledTimeInMillisAndServerDetails() = runTest {
+    fun `onStopVpn - self stop - reset enabled time in millis and server details`() = runTest {
         assertEquals(
             Result.success(Unit),
             wgVpnNetworkStack.onStopVpn(SELF_STOP()),
@@ -220,7 +220,7 @@ class WgVpnNetworkStackTest {
     }
 
     @Test
-    fun whenOnStopVpnWithRestartThenResetEnabledTimeInMillisAndServerDetails() = runTest {
+    fun `onStopVpn - with restart - reset enabled time in millis and server details`() = runTest {
         assertEquals(
             Result.success(Unit),
             wgVpnNetworkStack.onStopVpn(RESTART),
@@ -229,7 +229,7 @@ class WgVpnNetworkStackTest {
     }
 
     @Test
-    fun whenWgTunnelDataProviderThrowsExceptionThenOnPrepareShouldReturnFailure() = runTest {
+    fun `onPrepareVpn - wgTunnel data provider throws exception - returns failure`() = runTest {
         whenever(wgTunnel.createAndSetWgConfig()).thenReturn(Result.failure(NullPointerException("null")))
 
         assertTrue(wgVpnNetworkStack.onPrepareVpn().isFailure)
@@ -240,7 +240,7 @@ class WgVpnNetworkStackTest {
     }
 
     @Test
-    fun whenWgProtocolStartWgReturnsFailureThenOnStartVpnShouldReturnFailure() = runTest {
+    fun `onStartVpn - wgProtocol startWg returns failure - should return failure`() = runTest {
         whenever(wgProtocol.startWg(any(), any(), eq(null))).thenReturn(Result.failure(java.lang.IllegalStateException()))
         whenever(wgTunnel.createAndSetWgConfig()).thenReturn(wgConfig.success())
 
@@ -254,7 +254,7 @@ class WgVpnNetworkStackTest {
     }
 
     @Test
-    fun whenWgProtocolStartWgReturnsSuccessThenOnStartVpnShouldReturnSuccess() = runTest {
+    fun `onStartVpn - wgProtocol start returns success - should return success`() = runTest {
         whenever(wgProtocol.startWg(any(), any(), eq(null))).thenReturn(Result.success(Unit))
         whenever(wgTunnel.createAndSetWgConfig()).thenReturn(wgConfig.success())
 

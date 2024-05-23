@@ -34,7 +34,7 @@ class AppUserStageStoreTest {
     private val testee = AppUserStageStore(userStageDao, coroutineRule.testDispatcherProvider)
 
     @Test
-    fun whenGetUserAppStageThenReturnCurrentStage() = runTest {
+    fun `getUserAppStage - return current stage`() = runTest {
         givenCurrentStage(AppStage.DAX_ONBOARDING)
 
         val userAppStage = testee.getUserAppStage()
@@ -43,7 +43,7 @@ class AppUserStageStoreTest {
     }
 
     @Test
-    fun whenStageNewCompletedThenStageDaxOnboardingReturned() = runTest {
+    fun `stageCompleted - new stage completed - dax onboarding returned`() = runTest {
         givenCurrentStage(AppStage.NEW)
 
         val nextStage = testee.stageCompleted(AppStage.NEW)
@@ -52,7 +52,7 @@ class AppUserStageStoreTest {
     }
 
     @Test
-    fun whenStageDaxOnboardingCompletedThenStageEstablishedReturned() = runTest {
+    fun `stageCompleted - Dax onboarding completed - stage established returned`() = runTest {
         givenCurrentStage(AppStage.DAX_ONBOARDING)
 
         val nextStage = testee.stageCompleted(AppStage.DAX_ONBOARDING)
@@ -61,7 +61,7 @@ class AppUserStageStoreTest {
     }
 
     @Test
-    fun whenStageEstablishedCompletedThenStageEstablishedReturned() = runTest {
+    fun `stageCompleted - stage established - stage established returned`() = runTest {
         givenCurrentStage(AppStage.ESTABLISHED)
 
         val nextStage = testee.stageCompleted(AppStage.ESTABLISHED)
@@ -70,7 +70,7 @@ class AppUserStageStoreTest {
     }
 
     @Test
-    fun whenMoveToStageThenUpdateUserStageInDao() = runTest {
+    fun `moveToStage - update user stage in dao`() = runTest {
         testee.moveToStage(AppStage.DAX_ONBOARDING)
         verify(userStageDao).updateUserStage(AppStage.DAX_ONBOARDING)
     }

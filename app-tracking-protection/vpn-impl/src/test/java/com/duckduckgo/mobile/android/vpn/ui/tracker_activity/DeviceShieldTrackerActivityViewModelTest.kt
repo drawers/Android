@@ -78,7 +78,7 @@ class DeviceShieldTrackerActivityViewModelTest {
     }
 
     @Test
-    fun whenGetRunningStateThenReturnRunningState() = runTest {
+    fun `getRunningState - return running state`() = runTest {
         whenever(vpnStateMonitor.getStateFlow(AppTpVpnFeature.APPTP_VPN)).thenReturn(
             flow { emit(VpnStateMonitor.VpnState(VpnStateMonitor.VpnRunningState.ENABLED)) },
         )
@@ -90,7 +90,7 @@ class DeviceShieldTrackerActivityViewModelTest {
     }
 
     @Test
-    fun whenLaunchAppTrackersViewEventThenCommandIsLaunchAppTrackers() = runBlocking {
+    fun `onViewEvent - launch app trackers view event - command is launch app trackers`() = runBlocking {
         viewModel.commands().test {
             viewModel.onViewEvent(ViewEvent.LaunchAppTrackersFAQ)
 
@@ -101,7 +101,7 @@ class DeviceShieldTrackerActivityViewModelTest {
     }
 
     @Test
-    fun whenLaunchDeviceShieldFAQViewEventThenCommandIsLaunchDeviceShieldFAQ() = runBlocking {
+    fun `onViewEvent - launch device shield FAQ - command is launch device shield FAQ`() = runBlocking {
         viewModel.commands().test {
             viewModel.onViewEvent(ViewEvent.LaunchDeviceShieldFAQ)
 
@@ -112,7 +112,7 @@ class DeviceShieldTrackerActivityViewModelTest {
     }
 
     @Test
-    fun whenLaunchExcludedAppsViewEventThenCommandIsLaunchExcludedApps() = runBlocking {
+    fun `onViewEvent - launch excluded apps - command is launch excluded apps`() = runBlocking {
         viewModel.commands().test {
             viewModel.onViewEvent(ViewEvent.LaunchExcludedApps)
 
@@ -123,7 +123,7 @@ class DeviceShieldTrackerActivityViewModelTest {
     }
 
     @Test
-    fun whenLaunchMostRecentActivityViewEventThenCommandIsLaunchMostRecentActivity() = runBlocking {
+    fun `onViewEvent - launch most recent activity - command is launch most recent activity`() = runBlocking {
         viewModel.commands().test {
             viewModel.onViewEvent(ViewEvent.LaunchMostRecentActivity)
 
@@ -134,7 +134,7 @@ class DeviceShieldTrackerActivityViewModelTest {
     }
 
     @Test
-    fun whenToggleIsSwitchedOnAndOtherVPNIsDisabledThenTrackingProtectionIsEnabled() = runBlocking {
+    fun `onAppTPToggleSwitched - other VPN disabled - tracking protection enabled`() = runBlocking {
         whenever(vpnDetector.isExternalVpnDetected()).thenReturn(false)
         viewModel.commands().test {
             viewModel.onAppTPToggleSwitched(true)
@@ -144,7 +144,7 @@ class DeviceShieldTrackerActivityViewModelTest {
     }
 
     @Test
-    fun whenToggleIsSwitchedOffAndOtherVPNIsDisabledThenConfirmationDialogIsShown() = runBlocking {
+    fun `onAppTPToggleSwitched - other VPN disabled - confirmation dialog shown`() = runBlocking {
         whenever(vpnDetector.isExternalVpnDetected()).thenReturn(false)
         viewModel.commands().test {
             viewModel.onAppTPToggleSwitched(false)
@@ -154,7 +154,7 @@ class DeviceShieldTrackerActivityViewModelTest {
     }
 
     @Test
-    fun whenVpnPermissionIsNeededThenVpnPermissionRequestIsLaunched() = runBlocking {
+    fun `onVPNPermissionNeeded - vpn permission request launched`() = runBlocking {
         viewModel.commands().test {
             val permissionIntent = Intent()
             viewModel.onVPNPermissionNeeded(permissionIntent)
@@ -164,7 +164,7 @@ class DeviceShieldTrackerActivityViewModelTest {
     }
 
     @Test
-    fun whenVpnPermissionResultIsOKThenVpnIsLaunched() = runBlocking {
+    fun `onVPNPermissionResult - result is OK - VPN is launched`() = runBlocking {
         viewModel.commands().test {
             viewModel.onVPNPermissionResult(AppCompatActivity.RESULT_OK)
             assertEquals(DeviceShieldTrackerActivityViewModel.Command.LaunchVPN, awaitItem())
@@ -173,7 +173,7 @@ class DeviceShieldTrackerActivityViewModelTest {
     }
 
     @Test
-    fun whenVpnLaunchedAlwaysOnDisabledAndSystemKilledAppTpThenShowAlwaysOnPromotion() = runBlocking {
+    fun `onVPNPermissionResult - always on disabled and system killed app - show always on promotion`() = runBlocking {
         whenever(vpnStateMonitor.isAlwaysOnEnabled()).thenReturn(false)
         whenever(vpnStateMonitor.vpnLastDisabledByAndroid()).thenReturn(true)
 
@@ -187,7 +187,7 @@ class DeviceShieldTrackerActivityViewModelTest {
     }
 
     @Test
-    fun whenVpnLaunchedAlwaysOnDisabledAndSystemDidNotKilledAppTpThenDoNotShowAlwaysOnPromotion() = runBlocking {
+    fun `onVPNPermissionResult - always on disabled and system did not kill app - do not show always on promotion`() = runBlocking {
         whenever(vpnStateMonitor.isAlwaysOnEnabled()).thenReturn(false)
         whenever(vpnStateMonitor.vpnLastDisabledByAndroid()).thenReturn(false)
 
@@ -199,7 +199,7 @@ class DeviceShieldTrackerActivityViewModelTest {
     }
 
     @Test
-    fun whenVPNInAlwaysOnModeThenShowPromoteAlwaysOnDialogCommandIsNotSent() = runBlocking {
+    fun `onVPNPermissionResult - VPN in always on mode - does not send promote always on dialog command`() = runBlocking {
         whenever(vpnStateMonitor.isAlwaysOnEnabled()).thenReturn(true)
         whenever(vpnStateMonitor.vpnLastDisabledByAndroid()).thenReturn(true)
 
@@ -211,7 +211,7 @@ class DeviceShieldTrackerActivityViewModelTest {
     }
 
     @Test
-    fun whenVpnPermissionResultIsDeniedAndRequestTimeWasSmallerThanNeededThenVpnConflictDialogIsShown() = runBlocking {
+    fun `onVPNPermissionResult - permission denied and request time too short - show VPN conflict dialog`() = runBlocking {
         viewModel.commands().test {
             val permissionIntent = Intent()
             viewModel.onVPNPermissionNeeded(permissionIntent)
@@ -224,7 +224,7 @@ class DeviceShieldTrackerActivityViewModelTest {
     }
 
     @Test
-    fun whenVpnPermissionResultIsDeniedAndRequestTimeWasHigherThanNeededThenVpnIsStopped() = runBlocking {
+    fun `onVPNPermissionResult - permission denied and request time higher than needed - vpn is stopped`() = runBlocking {
         viewModel.commands().test {
             val permissionIntent = Intent()
             viewModel.onVPNPermissionNeeded(permissionIntent)
@@ -238,7 +238,7 @@ class DeviceShieldTrackerActivityViewModelTest {
     }
 
     @Test
-    fun whenToggleIsSwitchedOnAndOtherVPNIsEnabledThenVpnConflictDialogIsShown() = runBlocking {
+    fun `onAppTPToggleSwitched - other VPN enabled - shows VPN conflict dialog`() = runBlocking {
         whenever(vpnDetector.isExternalVpnDetected()).thenReturn(true)
         viewModel.commands().test {
             viewModel.onAppTPToggleSwitched(true)
@@ -248,7 +248,7 @@ class DeviceShieldTrackerActivityViewModelTest {
     }
 
     @Test
-    fun whenAppTPIsManuallyDisabledThenTrackingProtectionIsStopped() = runBlocking {
+    fun `onAppTpManuallyDisabled - tracking protection stopped`() = runBlocking {
         viewModel.commands().test {
             viewModel.onAppTpManuallyDisabled()
 
@@ -260,7 +260,7 @@ class DeviceShieldTrackerActivityViewModelTest {
     }
 
     @Test
-    fun whenUserWantsToRemoveFeatureThenDalogIsShown() = runBlocking {
+    fun `onViewEvent - ask to remove feature - dialog is shown`() = runBlocking {
         viewModel.commands().test {
             viewModel.onViewEvent(ViewEvent.AskToRemoveFeature)
 
@@ -271,7 +271,7 @@ class DeviceShieldTrackerActivityViewModelTest {
     }
 
     @Test
-    fun whenUserAcceptsToRemoveFeatureThenFeatureIsRemovedAndVpnAndScreenClosed() = runBlocking {
+    fun `onViewEvent - remove feature - feature removed and VPN and screen closed`() = runBlocking {
         viewModel.commands().test {
             viewModel.onViewEvent(ViewEvent.RemoveFeature)
 
@@ -285,7 +285,7 @@ class DeviceShieldTrackerActivityViewModelTest {
     }
 
     @Test
-    fun whenPromoteAlwaysOnOpenSettingsSelectedThenCommandIsSent() = runBlocking {
+    fun `onViewEvent - promote always on open settings selected - command is sent`() = runBlocking {
         viewModel.commands().test {
             viewModel.onViewEvent(ViewEvent.PromoteAlwaysOnOpenSettings)
 
@@ -297,7 +297,7 @@ class DeviceShieldTrackerActivityViewModelTest {
     }
 
     @Test
-    fun whenAppTpEnabledCtaShownAndListShownThenNoCommandSent() = runBlocking {
+    fun `showAppTpEnabledCtaIfNeeded - appTpEnabledCta shown - no command sent`() = runBlocking {
         whenever(vpnStore.didShowAppTpEnabledCta()).thenReturn(true)
 
         viewModel.commands().test {
@@ -309,7 +309,7 @@ class DeviceShieldTrackerActivityViewModelTest {
     }
 
     @Test
-    fun whenAppTpEnabledCtaNotAlreadyShownAndListShownThenCommandSent() = runBlocking {
+    fun `showAppTpEnabledCtaIfNeeded - AppTp enabled CTA not shown and list shown - command sent`() = runBlocking {
         whenever(vpnStore.didShowAppTpEnabledCta()).thenReturn(false)
 
         viewModel.commands().test {
@@ -322,7 +322,7 @@ class DeviceShieldTrackerActivityViewModelTest {
     }
 
     @Test
-    fun whenBannerStateCalledOutsideOnboardingSessionThenReturnNextSessionBanner() {
+    fun `bannerState - called outside onboarding session - return next session banner`() {
         whenever(vpnStore.getAndSetOnboardingSession()).thenReturn(false)
 
         val bannerState = viewModel.bannerState()
@@ -331,7 +331,7 @@ class DeviceShieldTrackerActivityViewModelTest {
     }
 
     @Test
-    fun whenBannerStateCalledDuringOnboardingSessionThenReturnOnboardingBanner() {
+    fun `bannerState - during onboarding session - return onboarding banner`() {
         whenever(vpnStore.getAndSetOnboardingSession()).thenReturn(true)
 
         val bannerState = viewModel.bannerState()

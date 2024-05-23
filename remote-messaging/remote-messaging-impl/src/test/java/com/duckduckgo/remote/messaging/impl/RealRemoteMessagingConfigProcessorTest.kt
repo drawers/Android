@@ -67,7 +67,7 @@ class RealRemoteMessagingConfigProcessorTest {
     }
 
     @Test
-    fun whenNewVersionThenEvaluate() = runTest {
+    fun `process - new version - evaluate`() = runTest {
         whenever(remoteMessagingConfigRepository.get()).thenReturn(
             aRemoteMessagingConfig(version = 0L),
         )

@@ -53,7 +53,7 @@ class AppSiteRequestDataViewStateMapperTest {
     private val testee = AppSiteRequestDataViewStateMapper()
 
     @Test
-    fun whenSiteHasTrackersThenRequestDataViewStateContainsSuchTrackers() {
+    fun `mapFromSite - site has trackers - request data viewState contains trackers`() {
         val site = site(
             events = listOf(
                 TrackingEvent("test.com", "test.com", null, MAJOR_ENTITY_A, null, BLOCKED, AD),
@@ -71,7 +71,7 @@ class AppSiteRequestDataViewStateMapperTest {
     }
 
     @Test
-    fun whenSiteHasTrackersBlockedAndNotBlockedThenRequestDataViewStateContainsSuchTrackers() {
+    fun `mapFromSite - site has trackers blocked and not blocked - request data viewState contains such trackers`() {
         val site = site(
             events = listOf(
                 TrackingEvent("test.com", "test1.com", null, MAJOR_ENTITY_A, null, BLOCKED, AD),
@@ -95,7 +95,7 @@ class AppSiteRequestDataViewStateMapperTest {
     }
 
     @Test
-    fun whenSiteDoesNotHaveCategoryThenRequestDataViewStateRequestCategoryIsNull() {
+    fun `mapFromSite - site does not have category - request category is null`() {
         val site = site(
             events = listOf(
                 TrackingEvent("test.com", "test.com", null, MAJOR_ENTITY_A, null, BLOCKED, AD),
@@ -108,7 +108,7 @@ class AppSiteRequestDataViewStateMapperTest {
     }
 
     @Test
-    fun whenSiteDoesHaveAllowedCategoryThenRequestDataViewStateRequestHasCategory() {
+    fun `mapFromSite - site has allowed category - request has category`() {
         val site = site(
             events = listOf(
                 TrackingEvent("test.com", "test.com", listOf("Advertising", "unknown"), MAJOR_ENTITY_A, null, BLOCKED, AD),
@@ -121,7 +121,7 @@ class AppSiteRequestDataViewStateMapperTest {
     }
 
     @Test
-    fun whenSiteHasUnknownCategoriesThenRequestDataViewStateRequestHasCategoryIsNull() {
+    fun `mapFromSite - site with unknown categories - request category is null`() {
         val site = site(
             events = listOf(
                 TrackingEvent("test.com", "test.com", listOf("unknown"), MAJOR_ENTITY_A, null, BLOCKED, AD),
@@ -134,7 +134,7 @@ class AppSiteRequestDataViewStateMapperTest {
     }
 
     @Test
-    fun whenSiteContainsATrackerThenRequestDataContainsAllRequiredTrackerInfo() {
+    fun `mapFromSite - site contains a tracker - request data contains all required tracker info`() {
         val site = site(
             events = listOf(
                 TrackingEvent("test.com", "test.co.uk", null, MAJOR_ENTITY_A, null, BLOCKED, AD),
@@ -154,7 +154,7 @@ class AppSiteRequestDataViewStateMapperTest {
     }
 
     @Test
-    fun whenSiteHasTrackersFromSameDomainAndSameStateThenRequestDataViewStateContainsFirstEvent() {
+    fun `mapFromSite - trackers from same domain and state - request data contains first event`() {
         val site = site(
             events = listOf(
                 TrackingEvent("test.com", "test.com/a.js", null, MAJOR_ENTITY_A, null, BLOCKED, AD),
@@ -169,7 +169,7 @@ class AppSiteRequestDataViewStateMapperTest {
     }
 
     @Test
-    fun whenSiteHasTrackersFromSameDomainAndSameStateButDifferentEntityThenRequestDataViewStateContainsBothEvent() {
+    fun `mapFromSite - trackers from same domain and state but different entity - contains both events`() {
         val site = site(
             events = listOf(
                 TrackingEvent("test.com", "test.com/a.js", null, MINOR_ENTITY_A, null, BLOCKED, AD),
@@ -185,7 +185,7 @@ class AppSiteRequestDataViewStateMapperTest {
     }
 
     @Test
-    fun whenSiteHasTrackersFromSameDomainButDifferentStateThenRequestDataViewStateContainsBothEvent() {
+    fun `mapFromSite - trackers from same domain but different state - contains both events`() {
         val site = site(
             events = listOf(
                 TrackingEvent("test.com", "test.com/a.js", null, MAJOR_ENTITY_A, null, BLOCKED, AD),

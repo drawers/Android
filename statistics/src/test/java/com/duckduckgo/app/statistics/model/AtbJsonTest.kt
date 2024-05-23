@@ -33,14 +33,14 @@ class AtbJsonTest {
     private val jsonAdapter: JsonAdapter<Atb> = moshi.adapter(Atb::class.java)
 
     @Test
-    fun whenFormatIsValidThenDataIsConverted() {
+    fun `fromJson - valid format - data is converted`() {
         val json = loadText(javaClass.classLoader!!, "json/atb_response_valid.json")
         val atb = jsonAdapter.fromJson(json)!!
         assertEquals("v105-3", atb.version)
     }
 
     @Test(expected = JsonEncodingException::class)
-    fun whenFormatIsInvalidThenExceptionIsThrown() {
+    fun `fromJson - format is invalid - exception is thrown`() {
         assertNull(jsonAdapter.fromJson("invalid"))
     }
 }

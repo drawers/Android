@@ -51,7 +51,7 @@ class RealUserAgentRepositoryTest {
     }
 
     @Test
-    fun whenRepositoryIsCreatedThenExceptionsLoadedIntoMemory() {
+    fun `RealUserAgentRepository - repository created - exceptions loaded into memory`() {
         givenUserAgentExceptionsDaoContainExceptions()
         testee =
             RealUserAgentRepository(
@@ -65,7 +65,7 @@ class RealUserAgentRepositoryTest {
     }
 
     @Test
-    fun whenUpdateAllThenUpdateAllCalled() = runTest {
+    fun `updateAll - updateAll called`() = runTest {
         testee =
             RealUserAgentRepository(
                 mockDatabase,
@@ -80,7 +80,7 @@ class RealUserAgentRepositoryTest {
     }
 
     @Test
-    fun whenUpdateAllThenPreviousExceptionsAreCleared() = runTest {
+    fun `updateAll - previous exceptions - cleared`() = runTest {
         givenUserAgentExceptionsDaoContainExceptions()
         testee =
             RealUserAgentRepository(

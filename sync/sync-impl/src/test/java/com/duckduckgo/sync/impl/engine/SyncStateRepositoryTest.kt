@@ -49,13 +49,13 @@ class SyncStateRepositoryTest {
     }
 
     @Test
-    fun whenSyncDaoIsEmptyCurrentReturnsNull() {
+    fun `current - sync dao is empty - returns null`() {
         val currentSync = repository.current()
         assertTrue(currentSync == null)
     }
 
     @Test
-    fun whenSyncInProgressThenCurrentReturnsAttempt() {
+    fun `current - sync in progress - returns attempt`() {
         val sync = SyncAttempt(state = SyncAttemptState.IN_PROGRESS)
         repository.store(sync)
 
@@ -64,7 +64,7 @@ class SyncStateRepositoryTest {
     }
 
     @Test
-    fun whenSyncStateIsUpdatedThenDaoIsUpdated() {
+    fun `updateSyncState - dao is updated`() {
         val syncInProgress = SyncAttempt(state = SyncAttemptState.IN_PROGRESS)
         repository.store(syncInProgress)
 

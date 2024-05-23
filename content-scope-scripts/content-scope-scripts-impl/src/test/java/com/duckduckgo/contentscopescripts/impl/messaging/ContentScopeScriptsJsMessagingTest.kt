@@ -57,7 +57,7 @@ class ContentScopeScriptsJsMessagingTest {
     }
 
     @Test
-    fun whenProcessUnknownMessageDoNothing() = runTest {
+    fun `process - unknown message - do nothing`() = runTest {
         givenInterfaceIsRegistered()
 
         contentScopeScriptsJsMessaging.process("", contentScopeScriptsJsMessaging.secret)
@@ -66,7 +66,7 @@ class ContentScopeScriptsJsMessagingTest {
     }
 
     @Test
-    fun whenProcessUnknownSecretDoNothing() = runTest {
+    fun `process - unknown secret - do nothing`() = runTest {
         givenInterfaceIsRegistered()
 
         val message = """
@@ -79,7 +79,7 @@ class ContentScopeScriptsJsMessagingTest {
     }
 
     @Test
-    fun whenProcessInterfaceNotRegisteredDoNothing() = runTest {
+    fun `process - interface not registered - do nothing`() = runTest {
         whenever(mockWebView.url).thenReturn("https://example.com")
 
         val message = """
@@ -92,14 +92,14 @@ class ContentScopeScriptsJsMessagingTest {
     }
 
     @Test
-    fun whenRegisterInterfaceThenAddJsInterface() {
+    fun `register - add Js interface`() {
         contentScopeScriptsJsMessaging.register(mockWebView, callback)
 
         verify(mockWebView).addJavascriptInterface(any(), anyOrNull())
     }
 
     @Test
-    fun whenProcessAndWebShareThenCallbackExecutedAndNotResponseSent() = runTest {
+    fun `process - webShare - callback executed and not response sent`() = runTest {
         givenInterfaceIsRegistered()
 
         val message = """
@@ -112,7 +112,7 @@ class ContentScopeScriptsJsMessagingTest {
     }
 
     @Test
-    fun whenProcessAndWebShareIfFeatureNameDoesNotMatchDoNothing() = runTest {
+    fun `process - feature name does not match - do nothing`() = runTest {
         givenInterfaceIsRegistered()
 
         val message = """
@@ -125,7 +125,7 @@ class ContentScopeScriptsJsMessagingTest {
     }
 
     @Test
-    fun whenProcessAndWebShareIfIdDoesNotExistThenDoNothing() = runTest {
+    fun `process - web share id does not exist - do nothing`() = runTest {
         givenInterfaceIsRegistered()
 
         val message = """
@@ -138,7 +138,7 @@ class ContentScopeScriptsJsMessagingTest {
     }
 
     @Test
-    fun whenProcessAndPermissionsQueryThenCallbackExecutedAndNotResponseSent() = runTest {
+    fun `process - permissions query - callback executed and no response sent`() = runTest {
         givenInterfaceIsRegistered()
 
         val message = """
@@ -151,7 +151,7 @@ class ContentScopeScriptsJsMessagingTest {
     }
 
     @Test
-    fun whenProcessAndPermissionsQueryIfIdDoesNotExistThenDoNothing() = runTest {
+    fun `process - id does not exist - do nothing`() = runTest {
         givenInterfaceIsRegistered()
 
         val message = """

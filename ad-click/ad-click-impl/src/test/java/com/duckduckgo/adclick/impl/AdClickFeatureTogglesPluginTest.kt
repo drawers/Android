@@ -38,7 +38,7 @@ class AdClickFeatureTogglesPluginTest {
     }
 
     @Test
-    fun whenIsEnabledCalledOnAdCLickFeatureNameThenReturnRepositoryValue() {
+    fun `isEnabled - ad click feature name - return repository value`() {
         whenever(adClickFeatureToggleRepository.get(AdClickFeatureName.AdClickAttributionFeatureName, false)).thenReturn(true)
         Assert.assertEquals(true, plugin.isEnabled(AdClickFeatureName.AdClickAttributionFeatureName.value, false))
 
@@ -47,12 +47,12 @@ class AdClickFeatureTogglesPluginTest {
     }
 
     @Test
-    fun whenIsEnabledCalledOnOtherFeatureNameThenReturnRepositoryNull() {
+    fun `isEnabled - other feature name - return repository null`() {
         Assert.assertNull(plugin.isEnabled(TestFeatureName().value, false))
     }
 
     @Test
-    fun whenIsEnabledAndFeatureIsAdCLickeatureThenReturnTrueWhenEnabled() =
+    fun `isEnabled - AdClickAttributionFeature enabled - returns true`() =
         runTest {
             givenAdCLickFeatureIsEnabled()
 
@@ -62,7 +62,7 @@ class AdClickFeatureTogglesPluginTest {
         }
 
     @Test
-    fun whenIsEnabledAndFeatureIsAdCLickFeatureThenReturnFalseWhenDisabled() =
+    fun `isEnabled - ad click feature disabled - return false`() =
         runTest {
             givenAdCLickFeatureIsDisabled()
 
@@ -72,7 +72,7 @@ class AdClickFeatureTogglesPluginTest {
         }
 
     @Test
-    fun whenIsEnabledAndFeatureIsAdCLickFeatureThenReturnDefaultValueIfFeatureDoesNotExist() =
+    fun `isEnabled - AdClick feature does not exist - return default value`() =
         runTest {
             val defaultValue = true
             givenAdCLickFeatureReturnsDefaultValue(defaultValue)
@@ -84,7 +84,7 @@ class AdClickFeatureTogglesPluginTest {
         }
 
     @Test
-    fun whenIsEnabledAndFeatureIsAdCLickFeatureAndAppVersionEqualToMinSupportedVersionThenReturnTrueWhenEnabled() =
+    fun `isEnabled - ad click feature and app version equal to min supported version - return true`() =
         runTest {
             givenAdCLickFeatureIsEnabled()
             givenAppVersionIsEqualToMinSupportedVersion()
@@ -95,7 +95,7 @@ class AdClickFeatureTogglesPluginTest {
         }
 
     @Test
-    fun whenIsEnabledAndFeatureIsAdCLickFeatureAndAppVersionIsGreaterThanMinSupportedVersionThenReturnTrueWhenEnabled() =
+    fun `isEnabled - ad click feature and app version greater than min supported - return true`() =
         runTest {
             givenAdCLickFeatureIsEnabled()
             givenAppVersionIsGreaterThanMinSupportedVersion()
@@ -106,7 +106,7 @@ class AdClickFeatureTogglesPluginTest {
         }
 
     @Test
-    fun whenIsEnabledAndFeatureIsAdCLickFeatureAndAppVersionIsSmallerThanMinSupportedVersionThenReturnFalseWhenEnabled() =
+    fun `isEnabled - ad click feature and app version smaller than min supported version - return false`() =
         runTest {
             givenAdCLickFeatureIsEnabled()
             givenAppVersionIsSmallerThanMinSupportedVersion()

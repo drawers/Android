@@ -71,7 +71,7 @@ internal class WebTrackingProtectionViewModelTest {
     }
 
     @Test
-    fun whenInitialisedThenGpgDisabled() = runTest {
+    fun `viewState - initialised - GPG disabled`() = runTest {
         whenever(mockFeatureToggle.isFeatureEnabled(eq(PrivacyFeatureName.GpcFeatureName.value), any())).thenReturn(false)
         whenever(mockGpc.isEnabled()).thenReturn(true)
 
@@ -83,7 +83,7 @@ internal class WebTrackingProtectionViewModelTest {
     }
 
     @Test
-    fun whenGpcToggleEnabledAndGpcDisabledThenGpgDisabled() = runTest {
+    fun `viewState - Gpc toggle enabled and Gpc disabled - Gpc disabled`() = runTest {
         whenever(mockFeatureToggle.isFeatureEnabled(eq(PrivacyFeatureName.GpcFeatureName.value), any())).thenReturn(true)
         whenever(mockGpc.isEnabled()).thenReturn(false)
 
@@ -95,7 +95,7 @@ internal class WebTrackingProtectionViewModelTest {
     }
 
     @Test
-    fun whenGpcToggleEnabledAndGpcEnabledThenGpgEnabled() = runTest {
+    fun `viewState - GPC toggle enabled and GPC enabled - GPC enabled`() = runTest {
         whenever(mockFeatureToggle.isFeatureEnabled(eq(PrivacyFeatureName.GpcFeatureName.value), any())).thenReturn(true)
         whenever(mockGpc.isEnabled()).thenReturn(true)
 
@@ -107,7 +107,7 @@ internal class WebTrackingProtectionViewModelTest {
     }
 
     @Test
-    fun whenOnGlobalPrivacyControlClickedThenCommandIsLaunchGlobalPrivacyControlAndPixelFired() = runTest {
+    fun `onGlobalPrivacyControlClicked - command is launch global privacy control and pixel fired`() = runTest {
         testee.commands().test {
             testee.onGlobalPrivacyControlClicked()
 
@@ -119,7 +119,7 @@ internal class WebTrackingProtectionViewModelTest {
     }
 
     @Test
-    fun whenOnManageAllowListSelectedThenEmitCommandLaunchAllowListAndSendPixel() = runTest {
+    fun `onManageAllowListSelected - emit command launch allow list and send pixel`() = runTest {
         testee.commands().test {
             testee.onManageAllowListSelected()
 

@@ -59,7 +59,7 @@ class DownloadsDaoTest {
     }
 
     @Test
-    fun whenDownloadItemAddedThenItIsInList() = runTest {
+    fun `insert - download item added - it is in list`() = runTest {
         val downloadItem = oneItem()
 
         dao.insert(downloadItem)
@@ -69,7 +69,7 @@ class DownloadsDaoTest {
     }
 
     @Test
-    fun whenDownloadItemsAddedThenTheyAreInTheList() = runTest {
+    fun `insertAll - download items added - they are in the list`() = runTest {
         val downloadItems = listOf(
             oneItem(),
             otherItem(),
@@ -82,7 +82,7 @@ class DownloadsDaoTest {
     }
 
     @Test
-    fun whenDownloadItemUpdatedByIdThenItIsInListWithNewValue() = runTest {
+    fun `update - download item by id - in list with new value`() = runTest {
         val downloadItem = oneItem().copy(downloadStatus = STARTED, contentLength = 0L)
         val updatedStatus = FINISHED
         val updatedContentLength = 11111L
@@ -101,7 +101,7 @@ class DownloadsDaoTest {
     }
 
     @Test
-    fun whenDownloadItemUpdatedByFileNameThenItIsInListWithNewValue() = runTest {
+    fun `update - download item by file name - in list with new value`() = runTest {
         val downloadItem = oneItem().copy(downloadStatus = STARTED, contentLength = 0L, downloadId = 0L)
         val updatedStatus = FINISHED
         val updatedContentLength = 11111L
@@ -120,7 +120,7 @@ class DownloadsDaoTest {
     }
 
     @Test
-    fun whenDownloadItemDeletedThenItIsNoLongerInTheList() = runTest {
+    fun `delete - download item - no longer in the list`() = runTest {
         val downloadItem = oneItem()
         dao.insert(downloadItem)
 
@@ -131,7 +131,7 @@ class DownloadsDaoTest {
     }
 
     @Test
-    fun whenDownloadItemsDeletedThenTheyAreNoLongerInTheList() = runTest {
+    fun `delete - download items deleted - no longer in the list`() = runTest {
         val downloadItems = listOf(
             oneItem(),
             otherItem(),
@@ -145,7 +145,7 @@ class DownloadsDaoTest {
     }
 
     @Test
-    fun whenDownloadItemsRetrievedThenTheCorrectItemIsReturned() = runTest {
+    fun `getDownloadItem - download items retrieved - correct item returned`() = runTest {
         val itemToRetrieve = oneItem()
         val downloadItems = listOf(
             otherItem(),

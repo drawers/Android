@@ -46,7 +46,7 @@ class SharedPreferencesProviderImplTest {
     }
 
     @Test
-    fun whenGetMultiprocessPreferencesThenMigrateToHarmony() {
+    fun `getSharedPreferences - multiprocess - migrate to harmony`() {
         prefs.edit(commit = true) { putBoolean("bool", true) }
         prefs.edit(commit = true) { putString("string", "true") }
         prefs.edit(commit = true) { putInt("int", 1) }
@@ -63,7 +63,7 @@ class SharedPreferencesProviderImplTest {
     }
 
     @Test
-    fun whenGetMultiprocessPreferencesAndMigrateIsFalseThenDoNotMigrateToHarmony() {
+    fun `getMultiprocessPreferences - migrate is false - do not migrate to harmony`() {
         prefs.edit(commit = true) { putBoolean("bool", true) }
         prefs.edit(commit = true) { putString("string", "true") }
         prefs.edit(commit = true) { putInt("int", 1) }
@@ -80,7 +80,7 @@ class SharedPreferencesProviderImplTest {
     }
 
     @Test
-    fun testSafeSharedPreferences() {
+    fun `SafeSharedPreferences - store and retrieve values - values match`() {
         val prefs = com.duckduckgo.data.store.impl.SafeSharedPreferences(vpnPreferencesProvider.getSharedPreferences(NAME))
 
         prefs.edit(commit = true) { putBoolean("bool", true) }

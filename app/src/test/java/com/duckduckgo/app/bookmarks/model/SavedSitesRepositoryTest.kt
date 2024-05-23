@@ -100,12 +100,12 @@ class SavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenNoDataThenFolderContentisEmpty() = runTest {
+    fun `getFolderTreeItems - no data - folder content is empty`() = runTest {
         assert(repository.getFolderTreeItems(SavedSitesNames.BOOKMARKS_ROOT).isEmpty())
     }
 
     @Test
-    fun whenRootFolderHasOnlyBookmarksThenDataIsRetrieved() = runTest {
+    fun `getFolderTreeItems - root folder has only bookmarks - data is retrieved`() = runTest {
         val totalBookmarks = 10
         val entities = givenSomeBookmarks(totalBookmarks)
         savedSitesEntitiesDao.insertList(entities)
@@ -117,7 +117,7 @@ class SavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenRootFolderHasBookmarksAndFoldersThenDataIsRetrieved() = runTest {
+    fun `getFolderTreeItems - root folder has bookmarks and folders - data retrieved`() = runTest {
         val totalBookmarks = 10
         val totalFolders = 3
 
@@ -138,7 +138,7 @@ class SavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenRequestingDataFromEmptyFolderThenNothingIsRetrieved() = runTest {
+    fun `getFolderTreeItems - empty folder - nothing is retrieved`() = runTest {
         val totalBookmarks = 10
         val totalFolders = 3
 
@@ -155,7 +155,7 @@ class SavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenFavoriteIsAddedThenBookmarkIsAlsoAdded() {
+    fun `insertFavorite - favorite added - bookmark also added`() {
         givenEmptyDBState()
 
         repository.insertFavorite("favourite1", "https://favorite.com", "favorite", "timestamp")
@@ -165,7 +165,7 @@ class SavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenBookmarkIsAddedThenFavoriteIsNotAdded() {
+    fun `insertBookmark - bookmark added - favorite not added`() {
         givenEmptyDBState()
 
         repository.insertBookmark("https://favorite.com", "favorite")
@@ -175,7 +175,7 @@ class SavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenFavoriteIsAddedAndThenRemovedThenBookmarkStillExists() {
+    fun `insertFavorite and delete - favorite removed - bookmark still exists`() {
         givenEmptyDBState()
 
         val favorite = repository.insertFavorite("favourite1", "https://favorite.com", "favorite", "timestamp")
@@ -189,7 +189,7 @@ class SavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenFavoriteIsAddedAndThenRemovedAndDeleteBookmarkIsTrueThenNothingIsRetrieved() {
+    fun `delete - favorite added and then removed with delete bookmark true - nothing retrieved`() {
         givenEmptyDBState()
 
         val favorite = repository.insertFavorite("favourite1", "https://favorite.com", "favorite", "timestamp")
@@ -203,7 +203,7 @@ class SavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenBookmarkIsAddedAndThenRemovedThenNothingIsRetrieved() {
+    fun `insertBookmark - added and then removed - nothing is retrieved`() {
         givenEmptyDBState()
 
         val bookmark = repository.insertBookmark("https://favorite.com", "favorite")
@@ -215,7 +215,7 @@ class SavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenInsertFavoriteThenReturnSavedSite() {
+    fun `insertFavorite - returns saved site`() {
         givenNoFavoritesStored()
 
         val savedSite = repository.insertFavorite(title = "title", url = "http://example.com", lastModified = "timestamp")
@@ -226,7 +226,7 @@ class SavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenInsertFavoriteWithoutTitleThenSavedSiteUsesUrlAsTitle() {
+    fun `insertFavorite - without title - uses url as title`() {
         givenNoFavoritesStored()
 
         val savedSite = repository.insertFavorite(title = "", url = "http://example.com", lastModified = "timestamp")
@@ -237,7 +237,7 @@ class SavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenUserHasFavoritesAndInsertFavoriteThenSavedSiteUsesNextPosition() {
+    fun `insertFavorite - user has favorites - saved site uses next position`() {
         givenSomeFavoritesStored()
 
         val savedSite = repository.insertFavorite(title = "Favorite", url = "http://favexample.com", lastModified = "timestamp")
@@ -248,7 +248,7 @@ class SavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenFavoriteNameUpdatedThenDataIsUpdated() {
+    fun `updateFavourite - favorite name updated - data is updated`() {
         val favoriteone = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
         val favoritetwo = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 1)
         val favoritethree = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 2)
@@ -268,7 +268,7 @@ class SavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenBookmarkFavoriteMovedToAnotherFolderThenBookmarkIsStillFavorite() {
+    fun `moveBookmarkToAnotherFolder - favorite bookmark - still favorite`() {
         val favoriteone = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
         givenFavoriteStored(favoriteone)
 
@@ -285,7 +285,7 @@ class SavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenFavoritePositionUpdatedThenDataIsUpdated() = runTest {
+    fun `updateFavourite - favorite position updated - data is updated`() = runTest {
         val favoriteone = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
         val favoritetwo = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 1)
         val favoritethree = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 2)
@@ -308,7 +308,7 @@ class SavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenListReceivedThenUpdateItemsWithNewPositionInDatabase() {
+    fun `updateWithPosition - list received - update items with new position in database`() {
         val favorite = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 0)
         val favorite2 = Favorite("favorite2", "Favorite2", "http://favexample2.com", "timestamp", 1)
 
@@ -321,7 +321,7 @@ class SavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenFavoriteDeletedThenDatabaseUpdated() = runTest {
+    fun `delete - favorite deleted - database updated`() = runTest {
         val favorite = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 1)
         givenFavoriteStored(favorite)
 
@@ -331,7 +331,7 @@ class SavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenUserHasFavoritesThenReturnTrue() = runTest {
+    fun `hasFavorites - user has favorites - returns true`() = runTest {
         val favorite = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 1)
 
         givenFavoriteStored(favorite)
@@ -340,7 +340,7 @@ class SavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenFavoriteByUrlRequestedAndAvailableThenReturnFavorite() = runTest {
+    fun `getFavorite - favorite by URL requested and available - return favorite`() = runTest {
         givenNoFavoritesStored()
 
         val favorite =
@@ -361,7 +361,7 @@ class SavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenFavoriteByUrlRequestedAndNotAvailableThenReturnNull() = runTest {
+    fun `getFavorite - favorite by URL not available - return null`() = runTest {
         givenNoFavoritesStored()
 
         repository.insert(Favorite(id = "favorite1", title = "title", url = "www.website.com", lastModified = "timestamp", position = 1))
@@ -373,14 +373,14 @@ class SavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenFavoriteByUrlRequestedAndNoFavoritesAvailableThenReturnNull() = runTest {
+    fun `getFavorite - no favorites available - return null`() = runTest {
         val result = repository.getFavorite("www.test.com")
 
         Assert.assertNull(result)
     }
 
     @Test
-    fun whenAllFavoritesDeletedThenDeleteAllFavorites() = runTest {
+    fun `deleteAll - all favorites deleted`() = runTest {
         val favorite = Favorite("favorite1", "Favorite", "http://favexample.com", "timestamp", 1)
         val favorite2 = Favorite("favorite2", "Favorite2", "http://favexample2.com", "timestamp", 2)
 
@@ -393,7 +393,7 @@ class SavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenInsertBookmarkThenPopulateDB() = runTest {
+    fun `insert - bookmark - populate DB`() = runTest {
         givenNoBookmarksStored()
 
         val bookmark = repository.insert(
@@ -410,7 +410,7 @@ class SavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenInsertBookmarkByTitleAndUrlThenPopulateDB() = runTest {
+    fun `insert - bookmark by title and url - populate DB`() = runTest {
         val bookmark = repository.insert(
             Bookmark(
                 id = "bookmark1",

@@ -82,7 +82,7 @@ class SavedSitesSyncPersisterAlgorithmTest {
     }
 
     @Test
-    fun whenProcessingEntriesWithDeduplicationStrategyThenDeduplicationPersisterIsUsed() {
+    fun `processEntries - deduplication strategy - deduplication persister is used`() {
         val rootFolder = BookmarkFolder(
             id = SavedSitesNames.BOOKMARKS_ROOT,
             name = SavedSitesNames.BOOKMARKS_NAME,
@@ -110,7 +110,7 @@ class SavedSitesSyncPersisterAlgorithmTest {
     }
 
     @Test
-    fun whenProcessingEntriesWithTimestampStrategyThenTimestampPersisterIsUsed() {
+    fun `processEntries - timestamp strategy - timestamp persister is used`() {
         val rootFolder = BookmarkFolder(
             id = SavedSitesNames.BOOKMARKS_ROOT,
             name = SavedSitesNames.BOOKMARKS_NAME,
@@ -138,7 +138,7 @@ class SavedSitesSyncPersisterAlgorithmTest {
     }
 
     @Test
-    fun whenProcessingEntriesWithRemoteStrategyThenRemotePersisterIsUsed() {
+    fun `processEntries - remote strategy - remote persister is used`() {
         val rootFolder = BookmarkFolder(
             id = SavedSitesNames.BOOKMARKS_ROOT,
             name = SavedSitesNames.BOOKMARKS_NAME,

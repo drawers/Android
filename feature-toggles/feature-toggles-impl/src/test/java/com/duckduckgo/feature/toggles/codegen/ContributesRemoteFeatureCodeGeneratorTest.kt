@@ -80,14 +80,14 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `the class is generated`() {
+    fun `forName - class is generated`() {
         val generatedClass = Class
             .forName("com.duckduckgo.feature.toggles.codegen.TestTriggerFeature_RemoteFeature")
         assertNotNull(generatedClass)
     }
 
     @Test
-    fun `the class is generated implements Toggle Store and PrivacyFeaturePlugin`() {
+    fun `generatedClass - implements Toggle Store and PrivacyFeaturePlugin`() {
         val generatedClass = Class
             .forName("com.duckduckgo.feature.toggles.codegen.TestTriggerFeature_RemoteFeature")
             .kotlin
@@ -98,14 +98,14 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `the class factory is generated`() {
+    fun `class factory - is generated`() {
         val generatedClass = Class
             .forName("com.duckduckgo.feature.toggles.codegen.TestTriggerFeature_RemoteFeature_Factory")
         assertNotNull(generatedClass)
     }
 
     @Test
-    fun `the generated class is singleInstance annotated in the right scope`() {
+    fun `generatedClass - singleInstance annotated in right scope`() {
         val generatedClass = Class
             .forName("com.duckduckgo.feature.toggles.codegen.TestTriggerFeature_RemoteFeature")
             .kotlin
@@ -115,7 +115,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `the generated class is RemoteFeatureStoreNamed annotated in the right scope`() {
+    fun `generatedClass - RemoteFeatureStoreNamed annotation - correct scope`() {
         val generatedClass = Class
             .forName("com.duckduckgo.feature.toggles.codegen.TestTriggerFeature_RemoteFeature")
             .kotlin
@@ -126,7 +126,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
 
     @Test
     @Ignore("ContributesBinding is only present in kotlin metadata now, we need to fix")
-    fun `the generated class contributes the toggle store binding`() {
+    fun `generatedClass - contributes toggle store binding`() {
         val generatedClass = Class
             .forName("com.duckduckgo.feature.toggles.codegen.TestTriggerFeature_RemoteFeature")
             .kotlin
@@ -138,7 +138,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
 
     @Test
     @Ignore("ContributesMultibinding is only present in kotlin metadata now, we need to fix")
-    fun `the generated class contributes the privacy plugin multibinding`() {
+    fun `generatedClass - contributes privacy plugin multibinding`() {
         val generatedClass = Class
             .forName("com.duckduckgo.feature.toggles.codegen.TestTriggerFeature_RemoteFeature")
             .kotlin

@@ -51,17 +51,17 @@ class AppTrackerRepositoryTest {
     }
 
     @Test
-    fun whenHostnameIsTrackerThenReturnTracker() {
+    fun `findTracker - hostname is tracker - return tracker`() {
         assertTrackerTypeFound(appTrackerRepository.findTracker("g.doubleclick.net", ""))
     }
 
     @Test
-    fun whenSubdomainIsTrackerThenReturnTracker() {
+    fun `findTracker - subdomain is tracker - return tracker`() {
         assertTrackerTypeFound(appTrackerRepository.findTracker("foo.g.doubleclick.net", ""))
     }
 
     @Test
-    fun whenHostnameIsNotTrackerThenReturnNull() {
+    fun `findTracker - hostname is not tracker - return null`() {
         assertNotTrackerType(appTrackerRepository.findTracker("not.tracker.net", ""))
     }
 

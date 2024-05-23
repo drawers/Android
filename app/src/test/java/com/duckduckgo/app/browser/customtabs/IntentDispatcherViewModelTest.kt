@@ -38,7 +38,7 @@ class IntentDispatcherViewModelTest {
     }
 
     @Test
-    fun whenIntentReceivedWithSessionThenCustomTabIsRequested() = runTest {
+    fun `onIntentReceived - with session - custom tab requested`() = runTest {
         val text = "url"
         val toolbarColor = 100
         configureHasSession(true)
@@ -56,7 +56,7 @@ class IntentDispatcherViewModelTest {
     }
 
     @Test
-    fun whenIntentReceivedWithoutSessionThenCustomTabIsNotRequested() = runTest {
+    fun `onIntentReceived - without session - custom tab is not requested`() = runTest {
         val text = "url"
         configureHasSession(false)
         whenever(mockIntent.intentText).thenReturn(text)
@@ -72,7 +72,7 @@ class IntentDispatcherViewModelTest {
     }
 
     @Test
-    fun whenIntentReceivedWithSessionAndLinkIsEmailProtectionVerificationThenCustomTabIsNotRequested() = runTest {
+    fun `onIntentReceived - email protection verification link - custom tab not requested`() = runTest {
         configureHasSession(true)
         configureIsEmailProtectionLink(true)
 
@@ -85,7 +85,7 @@ class IntentDispatcherViewModelTest {
     }
 
     @Test
-    fun whenIntentReceivedWithSessionAndLinkIsNotEmailProtectionVerificationThenCustomTabIsRequested() = runTest {
+    fun `onIntentReceived - link is not email protection verification - custom tab requested`() = runTest {
         configureHasSession(true)
         configureIsEmailProtectionLink(false)
 
@@ -98,7 +98,7 @@ class IntentDispatcherViewModelTest {
     }
 
     @Test
-    fun whenIntentReceivedWithSessionAndUrlContainingSpacesThenSpacesAreReplacedAndCustomTabIsRequested() = runTest {
+    fun `onIntentReceived - url containing spaces - spaces are replaced and custom tab requested`() = runTest {
         val urlWithSpaces =
             """
                 https://mastodon.social/oauth/authorize?client_id=AcfPDZlcKUjwIatVtMt8B8cmdW-w1CSOR6_rYS_6Kxs&scope=read write push&redirect_uri=mastify://oauth&response_type=code
@@ -120,7 +120,7 @@ class IntentDispatcherViewModelTest {
     }
 
     @Test
-    fun whenIntentReceivedWithNoSessionAndIntentTextContainingSpacesAndNotStartingWithHttpSchemaThenNoChangesAreMadeToTheIntent() = runTest {
+    fun `onIntentReceived - no session and intent text with spaces not starting with http - no changes to intent`() = runTest {
         val intentTextWithSpaces =
             """
                 Voyager 1 is still bringing us surprises from the very edge of our solar system https://www.independent.co.uk/space/voyager-1-nasa-latest-solar-system-b2535462.html
@@ -139,7 +139,7 @@ class IntentDispatcherViewModelTest {
     }
 
     @Test
-    fun whenIntentReceivedWithSessionAndIntentTextContainingSpacesAndNotStartingWithHttpSchemaThenNoChangesAreMadeToTheIntent() = runTest {
+    fun `onIntentReceived - intent text with spaces and no http schema - no changes to intent`() = runTest {
         val intentTextWithSpaces =
             """
                 Voyager 1 is still bringing us surprises from the very edge of our solar system https://www.independent.co.uk/space/voyager-1-nasa-latest-solar-system-b2535462.html

@@ -91,7 +91,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenRecoverSubscriptionFromStoreIfUserNotAuthenticatedAndNotPurchaseStoredThenReturnFailure() = runTest {
+    fun `recoverSubscriptionFromStore - user not authenticated and no purchase stored - return failure`() = runTest {
         givenUserIsNotAuthenticated()
 
         val value = subscriptionsManager.recoverSubscriptionFromStore()
@@ -100,7 +100,7 @@ class RealSubscriptionsManagerTest {
     }
 
     @Test
-    fun whenRecoverSubscriptionFromStoreIfUserNotAuthenticatedAndPurchaseStoredThenReturnSubscriptionAndStoreData() = runTest {
+    fun `recoverSubscriptionFromStore - user not authenticated and purchase stored - return subscription and store data`() = runTest {
         givenUserIsNotAuthenticated()
         givenPurchaseStored()
         givenStoreLoginSucceeds()

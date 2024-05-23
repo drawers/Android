@@ -31,25 +31,25 @@ class RealNeverSavedSiteRepositoryTest {
     )
 
     @Test
-    fun whenDomainAddedToNeverSaveListThenETldPlus1IsUsed() = runTest {
+    fun `addToNeverSaveList - domain added - eTld+1 is used`() = runTest {
         testee.addToNeverSaveList("foo.example.com")
         verify(secureStorage).addToNeverSaveList("example.com")
     }
 
     @Test
-    fun whenDomainAddedToNeverSaveListContainsQueryParamsThenOnlyETldPlus1IsUsed() = runTest {
+    fun `addToNeverSaveList - domain with query params - only eTld+1 is used`() = runTest {
         testee.addToNeverSaveList("https://foo.example.com/?q=123")
         verify(secureStorage).addToNeverSaveList("example.com")
     }
 
     @Test
-    fun whenDomainAddedThenQueryingForThatExactDomainReturnsTrue() = runTest {
+    fun `isInNeverSaveList - domain added - returns true`() = runTest {
         whenever(secureStorage.isInNeverSaveList("example.com")).thenReturn(true)
         assertTrue(testee.isInNeverSaveList("example.com"))
     }
 
     @Test
-    fun whenDomainAddedThenQueryingUsesEtldPlusOne() = runTest {
+    fun `isInNeverSaveList - domain added - uses etld plus one`() = runTest {
         whenever(secureStorage.isInNeverSaveList("example.com")).thenReturn(true)
         assertTrue(testee.isInNeverSaveList("foo.example.com"))
     }

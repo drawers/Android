@@ -65,20 +65,20 @@ class RealSubscriptionsTest {
     }
 
     @Test
-    fun whenGetAccessTokenSucceedsThenReturnAccessToken() = runTest {
+    fun `getAccessToken - succeeds - return access token`() = runTest {
         whenever(mockSubscriptionsManager.getAccessToken()).thenReturn(AccessToken.Success("accessToken"))
         val result = subscriptions.getAccessToken()
         assertEquals("accessToken", result)
     }
 
     @Test
-    fun whenGetAccessTokenFailsThenReturnNull() = runTest {
+    fun `getAccessToken - access token fails - return null`() = runTest {
         whenever(mockSubscriptionsManager.getAccessToken()).thenReturn(AccessToken.Failure("error"))
         assertNull(subscriptions.getAccessToken())
     }
 
     @Test
-    fun whenGetEntitlementStatusHasEntitlementAndEnabledAndActiveThenReturnList() = runTest {
+    fun `getEntitlementStatus - has entitlement and enabled and active - return list`() = runTest {
         whenever(mockSubscriptionsManager.subscriptionStatus()).thenReturn(AUTO_RENEWABLE)
         whenever(mockSubscriptionsManager.entitlements).thenReturn(flowOf(listOf(NetP)))
 
@@ -89,7 +89,7 @@ class RealSubscriptionsTest {
     }
 
     @Test
-    fun whenGetEntitlementStatusHasEntitlementAndEnabledAndInactiveThenReturnEmptyList() = runTest {
+    fun `getEntitlementStatus - has entitlement and enabled and inactive - return empty list`() = runTest {
         whenever(mockSubscriptionsManager.subscriptionStatus()).thenReturn(INACTIVE)
         whenever(mockSubscriptionsManager.entitlements).thenReturn(flowOf(listOf(NetP)))
 
@@ -101,7 +101,7 @@ class RealSubscriptionsTest {
     }
 
     @Test
-    fun whenGetEntitlementStatusHasNoEntitlementAndEnabledAndActiveThenReturnEmptyList() = runTest {
+    fun `getEntitlementStatus - no entitlement and enabled and active - return empty list`() = runTest {
         whenever(mockSubscriptionsManager.subscriptionStatus()).thenReturn(AUTO_RENEWABLE)
         whenever(mockSubscriptionsManager.entitlements).thenReturn(flowOf(emptyList()))
 
@@ -112,7 +112,7 @@ class RealSubscriptionsTest {
     }
 
     @Test
-    fun whenIsEligibleIfOffersReturnedThenReturnTrueRegardlessOfStatus() = runTest {
+    fun `isEligible - offers returned - return true regardless of status`() = runTest {
         whenever(mockSubscriptionsManager.subscriptionStatus()).thenReturn(UNKNOWN)
         whenever(mockSubscriptionsManager.getSubscriptionOffer()).thenReturn(
             SubscriptionOffer(monthlyPlanId = "test", yearlyFormattedPrice = "test", yearlyPlanId = "test", monthlyFormattedPrice = "test"),
@@ -121,28 +121,28 @@ class RealSubscriptionsTest {
     }
 
     @Test
-    fun whenIsEligibleIfNotOffersReturnedThenReturnFalseIfNotActiveOrWaiting() = runTest {
+    fun `isEligible - no offers returned - return false if not active or waiting`() = runTest {
         whenever(mockSubscriptionsManager.subscriptionStatus()).thenReturn(UNKNOWN)
         whenever(mockSubscriptionsManager.getSubscriptionOffer()).thenReturn(null)
         assertFalse(subscriptions.isEligible())
     }
 
     @Test
-    fun whenIsEligibleIfNotOffersReturnedThenReturnTrueIfWaiting() = runTest {
+    fun `isEligible - no offers returned - returns true if waiting`() = runTest {
         whenever(mockSubscriptionsManager.subscriptionStatus()).thenReturn(WAITING)
         whenever(mockSubscriptionsManager.getSubscriptionOffer()).thenReturn(null)
         assertTrue(subscriptions.isEligible())
     }
 
     @Test
-    fun whenIsEligibleIfNotOffersReturnedThenReturnTrueIfActive() = runTest {
+    fun `isEligible - no offers returned - returns true if active`() = runTest {
         whenever(mockSubscriptionsManager.subscriptionStatus()).thenReturn(AUTO_RENEWABLE)
         whenever(mockSubscriptionsManager.getSubscriptionOffer()).thenReturn(null)
         assertTrue(subscriptions.isEligible())
     }
 
     @Test
-    fun whenIsEligibleIfNotEncryptionThenReturnTrueIfActive() = runTest {
+    fun `isEligible - not encryption - return true if active`() = runTest {
         whenever(mockSubscriptionsManager.canSupportEncryption()).thenReturn(false)
         whenever(mockSubscriptionsManager.subscriptionStatus()).thenReturn(AUTO_RENEWABLE)
         whenever(mockSubscriptionsManager.getSubscriptionOffer()).thenReturn(
@@ -152,7 +152,7 @@ class RealSubscriptionsTest {
     }
 
     @Test
-    fun whenIsEligibleIfNotEncryptionAndNotActiveThenReturnFalse() = runTest {
+    fun `isEligible - not encryption and not active - return false`() = runTest {
         whenever(mockSubscriptionsManager.canSupportEncryption()).thenReturn(false)
         whenever(mockSubscriptionsManager.subscriptionStatus()).thenReturn(UNKNOWN)
         whenever(mockSubscriptionsManager.getSubscriptionOffer()).thenReturn(
@@ -162,7 +162,7 @@ class RealSubscriptionsTest {
     }
 
     @Test
-    fun whenShouldLaunchPrivacyProForUrlThenReturnCorrectValue() = runTest {
+    fun `shouldLaunchPrivacyProForUrl - return correct value`() = runTest {
         whenever(mockSubscriptionsManager.getSubscriptionOffer()).thenReturn(
             SubscriptionOffer(monthlyPlanId = "test", yearlyFormattedPrice = "test", yearlyPlanId = "test", monthlyFormattedPrice = "test"),
         )
@@ -179,7 +179,7 @@ class RealSubscriptionsTest {
     }
 
     @Test
-    fun whenShouldLaunchPrivacyProForUrlThenReturnTrue() = runTest {
+    fun `shouldLaunchPrivacyProForUrl - return true`() = runTest {
         whenever(mockSubscriptionsManager.getSubscriptionOffer()).thenReturn(
             SubscriptionOffer(monthlyPlanId = "test", yearlyFormattedPrice = "test", yearlyPlanId = "test", monthlyFormattedPrice = "test"),
         )
@@ -189,14 +189,14 @@ class RealSubscriptionsTest {
     }
 
     @Test
-    fun whenShouldLaunchPrivacyProForUrlAndNotEligibleThenReturnFalse() = runTest {
+    fun `shouldLaunchPrivacyProForUrl - not eligible - return false`() = runTest {
         whenever(mockSubscriptionsManager.subscriptionStatus()).thenReturn(UNKNOWN)
 
         assertFalse(subscriptions.shouldLaunchPrivacyProForUrl("https://duckduckgo.com/pro"))
     }
 
     @Test
-    fun whenLaunchPrivacyProWithOriginThenPassTheOriginToActivity() = runTest {
+    fun `launchPrivacyPro - with origin - pass the origin to activity`() = runTest {
         whenever(globalActivityStarter.startIntent(any(), any<SettingsScreenNoParams>())).thenReturn(mock())
 
         val captor = argumentCaptor<SubscriptionsWebViewActivityWithParams>()
@@ -207,7 +207,7 @@ class RealSubscriptionsTest {
     }
 
     @Test
-    fun whenLaunchPrivacyProWithNoOriginThenDoNotPassTheOriginToActivity() = runTest {
+    fun `launchPrivacyPro - no origin - do not pass origin to activity`() = runTest {
         whenever(globalActivityStarter.startIntent(any(), any<SettingsScreenNoParams>())).thenReturn(mock())
 
         val captor = argumentCaptor<SubscriptionsWebViewActivityWithParams>()

@@ -106,13 +106,13 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenViewModelInitialisedThenPixelIsFired() {
+    fun `init - pixel fired`() {
         testee // init
         verify(mockPixel).fire(AppPixelName.SETTINGS_OPENED)
     }
 
     @Test
-    fun whenStartCalledThenEmailAddressSetCorrectly() = runTest {
+    fun `start - email address set correctly`() = runTest {
         whenever(mockEmailManager.getEmailAddress()).thenReturn("email")
         testee.start()
         testee.viewState().test {
@@ -125,7 +125,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenOnDefaultBrowserSettingClickedAndAlreadyDefaultBrowserThenLaunchDefaultBrowserCommandIsSentAndPixelFired() = runTest {
+    fun `onDefaultBrowserSettingClicked - already default browser - launch default browser command sent and pixel fired`() = runTest {
         testee.commands().test {
             whenever(mockDefaultBrowserDetector.isDefaultBrowser()).thenReturn(true)
             testee.onDefaultBrowserSettingClicked()
@@ -138,7 +138,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenOnDefaultBrowserSettingClickedAndNotDefaultBrowserThenLaunchDefaultBrowserCommandIsSentAndPixelFired() = runTest {
+    fun `onDefaultBrowserSettingClicked - not default browser - launch default browser command sent and pixel fired`() = runTest {
         testee.commands().test {
             whenever(mockDefaultBrowserDetector.isDefaultBrowser()).thenReturn(false)
             testee.onDefaultBrowserSettingClicked()
@@ -151,7 +151,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenDefaultBrowserAppAlreadySetToOursThenIsDefaultBrowserFlagIsTrue() = runTest {
+    fun `start - default browser app already set - is default browser flag is true`() = runTest {
         whenever(mockDefaultBrowserDetector.isDefaultBrowser()).thenReturn(true)
         testee.start()
 
@@ -163,7 +163,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenDefaultBrowserAppNotSetToOursThenIsDefaultBrowserFlagIsFalse() = runTest {
+    fun `start - default browser app not ours - isDefaultBrowser flag is false`() = runTest {
         testee.viewState().test {
             whenever(mockDefaultBrowserDetector.isDefaultBrowser()).thenReturn(false)
             testee.start()
@@ -175,7 +175,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenBrowserDetectorIndicatesDefaultCannotBeSetThenFlagToShowSettingIsFalse() = runTest {
+    fun `start - default cannot be set - showDefaultBrowserSetting is false`() = runTest {
         testee.viewState().test {
             whenever(mockDefaultBrowserDetector.deviceSupportsDefaultBrowserConfiguration()).thenReturn(false)
             testee.start()
@@ -187,7 +187,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenBrowserDetectorIndicatesDefaultCanBeSetThenFlagToShowSettingIsTrue() = runTest {
+    fun `start - default browser can be set - show setting is true`() = runTest {
         whenever(mockDefaultBrowserDetector.deviceSupportsDefaultBrowserConfiguration()).thenReturn(true)
         testee.start()
         testee.viewState().test {
@@ -198,7 +198,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenOnEmailProtectionSettingClickedAndEmailIsSupportedThenEmitCommandLaunchEmailProtectionAndPixelFired() = runTest {
+    fun `onEmailProtectionSettingClicked - email is supported - emit command launch email protection and pixel fired`() = runTest {
         whenever(mockEmailManager.isEmailFeatureSupported()).thenReturn(true)
         testee.commands().test {
             testee.onEmailProtectionSettingClicked()
@@ -211,7 +211,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenOnEmailProtectionSettingClickedAndEmailIsNotSupportedThenEmitCommandLaunchEmailProtectionNotSupportedAndPixelFired() = runTest {
+    fun `onEmailProtectionSettingClicked - email not supported - emit command and pixel fired`() = runTest {
         whenever(mockEmailManager.isEmailFeatureSupported()).thenReturn(false)
         testee.commands().test {
             testee.onEmailProtectionSettingClicked()
@@ -224,7 +224,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenHomeScreenWidgetSettingClickedThenEmitCommandLaunchAddHomeScreenWidget() = runTest {
+    fun `userRequestedToAddHomeScreenWidget - emit command launch add home screen widget`() = runTest {
         testee.commands().test {
             testee.userRequestedToAddHomeScreenWidget()
 
@@ -235,7 +235,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenOnMacOsSettingClickedThenEmitCommandLaunchMacOsAndPixelFired() = runTest {
+    fun `onMacOsSettingClicked - emit command launch MacOs and pixel fired`() = runTest {
         testee.commands().test {
             testee.onMacOsSettingClicked()
 
@@ -247,7 +247,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenAutofillIsAvailableTheShowAutofillTrue() = runTest {
+    fun `start - autofill available - show autofill true`() = runTest {
         whenever(autofillCapabilityChecker.canAccessCredentialManagementScreen()).thenReturn(true)
         testee.start()
 
@@ -257,7 +257,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenAutofillIsNotAvailableTheShowAutofillFalse() = runTest {
+    fun `start - autofill not available - showAutofill false`() = runTest {
         whenever(autofillCapabilityChecker.canAccessCredentialManagementScreen()).thenReturn(false)
         testee.start()
 
@@ -267,7 +267,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenAppTPOnboardingNotShownThenViewStateIsCorrect() = runTest {
+    fun `start - appTP onboarding not shown - viewState is correct`() = runTest {
         whenever(appTrackingProtection.isOnboarded()).thenReturn(false)
         testee.start()
 
@@ -277,7 +277,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenAppTPOnboardingShownThenViewStateIsCorrect() = runTest {
+    fun `start - appTP onboarding shown - viewState is correct`() = runTest {
         whenever(appTrackingProtection.isOnboarded()).thenReturn(true)
         testee.start()
 
@@ -287,7 +287,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenWindowsSettingClickedThenEmitCommandLaunchWindows() = runTest {
+    fun `windowsSettingClicked - emit command launch windows`() = runTest {
         testee.commands().test {
             testee.windowsSettingClicked()
 
@@ -298,7 +298,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenSyncFeatureDisabledThenViewStateIsCorrect() = runTest {
+    fun `start - sync feature disabled - viewState is correct`() = runTest {
         whenever(deviceSyncState.isFeatureEnabled()).thenReturn(false)
         testee.start()
 
@@ -309,7 +309,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenSyncFeatureEnabledAndUserSignedInOnDeviceThenSettingVisible() = runTest {
+    fun `start - sync feature enabled and user signed in - setting visible`() = runTest {
         whenever(deviceSyncState.isFeatureEnabled()).thenReturn(true)
         whenever(deviceSyncState.isUserSignedInOnDevice()).thenReturn(true)
         testee.start()
@@ -322,7 +322,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenOnLaunchedFromNotificationCalledWithPixelNameThePixelFired() {
+    fun `onLaunchedFromNotification - called with pixel name - pixel fired`() {
         val pixelName = "pixel_name"
         testee.onLaunchedFromNotification(pixelName)
 
@@ -330,7 +330,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenPrivateSearchSettingClickedThenEmitCommandLaunchPrivateSearchWebPageAndPixelFired() = runTest {
+    fun `onPrivateSearchSettingClicked - emit command launch private search web page and pixel fired`() = runTest {
         testee.commands().test {
             testee.onPrivateSearchSettingClicked()
 
@@ -342,7 +342,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenWebTrackingProtectionSettingClickedThenEmitCommandLaunchWebTrackingProtectionWebPageAndPixelFired() = runTest {
+    fun `onWebTrackingProtectionSettingClicked - emit command and fire pixel`() = runTest {
         testee.commands().test {
             testee.onWebTrackingProtectionSettingClicked()
 
@@ -354,7 +354,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenAutofillSettingsClickThenEmitCommandLaunchAutofillSettings() = runTest {
+    fun `onAutofillSettingsClick - emit command launch autofill settings`() = runTest {
         testee.commands().test {
             testee.onAutofillSettingsClick()
 
@@ -365,7 +365,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenAppTPSettingClickedAndAppTpOnboardedThenEmitCommandLaunchAppTPTrackersScreenAndPixelFierd() = runTest {
+    fun `onAppTPSettingClicked - appTP onboarded - emit command launch appTP trackers screen and pixel fired`() = runTest {
         whenever(appTrackingProtection.isOnboarded()).thenReturn(true)
         testee.commands().test {
             testee.onAppTPSettingClicked()
@@ -378,7 +378,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenAppTPSettingClickedAndAppTpNotOnboardedThenEmitCommandLaunchAppTPOnboardingAndPixelFired() = runTest {
+    fun `onAppTPSettingClicked - appTP not onboarded - emit command launch appTP onboarding and pixel fired`() = runTest {
         whenever(appTrackingProtection.isOnboarded()).thenReturn(false)
         testee.commands().test {
             testee.onAppTPSettingClicked()
@@ -391,7 +391,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenSyncSettingClickedThenEmitCommandLaunchSyncSettingsAndPixelFired() = runTest {
+    fun `onSyncSettingClicked - emit command launch sync settings and pixel fired`() = runTest {
         testee.commands().test {
             testee.onSyncSettingClicked()
 
@@ -403,7 +403,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenAccessibilitySettingClickedThenEmitCommandLaunchAccessibilitySettingsAndPixelFired() = runTest {
+    fun `onAccessibilitySettingClicked - emit command and fire pixel`() = runTest {
         testee.commands().test {
             testee.onAccessibilitySettingClicked()
 
@@ -415,7 +415,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenPermissionsSettingClickedThenEmitCommandLaunchPermissionsScreenAndPixelFired() = runTest {
+    fun `onPermissionsSettingClicked - emit command launch permissions screen and pixel fired`() = runTest {
         testee.commands().test {
             testee.onPermissionsSettingClicked()
 
@@ -427,7 +427,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenAboutSettingClickedThenEmitCommandLaunchAboutScreenAndPixelFired() = runTest {
+    fun `onAboutSettingClicked - emit command launch about screen and pixel fired`() = runTest {
         testee.commands().test {
             testee.onAboutSettingClicked()
 
@@ -439,7 +439,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenAppearanceSettingClickedThenEmitCommandLaunchAppearanceScreenAndPixelFired() = runTest {
+    fun `onAppearanceSettingClicked - emit command launch appearance screen and pixel fired`() = runTest {
         testee.commands().test {
             testee.onAppearanceSettingClicked()
 
@@ -451,7 +451,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenOnAutoconsentClickedThenEmitCommandLaunchAutoconsentAndPixelFired() = runTest {
+    fun `onCookiePopupProtectionSettingClicked - emit command and fire pixel`() = runTest {
         testee.commands().test {
             testee.onCookiePopupProtectionSettingClicked()
 
@@ -463,7 +463,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenAutoconsentEnabledThenAutoconsentEnabledIsTrue() = runTest {
+    fun `start - autoconsent enabled - autoconsentEnabled is true`() = runTest {
         whenever(mockAutoconsent.isSettingEnabled()).thenReturn(true)
 
         testee.start()
@@ -474,7 +474,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun whenAutoconsentDisabledThenAutoconsentEnabledIsFalse() = runTest {
+    fun `start - autoconsent disabled - autoconsent enabled is false`() = runTest {
         whenever(mockAutoconsent.isSettingEnabled()).thenReturn(false)
 
         testee.start()

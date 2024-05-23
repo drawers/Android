@@ -77,7 +77,7 @@ internal class CredentialsDedupStrategyTest {
     )
 
     @Test
-    fun whenNoLocalEntitiesThenAllRemoteEntitiesStored() = runTest {
+    fun `processEntries - no local entities - all remote entities stored`() = runTest {
         givenLocalCredentials()
         val remoteCredentials = credentialsSyncEntries(
             entries = listOf(
@@ -97,7 +97,7 @@ internal class CredentialsDedupStrategyTest {
     }
 
     @Test
-    fun whenDuplicatesExistAndRemoteAreMoreRecentThenDeDupAndStoreMostRecent() = runTest {
+    fun `processEntries - duplicates exist and remote more recent - de-dup and store most recent`() = runTest {
         givenLocalCredentials(
             twitterCredentials,
             spotifyCredentials,

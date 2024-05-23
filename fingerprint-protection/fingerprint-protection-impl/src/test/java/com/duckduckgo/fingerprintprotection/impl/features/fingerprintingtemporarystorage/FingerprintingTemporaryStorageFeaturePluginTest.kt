@@ -39,19 +39,19 @@ class FingerprintingTemporaryStorageFeaturePluginTest {
     }
 
     @Test
-    fun whenFeatureNameDoesNotMatchFingerprintingTemporaryStorageThenReturnFalse() {
+    fun `store - feature name does not match fingerprinting temporary storage - return false`() {
         FingerprintProtectionFeatureName.values().filter { it != FEATURE_NAME }.forEach {
             assertFalse(testee.store(it.value, JSON_STRING))
         }
     }
 
     @Test
-    fun whenFeatureNameMatchesFingerprintingTemporaryStorageThenReturnTrue() {
+    fun `store - feature name matches fingerprinting temporary storage - return true`() {
         assertTrue(testee.store(FEATURE_NAME_VALUE, JSON_STRING))
     }
 
     @Test
-    fun whenFeatureNameMatchesFingerprintingTemporaryStorageThenUpdateAll() {
+    fun `store - feature name matches fingerprinting temporary storage - update all`() {
         testee.store(FEATURE_NAME_VALUE, JSON_STRING)
         val captor = argumentCaptor<FingerprintingTemporaryStorageEntity>()
         verify(mockFingerprintingTemporaryStorageRepository).updateAll(captor.capture())

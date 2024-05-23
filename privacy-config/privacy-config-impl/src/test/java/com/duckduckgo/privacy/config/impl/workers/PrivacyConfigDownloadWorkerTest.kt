@@ -47,7 +47,7 @@ class PrivacyConfigDownloadWorkerTest {
     }
 
     @Test
-    fun whenDoWorkIfDownloadReturnsTrueThenReturnSuccess() =
+    fun `doWork - download returns true - return success`() =
         runTest {
             whenever(mockPrivacyConfigDownloader.download()).thenReturn(Success)
 
@@ -62,7 +62,7 @@ class PrivacyConfigDownloadWorkerTest {
         }
 
     @Test
-    fun whenDoWorkIfDownloadReturnsFalseThenReturnRetry() =
+    fun `doWork - download returns false - return retry`() =
         runTest {
             whenever(mockPrivacyConfigDownloader.download()).thenReturn(Error("error"))
 

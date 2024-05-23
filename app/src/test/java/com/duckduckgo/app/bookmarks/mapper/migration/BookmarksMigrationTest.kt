@@ -80,7 +80,7 @@ class BookmarksMigrationTest {
     }
 
     @Test
-    fun whenMigrationRunsThenAllFormFactorFavoriteFoldersCreated() {
+    fun `whenMigrationApplied - all form factor favorite folders created`() {
         whenMigrationApplied()
 
         val allFolders = appDatabase.syncEntitiesDao().allEntitiesByTypeSync(EntityType.FOLDER)
@@ -91,7 +91,7 @@ class BookmarksMigrationTest {
     }
 
     @Test
-    fun whenFavoritesExistThenMigrationIsSuccessful() = runTest {
+    fun `whenMigrationApplied - favorites exist - migration is successful`() = runTest {
         val totalFavorites = 10
         givenSomeFavorites(totalFavorites)
         whenMigrationApplied()
@@ -104,7 +104,7 @@ class BookmarksMigrationTest {
     }
 
     @Test
-    fun whenBookmarksWithoutFoldersExistThenMigrationIsSuccessful() = runTest {
+    fun `whenMigrationApplied - bookmarks without folders exist - migration is successful`() = runTest {
         val totalBookmarks = 10
 
         givenSomeBookmarks(totalBookmarks, SavedSitesNames.BOOMARKS_ROOT_ID)
@@ -124,7 +124,7 @@ class BookmarksMigrationTest {
     }
 
     @Test
-    fun whenBookmarksWithFoldersExistThenMigrationIsSuccessful() = runTest {
+    fun `whenMigrationApplied - bookmarks with folders exist - migration is successful`() = runTest {
         val totalFolder = 10
         val bookmarksPerFolder = 5
         createFoldersTree(totalFolder, bookmarksPerFolder)
@@ -145,7 +145,7 @@ class BookmarksMigrationTest {
     }
 
     @Test
-    fun whenBookmarksWithFoldersAndFavoritesExistThenMigrationIsSuccessful() = runTest {
+    fun `whenMigrationApplied - bookmarks with folders and favorites exist - migration is successful`() = runTest {
         val totalFolder = 10
         val bookmarksPerFolder = 5
         createFoldersTree(totalFolder, bookmarksPerFolder)
@@ -166,7 +166,7 @@ class BookmarksMigrationTest {
     }
 
     @Test
-    fun whenBookmarkAndFavoriteHaveSameUrlThenBookmarkAlsoMigratedAsFavorite() {
+    fun `whenMigrationApplied - bookmark and favorite have same url - bookmark also migrated as favorite`() {
         bookmarksDao.insert(BookmarkEntity(1, "bookmark1", "http://test.com", 0))
         favoritesDao.insert(FavoriteEntity(2, "favorite1", "http://test.com", 0))
 
@@ -189,7 +189,7 @@ class BookmarksMigrationTest {
     }
 
     @Test
-    fun whenBookmarkAndFavoriteHaveDifferentUrlThenBothAreMigrated() {
+    fun `whenMigrationApplied - different URLs - both migrated`() {
         bookmarksDao.insert(BookmarkEntity(1, "Bookmark1", "http://test.com", 0))
         favoritesDao.insert(FavoriteEntity(2, "Favorite1", "http://testee.com", 0))
 
@@ -215,7 +215,7 @@ class BookmarksMigrationTest {
     }
 
     @Test
-    fun whenDataIsMigratedThenOldTablesAreDeleted() {
+    fun `whenMigrationApplied - old tables are deleted`() {
         givenSomeFavorites(10)
         givenSomeBookmarks(5, SavedSitesNames.BOOMARKS_ROOT_ID)
         whenMigrationApplied()
@@ -226,7 +226,7 @@ class BookmarksMigrationTest {
     }
 
     @Test
-    fun whenNeedsFormFactorMigrationThenFavoritesAreCopiedIntoFormFactorFavoriteFolder() {
+    fun `needsFormFactorMigration - favorites copied into form factor favorite folder`() {
         givenSomeFavoritesSavedSites(10)
         whenMigrationApplied()
 
@@ -238,7 +238,7 @@ class BookmarksMigrationTest {
     }
 
     @Test
-    fun whenNeedsFormFactorMigrationThenFormFactorFolderLastModifiedUdpated() {
+    fun `whenMigrationApplied - needs form factor migration - form factor folder last modified updated`() {
         givenSomeFavoritesSavedSites(10)
         whenMigrationApplied()
 
@@ -247,7 +247,7 @@ class BookmarksMigrationTest {
     }
 
     @Test
-    fun whenAnyFavoriteRootFolderHasRelationWithBookmarksRootThenRemoveRelation() = runTest {
+    fun `whenMigrationApplied - favorite root folder has relation with bookmarks root - remove relation`() = runTest {
         givenFormFactorFolderExist()
         givenSomeFavoritesSavedSitesIn(
             total = 10,

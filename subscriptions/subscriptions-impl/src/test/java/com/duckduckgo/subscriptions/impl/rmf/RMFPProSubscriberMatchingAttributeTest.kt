@@ -15,7 +15,7 @@ class RMFPProSubscriberMatchingAttributeTest {
     private val attribute = RMFPProSubscriberMatchingAttribute(subscriptions)
 
     @Test
-    fun evaluateWithWrongAttributeThenNull() = runTest {
+    fun `evaluate - wrong attribute - null`() = runTest {
         whenever(subscriptions.getAccessToken()).thenReturn(null)
         Assert.assertNull(attribute.evaluate(FakeStringMatchingAttribute { "" }))
 

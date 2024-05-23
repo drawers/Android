@@ -79,7 +79,7 @@ internal class CredentialsSyncDataProviderTest {
     )
 
     @Test
-    fun whenInitialSyncAndNoDataThenReturnEmptyList() = runTest {
+    fun `getChanges - initial sync and no data - return empty list`() = runTest {
         val result = testee.getChanges()
 
         assertTrue(result.isEmpty())

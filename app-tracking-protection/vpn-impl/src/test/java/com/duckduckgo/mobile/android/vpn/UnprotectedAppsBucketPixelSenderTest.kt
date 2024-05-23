@@ -53,7 +53,7 @@ class UnprotectedAppsBucketPixelSenderTest {
     }
 
     @Test
-    fun whenVpnStartedWithNoUnprotectedAppsThenSentPixelWithBucketSize20() = runTest {
+    fun `onVpnStarted - no unprotected apps - sent pixel with bucket size 20`() = runTest {
         whenever(mockTrackingProtectionAppsRepository.getAppsAndProtectionInfo()).thenReturn(protectedAppsChannel.receiveAsFlow())
         protectedAppsChannel.send(listOf(app, app, app, app, app, app, app))
         val expectedBucketSize = 20
@@ -64,7 +64,7 @@ class UnprotectedAppsBucketPixelSenderTest {
     }
 
     @Test
-    fun whenVpnStartedWith1UnprotectedAppsOutOf7ThenSentPixelWithBucketSize20() = runTest {
+    fun `onVpnStarted - 1 unprotected app out of 7 - sent pixel with bucket size 20`() = runTest {
         whenever(mockTrackingProtectionAppsRepository.getAppsAndProtectionInfo()).thenReturn(protectedAppsChannel.receiveAsFlow())
         protectedAppsChannel.send(listOf(app, app, app, app, app, excludedApp, app))
         val expectedBucketSize = 20

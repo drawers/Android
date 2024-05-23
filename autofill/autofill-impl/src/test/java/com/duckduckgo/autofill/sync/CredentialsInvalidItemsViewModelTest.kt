@@ -55,7 +55,7 @@ class CredentialsInvalidItemsViewModelTest {
     )
 
     @Test
-    fun whenNoInvalidCredentialsThenWarningNotVisible() = runTest {
+    fun `viewState - no invalid credentials - warning not visible`() = runTest {
         viewModel.viewState().test {
             val awaitItem = awaitItem()
             assertFalse(awaitItem.warningVisible)
@@ -65,7 +65,7 @@ class CredentialsInvalidItemsViewModelTest {
     }
 
     @Test
-    fun whenInvalidCredentialsThenWarningVisible() = runTest {
+    fun `getUpdatesSince - invalid credentials - warning visible`() = runTest {
         credentialsSync.saveCredential(invalidCredentials, "remote1")
         credentialsSync.saveCredential(spotifyCredentials, "remote2")
         credentialsSync.getUpdatesSince("0") // trigger sync so invalid credentials are detected

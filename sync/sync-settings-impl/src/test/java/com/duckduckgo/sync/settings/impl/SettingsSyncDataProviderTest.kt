@@ -68,7 +68,7 @@ class SettingsSyncDataProviderTest {
     }
 
     @Test
-    fun whenGetChangesForFirstTimeThenMetadataIsInitialized() = runTest {
+    fun `getChanges - first time - metadata initialized`() = runTest {
         assertTrue(metadataDao.getAllObservable().first().isEmpty())
 
         testee.getChanges()
@@ -77,7 +77,7 @@ class SettingsSyncDataProviderTest {
     }
 
     @Test
-    fun whenGetChangesForFirstTimeThenExistingMetadataUpdated() = runTest {
+    fun `getChanges - first time - existing metadata updated`() = runTest {
         metadataDao.addOrUpdate(
             SettingsSyncMetadataEntity(duckAddressSetting.key, "", ""),
         )
@@ -96,7 +96,7 @@ class SettingsSyncDataProviderTest {
     }
 
     @Test
-    fun whenGetChangesForFirstSyncThenChangesIncludeAllValues() {
+    fun `getChanges - first sync - changes include all values`() {
         val changes = testee.getChanges()
 
         assertTrue(changes.type == SyncableType.SETTINGS)
@@ -111,7 +111,7 @@ class SettingsSyncDataProviderTest {
 
     @Test
     @Ignore("Need to decide strategy first")
-    fun whenGetChangesSubsequentCallsWithNewValueThenIncludeNewValues() {
+    fun `getChanges - subsequent calls with new value - include new values`() {
         settingSyncStore.serverModifiedSince = "2022-01-01T00:00:00Z"
         settingSyncStore.clientModifiedSince = "2022-01-01T00:00:00Z"
 
@@ -128,7 +128,7 @@ class SettingsSyncDataProviderTest {
     }
 
     @Test
-    fun whenGetChangesSubsequentCallsAndNoChangesThenUpdatesAreEmpty() {
+    fun `getChanges - no changes - updates are empty`() {
         settingSyncStore.serverModifiedSince = "2022-01-01T00:00:00Z"
         settingSyncStore.clientModifiedSince = "2022-01-01T00:00:00Z"
         metadataDao.addOrUpdate(SettingsSyncMetadataEntity(duckAddressSetting.key, "2022-01-01T00:00:00Z", ""))

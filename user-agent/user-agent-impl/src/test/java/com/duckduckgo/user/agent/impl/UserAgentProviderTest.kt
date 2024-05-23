@@ -74,84 +74,84 @@ class UserAgentProviderTest {
     }
 
     @Test
-    fun whenUaRetrievedWithNoParamsThenDeviceStrippedAndApplicationComponentAddedBeforeSafari() {
+    fun `userAgent - no params - device stripped and application component added before Safari`() {
         testee = getUserAgentProvider(Agent.DEFAULT, deviceInfo)
         val actual = testee.userAgent(DOMAIN)
         assertTrue("$actual does not match expected regex", ValidationRegex.converted.matches(actual))
     }
 
     @Test
-    fun whenMobileUaRetrievedThenDeviceStrippedAndApplicationComponentAddedBeforeSafari() {
+    fun `userAgent - mobile UA retrieved - device stripped and application component added before Safari`() {
         testee = getUserAgentProvider(Agent.DEFAULT, deviceInfo)
         val actual = testee.userAgent(DOMAIN, isDesktop = false)
         assertTrue("$actual does not match expected regex", ValidationRegex.converted.matches(actual))
     }
 
     @Test
-    fun whenDesktopUaRetrievedThenDeviceStrippedAndApplicationComponentAddedBeforeSafari() {
+    fun `userAgent - desktop UA retrieved - device stripped and application component added before Safari`() {
         testee = getUserAgentProvider(Agent.DEFAULT, deviceInfo)
         val actual = testee.userAgent(DOMAIN, isDesktop = true)
         assertTrue("$actual does not match expected regex", ValidationRegex.desktop.matches(actual))
     }
 
     @Test
-    fun whenMissingAppleWebKitComponentThenUaContainsMozillaAndApplicationAndSafariComponents() {
+    fun `userAgent - missing AppleWebKit component - contains Mozilla and Application and Safari components`() {
         testee = getUserAgentProvider(Agent.NO_WEBKIT, deviceInfo)
         val actual = testee.userAgent(DOMAIN, isDesktop = false)
         assertTrue("$actual does not match expected regex", ValidationRegex.missingWebKit.matches(actual))
     }
 
     @Test
-    fun whenMissingSafariComponentThenUaContainsMozillaAndVersionAndApplicationComponents() {
+    fun `userAgent - missing Safari component - contains Mozilla and version and application components`() {
         testee = getUserAgentProvider(Agent.NO_SAFARI, deviceInfo)
         val actual = testee.userAgent(DOMAIN, isDesktop = false)
         assertTrue("$actual does not match expected result", ValidationRegex.missingSafari.matches(actual))
     }
 
     @Test
-    fun whenMissingVersionComponentThenUaContainsMozillaAndApplicationAndSafariComponents() {
+    fun `userAgent - missing version component - contains Mozilla and application and Safari components`() {
         testee = getUserAgentProvider(Agent.NO_VERSION, deviceInfo)
         val actual = testee.userAgent(DOMAIN, isDesktop = false)
         assertTrue("$actual does not match expected result", ValidationRegex.noVersion.matches(actual))
     }
 
     @Test
-    fun whenDomainSupportsApplicationThenUaAddsApplicationComponentBeforeSafari() {
+    fun `userAgent - domain supports application - adds application component before Safari`() {
         testee = getUserAgentProvider(Agent.DEFAULT, deviceInfo)
         val actual = testee.userAgent(DOMAIN)
         assertTrue("$actual does not match expected regex", ValidationRegex.converted.matches(actual))
     }
 
     @Test
-    fun whenDomainHasExceptionThenUaIsDefault() {
+    fun `userAgent - domain has exception - ua is default`() {
         testee = getUserAgentProvider(Agent.DEFAULT, deviceInfo)
         val actual = testee.userAgent(DEFAULT_DOMAIN)
         assertTrue("$actual does not match expected regex", ValidationRegex.default.matches(actual))
     }
 
     @Test
-    fun whenSubdomainHasExceptionThenUaIsDefault() {
+    fun `userAgent - subdomain has exception - ua is default`() {
         testee = getUserAgentProvider(Agent.DEFAULT, deviceInfo)
         val actual = testee.userAgent(DEFAULT_SUBDOMAIN)
         assertTrue("$actual does not match expected regex", ValidationRegex.default.matches(actual))
     }
 
     @Test
-    fun whenDomainInUnprotectedTemporaryThenUaIsDefault() {
+    fun `userAgent - domain in unprotected temporary - ua is default`() {
         testee = getUserAgentProvider(Agent.DEFAULT, deviceInfo)
         val actual = testee.userAgent(UNPROTECTED_DOMAIN)
         assertTrue("$actual does not match expected regex", ValidationRegex.default.matches(actual))
     }
 
     @Test
-    fun whenSubdomainInUnprotectedTemporaryThenUaIsDefault() {
+    fun `userAgent - subdomain in unprotected temporary - ua is default`() {
         testee = getUserAgentProvider(Agent.DEFAULT, deviceInfo)
         val actual = testee.userAgent(UNPROTECTED_SUBDOMAIN)
         assertTrue("$actual does not match expected regex", ValidationRegex.default.matches(actual))
     }
 
     @Test
-    fun whenFeatureIsDisabledThenUaIsDefault() {
+    fun `userAgent - feature disabled - ua is default`() {
         whenever(toggle.isFeatureEnabled(UserAgentFeatureName.UserAgent.value)).thenReturn(false)
         testee = getUserAgentProvider(Agent.DEFAULT, deviceInfo)
         val actual = testee.userAgent(DOMAIN)
@@ -159,63 +159,63 @@ class UserAgentProviderTest {
     }
 
     @Test
-    fun whenDomainSupportsVersionThenUaIncludesVersionComponentInUsualLocation() {
+    fun `userAgent - domain supports version - includes version component`() {
         testee = getUserAgentProvider(Agent.DEFAULT, deviceInfo)
         val actual = testee.userAgent(DOMAIN)
         assertTrue("$actual does not match expected regex", ValidationRegex.converted.matches(actual))
     }
 
     @Test
-    fun whenUserAgentIsForASiteThatShouldUseDesktopAgentThenReturnDesktopUserAgent() {
+    fun `userAgent - site should use desktop agent - return desktop user agent`() {
         testee = getUserAgentProvider(Agent.DEFAULT, deviceInfo)
         val actual = testee.userAgent(DESKTOP_ONLY_SITE)
         assertTrue("$actual does not match expected regex", ValidationRegex.desktop.matches(actual))
     }
 
     @Test
-    fun whenUserAgentIsForASiteThatShouldUseDesktopAgentButContainsAnExclusionThenDoNotReturnConvertedUserAgent() {
+    fun `userAgent - site should use desktop agent but contains exclusion - do not return converted user agent`() {
         testee = getUserAgentProvider(Agent.DEFAULT, deviceInfo)
         val actual = testee.userAgent(DESKTOP_ONLY_SITE_EXCEPTION)
         assertTrue("$actual does not match expected regex", ValidationRegex.converted.matches(actual))
     }
 
     @Test
-    fun whenUserAgentShouldBeDefaultAndShouldUseDesktopAgentThenReturnDesktopUserAgent() {
+    fun `userAgent - use desktop agent - return desktop user agent`() {
         testee = getUserAgentProvider(Agent.DEFAULT, deviceInfo)
         val actual = testee.userAgent(DEFAULT_DOMAIN, true)
         assertTrue("$actual does not match expected regex", ValidationRegex.desktop_default.matches(actual))
     }
 
     @Test
-    fun whenUserAgentAndUrlAllowedByUserThenReturnDefaultUserAgent() {
+    fun `userAgent - url allowed by user - return default user agent`() {
         testee = getUserAgentProvider(Agent.DEFAULT, deviceInfo)
         val actual = testee.userAgent(ALLOWED_URL, false)
         assertTrue("$actual does not match expected regex", ValidationRegex.default.matches(actual))
     }
 
     @Test
-    fun whenUserAgentAndUrlAllowedByUserAndIsDesktopThenReturnDefaultDesktopUserAgent() {
+    fun `userAgent - allowed URL and is desktop - return default desktop user agent`() {
         testee = getUserAgentProvider(Agent.DEFAULT, deviceInfo)
         val actual = testee.userAgent(ALLOWED_URL, true)
         assertTrue("$actual does not match expected regex", ValidationRegex.desktop_default.matches(actual))
     }
 
     @Test
-    fun whenIsLegacySiteThenReturnLegacyUserAgent() {
+    fun `userAgent - legacy site - return legacy user agent`() {
         testee = getUserAgentProvider(Agent.DEFAULT, deviceInfo)
         val actual = testee.userAgent(DOMAIN, false)
         assertTrue("$actual does not match expected regex", ValidationRegex.converted.matches(actual))
     }
 
     @Test
-    fun whenIsLegacySiteAndIsDesktopThenReturnDesktopLegacyUserAgent() {
+    fun `userAgent - legacy site and desktop - return desktop legacy user agent`() {
         testee = getUserAgentProvider(Agent.DEFAULT, deviceInfo)
         val actual = testee.userAgent(DOMAIN, true)
         assertTrue("$actual does not match expected regex", ValidationRegex.desktop.matches(actual))
     }
 
     @Test
-    fun whenHasNoExceptionsThenReturnUserAgent() {
+    fun `userAgent - no exceptions - return user agent`() {
         whenever(userAgent.useLegacyUserAgent(anyString())).thenReturn(false)
         testee = getUserAgentProvider(Agent.DEFAULT, deviceInfo)
         val actual = testee.userAgent(DOMAIN, false)
@@ -223,7 +223,7 @@ class UserAgentProviderTest {
     }
 
     @Test
-    fun whenIsDesktopThenReturnDesktopUserAgent() {
+    fun `userAgent - is desktop - return desktop user agent`() {
         whenever(userAgent.useLegacyUserAgent(anyString())).thenReturn(false)
         testee = getUserAgentProvider(Agent.DEFAULT, deviceInfo)
         val actual = testee.userAgent(DOMAIN, true)
@@ -231,7 +231,7 @@ class UserAgentProviderTest {
     }
 
     @Test
-    fun whenIsDesktopAndIsAarch64ThenReturnX86_64DesktopUserAgent() {
+    fun `userAgent - is desktop and is aarch64 - return x86_64 desktop user agent`() {
         whenever(userAgent.useLegacyUserAgent(anyString())).thenReturn(false)
         testee = getUserAgentProvider(Agent.DEFAULT, deviceInfo)
         val actual = testee.userAgent(DOMAIN, true)

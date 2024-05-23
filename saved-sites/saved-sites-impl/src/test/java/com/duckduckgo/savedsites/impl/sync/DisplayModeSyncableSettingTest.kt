@@ -27,33 +27,33 @@ class DisplayModeSyncableSettingTest {
     )
 
     @Test
-    fun whenGetValueThenReturnStoredValue() = runTest {
+    fun `getValue - return stored value`() = runTest {
         savedSitesSettingsStore.favoritesDisplayMode = FavoritesDisplayMode.NATIVE
         assertEquals(FavoritesDisplayMode.NATIVE.value, testee.getValue())
     }
 
     @Test
-    fun whenSaveWithValidValueThenReturnTrue() = runTest {
+    fun `save - valid value - return true`() = runTest {
         assertTrue(testee.save(FavoritesDisplayMode.NATIVE.value))
     }
 
     @Test
-    fun whenSaveWithInvalidValidValueThenReturnFalse() = runTest {
+    fun `save - invalid value - return false`() = runTest {
         assertFalse(testee.save("unknown_value"))
     }
 
     @Test
-    fun whenDeduplicateWithValidValueThenReturnTrue() = runTest {
+    fun `deduplicate - valid value - return true`() = runTest {
         assertTrue(testee.deduplicate(FavoritesDisplayMode.NATIVE.value))
     }
 
     @Test
-    fun whenDeduplicateWithInvalidValidValueThenReturnFalse() = runTest {
+    fun `deduplicate - invalid value - return false`() = runTest {
         assertFalse(testee.deduplicate("unknown_value"))
     }
 
     @Test
-    fun whenOnSettingChangedThenNotifyListener() = runTest {
+    fun `onSettingChanged - notify listener`() = runTest {
         testee.onSettingChanged()
         verify(syncSettingsListener).onSettingChanged(testee.key)
     }

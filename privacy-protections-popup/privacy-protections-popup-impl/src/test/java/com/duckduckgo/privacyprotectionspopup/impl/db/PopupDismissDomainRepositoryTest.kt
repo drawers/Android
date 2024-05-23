@@ -59,13 +59,13 @@ class PopupDismissDomainRepositoryTest {
     }
 
     @Test
-    fun whenDatabaseIsEmptyThenReturnsNullDismissTimestamp() = runTest {
+    fun `getPopupDismissTime - database is empty - returns null dismiss timestamp`() = runTest {
         val dismissedAt = subject.getPopupDismissTime("www.example.com").first()
         assertNull(dismissedAt)
     }
 
     @Test
-    fun whenDismissTimeIsStoredThenQueryReturnsCorrectValue() = runTest {
+    fun `getPopupDismissTime - dismiss time stored - returns correct value`() = runTest {
         val domain = "www.example.com"
         val dismissAt = Instant.parse("2023-11-29T10:15:30.000Z")
 
@@ -75,7 +75,7 @@ class PopupDismissDomainRepositoryTest {
     }
 
     @Test
-    fun whenDismissTimeIsSetMultipleTimesThenReturnsMostRecentlyStoredValue() = runTest {
+    fun `getPopupDismissTime - dismiss time set multiple times - returns most recently stored value`() = runTest {
         val domain = "www.example.com"
         subject.setPopupDismissTime(domain, Instant.parse("2023-11-28T10:15:30.000Z"))
         subject.setPopupDismissTime(domain, Instant.parse("2023-11-29T10:15:30.000Z"))
@@ -86,7 +86,7 @@ class PopupDismissDomainRepositoryTest {
     }
 
     @Test
-    fun whenDismissTimeIsSetForDifferentDomainsThenCorrectValueIsReturned() = runTest {
+    fun `getPopupDismissTime - different domains - correct value returned`() = runTest {
         val domain = "www.example.com"
         subject.setPopupDismissTime(domain, Instant.parse("2023-11-28T10:15:30.000Z"))
         subject.setPopupDismissTime("www.example2.com", Instant.parse("2023-11-29T10:15:30.000Z"))
@@ -97,7 +97,7 @@ class PopupDismissDomainRepositoryTest {
     }
 
     @Test
-    fun whenRemoveEntriesInvokedThenCorrectDataIsDeleted() = runTest {
+    fun `removeEntriesOlderThan - correct data is deleted`() = runTest {
         subject.setPopupDismissTime("www.example1.com", Instant.parse("2023-11-28T10:15:30.000Z"))
         subject.setPopupDismissTime("www.example2.com", Instant.parse("2023-11-29T10:15:30.000Z"))
         subject.setPopupDismissTime("www.example3.com", Instant.parse("2023-12-01T10:00:00.000Z"))
@@ -112,7 +112,7 @@ class PopupDismissDomainRepositoryTest {
     }
 
     @Test
-    fun whenRemoreAllEntriesIsInvokedThenAllDataIsDeleted() = runTest {
+    fun `removeAllEntries - all data is deleted`() = runTest {
         subject.setPopupDismissTime("www.example1.com", Instant.parse("2023-11-28T10:15:30.000Z"))
         subject.setPopupDismissTime("www.example2.com", Instant.parse("2023-11-29T10:15:30.000Z"))
         subject.setPopupDismissTime("www.example3.com", Instant.parse("2023-12-01T10:00:00.000Z"))

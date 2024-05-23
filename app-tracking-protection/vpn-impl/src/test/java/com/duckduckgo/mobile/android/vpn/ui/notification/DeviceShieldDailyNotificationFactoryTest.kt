@@ -65,7 +65,7 @@ class DeviceShieldDailyNotificationFactoryTest {
     }
 
     @Test
-    fun createsTotalTrackersNotificationWhenTrackersFoundInOneApp() = runBlocking {
+    fun `createDailyDeviceShieldNotification - trackers found in one app - creates total trackers notification`() = runBlocking {
         val trackerDomain = "example.com"
         trackerFound(trackerDomain)
 
@@ -76,7 +76,7 @@ class DeviceShieldDailyNotificationFactoryTest {
     }
 
     @Test
-    fun createsTotalTrackersNotificationWhenTrackersFoundInTwoApps() = runBlocking {
+    fun `createDailyDeviceShieldNotification - trackers found in two apps - creates total trackers notification`() = runBlocking {
         val trackerDomain = "example.com"
         trackerFound(trackerDomain, appContainingTracker = trackingApp1())
         trackerFound(
@@ -92,13 +92,13 @@ class DeviceShieldDailyNotificationFactoryTest {
     }
 
     @Test
-    fun createsHiddenTotalTrackersNotificationWhenNoTrackersFound() = runBlocking {
+    fun `createDailyDeviceShieldNotification - no trackers found - hidden notification`() = runBlocking {
         val notification = factory.dailyNotificationFactory.createDailyDeviceShieldNotification(0)
         assertTrue(notification.hidden)
     }
 
     @Test
-    fun createsTopTrackerCompanyNotificationWhenTrackersFoundInOneApp() = runBlocking {
+    fun `createDailyDeviceShieldNotification - trackers found in one app - creates top tracker company notification`() = runBlocking {
         val trackerDomain = "example.com"
         trackerFound(trackerDomain)
 
@@ -109,7 +109,7 @@ class DeviceShieldDailyNotificationFactoryTest {
     }
 
     @Test
-    fun createsTopTrackerCompanyNotificationWhenTrackersFoundInTwoApps() = runBlocking {
+    fun `createDailyDeviceShieldNotification - trackers found in two apps - creates top tracker company notification`() = runBlocking {
         val trackerDomain = "example.com"
         trackerFound(trackerDomain, appContainingTracker = TrackingApp("foo", "An app"))
         trackerFound(trackerDomain, appContainingTracker = TrackingApp("bar", "Another app"))
@@ -121,7 +121,7 @@ class DeviceShieldDailyNotificationFactoryTest {
     }
 
     @Test
-    fun doesNotCreateTopTrackerCompanyNotificationWhenTrackersFoundInZeroApps() = runBlocking {
+    fun `createDailyDeviceShieldNotification - trackers found in zero apps - does not create top tracker company notification`() = runBlocking {
         val notification = factory.dailyNotificationFactory.createDailyDeviceShieldNotification(1)
         assertTrue(notification.hidden)
     }
@@ -134,7 +134,7 @@ class DeviceShieldDailyNotificationFactoryTest {
     }
 
     @Test
-    fun createsTopTrackerAppNumbersNotificationWhenTrackersFound() = runBlocking {
+    fun `createDailyDeviceShieldNotification - trackers found - creates top tracker app numbers notification`() = runBlocking {
         val trackerDomain = "example.com"
         trackerFound(trackerDomain, appContainingTracker = trackingApp1())
         trackerFound(trackerDomain, appContainingTracker = trackingApp2())
@@ -156,7 +156,7 @@ class DeviceShieldDailyNotificationFactoryTest {
     }
 
     @Test
-    fun createsLastCompanyAttemptNotificationWhenTrackersFoundInOneApp() = runBlocking {
+    fun `createDailyDeviceShieldNotification - trackers found in one app - creates last company attempt notification`() = runBlocking {
         val trackerDomain = "example.com"
         trackerFound(trackerDomain)
 
@@ -167,7 +167,7 @@ class DeviceShieldDailyNotificationFactoryTest {
     }
 
     @Test
-    fun createsLastCompanyAttemptNotificationWhenTrackersFoundInTwoApps() = runBlocking {
+    fun `createDailyDeviceShieldNotification - trackers found in two apps - creates last company attempt notification`() = runBlocking {
         val trackerDomain = "example.com"
         trackerFound(trackerDomain, appContainingTracker = trackingApp1())
         trackerFound(
@@ -183,7 +183,7 @@ class DeviceShieldDailyNotificationFactoryTest {
     }
 
     @Test
-    fun createsLastCompanyAttemptNotificationWhenTrackersFoundInThreeApps() = runBlocking {
+    fun `createDailyDeviceShieldNotification - trackers found in three apps - creates last company attempt notification`() = runBlocking {
         val trackerDomain = "example.com"
         trackerFound(trackerDomain, appContainingTracker = trackingApp1())
         trackerFound("google.com", trackerCompanyId = 1, company = "Google", appContainingTracker = trackingApp1())

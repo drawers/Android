@@ -24,19 +24,19 @@ import org.junit.Test
 class TrackerDataDownloaderKtTest {
 
     @Test
-    fun whenExtractETagAndContainsPrefixAndQuotesThenReturnETag() {
+    fun `extractETag - contains prefix and quotes - return ETag`() {
         val headers = Headers.headersOf("eTag", "W/\"123456789\"")
         assertEquals(ETAG, headers.extractETag())
     }
 
     @Test
-    fun whenExtractETagAndContainsQuotesThenReturnETag() {
+    fun `extractETag - contains quotes - return eTag`() {
         val headers = Headers.headersOf("eTag", "\"123456789\"")
         assertEquals(ETAG, headers.extractETag())
     }
 
     @Test
-    fun whenExtractETagAndDoesNotContainsQuotesAndPrefixThenReturnETag() {
+    fun `extractETag - does not contain quotes and prefix - return eTag`() {
         val headers = Headers.headersOf("eTag", "123456789")
         assertEquals(ETAG, headers.extractETag())
     }

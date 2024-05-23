@@ -114,7 +114,7 @@ class BrokenSiteSubmitterTest {
     }
 
     @Test
-    fun whenVpnDisabledReportFalse() = runTest {
+    fun `submitBrokenSiteFeedback - VPN disabled - report false`() = runTest {
         whenever(networkProtectionState.isRunning()).thenReturn(false)
         val brokenSite = getBrokenSite()
 

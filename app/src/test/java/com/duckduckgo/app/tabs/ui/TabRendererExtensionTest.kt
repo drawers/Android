@@ -32,38 +32,38 @@ class TabRendererExtensionTest {
     private val context: Context = mock()
 
     @Test
-    fun whenTabIsBlankThenDisplayTitleIsDuckDuckGo() {
+    fun `displayTitle - tab is blank - DuckDuckGo`() {
         whenever(context.getString(R.string.homeTab)).thenReturn("DuckDuckGo")
         assertEquals("DuckDuckGo", TabEntity("", position = 0).displayTitle(context))
     }
 
     @Test
-    fun whenTabHasTitleThenDisplayTitleIsSame() {
+    fun `displayTitle - tab has title - same`() {
         assertEquals(TITLE, TabEntity("", URL, TITLE, position = 0).displayTitle(context))
     }
 
     @Test
-    fun whenTabDoesNotHaveTitleThenDisplayTitleIsUrlHost() {
+    fun `displayTitle - tab does not have title - is url host`() {
         assertEquals("example.com", TabEntity("", URL, null, position = 0).displayTitle(context))
     }
 
     @Test
-    fun whenTabDoesNotHaveTitleAndUrlIsInvalidThenTitleIsBlank() {
+    fun `displayTitle - tab without title and invalid URL - title is blank`() {
         assertEquals("", TabEntity("", INVALID_URL, null, position = 0).displayTitle(context))
     }
 
     @Test
-    fun whenTabIsBlankThenUrlIsDuckDuckGo() {
+    fun `displayUrl - tab is blank - url is DuckDuckGo`() {
         assertEquals("https://duckduckgo.com", TabEntity("", position = 0).displayUrl())
     }
 
     @Test
-    fun whenTabHasUrlThenDisplayUrlIsSame() {
+    fun `displayUrl - tab has URL - same URL`() {
         assertEquals(URL, TabEntity("", URL, TITLE, position = 0).displayUrl())
     }
 
     @Test
-    fun whenTabDoesNotHaveAUrlThenDisplayUrlIsBlank() {
+    fun `displayUrl - tab does not have a URL - blank`() {
         assertEquals("", TabEntity("", null, TITLE, position = 0).displayUrl())
     }
 

@@ -72,7 +72,7 @@ class RealContentScopeScriptsTest {
     }
 
     @Test
-    fun whenGetScriptWhenVariablesAreCachedAndNoChangesThenUseCachedVariables() {
+    fun `getScript - variables cached and no changes - use cached variables`() {
         var js = testee.getScript(null)
         verifyJsScript(js)
 
@@ -85,7 +85,7 @@ class RealContentScopeScriptsTest {
     }
 
     @Test
-    fun whenGetScriptAndVariablesAreCachedAndAllowListChangedThenUseNewAllowListValue() {
+    fun `getScript - allow list changed - use new allow list value`() {
         var js = testee.getScript(null)
         verifyJsScript(js)
 
@@ -111,7 +111,7 @@ class RealContentScopeScriptsTest {
     }
 
     @Test
-    fun whenGetScriptAndVariablesAreCachedAndGpcChangedThenUseNewGpcValue() {
+    fun `getScript - GPC changed - use new GPC value`() {
         var js = testee.getScript(null)
         verifyJsScript(js)
 
@@ -137,7 +137,7 @@ class RealContentScopeScriptsTest {
     }
 
     @Test
-    fun whenGetScriptAndVariablesAreCachedAndConfigChangedThenUseNewConfigValue() {
+    fun `getScript - config changed - use new config value`() {
         var js = testee.getScript(null)
         verifyJsScript(js)
 

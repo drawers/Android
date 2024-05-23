@@ -53,7 +53,7 @@ class RealPrivacyConfigDownloaderTest {
     }
 
     @Test
-    fun whenDownloadIsNotSuccessfulThenReturnFalse() =
+    fun `download - not successful - return false`() =
         runTest {
             testee =
                 RealPrivacyConfigDownloader(
@@ -65,11 +65,11 @@ class RealPrivacyConfigDownloaderTest {
         }
 
     @Test
-    fun whenDownloadIsSuccessfulThenReturnTrue() =
+    fun `download - successful - return true`() =
         runTest { assertTrue(testee.download() is Success) }
 
     @Test
-    fun whenDownloadIsSuccessfulThenPersistPrivacyConfigCalled() =
+    fun `download - successful - persistPrivacyConfig called`() =
         runTest {
             testee.download()
 

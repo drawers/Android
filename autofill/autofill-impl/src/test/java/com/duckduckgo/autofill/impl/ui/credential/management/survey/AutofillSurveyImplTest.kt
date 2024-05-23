@@ -47,33 +47,33 @@ class AutofillSurveyImplTest {
     }
 
     @Test
-    fun whenSurveyHasNotBeenShownBeforeThenFirstUnusedSurveyReturnsIt() = runTest {
+    fun `firstUnusedSurvey - survey not shown before - returns survey`() = runTest {
         whenever(autofillSurveyStore.hasSurveyBeenTaken("autofill-2024-04-26")).thenReturn(false)
         val survey = testee.firstUnusedSurvey()
         assertEquals("autofill-2024-04-26", survey!!.id)
     }
 
     @Test
-    fun whenSurveyHasNotBeenShownBeforeButLocaleNotEnglishThenFirstUnusedSurveyDoesNotReturnIt() = runTest {
+    fun `firstUnusedSurvey - locale not English and survey not shown before - does not return survey`() = runTest {
         whenever(appBuildConfig.deviceLocale).thenReturn(Locale("fr"))
         whenever(autofillSurveyStore.hasSurveyBeenTaken("autofill-2024-04-26")).thenReturn(false)
         assertNull(testee.firstUnusedSurvey())
     }
 
     @Test
-    fun whenSurveyHasBeenShownBeforeThenFirstUnusedSurveyDoesNotReturnIt() = runTest {
+    fun `firstUnusedSurvey - survey shown before - does not return`() = runTest {
         whenever(autofillSurveyStore.hasSurveyBeenTaken("autofill-2024-04-26")).thenReturn(true)
         assertNull(testee.firstUnusedSurvey())
     }
 
     @Test
-    fun whenSurveyRecordedAsUsedThenPersisted() = runTest {
+    fun `recordSurveyAsUsed - persisted`() = runTest {
         testee.recordSurveyAsUsed("surveyId-1")
         verify(autofillSurveyStore).recordSurveyWasShown("surveyId-1")
     }
 
     @Test
-    fun whenSavedPasswordsLowestInNoneBucketThenCorrectQueryParamValueAdded() = runTest {
+    fun `savedPasswordsLowestInNoneBucket - correct query param value added`() = runTest {
         configureCredentialCount(0)
         val survey = getAvailableSurvey()
         val savedPasswordsBucket = survey.url.toUri().getQueryParameter("saved_passwords")
@@ -81,7 +81,7 @@ class AutofillSurveyImplTest {
     }
 
     @Test
-    fun whenSavedPasswordsHighestInNoneBucketThenCorrectQueryParamValueAdded() = runTest {
+    fun `savedPasswordsHighestInNoneBucket - correct query param value added`() = runTest {
         configureCredentialCount(2)
         val survey = getAvailableSurvey()
         val savedPasswordsBucket = survey.url.toUri().getQueryParameter("saved_passwords")
@@ -89,7 +89,7 @@ class AutofillSurveyImplTest {
     }
 
     @Test
-    fun whenSavedPasswordsLowestInSomeBucketThenCorrectQueryParamValueAdded() = runTest {
+    fun `getAvailableSurvey - saved passwords lowest in some bucket - correct query param value added`() = runTest {
         configureCredentialCount(3)
         val survey = getAvailableSurvey()
         val savedPasswordsBucket = survey.url.toUri().getQueryParameter("saved_passwords")
@@ -97,7 +97,7 @@ class AutofillSurveyImplTest {
     }
 
     @Test
-    fun whenSavedPasswordsHighestInSomeBucketThenCorrectQueryParamValueAdded() = runTest {
+    fun `getAvailableSurvey - saved passwords highest in some bucket - correct query param value added`() = runTest {
         configureCredentialCount(9)
         val survey = getAvailableSurvey()
         val savedPasswordsBucket = survey.url.toUri().getQueryParameter("saved_passwords")
@@ -105,7 +105,7 @@ class AutofillSurveyImplTest {
     }
 
     @Test
-    fun whenSavedPasswordsLowestInManyBucketThenCorrectQueryParamValueAdded() = runTest {
+    fun `savedPasswordsLowestInManyBucket - correct query param value added`() = runTest {
         configureCredentialCount(10)
         val survey = getAvailableSurvey()
         val savedPasswordsBucket = survey.url.toUri().getQueryParameter("saved_passwords")
@@ -113,7 +113,7 @@ class AutofillSurveyImplTest {
     }
 
     @Test
-    fun whenSavedPasswordsHighestInManyBucketThenCorrectQueryParamValueAdded() = runTest {
+    fun `getAvailableSurvey - saved passwords highest in many bucket - correct query param value added`() = runTest {
         configureCredentialCount(49)
         val survey = getAvailableSurvey()
         val savedPasswordsBucket = survey.url.toUri().getQueryParameter("saved_passwords")
@@ -121,7 +121,7 @@ class AutofillSurveyImplTest {
     }
 
     @Test
-    fun whenSavedPasswordsLowestInLotsBucketThenCorrectQueryParamValueAdded() = runTest {
+    fun `savedPasswordsLowestInLotsBucket - correct query param value added`() = runTest {
         configureCredentialCount(50)
         val survey = getAvailableSurvey()
         val savedPasswordsBucket = survey.url.toUri().getQueryParameter("saved_passwords")
@@ -129,7 +129,7 @@ class AutofillSurveyImplTest {
     }
 
     @Test
-    fun whenSavedPasswordsIsExtremelyLargeThenCorrectQueryParamValueAdded() = runTest {
+    fun `savedPasswordsIsExtremelyLarge - correct query param value added`() = runTest {
         configureCredentialCount(Int.MAX_VALUE)
         val survey = getAvailableSurvey()
         val savedPasswordsBucket = survey.url.toUri().getQueryParameter("saved_passwords")

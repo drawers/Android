@@ -41,7 +41,7 @@ class ExperimentFiltersManagerImplTest {
     }
 
     @Test
-    fun whenVariantComplyWithLocaleFilterThenAddFiltersReturnsTrue() {
+    fun `addFilters - variant complies with locale filter - returns true`() {
         val locale = Locale("en", "US")
         Locale.setDefault(locale)
         val testEntity = addActiveVariant(localeFilter = listOf("en_US"))
@@ -50,7 +50,7 @@ class ExperimentFiltersManagerImplTest {
     }
 
     @Test
-    fun whenVariantDoesNotComplyWithLocaleFilterThenAddFiltersReturnsFalse() {
+    fun `addFilters - variant does not comply with locale filter - returns false`() {
         val locale = Locale("en", "US")
         Locale.setDefault(locale)
         val testEntity = addActiveVariant(localeFilter = listOf("de_DE"))
@@ -59,7 +59,7 @@ class ExperimentFiltersManagerImplTest {
     }
 
     @Test
-    fun whenVariantComplyWithAndroidVersionFilterThenAddFiltersReturnsTrue() {
+    fun `addFilters - variant complies with Android version filter - returns true`() {
         whenever(mockAppBuildConfig.sdkInt).thenReturn(33)
         val testEntity = addActiveVariant(androidVersionFilter = listOf("33", "34"))
 
@@ -67,7 +67,7 @@ class ExperimentFiltersManagerImplTest {
     }
 
     @Test
-    fun whenVariantDoesNotComplyWithAndroidVersionFilterThenAddFiltersReturnsFalse() {
+    fun `addFilters - variant does not comply with Android version filter - returns false`() {
         whenever(mockAppBuildConfig.sdkInt).thenReturn(32)
         val testEntity = addActiveVariant(androidVersionFilter = listOf("33", "34"))
 
@@ -75,7 +75,7 @@ class ExperimentFiltersManagerImplTest {
     }
 
     @Test
-    fun whenVariantComplyWithBothFiltersThenAddFiltersReturnsTrue() {
+    fun `addFilters - variant complies with both filters - returns true`() {
         val locale = Locale("en", "US")
         Locale.setDefault(locale)
         whenever(mockAppBuildConfig.sdkInt).thenReturn(33)
@@ -85,7 +85,7 @@ class ExperimentFiltersManagerImplTest {
     }
 
     @Test
-    fun whenVariantComplyWithLocaleFiltersAndDoesNotComplyWithAndroidVersionFilterThenAddFiltersReturnsFalse() {
+    fun `addFilters - locale complies and android version does not - returns false`() {
         val locale = Locale("en", "US")
         Locale.setDefault(locale)
         whenever(mockAppBuildConfig.sdkInt).thenReturn(32)
@@ -95,7 +95,7 @@ class ExperimentFiltersManagerImplTest {
     }
 
     @Test
-    fun whenVariantComplyWithAndroidVersionFiltersAndDoesNotComplyWithLocaleFilterThenAddFiltersReturnsFalse() {
+    fun `addFilters - complies with android version but not locale - returns false`() {
         val locale = Locale("en", "US")
         Locale.setDefault(locale)
         whenever(mockAppBuildConfig.sdkInt).thenReturn(33)

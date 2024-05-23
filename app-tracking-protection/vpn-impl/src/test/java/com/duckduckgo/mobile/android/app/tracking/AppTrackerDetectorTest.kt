@@ -70,7 +70,7 @@ class AppTrackerDetectorTest {
     }
 
     @Test
-    fun whenEvaluateThirdPartyTrackerThenReturnTracker() {
+    fun `evaluate - third party tracker - return tracker`() {
         whenever(appTrackerRepository.findTracker(TEST_APP_TRACKER.hostname, APP_PACKAGE_ID))
             .thenReturn(AppTrackerType.ThirdParty(TEST_APP_TRACKER))
         whenever(appNameResolver.getPackageIdForUid(APP_UID)).thenReturn(APP_ORIGINATING_APP.packageId)
@@ -90,7 +90,7 @@ class AppTrackerDetectorTest {
     }
 
     @Test
-    fun whenEvaluateThirdPartyTrackerAndSystemAppAndNotInExclusionListAndReturnNull() {
+    fun `evaluate - third party tracker and system app not in exclusion list - return null`() {
         whenever(appTrackerRepository.findTracker(TEST_APP_TRACKER.hostname, APP_PACKAGE_ID))
             .thenReturn(AppTrackerType.ThirdParty(TEST_APP_TRACKER))
         whenever(appNameResolver.getPackageIdForUid(APP_UID)).thenReturn(APP_ORIGINATING_APP.packageId)

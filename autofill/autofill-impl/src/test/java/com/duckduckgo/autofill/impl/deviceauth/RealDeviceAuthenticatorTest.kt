@@ -65,7 +65,7 @@ class RealDeviceAuthenticatorTest {
     }
 
     @Test
-    fun whenSdkIs28ThenValidAuthenticationShouldCheckLegacy() {
+    fun `hasValidDeviceAuthentication - SDK is 28 - checks legacy authentication`() {
         whenever(appBuildConfig.sdkInt).thenReturn(28)
 
         testee.hasValidDeviceAuthentication()
@@ -74,7 +74,7 @@ class RealDeviceAuthenticatorTest {
     }
 
     @Test
-    fun whenSdkIs29ThenValidAuthenticationShouldCheckLegacy() {
+    fun `hasValidDeviceAuthentication - SDK is 29 - checks legacy authentication`() {
         whenever(appBuildConfig.sdkInt).thenReturn(29)
 
         testee.hasValidDeviceAuthentication()
@@ -83,7 +83,7 @@ class RealDeviceAuthenticatorTest {
     }
 
     @Test
-    fun whenSdkIsNot28Or29ThenValidAuthenticationShouldCheckLegacy() {
+    fun `hasValidDeviceAuthentication - sdk is not 28 or 29 - check legacy`() {
         whenever(appBuildConfig.sdkInt).thenReturn(30)
 
         testee.hasValidDeviceAuthentication()
@@ -92,13 +92,13 @@ class RealDeviceAuthenticatorTest {
     }
 
     @Test
-    fun whenAuthenticateToAccessCredentialsIsCalledWithFragmentThenLaunchAuthLauncher() {
+    fun `authenticate - called with fragment - launch auth launcher`() {
         testee.authenticate(fragment) {}
         verifyAuthDialogLaunched()
     }
 
     @Test
-    fun whenAuthenticateToAccessCredentialsIsCalledWithActivityThenLaunchAuthLauncher() {
+    fun `authenticate - called with activity - launch auth launcher`() {
         testee.authenticate(fragment) {}
         verifyAuthDialogLaunched()
     }
@@ -113,7 +113,7 @@ class RealDeviceAuthenticatorTest {
     }
 
     @Test
-    fun whenAuthGracePeriodActiveThenNoDeviceAuthLaunchedWhenAccessingCredentials() {
+    fun `authenticate - auth grace period active - no device auth launched`() {
         whenever(autofillAuthorizationGracePeriod.isAuthRequired()).thenReturn(false)
         testee.authenticate(fragmentActivity) {}
         verifyAuthNotLaunched()

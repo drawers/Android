@@ -42,7 +42,7 @@ class ElementHidingRepositoryTest {
     }
 
     @Test
-    fun whenInitializedAndDoesNotHaveStoredValueThenLoadEmptyJsonToMemory() =
+    fun `init - no stored value - load empty JSON to memory`() =
         runTest {
             testee =
                 RealElementHidingRepository(
@@ -57,7 +57,7 @@ class ElementHidingRepositoryTest {
         }
 
     @Test
-    fun whenInitializedAndHasStoredValueThenLoadStoredJsonToMemory() =
+    fun `init - has stored value - load stored json to memory`() =
         runTest {
             whenever(mockElementHidingDao.get()).thenReturn(elementHidingEntity)
             testee =
@@ -73,7 +73,7 @@ class ElementHidingRepositoryTest {
         }
 
     @Test
-    fun whenUpdateAllThenUpdateAllCalled() =
+    fun `updateAll - updateAll called`() =
         runTest {
             testee =
                 RealElementHidingRepository(

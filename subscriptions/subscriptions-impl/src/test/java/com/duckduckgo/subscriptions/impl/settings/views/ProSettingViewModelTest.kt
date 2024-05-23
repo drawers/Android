@@ -33,7 +33,7 @@ class ProSettingViewModelTest {
     }
 
     @Test
-    fun whenOnSettingsThenCommandSent() = runTest {
+    fun `onSettings - command sent`() = runTest {
         viewModel.commands().test {
             viewModel.onSettings()
             assertTrue(awaitItem() is OpenSettings)
@@ -42,7 +42,7 @@ class ProSettingViewModelTest {
     }
 
     @Test
-    fun whenOnBuyThenCommandSent() = runTest {
+    fun `onBuy - command sent`() = runTest {
         viewModel.commands().test {
             viewModel.onBuy()
             assertTrue(awaitItem() is OpenBuyScreen)
@@ -51,7 +51,7 @@ class ProSettingViewModelTest {
     }
 
     @Test
-    fun whenOnRestoreThenCommandSent() = runTest {
+    fun `onRestore - command sent`() = runTest {
         viewModel.commands().test {
             viewModel.onRestore()
             assertTrue(awaitItem() is OpenRestoreScreen)
@@ -60,7 +60,7 @@ class ProSettingViewModelTest {
     }
 
     @Test
-    fun whenOnResumeEmitViewState() = runTest {
+    fun `onCreate - emit viewState`() = runTest {
         whenever(subscriptionsManager.subscriptionStatus).thenReturn(flowOf(SubscriptionStatus.EXPIRED))
 
         viewModel.onCreate(mock())
@@ -71,7 +71,7 @@ class ProSettingViewModelTest {
     }
 
     @Test
-    fun whenOnRestoreThenPixelSent() = runTest {
+    fun `onRestore - pixel sent`() = runTest {
         viewModel.commands().test {
             viewModel.onRestore()
             verify(pixelSender).reportAppSettingsRestorePurchaseClick()

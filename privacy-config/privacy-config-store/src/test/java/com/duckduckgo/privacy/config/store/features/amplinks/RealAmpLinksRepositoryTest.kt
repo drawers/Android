@@ -52,7 +52,7 @@ class RealAmpLinksRepositoryTest {
     }
 
     @Test
-    fun whenRepositoryIsCreatedThenValuesLoadedIntoMemory() {
+    fun `RealAmpLinksRepository - repository created - values loaded into memory`() {
         givenAmpLinksDaoContainsEntities()
 
         testee = RealAmpLinksRepository(
@@ -68,7 +68,7 @@ class RealAmpLinksRepositoryTest {
     }
 
     @Test
-    fun whenUpdateAllThenUpdateAllCalled() = runTest {
+    fun `updateAll - updateAll called`() = runTest {
         testee = RealAmpLinksRepository(
             mockDatabase,
             TestScope(),
@@ -82,7 +82,7 @@ class RealAmpLinksRepositoryTest {
     }
 
     @Test
-    fun whenUpdateAllThenPreviousValuesAreCleared() = runTest {
+    fun `updateAll - previous values - cleared`() = runTest {
         givenAmpLinksDaoContainsEntities()
 
         testee = RealAmpLinksRepository(

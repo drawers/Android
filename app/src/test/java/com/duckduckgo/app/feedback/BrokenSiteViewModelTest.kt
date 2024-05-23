@@ -122,18 +122,18 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenInitializedThenCanSubmit() {
+    fun `initialized - can submit`() {
         assertTrue(viewState.submitAllowed)
     }
 
     @Test
-    fun whenNoCategorySelectedThenCanSubmit() {
+    fun `canSubmit - no category selected`() {
         selectAndAcceptCategory(-1)
         assertTrue(viewState.submitAllowed)
     }
 
     @Test
-    fun whenCategorySelectedButNotChangedThenReturnOldCategory() {
+    fun `onCategoryAccepted - category selected but not changed - return old category`() {
         testee.onCategoryIndexChanged(0)
         testee.onCategoryAccepted()
         testee.onCategoryIndexChanged(1)
@@ -141,13 +141,13 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenCategoryAcceptedAndIncorrectIndexThenReturnNullCategory() {
+    fun `selectAndAcceptCategory - incorrect index - return null category`() {
         selectAndAcceptCategory(-1)
         assertNull(viewState.categorySelected)
     }
 
     @Test
-    fun whenCategoryAcceptedAndCorrectIndexThenReturnCategory() {
+    fun `selectAndAcceptCategory - correct index - return category`() {
         val indexSelected = 0
         selectAndAcceptCategory(indexSelected)
 

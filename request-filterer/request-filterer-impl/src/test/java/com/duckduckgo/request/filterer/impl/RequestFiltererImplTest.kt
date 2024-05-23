@@ -67,7 +67,7 @@ class RequestFiltererImplTest {
     }
 
     @Test
-    fun whenFeatureIsDisabledThenReturnFalse() {
+    fun `shouldFilterOutRequest - feature is disabled - return false`() {
         whenever(mockFeatureToggle.isFeatureEnabled(eq(RequestFiltererFeatureName.RequestFilterer.value), any())).thenReturn(false)
 
         val previousUrl = "http://example.com"
@@ -80,7 +80,7 @@ class RequestFiltererImplTest {
     }
 
     @Test
-    fun whenUrlInExceptionsListThenReturnFalse() {
+    fun `shouldFilterOutRequest - url in exceptions list - return false`() {
         val exceptions = CopyOnWriteArrayList<FeatureException>().apply {
             add(FeatureException("http://test.com", "my reason here"))
         }
@@ -96,7 +96,7 @@ class RequestFiltererImplTest {
     }
 
     @Test
-    fun whenUrlInUnprotectedTemporaryThenReturnFalse() {
+    fun `shouldFilterOutRequest - url in unprotected temporary - return false`() {
         whenever(mockUnprotectedTemporary.isAnException("http://test.com")).thenReturn(true)
         val previousUrl = "http://example.com"
         val documentUrl = "http://test.com"
@@ -108,7 +108,7 @@ class RequestFiltererImplTest {
     }
 
     @Test
-    fun whenRequestRefererHeaderMatchesPreviousUrlThenReturnTrue() = runTest {
+    fun `shouldFilterOutRequest - referer header matches previous url - return true`() = runTest {
         val previousUrl = "http://example.com"
         val documentUrl = "http://test.com"
         whenever(mockRequest.requestHeaders).thenReturn(mapOf(REFERER to previousUrl))
@@ -119,7 +119,7 @@ class RequestFiltererImplTest {
     }
 
     @Test
-    fun whenRequestRefererHeaderMatchesPreviousUrlAndTimeHasElapsedThenReturnFalse() = runTest {
+    fun `shouldFilterOutRequest - referer header matches previous url and time elapsed - return false`() = runTest {
         val previousUrl = "http://example.com"
         val documentUrl = "http://test.com"
         whenever(mockRequest.requestHeaders).thenReturn(mapOf(REFERER to previousUrl))
@@ -130,7 +130,7 @@ class RequestFiltererImplTest {
     }
 
     @Test
-    fun whenRequestOriginHeaderMatchesPreviousUrlAndNoRefererHeaderThenReturnTrue() {
+    fun `shouldFilterOutRequest - origin header matches previous URL and no referer header - return true`() {
         val previousUrl = "http://example.com"
         val documentUrl = "http://test.com"
         whenever(mockRequest.requestHeaders).thenReturn(mapOf(ORIGIN to previousUrl))
@@ -141,7 +141,7 @@ class RequestFiltererImplTest {
     }
 
     @Test
-    fun whenDocumentUrlMatchesPreviousPageThenReturnFalse() {
+    fun `shouldFilterOutRequest - document URL matches previous page - return false`() {
         val previousUrl = "http://example.com"
         val documentUrl = "http://example.com"
         whenever(mockRequest.requestHeaders).thenReturn(mapOf(REFERER to previousUrl))
@@ -152,7 +152,7 @@ class RequestFiltererImplTest {
     }
 
     @Test
-    fun whenDocumentUrlMatchesPreviousETLDPlusOneThenReturnFalse() {
+    fun `shouldFilterOutRequest - document URL matches previous eTLD+1 - return false`() {
         val previousUrl = "http://example.com"
         val documentUrl = "http://test.example.com"
         whenever(mockRequest.requestHeaders).thenReturn(mapOf(REFERER to previousUrl))
@@ -163,7 +163,7 @@ class RequestFiltererImplTest {
     }
 
     @Test
-    fun whenRequestRefererHeaderDoesNotMatchPreviousUrlThenReturnFalse() {
+    fun `shouldFilterOutRequest - referer header does not match previous url - return false`() {
         val previousUrl = "http://example.com"
         val documentUrl = "http://test.com"
         whenever(mockRequest.requestHeaders).thenReturn(mapOf(REFERER to "http://notamatch.com"))
@@ -174,7 +174,7 @@ class RequestFiltererImplTest {
     }
 
     @Test
-    fun whenRequestOriginHeaderDoesNotMatchPreviousUrlThenReturnFalse() {
+    fun `shouldFilterOutRequest - origin header does not match previous url - return false`() {
         val previousUrl = "http://example.com"
         val documentUrl = "http://test.com"
         whenever(mockRequest.requestHeaders).thenReturn(mapOf(ORIGIN to "http://notamatch.com"))
@@ -185,7 +185,7 @@ class RequestFiltererImplTest {
     }
 
     @Test
-    fun whenNoPreviousUrlRegisteredThenReturnFalse() {
+    fun `shouldFilterOutRequest - no previous URL registered - return false`() {
         val previousUrl = "http://example.com"
         val documentUrl = "http://test.com"
         whenever(mockRequest.requestHeaders).thenReturn(mapOf(REFERER to previousUrl))
@@ -195,7 +195,7 @@ class RequestFiltererImplTest {
     }
 
     @Test
-    fun whenRegisterOnPageCreatedThenUrlsChange() {
+    fun `registerOnPageCreated - urls change`() {
         val previousUrl = "http://example.com"
         val documentUrl = "http://test.com"
         whenever(mockRequest.requestHeaders).thenReturn(mapOf(REFERER to previousUrl))
@@ -208,13 +208,13 @@ class RequestFiltererImplTest {
     }
 
     @Test
-    fun whenDocumentUrlIsMalformedThenReturnFalse() {
+    fun `shouldFilterOutRequest - malformed document URL - return false`() {
         requestFilterer.registerOnPageCreated("http://foo.com")
         assertFalse(requestFilterer.shouldFilterOutRequest(mockRequest, "abc123"))
     }
 
     @Test
-    fun whenPreviousUrlIsMalformedThenReturnFalse() {
+    fun `shouldFilterOutRequest - previous URL is malformed - return false`() {
         requestFilterer.registerOnPageCreated("abc123")
         requestFilterer.registerOnPageCreated("http://foo.com")
         assertFalse(requestFilterer.shouldFilterOutRequest(mockRequest, "http://bar.com"))

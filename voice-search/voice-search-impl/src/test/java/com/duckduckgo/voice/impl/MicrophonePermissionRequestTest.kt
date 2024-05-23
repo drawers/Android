@@ -66,7 +66,7 @@ class MicrophonePermissionRequestTest {
     }
 
     @Test
-    fun whenPermissionRequestResultIsTrueThenInvokeOnPermissionsGranted() {
+    fun `registerResultsCallback - permission request result is true - invoke onPermissionsGranted`() {
         var permissionGranted = false
         testee.registerResultsCallback(
             mock(),
@@ -84,7 +84,7 @@ class MicrophonePermissionRequestTest {
     }
 
     @Test
-    fun whenPermissionRequestResultIsFalseThenOnPermissionsGrantedNotInvokedAndDeclinePermissionForever() {
+    fun `registerResultsCallback - permission request result is false - onPermissionsGranted not invoked and decline permission forever`() {
         whenever(permissionRationale.shouldShow(any())).thenReturn(false)
         var permissionGranted = false
         testee.registerResultsCallback(mock(), mock(), mock()) {
@@ -99,7 +99,7 @@ class MicrophonePermissionRequestTest {
     }
 
     @Test
-    fun whenPermissionRequestResultIsFalseThenOnPermissionsGrantedNotInvoked() {
+    fun `registerResultsCallback - permission request result is false - onPermissionsGranted not invoked`() {
         whenever(permissionRationale.shouldShow(any())).thenReturn(true)
         var permissionGranted = false
         testee.registerResultsCallback(mock(), mock(), mock()) {
@@ -114,7 +114,7 @@ class MicrophonePermissionRequestTest {
     }
 
     @Test
-    fun whenPermissionDeclinedForeverThenLaunchNoMicAccessDialog() {
+    fun `launch - permission declined forever - no mic access dialog shown`() {
         whenever(voiceSearchRepository.getHasPermissionDeclinedForever()).thenReturn(true)
 
         testee.registerResultsCallback(mock(), mock(), mock()) { }
@@ -125,7 +125,7 @@ class MicrophonePermissionRequestTest {
     }
 
     @Test
-    fun whenLaunchNoMicAccessDialogDeclinedThenShowRemoveVoiceSearchDialog() {
+    fun `launch - no mic access dialog declined - show remove voice search dialog`() {
         whenever(voiceSearchRepository.getHasPermissionDeclinedForever()).thenReturn(true)
 
         testee.registerResultsCallback(mock(), mock(), mock()) { }
@@ -136,7 +136,7 @@ class MicrophonePermissionRequestTest {
     }
 
     @Test
-    fun whenRationalDialogNotYetAcceptedThenLaunchRationalDialog() {
+    fun `launch - rationale dialog not yet accepted - launch rationale dialog`() {
         whenever(voiceSearchRepository.getHasPermissionDeclinedForever()).thenReturn(false)
         whenever(voiceSearchRepository.getHasAcceptedRationaleDialog()).thenReturn(false)
 
@@ -148,7 +148,7 @@ class MicrophonePermissionRequestTest {
     }
 
     @Test
-    fun whenRationalDialogAcceptedThenLaunchPermisionRequestFlow() {
+    fun `launch - rationale dialog accepted - launch permission request flow`() {
         whenever(voiceSearchRepository.getHasPermissionDeclinedForever()).thenReturn(false)
         whenever(voiceSearchRepository.getHasAcceptedRationaleDialog()).thenReturn(true)
 
@@ -161,7 +161,7 @@ class MicrophonePermissionRequestTest {
     }
 
     @Test
-    fun whenRationalDialogShownThenRationalAcceptedInvokedThenFilePixelAndLaunchPermission() {
+    fun `registerResultsCallback - rationale dialog shown - rationale accepted and file pixel and launch permission`() {
         whenever(voiceSearchRepository.getHasPermissionDeclinedForever()).thenReturn(false)
         whenever(voiceSearchRepository.getHasAcceptedRationaleDialog()).thenReturn(false)
         testee.registerResultsCallback(mock(), mock(), mock()) { }
@@ -175,7 +175,7 @@ class MicrophonePermissionRequestTest {
     }
 
     @Test
-    fun whenRationalDialogShownThenRationalCancelledInvokedThenFilePixelAndLaunchPermission() {
+    fun `registerResultsCallback - rationale dialog shown - fires pixel and launches permission`() {
         whenever(voiceSearchRepository.getHasPermissionDeclinedForever()).thenReturn(false)
         whenever(voiceSearchRepository.getHasAcceptedRationaleDialog()).thenReturn(false)
         testee.registerResultsCallback(mock(), mock(), mock()) { }
@@ -187,7 +187,7 @@ class MicrophonePermissionRequestTest {
     }
 
     @Test
-    fun whenRationalDialogShownThenRationalCancelledThenShowRemoveVoiceSearchDialog() {
+    fun `registerResultsCallback - rationale dialog shown and cancelled - show remove voice search dialog`() {
         whenever(voiceSearchRepository.getHasPermissionDeclinedForever()).thenReturn(false)
         whenever(voiceSearchRepository.getHasAcceptedRationaleDialog()).thenReturn(false)
         testee.registerResultsCallback(mock(), mock(), mock()) { }
@@ -199,7 +199,7 @@ class MicrophonePermissionRequestTest {
     }
 
     @Test
-    fun whenNoMicAccessDialogAcceptedThenDisableVoiceSearch() {
+    fun `registerResultsCallback - no mic access dialog accepted - disable voice search`() {
         var disableVoiceSearch = false
         whenever(voiceSearchRepository.getHasPermissionDeclinedForever()).thenReturn(false)
         whenever(voiceSearchRepository.getHasAcceptedRationaleDialog()).thenReturn(false)

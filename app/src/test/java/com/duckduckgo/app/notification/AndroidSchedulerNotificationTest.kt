@@ -92,7 +92,7 @@ class AndroidNotificationSchedulerTest {
     }
 
     @Test
-    fun whenPrivacyNotificationClearDataCanShowThenPrivacyNotificationIsScheduled() = runTest {
+    fun `scheduleNextNotification - privacy notification and clear data can show - privacy notification is scheduled`() = runTest {
         whenever(mockPrivacyNotification.canShow()).thenReturn(true)
         whenever(mockClearNotification.canShow()).thenReturn(true)
 
@@ -102,7 +102,7 @@ class AndroidNotificationSchedulerTest {
     }
 
     @Test
-    fun whenPrivacyNotificationCanShowButClearDataCannotThenPrivacyNotificationIsScheduled() = runTest {
+    fun `scheduleNextNotification - privacy notification can show but clear data cannot - privacy notification is scheduled`() = runTest {
         whenever(mockPrivacyNotification.canShow()).thenReturn(true)
         whenever(mockClearNotification.canShow()).thenReturn(false)
 
@@ -112,7 +112,7 @@ class AndroidNotificationSchedulerTest {
     }
 
     @Test
-    fun whenPrivacyNotificationCannotShowAndClearNotificationCanShowThenClearNotificationIsScheduled() = runTest {
+    fun `scheduleNextNotification - privacy notification cannot show and clear notification can show - clear notification is scheduled`() = runTest {
         whenever(mockPrivacyNotification.canShow()).thenReturn(false)
         whenever(mockClearNotification.canShow()).thenReturn(true)
 
@@ -122,7 +122,7 @@ class AndroidNotificationSchedulerTest {
     }
 
     @Test
-    fun whenPrivacyNotificationAndClearNotificationCannotShowThenNoNotificationScheduled() = runTest {
+    fun `scheduleNextNotification - privacy and clear notification cannot show - no notification scheduled`() = runTest {
         whenever(mockPrivacyNotification.canShow()).thenReturn(false)
         whenever(mockClearNotification.canShow()).thenReturn(false)
 

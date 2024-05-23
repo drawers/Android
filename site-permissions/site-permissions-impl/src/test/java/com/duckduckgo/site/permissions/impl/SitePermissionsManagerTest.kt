@@ -55,7 +55,7 @@ class SitePermissionsManagerTest {
     }
 
     @Test
-    fun givenListOfPermissionsThenPermissionsReturnedCorrectly() = runTest {
+    fun `getSitePermissions - list of permissions - permissions returned correctly`() = runTest {
         val resources = arrayOf(PermissionRequest.RESOURCE_AUDIO_CAPTURE, PermissionRequest.RESOURCE_VIDEO_CAPTURE)
         whenever(mockSitePermissionsRepository.isDomainAllowedToAsk(url, PermissionRequest.RESOURCE_VIDEO_CAPTURE)).thenReturn(true)
         whenever(mockSitePermissionsRepository.isDomainAllowedToAsk(url, PermissionRequest.RESOURCE_AUDIO_CAPTURE)).thenReturn(true)
@@ -74,7 +74,7 @@ class SitePermissionsManagerTest {
     }
 
     @Test
-    fun givenListOfPermissionsShouldAutoAcceptThenGrantAndClearAutoHandlePermissions() = runTest {
+    fun `getSitePermissions - list of permissions should auto accept - grant and clear auto handle permissions`() = runTest {
         val resources = arrayOf(PermissionRequest.RESOURCE_AUDIO_CAPTURE, PermissionRequest.RESOURCE_VIDEO_CAPTURE)
         whenever(mockSitePermissionsRepository.isDomainAllowedToAsk(url, PermissionRequest.RESOURCE_VIDEO_CAPTURE)).thenReturn(true)
         whenever(mockSitePermissionsRepository.isDomainAllowedToAsk(url, PermissionRequest.RESOURCE_AUDIO_CAPTURE)).thenReturn(true)
@@ -92,7 +92,7 @@ class SitePermissionsManagerTest {
     }
 
     @Test
-    fun givenListOfPermissionsThenFilterNotSupportedAndReturnOnlyPermissionsAllowedToAsk() = runTest {
+    fun `getSitePermissions - filter not supported - return only permissions allowed to ask`() = runTest {
         val resources =
             arrayOf(PermissionRequest.RESOURCE_VIDEO_CAPTURE, PermissionRequest.RESOURCE_MIDI_SYSEX, PermissionRequest.RESOURCE_AUDIO_CAPTURE)
         whenever(mockSitePermissionsRepository.isDomainAllowedToAsk(url, PermissionRequest.RESOURCE_VIDEO_CAPTURE)).thenReturn(true)
@@ -110,7 +110,7 @@ class SitePermissionsManagerTest {
     }
 
     @Test
-    fun givenListOfPermissionsNoHardwareCameraThenFilterNotSupportedAndThenDenyPermissions() = runTest {
+    fun `getSitePermissions - no hardware camera - deny permissions`() = runTest {
         val resources =
             arrayOf(PermissionRequest.RESOURCE_VIDEO_CAPTURE, PermissionRequest.RESOURCE_MIDI_SYSEX, PermissionRequest.RESOURCE_AUDIO_CAPTURE)
         whenever(mockSitePermissionsRepository.isDomainAllowedToAsk(url, PermissionRequest.RESOURCE_VIDEO_CAPTURE)).thenReturn(true)
@@ -128,7 +128,7 @@ class SitePermissionsManagerTest {
     }
 
     @Test
-    fun whenPermissionsShouldAutoDenyThenDeny() = runTest {
+    fun `getSitePermissions - permissions should auto deny - deny`() = runTest {
         val resources =
             arrayOf(PermissionRequest.RESOURCE_VIDEO_CAPTURE, PermissionRequest.RESOURCE_MIDI_SYSEX, PermissionRequest.RESOURCE_AUDIO_CAPTURE)
         whenever(mockSitePermissionsRepository.isDomainAllowedToAsk(url, PermissionRequest.RESOURCE_VIDEO_CAPTURE)).thenReturn(false)
@@ -145,7 +145,7 @@ class SitePermissionsManagerTest {
     }
 
     @Test
-    fun whenClearAllButFireproofThenDontDeleteEntitiesWhichDomainIsInTheFireproofList() = runTest {
+    fun `clearAllButFireproof - domain in fireproof list - don't delete entities`() = runTest {
         val fireproofDomain = "domain.com"
         val testFireproofList = listOf(fireproofDomain, "domain1.com")
         val testSitePermissionsList = listOf(SitePermissionsEntity(fireproofDomain), SitePermissionsEntity("domain2.com"))
@@ -156,7 +156,7 @@ class SitePermissionsManagerTest {
     }
 
     @Test
-    fun whenClearAllButFireproofThenDeleteEntitiesWhichDomainIsNotInTheFireproofList() = runTest {
+    fun `clearAllButFireproof - domain not in fireproof list - delete entities`() = runTest {
         val domain = "domain2.com"
         val testFireproofList = listOf("domain.com", "domain1.com")
         val testSitePermissionsList = listOf(SitePermissionsEntity("domain.com"), SitePermissionsEntity(domain))
@@ -167,14 +167,14 @@ class SitePermissionsManagerTest {
     }
 
     @Test
-    fun whenDomainGrantedThenGetPermissionsQueryResponseReturnsGranted() {
+    fun `getPermissionsQueryResponse - domain granted - returns granted`() {
         whenever(mockSitePermissionsRepository.isDomainGranted(url, tabId, PermissionRequest.RESOURCE_VIDEO_CAPTURE)).thenReturn(true)
 
         assertEquals(SitePermissionQueryResponse.Granted, testee.getPermissionsQueryResponse(url, tabId, "camera"))
     }
 
     @Test
-    fun whenDomainAllowedToAskThenGetPermissionsQueryResponseReturnsPrompt() {
+    fun `getPermissionsQueryResponse - domain allowed to ask - returns prompt`() {
         whenever(mockSitePermissionsRepository.isDomainGranted(url, tabId, PermissionRequest.RESOURCE_VIDEO_CAPTURE)).thenReturn(false)
         whenever(mockPackageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)).thenReturn(true)
         whenever(mockSitePermissionsRepository.isDomainAllowedToAsk(url, PermissionRequest.RESOURCE_VIDEO_CAPTURE)).thenReturn(true)
@@ -183,7 +183,7 @@ class SitePermissionsManagerTest {
     }
 
     @Test
-    fun whenDomainNotAllowedToAskThenGetPermissionsQueryResponseReturnsDenied() {
+    fun `getPermissionsQueryResponse - domain not allowed to ask - returns denied`() {
         whenever(mockSitePermissionsRepository.isDomainGranted(url, tabId, PermissionRequest.RESOURCE_VIDEO_CAPTURE)).thenReturn(false)
         whenever(mockPackageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)).thenReturn(true)
         whenever(mockSitePermissionsRepository.isDomainAllowedToAsk(url, PermissionRequest.RESOURCE_VIDEO_CAPTURE)).thenReturn(false)
@@ -192,7 +192,7 @@ class SitePermissionsManagerTest {
     }
 
     @Test
-    fun whenHardwareNotSupportedThenGetPermissionsQueryResponseReturnsDenied() {
+    fun `getPermissionsQueryResponse - hardware not supported - returns denied`() {
         whenever(mockSitePermissionsRepository.isDomainGranted(url, tabId, PermissionRequest.RESOURCE_VIDEO_CAPTURE)).thenReturn(false)
         whenever(mockPackageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)).thenReturn(false)
         whenever(mockSitePermissionsRepository.isDomainAllowedToAsk(url, PermissionRequest.RESOURCE_VIDEO_CAPTURE)).thenReturn(true)
@@ -201,7 +201,7 @@ class SitePermissionsManagerTest {
     }
 
     @Test
-    fun whenAndroidPermissionNotSupportedThenGetPermissionsQueryResponseReturnsDenied() {
+    fun `getPermissionsQueryResponse - android permission not supported - returns denied`() {
         assertEquals(SitePermissionQueryResponse.Denied, testee.getPermissionsQueryResponse(url, tabId, "unsupported"))
     }
 }

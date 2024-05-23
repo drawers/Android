@@ -110,7 +110,7 @@ class NetpAppExclusionListViewModelTest {
     }
 
     @Test
-    fun whenFilterIsAllAndGetAppsThenReturnCorrectViewState() = runTest {
+    fun `getApps - filter is all - return correct viewState`() = runTest {
         whenever(systemAppsExclusionRepository.getAvailableCategories()).thenReturn(emptySet())
         testee.getApps().test {
             assertEquals(
@@ -134,7 +134,7 @@ class NetpAppExclusionListViewModelTest {
     }
 
     @Test
-    fun whenFilterIsProtectedOnlyAndGetAppsThenReturnCorrectViewState() = runTest {
+    fun `getApps - filter is protected only - return correct view state`() = runTest {
         whenever(systemAppsExclusionRepository.getAvailableCategories()).thenReturn(emptySet())
         testee.applyAppsFilter(AppsFilter.PROTECTED_ONLY)
 
@@ -156,7 +156,7 @@ class NetpAppExclusionListViewModelTest {
     }
 
     @Test
-    fun whenFilterIsUnprotectedOnlyAndGetAppsThenReturnCorrectViewState() = runTest {
+    fun `getApps - filter is unprotected only - return correct view state`() = runTest {
         whenever(systemAppsExclusionRepository.getAvailableCategories()).thenReturn(emptySet())
         testee.applyAppsFilter(AppsFilter.UNPROTECTED_ONLY)
 

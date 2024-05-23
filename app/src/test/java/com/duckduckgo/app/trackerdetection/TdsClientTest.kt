@@ -49,57 +49,57 @@ class TdsClientTest {
     private val image = "image"
 
     @Test
-    fun whenUrlHasSameDomainAsTrackerEntryAndDefaultActionBlockThenMatchesIsTrue() {
+    fun `test - url has same domain as tracker entry and default action block - matches is true`() {
         test(url = "http://tracker.com/script.js", trackerDomain = trackerDomain, action = BLOCK, expected = true)
     }
 
     @Test
-    fun whenUrlHasSameDomainAsTrackerEntryAndDefaultActionIgnoreThenMatchesIsFalse() {
+    fun `test - url has same domain as tracker entry and default action ignore - matches is false`() {
         test(url = "http://tracker.com/script.js", trackerDomain = trackerDomain, action = IGNORE, expected = false)
     }
 
     @Test
-    fun whenUrlIsSubdomainOfTrackerEntryAndDefaultActionBlockThenMatchesIsTrue() {
+    fun `test - url is subdomain of tracker entry and default action block - matches is true`() {
         test(url = "http://subdomian.tracker.com/script.js", trackerDomain = trackerDomain, action = BLOCK, expected = true)
     }
 
     @Test
-    fun whenUrlIsNotDomainOrSubDomainOfTrackerEntryThenMatchesIsFalse() {
+    fun `matches - url is not domain or subdomain of tracker entry - false`() {
         test(url = "http://nontracker.com/script.js", trackerDomain = trackerDomain, action = BLOCK, expected = false)
     }
 
     @Test
-    fun whenUrlIsAParentDomainOfATrackerEntryThenMatchesIsFalse() {
+    fun `matches - url is a parent domain of a tracker entry - false`() {
         test(url = "http://tracker.com/script.js", trackerDomain = Domain("subdomain.tracker.com"), action = BLOCK, expected = false)
     }
 
     @Test
-    fun whenUrlContainsButIsNotSubdomainOfATrackerEntryThenMatchesIsFalse() {
+    fun `test - url not subdomain of tracker entry - matches is false`() {
         test(url = "http://notsubdomainoftracker.com", trackerDomain = trackerDomain, action = BLOCK, expected = false)
     }
 
     @Test
-    fun whenUrlMatchesRuleWithNoExceptionsAndRuleActionBlockThenMatchesIsTrue() {
+    fun `test - rule with no exceptions and action block - matches is true`() {
         test(rule = ruleBlockNullExceptions, url = url, trackerDomain = trackerDomain, action = BLOCK, expected = true)
     }
 
     @Test
-    fun whenUrlMatchesRuleWithNoExceptionsAndRuleActionIgnoreThenMatchesIsFalse() {
+    fun `test - rule action ignore with no exceptions - matches is false`() {
         test(rule = ruleIgnoreNullExceptions, url = url, trackerDomain = trackerDomain, action = BLOCK, expected = false)
     }
 
     @Test
-    fun whenUrlMatchesDomainWithDefaultBlockAndRuleWithNoExceptionsAndNoActionThenMatchesIsTrue() {
+    fun `test - url matches domain with default block and rule with no exceptions and no action - matches is true`() {
         test(rule = ruleNullExceptions, url = url, trackerDomain = trackerDomain, action = BLOCK, expected = true)
     }
 
     @Test
-    fun whenUrlMatchesDomainWithDefaultIgnoreAndRuleWithNoExceptionsAndNoActionThenMatchesIsTrue() {
+    fun `test - url matches domain with default ignore and rule with no exceptions and no action - matches is true`() {
         test(rule = ruleNullExceptions, url = url, trackerDomain = trackerDomain, action = IGNORE, expected = true)
     }
 
     @Test
-    fun whenUrlMatchesRuleWithExceptionsAndExceptionDomainMatchesDocumentThenMatchesIsFalseIrrespectiveOfAction() {
+    fun `matches - rule with exceptions and exception domain matches document - false irrespective of action`() {
         val exampleException = RuleExceptions(listOf("example.com"), null)
 
         val ruleBlock = Rule(ruleString, BLOCK, exampleException, null, null)
@@ -115,7 +115,7 @@ class TdsClientTest {
     }
 
     @Test
-    fun whenUrlMatchesRuleWithExceptionsAndExceptionDomainDoesNotMatchDocumentThenMatchesBehaviorIsStandard() {
+    fun `matchesBehavior - rule with exceptions and exception domain does not match document - standard`() {
         val nonMatchingExceptions = RuleExceptions(listOf("nonmatching.com"), null)
 
         val ruleBlock = Rule(ruleString, BLOCK, nonMatchingExceptions, null, null)

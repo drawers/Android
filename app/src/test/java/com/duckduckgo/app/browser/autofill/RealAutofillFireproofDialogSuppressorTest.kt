@@ -35,25 +35,25 @@ class RealAutofillFireproofDialogSuppressorTest {
     }
 
     @Test
-    fun whenNoInteractionsThenNotPreventingPrompts() {
+    fun `isAutofillPreventingFireproofPrompts - no interactions - not preventing prompts`() {
         assertFalse(testee.isAutofillPreventingFireproofPrompts())
     }
 
     @Test
-    fun whenSaveOrUpdateDialogVisibleThenPreventingPrompts() {
+    fun `autofillSaveOrUpdateDialogVisibilityChanged - preventing prompts`() {
         testee.autofillSaveOrUpdateDialogVisibilityChanged(true)
         assertTrue(testee.isAutofillPreventingFireproofPrompts())
     }
 
     @Test
-    fun whenSaveOrUpdateDialogDismissedRecentlyThenPreventingPrompts() {
+    fun `autofillSaveOrUpdateDialogVisibilityChanged - dismissed recently - preventing prompts`() {
         testee.autofillSaveOrUpdateDialogVisibilityChanged(true)
         testee.autofillSaveOrUpdateDialogVisibilityChanged(false)
         assertTrue(testee.isAutofillPreventingFireproofPrompts())
     }
 
     @Test
-    fun whenSaveOrUpdateDialogDismissedAWhileBackThenPreventingPrompts() {
+    fun `isAutofillPreventingFireproofPrompts - dialog dismissed a while back - preventing prompts`() {
         testee.autofillSaveOrUpdateDialogVisibilityChanged(true)
         testee.autofillSaveOrUpdateDialogVisibilityChanged(false)
         configureTimeNow(System.currentTimeMillis() + 20_000)

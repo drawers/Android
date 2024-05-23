@@ -43,14 +43,14 @@ class DisplayModeViewModelTest {
     private val testee = DisplayModeViewModel(favoritesDisplayModeSettingsRepository, coroutineRule.testDispatcherProvider)
 
     @Test
-    fun whenObserverAddedThenCurrentViewStateEmitted() = runTest {
+    fun `viewState - observer added - current viewState emitted`() = runTest {
         testee.viewState().test {
             assertEquals(ViewState(), awaitItem())
         }
     }
 
     @Test
-    fun whenDisplayModeChangedThenViewStateIsUpdated() = runTest {
+    fun `onDisplayModeChanged - viewState updated`() = runTest {
         testee.viewState().test {
             awaitItem()
             testee.onDisplayModeChanged(true)

@@ -38,7 +38,7 @@ class EntityLookupTest {
     private var testee = TdsEntityLookup(mockEntityDao, mockDomainEntityDao)
 
     @Test
-    fun whenUrlContainsOneUnmatchedDomainThenNoValueIsReturned() {
+    fun `entityForUrl - unmatched domain - no value returned`() {
         val url = "a.com"
         whenever(mockDomainEntityDao.get(url)).thenReturn(null)
 
@@ -48,7 +48,7 @@ class EntityLookupTest {
     }
 
     @Test
-    fun whenUrlContainsOneMatchingDomainThenValueIsReturned() {
+    fun `entityForUrl - one matching domain - value is returned`() {
         val url = "a.com"
         whenever(mockDomainEntityDao.get(url)).thenReturn(anEntityDomain())
         whenever(mockEntityDao.get(anEntityName())).thenReturn(anEntity())
@@ -57,7 +57,7 @@ class EntityLookupTest {
     }
 
     @Test
-    fun whenUrlContainsOneMatchingDomainThenDomainIsSearchedFor() {
+    fun `entityForUrl - one matching domain - domain is searched for`() {
         val url = "a.com"
         testee.entityForUrl("https://$url")
         verify(mockDomainEntityDao).get("a.com")
@@ -65,7 +65,7 @@ class EntityLookupTest {
     }
 
     @Test
-    fun whenUrlContainsOneUnmatchedSubDomainAndOneMatchingDomainThenValueIsReturned() {
+    fun `entityForUrl - unmatched subdomain and matching domain - value returned`() {
         val url = "a.b.com"
         whenever(mockDomainEntityDao.get(url)).thenReturn(anEntityDomain())
         whenever(mockEntityDao.get(anEntityName())).thenReturn(anEntity())
@@ -75,7 +75,7 @@ class EntityLookupTest {
     }
 
     @Test
-    fun whenUrlContainsOneMultipartTldThenTldIsSearchedForInDb() {
+    fun `entityForUrl - url contains one multipart TLD - TLD is searched for in DB`() {
         val url = "a.co.uk"
         testee.entityForUrl("https://$url")
         verify(mockDomainEntityDao).get("a.co.uk")
@@ -83,7 +83,7 @@ class EntityLookupTest {
     }
 
     @Test
-    fun whenUrlContainsManyUnmatchedSubdomainsThenAllIntermediateValuesAreSearchedFor() {
+    fun `entityForUrl - many unmatched subdomains - all intermediate values are searched`() {
         val url = "a.b.c.com"
         whenever(mockDomainEntityDao.get("a.b.c.com")).thenReturn(null)
         whenever(mockDomainEntityDao.get("b.c.com")).thenReturn(null)
@@ -98,7 +98,7 @@ class EntityLookupTest {
     }
 
     @Test
-    fun whenUrlContainsManyMatchingSubdomainsThenSearchingStopsWhenValueFound() {
+    fun `entityForUrl - many matching subdomains - stops when value found`() {
         val url = "a.b.c.com"
         whenever(mockDomainEntityDao.get("a.b.c.com")).thenReturn(null)
         whenever(mockDomainEntityDao.get("b.c.com")).thenReturn(anEntityDomain())

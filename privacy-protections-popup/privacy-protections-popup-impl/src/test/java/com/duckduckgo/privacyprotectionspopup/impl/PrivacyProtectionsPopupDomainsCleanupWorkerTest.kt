@@ -47,7 +47,7 @@ class PrivacyProtectionsPopupDomainsCleanupWorkerTest {
         }
 
     @Test
-    fun whenDoWorkThenCleanUpOldEntriesFromPopupDismissDomainRepository() = runTest {
+    fun `doWork - clean up old entries from popupDismissDomainRepository`() = runTest {
         timeProvider.time = Instant.parse("2023-11-29T10:15:30.000Z")
 
         val result = subject.doWork()

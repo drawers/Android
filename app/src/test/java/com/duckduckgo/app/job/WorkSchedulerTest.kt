@@ -44,7 +44,7 @@ class WorkSchedulerTest {
     }
 
     @Test
-    fun schedulesNextNotificationAndCleansDeprecatedJobs() = runTest {
+    fun `schedulesNextNotificationAndCleansDeprecatedJobs - onResume`() = runTest {
         testee.onResume(mockOwner)
 
         verify(notificationScheduler).scheduleNextNotification()

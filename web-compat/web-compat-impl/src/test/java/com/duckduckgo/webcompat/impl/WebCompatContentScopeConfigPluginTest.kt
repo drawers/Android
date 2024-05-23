@@ -37,13 +37,13 @@ class WebCompatContentScopeConfigPluginTest {
     }
 
     @Test
-    fun whenGetConfigThenReturnCorrectlyFormattedJson() {
+    fun `config - return correctly formatted json`() {
         whenever(mockWebCompatRepository.getWebCompatEntity()).thenReturn(WebCompatEntity(json = config))
         assertEquals("\"webCompat\":$config", testee.config())
     }
 
     @Test
-    fun whenGetPreferencesThenReturnNull() {
+    fun `preferences - return null`() {
         assertNull(testee.preferences())
     }
 

@@ -164,7 +164,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenFolderMetadataNotPresentThenAllChildrenInCurrentAndInsertField() = runTest {
+    fun `getFolderDiff - folder metadata not present - all children in current and insert`() = runTest {
         givenSomeContentIn(folderId = folder.id, children = 5, saveMetadata = false)
 
         val folderChildren = repository.getFolderDiff(folder.id)

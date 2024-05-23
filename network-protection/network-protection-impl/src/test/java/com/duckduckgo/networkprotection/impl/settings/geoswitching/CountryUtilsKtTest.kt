@@ -6,7 +6,7 @@ import org.junit.Test
 class CountryUtilsTest {
 
     @Test
-    fun testEmojiForCountryCode() {
+    fun `getEmojiForCountryCode - valid and invalid country codes - correct emoji`() {
         assertEquals("🇬🇧", getEmojiForCountryCode("gb"))
         assertEquals("🇬🇧", getEmojiForCountryCode("GB"))
 

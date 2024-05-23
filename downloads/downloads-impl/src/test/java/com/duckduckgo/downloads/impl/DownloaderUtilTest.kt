@@ -33,7 +33,7 @@ class DownloaderUtilTest {
     }
 
     @Test
-    fun whenNullContentDispositionAndApplicationPdfContentTypeAndIncorrectFileExtensionInUrlThenCorrectFilenameExtracted() {
+    fun `guessFileName - null content disposition and applicationpdf content type and incorrect file extension - correct filename extracted`() {
         assertEquals(
             "display_pdf.pdf",
             DownloaderUtil.guessFileName(
@@ -47,7 +47,7 @@ class DownloaderUtilTest {
     }
 
     @Test
-    fun whenNullContentDispositionAndImageJpegContentTypeAndUnsupportedCharsInFilenameInsideUrlThenCorrectFilenameExtracted() {
+    fun `guessFileName - null content disposition and imagejpeg content type and unsupported chars in filename - correct filename extracted`() {
         assertEquals(
             "0_BRkMUINdhCYPk1KM.jpg",
             DownloaderUtil.guessFileName(
@@ -71,7 +71,7 @@ class DownloaderUtilTest {
     }
 
     @Test
-    fun whenAttachmentWithFilenameContentDispositionAndApplicationOctetStreamContentTypeAndCorrectFileExtensionInUrlThenCorrectFilenameExtracted() {
+    fun `guessFileName - attachment with filename and correct file extension in URL - correct filename extracted`() {
         assertEquals(
             "Telegram.apk",
             DownloaderUtil.guessFileName(
@@ -99,7 +99,7 @@ class DownloaderUtilTest {
     }
 
     @Test
-    fun whenInlineWithFilenameContentDispositionAndApplicationPdfContentTypeAndCorrectFileExtensionInUrlThenCorrectFilenameExtracted() {
+    fun `guessFileName - inline content disposition and applicationpdf content type - correct filename extracted`() {
         assertEquals(
             "Monitoraggio_Fase_2__report_nazionale_83_finale.pdf",
             DownloaderUtil.guessFileName(
@@ -125,7 +125,7 @@ class DownloaderUtilTest {
     }
 
     @Test
-    fun whenEmptyContentDispositionAndApplicationPdfContentTypeAndCorrectFileExtensionInUrlThenCorrectFilenameExtracted() {
+    fun `guessFileName - empty content disposition and applicationpdf content type and correct file extension in URL - correct filename extracted`() {
         assertEquals(
             "be1da227fa380c8d057edbcf19cc8e14_pdf.pdf",
             DownloaderUtil.guessFileName(
@@ -137,7 +137,7 @@ class DownloaderUtilTest {
     }
 
     @Test
-    fun whenEmptyContentDispositionAndApplicationOctetStreamContentTypeAndCorrectFileExtensionInUrlSecondExampleThenCorrectFilenameExtracted() {
+    fun `guessFileName - empty content disposition and applicationpdf content type - correct filename extracted`() {
         assertEquals(
             "ahc01_learn_to_play_web.pdf",
             DownloaderUtil.guessFileName(
@@ -176,7 +176,7 @@ class DownloaderUtilTest {
     }
 
     @Test
-    fun whenEmptyContentDispositionAndTextXpython3ContentTypeAndCorrectFileExtensionInUrlThenCorrectFilenameExtracted() {
+    fun `guessFileName - empty content disposition and textx-python3 content type and correct file extension in URL - correct filename extracted`() {
         assertEquals(
             "bat.py",
             DownloaderUtil.guessFileName(
@@ -190,32 +190,32 @@ class DownloaderUtilTest {
     }
 
     @Test
-    fun whenContentDispositionWithAttachmentAndFilenameBetweenQuotesAndSpaceAfterSemicolonThenCorrectFilenameExtracted() {
+    fun `fileNameFromContentDisposition - attachment with filename in quotes and space after semicolon - correct filename extracted`() {
         assertEquals("filename.jpg", DownloaderUtil.fileNameFromContentDisposition("""attachment; filename="filename.jpg""""))
     }
 
     @Test
-    fun whenContentDispositionWithAttachmentAndFilenameBetweenQuotesAndSpacesBeforeAndAfterSemicolonThenCorrectFilenameExtracted() {
+    fun `fileNameFromContentDisposition - attachment with filename in quotes and spaces around semicolon - correct filename extracted`() {
         assertEquals("filename.jpg", DownloaderUtil.fileNameFromContentDisposition("""attachment ; filename="filename.jpg""""))
     }
 
     @Test
-    fun whenContentDispositionWithAttachmentAndFilenameBetweenQuotesAndNoSpacesThenCorrectFilenameExtracted() {
+    fun `fileNameFromContentDisposition - attachment with quoted filename - correct filename extracted`() {
         assertEquals("filename.jpg", DownloaderUtil.fileNameFromContentDisposition("""attachment;filename="filename.jpg""""))
     }
 
     @Test
-    fun whenContentDispositionWithAttachmentAndFilenameWithoutQuotesAndWithSpaceAfterSemicolonThenCorrectFilenameExtracted() {
+    fun `fileNameFromContentDisposition - attachment and filename without quotes and space after semicolon - correct filename extracted`() {
         assertEquals("filename.jpg", DownloaderUtil.fileNameFromContentDisposition("""attachment; filename=filename.jpg"""))
     }
 
     @Test
-    fun whenContentDispositionWithInlineAndFilenameBetweenQuotesAndSpaceAfterSemicolonThenCorrectFilenameExtracted() {
+    fun `fileNameFromContentDisposition - inline and filename between quotes with space after semicolon - correct filename extracted`() {
         assertEquals("filename.jpg", DownloaderUtil.fileNameFromContentDisposition("""inline; filename="filename.jpg""""))
     }
 
     @Test
-    fun whenContentDispositionWithAttachmentAndFilenameEncodedThenEncodedFilenameExtracted() {
+    fun `fileNameFromContentDisposition - attachment and encoded filename - encoded filename extracted`() {
         assertEquals(
             "%E4%B8%AD%E6%96%87%E6%96%87%E4%BB%B6%E5%90%8D%E6%B5%8B%E8%AF%95.txt",
             DownloaderUtil.fileNameFromContentDisposition(
@@ -225,7 +225,7 @@ class DownloaderUtilTest {
     }
 
     @Test
-    fun whenContentDispositionWithAttachmentAndFilenameStarEncodedThenDecodedFilenameExtracted() {
+    fun `fileNameFromContentDisposition - attachment and filename star encoded - decoded filename extracted`() {
         assertEquals(
             "中文文件名测试.txt",
             DownloaderUtil.fileNameFromContentDisposition(
@@ -235,7 +235,7 @@ class DownloaderUtilTest {
     }
 
     @Test
-    fun whenContentDispositionWithAttachmentAndFilenameStarEncodedAndFilenameThenDecodedFilenameExtracted() {
+    fun `fileNameFromContentDisposition - attachment with encoded filename - decoded filename extracted`() {
         assertEquals(
             "中文文件名测试.txt",
             DownloaderUtil.fileNameFromContentDisposition(
@@ -263,7 +263,7 @@ class DownloaderUtilTest {
     }
 
     @Test
-    fun whenContentDispositionWithAttachmentAndFilenameStarEncodedWithNoEncodingAndFilenameThenDecodedFilenameExtractedFallback() {
+    fun `fileNameFromContentDisposition - attachment and filename star encoded with no encoding and filename - decoded filename extracted fallback`() {
         assertEquals(
             "%E4%B8%AD%E6%96%87%E6%96%87%E4%BB%B6%E5%90%8D%E6%B5%8B%E8%AF%95.txt",
             DownloaderUtil.fileNameFromContentDisposition(
@@ -277,7 +277,7 @@ class DownloaderUtilTest {
     }
 
     @Test
-    fun whenContentDispositionWithInlineAndFilenameStarEncodedAndFilenameThenDecodedFilenameExtracted() {
+    fun `fileNameFromContentDisposition - inline and encoded filename - decoded filename extracted`() {
         assertEquals(
             "中文文件名测试.txt",
             DownloaderUtil.fileNameFromContentDisposition(

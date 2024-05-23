@@ -33,14 +33,14 @@ class DuckDuckGoAdClickDataTest {
     }
 
     @Test
-    fun whenSetAdDomainForActiveTabCalledThenTheSameDomainIsRetrieved() {
+    fun `setAdDomainTldPlusOne - same domain retrieved`() {
         testee.setAdDomainTldPlusOne("host")
 
         assertEquals("host", testee.getAdDomainTldPlusOne())
     }
 
     @Test
-    fun whenRemoveAdDomainForActiveTabCalledThenAdDomainForTabIsRemoved() {
+    fun `removeAdDomain - ad domain for active tab is removed`() {
         testee.setAdDomainTldPlusOne("host")
         assertEquals("host", testee.getAdDomainTldPlusOne())
 
@@ -50,7 +50,7 @@ class DuckDuckGoAdClickDataTest {
     }
 
     @Test
-    fun whenRemoveExemptionForActiveTabCalledThenAllExemptionForTabAreRemoved() {
+    fun `removeExemption - active tab - all exemptions removed`() {
         testee.addExemption(dummyExpiration("host1"))
         assertTrue(testee.isHostExempted("host1"))
 
@@ -60,7 +60,7 @@ class DuckDuckGoAdClickDataTest {
     }
 
     @Test
-    fun whenAddExemptionForActiveTabCalledForADifferentHostThenOnlyThatSecondHostExemptionExists() {
+    fun `addExemption - different host - only second host exemption exists`() {
         val host = "host1"
         val otherHost = "host2"
         testee.addExemption(dummyExpiration(host))

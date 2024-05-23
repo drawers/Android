@@ -32,168 +32,168 @@ class AutofillDomainNameUrlMatcherTest {
     private val testee = AutofillDomainNameUrlMatcher(TestUrlUnicodeNormalizer())
 
     @Test
-    fun whenBasicDomainThenSameReturnedForEtldPlus1() {
+    fun `extractUrlPartsForAutofill - basic domain - same returned for eTldPlus1`() {
         val inputUrl = "duckduckgo.com"
         val result = testee.extractUrlPartsForAutofill(inputUrl)
         assertEquals(inputUrl, result.eTldPlus1)
     }
 
     @Test
-    fun whenUrlIsInvalidMissingTldThenEtldPlusOneIsNull() {
+    fun `extractUrlPartsForAutofill - invalid URL missing TLD - eTldPlus1 is null`() {
         val inputUrl = "duckduckgo"
         val result = testee.extractUrlPartsForAutofill(inputUrl)
         assertNull(result.eTldPlus1)
     }
 
     @Test
-    fun whenUrlIsInvalidMissingTldThenSubdomainIsNull() {
+    fun `extractUrlPartsForAutofill - invalid URL missing TLD - subdomain is null`() {
         val inputUrl = "duckduckgo"
         val result = testee.extractUrlPartsForAutofill(inputUrl)
         assertNull(result.subdomain)
     }
 
     @Test
-    fun whenContainsHttpSchemeThenEtldPlus1Returned() {
+    fun `extractUrlPartsForAutofill - contains http scheme - eTldPlus1 returned`() {
         val inputUrl = "http://duckduckgo.com"
         val result = testee.extractUrlPartsForAutofill(inputUrl)
         assertEquals("duckduckgo.com", result.eTldPlus1)
     }
 
     @Test
-    fun whenContainsHttpsSchemeThenEtldPlus1Returned() {
+    fun `extractUrlPartsForAutofill - contains https scheme - eTldPlus1 returned`() {
         val inputUrl = "https://duckduckgo.com"
         val result = testee.extractUrlPartsForAutofill(inputUrl)
         assertEquals("duckduckgo.com", result.eTldPlus1)
     }
 
     @Test
-    fun whenContainsWwwSubdomainThenEtldPlus1Returned() {
+    fun `extractUrlPartsForAutofill - contains www subdomain - eTldPlus1 returned`() {
         val inputUrl = "www.duckduckgo.com"
         val result = testee.extractUrlPartsForAutofill(inputUrl)
         assertEquals("duckduckgo.com", result.eTldPlus1)
     }
 
     @Test
-    fun whenContainsAnotherSubdomainThenEtldPlus1Returned() {
+    fun `extractUrlPartsForAutofill - contains another subdomain - eTldPlus1 returned`() {
         val inputUrl = "foo.duckduckgo.com"
         val result = testee.extractUrlPartsForAutofill(inputUrl)
         assertEquals("duckduckgo.com", result.eTldPlus1)
     }
 
     @Test
-    fun whenTwoPartTldWithNoSubdomainThenEtldPlus1Returned() {
+    fun `extractUrlPartsForAutofill - two-part TLD with no subdomain - eTldPlus1 returned`() {
         val inputUrl = "duckduckgo.co.uk"
         val result = testee.extractUrlPartsForAutofill(inputUrl)
         assertEquals("duckduckgo.co.uk", result.eTldPlus1)
     }
 
     @Test
-    fun whenTwoPartTldWithSubdomainThenEtldPlus1Returned() {
+    fun `extractUrlPartsForAutofill - two-part TLD with subdomain - eTldPlus1 returned`() {
         val inputUrl = "www.duckduckgo.co.uk"
         val result = testee.extractUrlPartsForAutofill(inputUrl)
         assertEquals("duckduckgo.co.uk", result.eTldPlus1)
     }
 
     @Test
-    fun whenSubdomainIsWwwThenCorrectlyIdentifiedAsSubdomain() {
+    fun `extractUrlPartsForAutofill - subdomain is www - correctly identified`() {
         val inputUrl = "www.duckduckgo.co.uk"
         val result = testee.extractUrlPartsForAutofill(inputUrl)
         assertEquals("www", result.subdomain)
     }
 
     @Test
-    fun whenSubdomainIsPresentButNotWwwThenCorrectlyIdentifiedAsSubdomain() {
+    fun `extractUrlPartsForAutofill - subdomain present but not www - correctly identified as subdomain`() {
         val inputUrl = "test.duckduckgo.co.uk"
         val result = testee.extractUrlPartsForAutofill(inputUrl)
         assertEquals("test", result.subdomain)
     }
 
     @Test
-    fun whenSubdomainHasTwoLevelsThenCorrectlyIdentifiedAsSubdomain() {
+    fun `extractUrlPartsForAutofill - subdomain with two levels - correctly identified`() {
         val inputUrl = "foo.bar.duckduckgo.co.uk"
         val result = testee.extractUrlPartsForAutofill(inputUrl)
         assertEquals("foo.bar", result.subdomain)
     }
 
     @Test
-    fun whenUrlsAreIdenticalThenMatchingForAutofill() {
+    fun `matchingForAutofill - identical URLs - matching`() {
         val savedSite = testee.extractUrlPartsForAutofill("https://example.com")
         val visitedSite = testee.extractUrlPartsForAutofill("https://example.com")
         assertTrue(testee.matchingForAutofill(visitedSite, savedSite))
     }
 
     @Test
-    fun whenUrlsAreIdenticalExceptForUppercaseVisitedSiteThenMatchingForAutofill() {
+    fun `matchingForAutofill - identical URLs except for uppercase - matching`() {
         val savedSite = testee.extractUrlPartsForAutofill("https://example.com")
         val visitedSite = testee.extractUrlPartsForAutofill("https://EXAMPLE.com")
         assertTrue(testee.matchingForAutofill(visitedSite, savedSite))
     }
 
     @Test
-    fun whenUrlsAreIdenticalExceptForUppercaseSavedSiteThenMatchingForAutofill() {
+    fun `matchingForAutofill - identical URLs except for uppercase saved site`() {
         val savedSite = testee.extractUrlPartsForAutofill("https://EXAMPLE.com")
         val visitedSite = testee.extractUrlPartsForAutofill("https://example.com")
         assertTrue(testee.matchingForAutofill(visitedSite, savedSite))
     }
 
     @Test
-    fun whenBothUrlsContainSameSubdomainThenMatchingForAutofill() {
+    fun `matchingForAutofill - same subdomain - matching`() {
         val savedSite = testee.extractUrlPartsForAutofill("test.example.com")
         val visitedSite = testee.extractUrlPartsForAutofill("test.example.com")
         assertTrue(testee.matchingForAutofill(visitedSite, savedSite))
     }
 
     @Test
-    fun whenBothUrlsContainWwwSubdomainThenMatchingForAutofill() {
+    fun `matchingForAutofill - both URLs contain www subdomain`() {
         val savedSite = testee.extractUrlPartsForAutofill("www.example.com")
         val visitedSite = testee.extractUrlPartsForAutofill("www.example.com")
         assertTrue(testee.matchingForAutofill(visitedSite, savedSite))
     }
 
     @Test
-    fun whenSavedSiteContainsSubdomainAndVisitedSiteDoesNotThenMatchingForAutofill() {
+    fun `matchingForAutofill - saved site contains subdomain and visited site does not - matching`() {
         val savedSite = testee.extractUrlPartsForAutofill("foo.example.com")
         val visitedSite = testee.extractUrlPartsForAutofill("example.com")
         assertTrue(testee.matchingForAutofill(visitedSite, savedSite))
     }
 
     @Test
-    fun whenSavedSiteDoesNotContainSubdomainAndVisitedSiteDoesThenMatchingForAutofill() {
+    fun `matchingForAutofill - saved site does not contain subdomain and visited site does`() {
         val savedSite = testee.extractUrlPartsForAutofill("example.com")
         val visitedSite = testee.extractUrlPartsForAutofill("foo.example.com")
         assertTrue(testee.matchingForAutofill(visitedSite, savedSite))
     }
 
     @Test
-    fun whenUrlsHaveDifferentSubdomainsThenMatchingForAutofill() {
+    fun `matchingForAutofill - different subdomains - matching`() {
         val savedSite = testee.extractUrlPartsForAutofill("bar.example.com")
         val visitedSite = testee.extractUrlPartsForAutofill("foo.example.com")
         assertTrue(testee.matchingForAutofill(visitedSite, savedSite))
     }
 
     @Test
-    fun whenSavedSiteContainsWwwSubdomainAndVisitedSiteDoesNotThenMatchingForAutofill() {
+    fun `matchingForAutofill - saved site contains www subdomain and visited site does not - matching`() {
         val savedSite = testee.extractUrlPartsForAutofill("www.example.com")
         val visitedSite = testee.extractUrlPartsForAutofill("example.com")
         assertTrue(testee.matchingForAutofill(visitedSite, savedSite))
     }
 
     @Test
-    fun whenSavedSiteMatchesVisitedExceptForPortThenNotMatchingForAutofill() {
+    fun `matchingForAutofill - saved site matches visited except for port - not matching`() {
         val savedSite = ExtractedUrlParts(eTldPlus1 = "example.com", userFacingETldPlus1 = "example.com", subdomain = null, port = 8000)
         val visitedSite = ExtractedUrlParts(eTldPlus1 = "example.com", userFacingETldPlus1 = "example.com", subdomain = null, port = 1000)
         assertFalse(testee.matchingForAutofill(visitedSite, savedSite))
     }
 
     @Test
-    fun whenSavedSiteMatchesVisitedAndEqualPortsThenMatchingForAutofill() {
+    fun `matchingForAutofill - saved site matches visited and equal ports - matching`() {
         val savedSite = ExtractedUrlParts(eTldPlus1 = "example.com", userFacingETldPlus1 = "example.com", subdomain = null, port = 8000)
         val visitedSite = ExtractedUrlParts(eTldPlus1 = "example.com", userFacingETldPlus1 = "example.com", subdomain = null, port = 8000)
         assertTrue(testee.matchingForAutofill(visitedSite, savedSite))
     }
 
     @Test
-    fun whenSavedSiteMatchesVisitedAndSavedSiteMissingPortThenNotMatchingForAutofill() {
+    fun `matchingForAutofill - saved site missing port - not matching`() {
         val savedSite = ExtractedUrlParts(eTldPlus1 = "example.com", userFacingETldPlus1 = "example.com", subdomain = null, port = null)
         val visitedSite = ExtractedUrlParts(eTldPlus1 = "example.com", userFacingETldPlus1 = "example.com", subdomain = null, port = 8000)
         assertFalse(testee.matchingForAutofill(visitedSite, savedSite))

@@ -45,12 +45,12 @@ class CookiesFeatureTogglesPluginTest {
     }
 
     @Test
-    fun whenIsEnabledAndFeatureIsNotACookieFeatureThenReturnNull() = runTest {
+    fun `isEnabled - feature is not a cookie feature - return null`() = runTest {
         assertNull(testee.isEnabled(NonPrivacyFeature().value, true))
     }
 
     @Test
-    fun whenIsEnabledAndFeatureIsCookieFeatureThenReturnTrueWhenEnabled() =
+    fun `isEnabled - cookie feature enabled - returns true`() =
         runTest {
             giveCookieFeatureIsEnabled()
 
@@ -60,7 +60,7 @@ class CookiesFeatureTogglesPluginTest {
         }
 
     @Test
-    fun whenIsEnabledAndFeatureIsCookieFeatureThenReturnFalseWhenDisabled() =
+    fun `isEnabled - cookie feature disabled - return false`() =
         runTest {
             givenCookieFeatureIsDisabled()
 
@@ -70,7 +70,7 @@ class CookiesFeatureTogglesPluginTest {
         }
 
     @Test
-    fun whenIsEnabledAndFeatureIsCookieFeatureThenReturnDefaultValueIfFeatureDoesNotExist() =
+    fun `isEnabled - cookie feature does not exist - return default value`() =
         runTest {
             val defaultValue = true
             givenCookieFeatureReturnsDefaultValue(defaultValue)
@@ -82,7 +82,7 @@ class CookiesFeatureTogglesPluginTest {
         }
 
     @Test
-    fun whenIsEnabledAndFeatureIsCookieFeatureAndAppVersionEqualToMinSupportedVersionThenReturnTrueWhenEnabled() =
+    fun `isEnabled - cookie feature and app version equal to min supported version - return true`() =
         runTest {
             giveCookieFeatureIsEnabled()
             givenAppVersionIsEqualToMinSupportedVersion()
@@ -93,7 +93,7 @@ class CookiesFeatureTogglesPluginTest {
         }
 
     @Test
-    fun whenIsEnabledAndFeatureIsCookieFeatureAndAppVersionIsGreaterThanMinSupportedVersionThenReturnTrueWhenEnabled() =
+    fun `isEnabled - cookie feature enabled and app version greater than min supported - return true`() =
         runTest {
             giveCookieFeatureIsEnabled()
             givenAppVersionIsGreaterThanMinSupportedVersion()
@@ -104,7 +104,7 @@ class CookiesFeatureTogglesPluginTest {
         }
 
     @Test
-    fun whenIsEnabledAndFeatureIsCookieFeatureAndAppVersionIsSmallerThanMinSupportedVersionThenReturnFalseWhenEnabled() =
+    fun `isEnabled - cookie feature and app version smaller than min supported - return false`() =
         runTest {
             giveCookieFeatureIsEnabled()
             givenAppVersionIsSmallerThanMinSupportedVersion()

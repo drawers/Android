@@ -52,7 +52,7 @@ class RealDisplayablePreferredLocationProviderTest {
     }
 
     @Test
-    fun whenNoInternalServerOverrideAndOnlyCountryPreferredThenReturnCountryOnly() = runTest {
+    fun `getDisplayablePreferredLocation - no internal server override and only country preferred - return country only`() = runTest {
         whenever(weServerDebugProvider.getSelectedServerName()).thenReturn(null)
         whenever(netPGeoswitchingRepository.getUserPreferredLocation()).thenReturn(UserPreferredLocation(countryCode = "us"))
 
@@ -60,7 +60,7 @@ class RealDisplayablePreferredLocationProviderTest {
     }
 
     @Test
-    fun whenNoInternalServerOverrideAndNoPreferredThenReturnNull() = runTest {
+    fun `getDisplayablePreferredLocation - no internal server override and no preferred - return null`() = runTest {
         whenever(weServerDebugProvider.getSelectedServerName()).thenReturn(null)
         whenever(netPGeoswitchingRepository.getUserPreferredLocation()).thenReturn(UserPreferredLocation())
 
@@ -68,7 +68,7 @@ class RealDisplayablePreferredLocationProviderTest {
     }
 
     @Test
-    fun whenNoInternalServerOverrideAndCityCountryPreferredThenReturnCityAndCountry() = runTest {
+    fun `getDisplayablePreferredLocation - no internal server override and city country preferred - return city and country`() = runTest {
         whenever(weServerDebugProvider.getSelectedServerName()).thenReturn(null)
         whenever(netPGeoswitchingRepository.getUserPreferredLocation()).thenReturn(UserPreferredLocation(countryCode = "us", cityName = "El Segundo"))
 
@@ -76,7 +76,7 @@ class RealDisplayablePreferredLocationProviderTest {
     }
 
     @Test
-    fun whenInternalServerSetWithCountryThenReturnServerNameAndLocation() = runTest {
+    fun `getDisplayablePreferredLocation - internal server set with country - return server name and location`() = runTest {
         whenever(weServerDebugProvider.getSelectedServerName()).thenReturn("test server")
         whenever(netPGeoswitchingRepository.getUserPreferredLocation()).thenReturn(UserPreferredLocation(countryCode = "se", cityName = "Stockholm"))
 
@@ -84,7 +84,7 @@ class RealDisplayablePreferredLocationProviderTest {
     }
 
     @Test
-    fun whenInternalServerSetWithoutCountryThenReturnServerNameOnly() = runTest {
+    fun `getDisplayablePreferredLocation - internal server set without country - return server name only`() = runTest {
         whenever(weServerDebugProvider.getSelectedServerName()).thenReturn("test server")
         whenever(netPGeoswitchingRepository.getUserPreferredLocation()).thenReturn(UserPreferredLocation())
 

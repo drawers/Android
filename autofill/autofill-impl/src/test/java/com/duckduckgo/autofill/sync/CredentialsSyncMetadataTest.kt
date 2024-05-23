@@ -49,7 +49,7 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenAddNewEntityThenEntityInserted() {
+    fun `addOrUpdate - new entity - entity inserted`() {
         assertNull(dao.getLocalId("syncId"))
 
         testee.addOrUpdate(CredentialsSyncMetadataEntity("syncId", 123L, null, null))
@@ -58,7 +58,7 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenUpdateSyncIdExistingEntityThenEntityUpdated() {
+    fun `addOrUpdate - existing entity - entity updated`() {
         dao.insert(CredentialsSyncMetadataEntity("syncId", 123L, null, null))
 
         testee.addOrUpdate(CredentialsSyncMetadataEntity("syncId", 456L, null, null))
@@ -67,7 +67,7 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenUpdateExistingEntityByLocalIdThenEntityUpdated() {
+    fun `addOrUpdate - update existing entity by local id - entity updated`() {
         dao.insert(CredentialsSyncMetadataEntity("syncId", 123L, null, null))
 
         testee.addOrUpdate(CredentialsSyncMetadataEntity("syncId2", 123L, null, null))
@@ -76,14 +76,14 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenAutofillIdNotFoundThenReturnNull() {
+    fun `getSyncMetadata - autofill ID not found - return null`() {
         val syncId = testee.getSyncMetadata(123L)
 
         assertNull(syncId)
     }
 
     @Test
-    fun whenLoginIdExistsThenReturnSyncMetadata() {
+    fun `getSyncMetadata - loginId exists - return sync metadata`() {
         val loginId = 123L
         val syncId = "syncId"
         dao.insert(CredentialsSyncMetadataEntity(syncId = syncId, localId = loginId, null, null))
@@ -94,14 +94,14 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenCreateSyncIdForNonExistingIdThenReturnNewSyncId() {
+    fun `createSyncId - non-existing id - return new sync id`() {
         val syncId = testee.createSyncId(123L)
 
         assertNotNull(syncId)
     }
 
     @Test
-    fun whenCreateSyncIdForExistingIdThenReturnExistingSyncId() {
+    fun `createSyncId - existing id - return existing syncId`() {
         val loginId = 123L
         val syncId = "syncId"
         dao.insert(CredentialsSyncMetadataEntity(syncId = syncId, localId = loginId, null, null))
@@ -113,14 +113,14 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenLocalIdNotFoundThenReturnNull() {
+    fun `getLocalId - local id not found - return null`() {
         val localId = testee.getLocalId("syncId")
 
         assertNull(localId)
     }
 
     @Test
-    fun whenLocalIdExistsThenReturnLocalId() {
+    fun `getLocalId - localId exists - return localId`() {
         val localId = 123L
         val syncId = "syncId"
         dao.insert(CredentialsSyncMetadataEntity(syncId = syncId, localId = localId, null, null))

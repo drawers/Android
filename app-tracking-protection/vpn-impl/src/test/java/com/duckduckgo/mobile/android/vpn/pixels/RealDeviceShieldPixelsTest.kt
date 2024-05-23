@@ -42,7 +42,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenDeviceShieldEnabledOnSearchThenFireDailyPixel() {
+    fun `deviceShieldEnabledOnSearch - fire daily pixel`() {
         deviceShieldPixels.deviceShieldEnabledOnSearch()
         deviceShieldPixels.deviceShieldEnabledOnSearch()
 
@@ -51,7 +51,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenDeviceShieldDisabledOnSearchThenFireDailyPixel() {
+    fun `deviceShieldDisabledOnSearch - fire daily pixel`() {
         deviceShieldPixels.deviceShieldDisabledOnSearch()
         deviceShieldPixels.deviceShieldDisabledOnSearch()
 
@@ -60,7 +60,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenReportEnableThenFireUniqueAndDailyPixel() {
+    fun `reportEnabled - fires unique and daily pixel`() {
         deviceShieldPixels.reportEnabled()
         deviceShieldPixels.reportEnabled()
 
@@ -70,7 +70,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenReportDisableThenFireDailyPixel() {
+    fun `reportDisabled - fire daily pixel`() {
         deviceShieldPixels.reportDisabled()
         deviceShieldPixels.reportDisabled()
 
@@ -79,7 +79,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenEnableFromReminderNotificationThenFireUniqueDailyAndCountPixels() {
+    fun `enableFromReminderNotification - fire unique daily and count pixels`() {
         deviceShieldPixels.enableFromReminderNotification()
         deviceShieldPixels.enableFromReminderNotification()
 
@@ -90,7 +90,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenEnableFromSettingsThenFireUniqueDailyAndCountPixels() {
+    fun `enableFromOnboarding - fire unique daily and count pixels`() {
         deviceShieldPixels.enableFromOnboarding()
         deviceShieldPixels.enableFromOnboarding()
 
@@ -101,7 +101,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenEnableFromSettingsTileThenFireUniqueDailyAndCountPixels() {
+    fun `enableFromQuickSettingsTile - fire unique daily and count pixels`() {
         deviceShieldPixels.enableFromQuickSettingsTile()
         deviceShieldPixels.enableFromQuickSettingsTile()
 
@@ -112,7 +112,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenEnableFromPrivacyReportThenFireUniqueDailyAndCountPixels() {
+    fun `enableFromSummaryTrackerActivity - fire unique daily and count pixels`() {
         deviceShieldPixels.enableFromSummaryTrackerActivity()
         deviceShieldPixels.enableFromSummaryTrackerActivity()
 
@@ -123,7 +123,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenDisableFromSettingsTileThenFireDailyAndCountPixels() {
+    fun `disableFromQuickSettingsTile - fire daily and count pixels`() {
         deviceShieldPixels.disableFromQuickSettingsTile()
         deviceShieldPixels.disableFromQuickSettingsTile()
 
@@ -133,7 +133,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenDidShowDailyNotificationThenFireDailyPixel() {
+    fun `didShowDailyNotification - fire daily pixel`() {
         deviceShieldPixels.didShowDailyNotification(0)
         deviceShieldPixels.didShowDailyNotification(1)
 
@@ -143,7 +143,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenDidPressDailyNotificationThenFireDailyPixel() {
+    fun `didPressOnDailyNotification - fire daily pixel`() {
         deviceShieldPixels.didPressOnDailyNotification(0)
         deviceShieldPixels.didPressOnDailyNotification(1)
 
@@ -153,7 +153,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenDidShowWeeklyNotificationThenFireDailyPixel() {
+    fun `didShowWeeklyNotification - fire daily pixel`() {
         deviceShieldPixels.didShowWeeklyNotification(0)
         deviceShieldPixels.didShowWeeklyNotification(1)
 
@@ -163,7 +163,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenDidPressWeeklyNotificationThenFireDailyPixel() {
+    fun `didPressOnWeeklyNotification - fire daily pixel`() {
         deviceShieldPixels.didPressOnWeeklyNotification(0)
         deviceShieldPixels.didPressOnWeeklyNotification(1)
 
@@ -173,7 +173,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenDidPressOngoingNotificationThenFireDailyAndCountPixels() {
+    fun `didPressOngoingNotification - fire daily and count pixels`() {
         deviceShieldPixels.didPressOngoingNotification()
         deviceShieldPixels.didPressOngoingNotification()
 
@@ -183,7 +183,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenDidShowReminderNotificationThenFireDailyAndCountPixels() {
+    fun `didShowReminderNotification - fire daily and count pixels`() {
         deviceShieldPixels.didShowReminderNotification()
         deviceShieldPixels.didShowReminderNotification()
 
@@ -193,7 +193,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenDidPressReminderNotificationThenFireDailyAndCountPixels() {
+    fun `didPressReminderNotification - fire daily and count pixels`() {
         deviceShieldPixels.didPressReminderNotification()
         deviceShieldPixels.didPressReminderNotification()
 
@@ -203,7 +203,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenDidShowNewTabSummaryThenFireUniqueDailyAndCountPixels() {
+    fun `didShowNewTabSummary - fire unique daily and count pixels`() {
         deviceShieldPixels.didShowNewTabSummary()
         deviceShieldPixels.didShowNewTabSummary()
 
@@ -214,7 +214,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenDidPressNewTabSummaryThenFireDailyAndCountPixels() {
+    fun `didPressNewTabSummary - fire daily and count pixels`() {
         deviceShieldPixels.didPressNewTabSummary()
         deviceShieldPixels.didPressNewTabSummary()
 
@@ -224,7 +224,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenDidShowSummaryTrackerActivityThenFireUniqueDailyAndCountPixels() {
+    fun `didShowSummaryTrackerActivity - fire unique daily and count pixels`() {
         deviceShieldPixels.didShowSummaryTrackerActivity()
         deviceShieldPixels.didShowSummaryTrackerActivity()
 
@@ -235,7 +235,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenDidShowDetailedTrackerActivityThenFireUniqueDailyAndCountPixels() {
+    fun `didShowDetailedTrackerActivity - fire unique daily and count pixels`() {
         deviceShieldPixels.didShowDetailedTrackerActivity()
         deviceShieldPixels.didShowDetailedTrackerActivity()
 
@@ -246,7 +246,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenStartErrorThenFireDailyAndCountPixels() {
+    fun `startError - fire daily and count pixels`() {
         deviceShieldPixels.startError()
         deviceShieldPixels.startError()
 
@@ -257,7 +257,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenAutomaticRestartThenFireDailyAndCountPixels() {
+    fun `automaticRestart - fire daily and count pixels`() {
         deviceShieldPixels.automaticRestart()
         deviceShieldPixels.automaticRestart()
 
@@ -267,7 +267,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenSuddenKillBySystemThenFireDailyAndCountPixels() {
+    fun `fireDailyAndCountPixels - sudden kill by system`() {
         deviceShieldPixels.suddenKillBySystem()
         deviceShieldPixels.suddenKillBySystem()
 
@@ -278,7 +278,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenSuddenKillByVpnRevokedThenFireDailyAndCountPixels() {
+    fun `firePixels - sudden kill by VPN revoked - daily and count`() {
         deviceShieldPixels.suddenKillByVpnRevoked()
         deviceShieldPixels.suddenKillByVpnRevoked()
 
@@ -289,7 +289,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenPrivacyReportArticleDisplayedThenFireCountPixel() {
+    fun `privacyReportArticleDisplayed - fire count pixel`() {
         deviceShieldPixels.privacyReportArticleDisplayed()
         deviceShieldPixels.privacyReportArticleDisplayed()
 
@@ -299,7 +299,7 @@ class RealDeviceShieldPixelsTest {
     }
 
     @Test
-    fun whenReportUnprotectedAppsBucketCalledThenFirePixels() {
+    fun `reportUnprotectedAppsBucket - fire pixels`() {
         val bucketSize = 20
         deviceShieldPixels.reportUnprotectedAppsBucket(bucketSize)
 

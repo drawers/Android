@@ -54,7 +54,7 @@ class RealTrackerAllowlistRepositoryTest {
     }
 
     @Test
-    fun whenRepositoryIsCreatedThenExceptionsLoadedIntoMemory() {
+    fun `RealTrackerAllowlistRepository - repository created - exceptions loaded into memory`() {
         givenHttpsDaoContainsExceptions()
 
         testee =
@@ -69,7 +69,7 @@ class RealTrackerAllowlistRepositoryTest {
     }
 
     @Test
-    fun whenUpdateAllThenUpdateAllCalled() =
+    fun `updateAll - updateAll called`() =
         runTest {
             testee =
                 RealTrackerAllowlistRepository(
@@ -85,7 +85,7 @@ class RealTrackerAllowlistRepositoryTest {
         }
 
     @Test
-    fun whenUpdateAllThenPreviousExceptionsAreCleared() =
+    fun `updateAll - previous exceptions are cleared`() =
         runTest {
             givenHttpsDaoContainsExceptions()
             testee =
