@@ -133,6 +133,8 @@ class TestFunctionNameDetector : Detector(), SourceCodeScanner {
         method: KotlinUMethod,
         context: JavaContext
     ): LintFix? {
+        Thread.sleep(200) // account for rate limit in Open AI APIs
+
         if (Scope.ALL_JAVA_FILES !in context.scope) {
             // We're in the IDE so don't try and use the LLM to generate a LintFix.
             return null
