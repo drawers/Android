@@ -185,7 +185,7 @@ class TestFunctionNameDetector : Detector(), SourceCodeScanner {
         )
 
         private val model: ChatLanguageModel by lazy(SYNCHRONIZED) {
-            OpenAiChatModel.builder().apiKey(System.getProperty("OPEN_AI_API_KEY")).modelName("gpt-4o").temperature(0.0).seed(0).build()
+            OpenAiChatModel.builder().apiKey(System.getProperty("open.ai.api.key")).modelName("gpt-4o").temperature(0.0).seed(0).build()
         }
 
         private val prompt: SystemMessage = SystemMessage.from(
