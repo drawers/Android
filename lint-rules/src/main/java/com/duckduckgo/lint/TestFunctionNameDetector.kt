@@ -33,6 +33,7 @@ import dev.langchain4j.data.message.SystemMessage
 import dev.langchain4j.data.message.UserMessage
 import dev.langchain4j.model.chat.ChatLanguageModel
 import dev.langchain4j.model.ollama.OllamaChatModel
+import dev.langchain4j.model.openai.OpenAiChatModel
 import org.jetbrains.kotlin.psi.KtNamedDeclaration
 import org.jetbrains.kotlin.toKtPsiSourceElement
 import org.jetbrains.uast.UClass
@@ -41,6 +42,7 @@ import org.jetbrains.uast.getParentOfType
 import org.jetbrains.uast.kotlin.KotlinUMethod
 import org.jetbrains.uast.skipParentOfType
 import java.util.EnumSet
+import java.util.Properties
 import kotlin.LazyThreadSafetyMode.SYNCHRONIZED
 import kotlin.io.path.Path
 
@@ -183,12 +185,7 @@ class TestFunctionNameDetector : Detector(), SourceCodeScanner {
         )
 
         private val model: ChatLanguageModel by lazy(SYNCHRONIZED) {
-            OllamaChatModel.builder().modelName("llama3").temperature(0.0).seed(0)
-                /**
-                 * Ollama binds 127.0.0.1 port 11434 by default. Change the bind address with the OLLAMA_HOST environment variable
-                 * See https://github.com/ollama/ollama/blob/main/docs/faq.md
-                 */
-                .baseUrl("http://127.0.0.1:11434").build()
+            OpenAiChatModel.builder().apiKey(System.getProperty("OPEN_AI_API_KEY")).modelName("gpt-4o").temperature(0.0).seed(0).build()
         }
 
         private val prompt: SystemMessage = SystemMessage.from(
