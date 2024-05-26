@@ -39,7 +39,7 @@ class RealBrokenSiteLastSentReportTest {
     }
 
     @Test
-    fun whenGetLastSentDayCalledWithHostnameThenGetLastSentDayFromRepositoryIsCalled() = runTest {
+    fun `getlastsentday - get last sent day from repository - called with hostname`() = runTest {
         val hostname = "www.example.com"
 
         testee.getLastSentDay(hostname)
@@ -48,7 +48,7 @@ class RealBrokenSiteLastSentReportTest {
     }
 
     @Test
-    fun whenSetLastSentDayCalledWithHostnameThenSetLastSentDayFromRepositoryIsCalled() = runTest {
+    fun `setLastSentDay - set last sent day from repository called with hostname`() = runTest {
         val hostname = "www.example.com"
 
         testee.setLastSentDay(hostname)

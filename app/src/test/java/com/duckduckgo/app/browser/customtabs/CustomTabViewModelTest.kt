@@ -30,7 +30,7 @@ class CustomTabViewModelTest {
     }
 
     @Test
-    fun whenCustomTabCreatedThenPixelFired() = runTest {
+    fun `onCustomTabCreated - viewState updated - pixel fired`() = runTest {
         testee.onCustomTabCreated("url", 100)
 
         testee.viewState.test {
@@ -44,14 +44,14 @@ class CustomTabViewModelTest {
     }
 
     @Test
-    fun whenCustomTabShownThenCustomTabDetectorSetToTrue() {
+    fun `onShowCustomTab - custom tab detector set to true`() {
         testee.onShowCustomTab()
 
         verify(mockCustomTabDetector).setCustomTab(true)
     }
 
     @Test
-    fun whenCustomTabClosedThenCustomTabDetectorSetToFalse() {
+    fun `onCloseCustomTab - custom tab detector set to false`() {
         testee.onCloseCustomTab()
 
         verify(mockCustomTabDetector).setCustomTab(false)

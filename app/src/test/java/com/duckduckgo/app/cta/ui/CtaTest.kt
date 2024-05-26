@@ -65,61 +65,61 @@ class CtaTest {
     }
 
     @Test
-    fun whenCtaIsSurveyReturnEmptyOkParameters() {
+    fun `pixelOkParameters - cta is survey return empty ok parameters`() {
         val testee = HomePanelCta.Survey(Survey("abc", "http://example.com", 1, Survey.Status.SCHEDULED))
         assertTrue(testee.pixelOkParameters().isEmpty())
     }
 
     @Test
-    fun whenCtaIsSurveyReturnEmptyCancelParameters() {
+    fun `whenCtaIsSurvey - return empty cancel parameters`() {
         val testee = HomePanelCta.Survey(Survey("abc", "http://example.com", 1, Survey.Status.SCHEDULED))
         assertTrue(testee.pixelCancelParameters().isEmpty())
     }
 
     @Test
-    fun whenCtaIsSurveyReturnEmptyShownParameters() {
+    fun `whenCtaIsSurvey - pixel shown parameters empty`() {
         val testee = HomePanelCta.Survey(Survey("abc", "http://example.com", 1, Survey.Status.SCHEDULED))
         assertTrue(testee.pixelShownParameters().isEmpty())
     }
 
     @Test
-    fun whenCtaIsAddWidgetAutoReturnEmptyOkParameters() {
+    fun `pixelOkParameters - auto return empty`() {
         val testee = HomePanelCta.AddWidgetAuto
         assertTrue(testee.pixelOkParameters().isEmpty())
     }
 
     @Test
-    fun whenCtaIsAddWidgetAutoReturnEmptyCancelParameters() {
+    fun `pixelCancelParameters - auto return empty`() {
         val testee = HomePanelCta.AddWidgetAuto
         assertTrue(testee.pixelCancelParameters().isEmpty())
     }
 
     @Test
-    fun whenCtaIsAddWidgetAutoReturnEmptyShownParameters() {
+    fun `pixelShownParameters - add widget auto return empty`() {
         val testee = HomePanelCta.AddWidgetAuto
         assertTrue(testee.pixelShownParameters().isEmpty())
     }
 
     @Test
-    fun whenCtaIsAddWidgetInstructionsReturnEmptyOkParameters() {
+    fun `pixelOkParameters - add widget instructions return empty ok parameters`() {
         val testee = HomePanelCta.AddWidgetInstructions
         assertTrue(testee.pixelOkParameters().isEmpty())
     }
 
     @Test
-    fun whenCtaIsAddWidgetInstructionsReturnEmptyCancelParameters() {
+    fun `addWidgetInstructions - return empty cancel parameters`() {
         val testee = HomePanelCta.AddWidgetInstructions
         assertTrue(testee.pixelCancelParameters().isEmpty())
     }
 
     @Test
-    fun whenCtaIsAddWidgetInstructionsReturnEmptyShownParameters() {
+    fun `addWidgetInstructions - empty shown parameters`() {
         val testee = HomePanelCta.AddWidgetInstructions
         assertTrue(testee.pixelShownParameters().isEmpty())
     }
 
     @Test
-    fun whenCtaIsBubbleTypeReturnCorrectCancelParameters() {
+    fun `pixelCancelParameters - cta is bubble type - correct cancel parameters`() {
         val testee = DaxBubbleCta.DaxIntroCta(mockOnboardingStore, mockAppInstallStore)
         val value = testee.pixelCancelParameters()
 
@@ -129,7 +129,7 @@ class CtaTest {
     }
 
     @Test
-    fun whenCtaIsBubbleTypeReturnCorrectOkParameters() {
+    fun `pixelOkParameters - cta is bubble type - correct ok parameters`() {
         val testee = DaxBubbleCta.DaxIntroCta(mockOnboardingStore, mockAppInstallStore)
         val value = testee.pixelOkParameters()
 
@@ -139,7 +139,7 @@ class CtaTest {
     }
 
     @Test
-    fun whenCtaIsBubbleTypeReturnCorrectShownParameters() {
+    fun `pixelShownParameters - cta is bubble type - correct shown parameters`() {
         whenever(mockOnboardingStore.onboardingDialogJourney).thenReturn(null)
         whenever(mockAppInstallStore.installTimestamp).thenReturn(System.currentTimeMillis())
 
@@ -153,7 +153,7 @@ class CtaTest {
     }
 
     @Test
-    fun whenAddCtaToHistoryThenReturnCorrectValue() {
+    fun `addCtaToHistory - returns correct value`() {
         whenever(mockOnboardingStore.onboardingDialogJourney).thenReturn(null)
         whenever(mockAppInstallStore.installTimestamp).thenReturn(System.currentTimeMillis())
 
@@ -163,7 +163,7 @@ class CtaTest {
     }
 
     @Test
-    fun whenAddCtaToHistoryOnDay3ThenReturnCorrectValue() {
+    fun `addCtaToHistory - on day 3 - returns correct value`() {
         whenever(mockOnboardingStore.onboardingDialogJourney).thenReturn(null)
         whenever(mockAppInstallStore.installTimestamp).thenReturn(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(3))
 
@@ -173,7 +173,7 @@ class CtaTest {
     }
 
     @Test
-    fun whenAddCtaToHistoryOnDay4ThenReturn3AsDayValue() {
+    fun `addCtaToHistory - day 4 - return 3 as day value`() {
         whenever(mockOnboardingStore.onboardingDialogJourney).thenReturn(null)
         whenever(mockAppInstallStore.installTimestamp).thenReturn(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(4))
 
@@ -183,7 +183,7 @@ class CtaTest {
     }
 
     @Test
-    fun whenAddCtaToHistoryContainsHistoryThenConcatenateNewValue() {
+    fun `addCtaToHistory - contains history - concatenate new value`() {
         val ctaHistory = "s:0-t:1"
         whenever(mockOnboardingStore.onboardingDialogJourney).thenReturn(ctaHistory)
         whenever(mockAppInstallStore.installTimestamp).thenReturn(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1))
@@ -196,7 +196,7 @@ class CtaTest {
     }
 
     @Test
-    fun whenCtaIsBubbleTypeThenConcatenateJourneyStoredValueInPixel() {
+    fun `pixelShownParameters - cta is bubble type - concatenate journey stored value in pixel`() {
         val existingJourney = "s:0-t:1"
         whenever(mockOnboardingStore.onboardingDialogJourney).thenReturn(existingJourney)
         whenever(mockAppInstallStore.installTimestamp).thenReturn(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1))
@@ -208,21 +208,21 @@ class CtaTest {
     }
 
     @Test
-    fun whenCanSendPixelAndCtaNotPartOfHistoryThenReturnTrue() {
+    fun `canSend - onboarding dialog journey s·0 - returns true`() {
         whenever(mockOnboardingStore.onboardingDialogJourney).thenReturn("s:0")
         val testee = DaxBubbleCta.DaxEndCta(mockOnboardingStore, mockAppInstallStore)
         assertTrue(testee.canSendShownPixel())
     }
 
     @Test
-    fun whenCanSendPixelAndCtaNotPartOfHistoryButIsASubstringThenReturnTrue() {
+    fun `canSend - onboarding dialog journey substring - returns true`() {
         whenever(mockOnboardingStore.onboardingDialogJourney).thenReturn("s:0-te:0")
         val testee = DaxBubbleCta.DaxEndCta(mockOnboardingStore, mockAppInstallStore)
         assertTrue(testee.canSendShownPixel())
     }
 
     @Test
-    fun whenCanSendPixelAndCtaIsPartOfHistoryThenReturnFalse() {
+    fun `canSendShownPixel - onboarding dialog journey - returns false`() {
         whenever(mockOnboardingStore.onboardingDialogJourney).thenReturn("i:0-e:0-s:0")
 
         val testee = DaxBubbleCta.DaxEndCta(mockOnboardingStore, mockAppInstallStore)
@@ -230,7 +230,7 @@ class CtaTest {
     }
 
     @Test
-    fun whenCtaIsDialogTypeReturnCorrectCancelParameters() {
+    fun `pixelCancelParameters - cta is dialog type - correct cancel parameters`() {
         val testee = DaxDialogCta.DaxSerpCta(mockOnboardingStore, mockAppInstallStore)
 
         val value = testee.pixelCancelParameters()
@@ -240,7 +240,7 @@ class CtaTest {
     }
 
     @Test
-    fun whenCtaIsDialogTypeReturnCorrectOkParameters() {
+    fun `pixelOkParameters - cta is dialog type - correct ok parameters`() {
         val testee = DaxDialogCta.DaxSerpCta(mockOnboardingStore, mockAppInstallStore)
 
         val value = testee.pixelOkParameters()
@@ -250,7 +250,7 @@ class CtaTest {
     }
 
     @Test
-    fun whenCtaIsDialogTypeReturnCorrectShownParameters() {
+    fun `pixelShownParameters - cta is dialog type - correct shown parameters`() {
         whenever(mockOnboardingStore.onboardingDialogJourney).thenReturn(null)
         whenever(mockAppInstallStore.installTimestamp).thenReturn(System.currentTimeMillis())
         val testee = DaxDialogCta.DaxSerpCta(mockOnboardingStore, mockAppInstallStore)
@@ -263,7 +263,7 @@ class CtaTest {
     }
 
     @Test
-    fun whenCtaIsDialogTypeThenConcatenateJourneyStoredValueInPixel() {
+    fun `pixelShownParameters - cta is dialog type - concatenates journey stored value in pixel`() {
         val existingJourney = "s:0-t:1"
         whenever(mockOnboardingStore.onboardingDialogJourney).thenReturn(existingJourney)
         whenever(mockAppInstallStore.installTimestamp).thenReturn(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1))
@@ -275,7 +275,7 @@ class CtaTest {
     }
 
     @Test
-    fun whenMoreThanTwoTrackersBlockedReturnFirstTwoWithMultipleString() {
+    fun `getDaxText - more than two trackers blocked - first two with multiple string`() {
         val trackers = listOf(
             TestingEntity("Facebook", "Facebook", 9.0),
             TestingEntity("Other", "Other", 9.0),
@@ -289,7 +289,7 @@ class CtaTest {
     }
 
     @Test
-    fun whenTwoTrackersBlockedReturnThemWithZeroString() {
+    fun `getDaxText - two trackers blocked - return them with zero string`() {
         val trackers = listOf(
             TestingEntity("Facebook", "Facebook", 9.0),
             TestingEntity("Other", "Other", 9.0),
@@ -302,7 +302,7 @@ class CtaTest {
     }
 
     @Test
-    fun whenTrackersBlockedReturnThemSortingByPrevalence() {
+    fun `getDaxText - trackers blocked - returns them sorting by prevalence`() {
         val trackers = listOf(
             TrackingEvent(
                 documentUrl = "facebook.com",
@@ -338,7 +338,7 @@ class CtaTest {
     }
 
     @Test
-    fun whenTrackersBlockedReturnOnlyTrackersWithDisplayName() {
+    fun `getDaxText - trackers blocked - only display name`() {
         val trackers = listOf(
             TrackingEvent(
                 documentUrl = "facebook.com",
@@ -373,7 +373,7 @@ class CtaTest {
     }
 
     @Test
-    fun whenTrackersBlockedReturnOnlyTrackersBlocked() {
+    fun `getDaxText - trackers blocked - returns only blocked trackers`() {
         val trackers = listOf(
             TrackingEvent(
                 documentUrl = "facebook.com",
@@ -408,7 +408,7 @@ class CtaTest {
     }
 
     @Test
-    fun whenMultipleTrackersFromSameNetworkBlockedReturnOnlyOneWithZeroString() {
+    fun `getDaxText - multiple trackers from same network blocked - returns one with zero string`() {
         val trackers = listOf(
             TestingEntity("Facebook", "Facebook", 9.0),
             TestingEntity("Facebook", "Facebook", 9.0),
@@ -422,7 +422,7 @@ class CtaTest {
     }
 
     @Test
-    fun whenTryClearDataCtaShownThenConcatenateJourneyStoredValueInPixel() {
+    fun `pixelShown - try clear data cta shown - concatenate journey stored value in pixel`() {
         val existingJourney = "s:0-t:1"
         whenever(mockOnboardingStore.onboardingDialogJourney).thenReturn(existingJourney)
         whenever(mockAppInstallStore.installTimestamp).thenReturn(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1))

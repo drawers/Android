@@ -41,19 +41,19 @@ class TrackingParametersPluginTest {
     }
 
     @Test
-    fun whenFeatureNameDoesNotMatchTrackingParametersThenReturnFalse() {
+    fun `store - feature name does not match tracking parameters - returns false`() {
         PrivacyFeatureName.values().filter { it != FEATURE_NAME }.forEach {
             Assert.assertFalse(testee.store(it.value, EMPTY_JSON_STRING))
         }
     }
 
     @Test
-    fun whenFeatureNameMatchesTrackingParametersThenReturnTrue() {
+    fun `store - feature name matches tracking parameters - returns true`() {
         assertTrue(testee.store(FEATURE_NAME_VALUE, EMPTY_JSON_STRING))
     }
 
     @Test
-    fun whenFeatureNameMatchesTrackingParametersAndIsEnabledThenStoreFeatureEnabled() {
+    fun `store - feature name matches tracking parameters and is enabled - store feature enabled`() {
         val jsonString = FileUtilities.loadText(TrackingParametersPluginTest::class.java.classLoader!!, "json/tracking_parameters.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -62,7 +62,7 @@ class TrackingParametersPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesTrackingParametersAndIsNotEnabledThenStoreFeatureDisabled() {
+    fun `store - feature name matches tracking parameters and is not enabled - store feature disabled`() {
         val jsonString = FileUtilities.loadText(
             TrackingParametersPluginTest::class.java.classLoader!!,
             "json/tracking_parameters_disabled.json",
@@ -74,7 +74,7 @@ class TrackingParametersPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesTrackingParametersAndHasMinSupportedVersionThenStoreMinSupportedVersion() {
+    fun `store - feature name matches tracking parameters and has min supported version - store min supported version`() {
         val jsonString = FileUtilities.loadText(
             TrackingParametersPluginTest::class.java.classLoader!!,
             "json/tracking_parameters_min_supported_version.json",
@@ -86,7 +86,7 @@ class TrackingParametersPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesTrackingParametersThenUpdateAllExistingValues() {
+    fun `whenFeatureNameMatchesTrackingParametersThenUpdateAllExistingValues - update all existing values`() {
         val jsonString = FileUtilities.loadText(TrackingParametersPluginTest::class.java.classLoader!!, "json/tracking_parameters.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)

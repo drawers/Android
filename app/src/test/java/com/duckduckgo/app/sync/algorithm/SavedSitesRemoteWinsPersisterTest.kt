@@ -108,7 +108,7 @@ class SavedSitesRemoteWinsPersisterTest {
     }
 
     @Test
-    fun whenProcessingBookmarkNotPresentLocallyThenBookmarkIsInserted() {
+    fun `processBookmark - bookmark not present locally - inserted`() {
         val bookmark = Bookmark("bookmark1", "title", "www.example.com", "folder2", twoHoursAgo)
         assertTrue(repository.getBookmarkById(bookmark.id) == null)
 
@@ -118,7 +118,7 @@ class SavedSitesRemoteWinsPersisterTest {
     }
 
     @Test
-    fun whenProcessingDeletedBookmarkNotPresentLocallyThenBookmarkIsNotInserted() {
+    fun `processBookmark - processing deleted bookmark not present locally - not inserted`() {
         val bookmark = Bookmark("bookmark1", "title", "www.example.com", "folder2", twoHoursAgo, deleted = "1")
         assertTrue(repository.getBookmarkById(bookmark.id) == null)
 
@@ -128,7 +128,7 @@ class SavedSitesRemoteWinsPersisterTest {
     }
 
     @Test
-    fun whenProcessingRemoteBookmarkPresentLocallyThenBookmarkIsReplaced() {
+    fun `processBookmark - processing remote bookmark present locally - bookmark is replaced`() {
         val bookmark = Bookmark("bookmark1", "title", "www.example.com", "folder2", twoHoursAgo)
         repository.insert(bookmark)
 
@@ -143,7 +143,7 @@ class SavedSitesRemoteWinsPersisterTest {
     }
 
     @Test
-    fun whenProcessingDeletedRemoteBookmarkThenBookmarkIsDeleted() {
+    fun `processBookmark - processing deleted remote bookmark - bookmark is deleted`() {
         val bookmark = Bookmark("bookmark1", "title", "www.example.com", "folder2", twoHoursAgo)
         repository.insert(bookmark)
 
@@ -157,7 +157,7 @@ class SavedSitesRemoteWinsPersisterTest {
     }
 
     @Test
-    fun whenProcessingEmptyFavouriteFoldersThenFavouritesAreAdded() {
+    fun `processFavouritesFolder - empty favourite folders - favourites are added`() {
         // given some bookmarks
         val firstBatch = BookmarkTestUtils.givenSomeBookmarks(10)
         savedSitesEntitiesDao.insertList(firstBatch)
@@ -172,7 +172,7 @@ class SavedSitesRemoteWinsPersisterTest {
     }
 
     @Test
-    fun whenProcessingNotEmptyFavouriteFoldersThenFavouritesAreReplaced() {
+    fun `processFavouritesFolder - favourites replaced`() {
         // given some favourites
         val firstBatch = BookmarkTestUtils.givenSomeBookmarks(10)
         savedSitesEntitiesDao.insertList(firstBatch)
@@ -193,7 +193,7 @@ class SavedSitesRemoteWinsPersisterTest {
     }
 
     @Test
-    fun whenProcessingFolderNotPresentLocallyThenFolderIsInserted() {
+    fun `processBookmarkFolder - folder not present locally - folder inserted`() {
         val folder = BookmarkFolder("folder1", "title", SavedSitesNames.BOOKMARKS_ROOT, 0, 0)
         assertTrue(repository.getFolder(folder.id) == null)
 
@@ -203,7 +203,7 @@ class SavedSitesRemoteWinsPersisterTest {
     }
 
     @Test
-    fun whenProcessingDeletedFolderPresentLocallyThenFolderIsDeleted() {
+    fun `processBookmarkFolder - processing deleted folder present locally - folder is deleted`() {
         val folder = BookmarkFolder("folder1", "title", SavedSitesNames.BOOKMARKS_ROOT, 0, 0)
         repository.insert(folder)
         assertTrue(repository.getFolder(folder.id) != null)
@@ -215,7 +215,7 @@ class SavedSitesRemoteWinsPersisterTest {
     }
 
     @Test
-    fun whenProcessingFolderThenFolderIsReplaced() {
+    fun `processBookmarkFolder - folder replaced`() {
         val folder = BookmarkFolder("folder1", "title", SavedSitesNames.BOOKMARKS_ROOT, 0, 0, lastModified = twoHoursAgo)
         repository.insert(folder)
         assertTrue(repository.getFolder(folder.id) != null)

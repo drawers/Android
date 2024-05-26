@@ -41,7 +41,7 @@ class SyncSchedulerTest {
     }
 
     @Test
-    fun whenFirstSyncThenSyncCanBeExecuted() {
+    fun `sync - first sync - execute`() {
         whenever(syncStateRepository.current()).thenReturn(null)
 
         val syncOperation = syncScheduler.scheduleOperation()
@@ -50,7 +50,7 @@ class SyncSchedulerTest {
     }
 
     @Test
-    fun whenLastSyncFailedThenSyncIsExecuted() {
+    fun `syncStateRepository - last sync failed - execute sync operation`() {
         val lastSyncTimestamp = timestamp(Instant.now().minus(5, ChronoUnit.MINUTES))
         val lastSync = SyncAttempt(timestamp = lastSyncTimestamp, state = FAIL)
 
@@ -62,7 +62,7 @@ class SyncSchedulerTest {
     }
 
     @Test
-    fun whenLastSyncInProgressThenSyncIsDiscarded() {
+    fun `syncScheduler - last sync in progress - discard`() {
         val lastSyncTimestamp = timestamp(Instant.now().minus(5, ChronoUnit.MINUTES))
         val lastSync = SyncAttempt(timestamp = lastSyncTimestamp, state = IN_PROGRESS)
 
@@ -74,7 +74,7 @@ class SyncSchedulerTest {
     }
 
     @Test
-    fun whenLastSyncWasBeforeDebouncePeriodThenSyncIsDiscarded() {
+    fun `syncScheduler - last sync before debounce period - discard`() {
         val lastSyncTimestamp = timestamp(Instant.now().minus(5, ChronoUnit.MINUTES))
         val lastSync = SyncAttempt(timestamp = lastSyncTimestamp, state = SUCCESS)
 
@@ -86,7 +86,7 @@ class SyncSchedulerTest {
     }
 
     @Test
-    fun whenLastSyncWasAfterDebouncePeriodThenSyncIsDiscarded() {
+    fun `syncScheduler - last sync after debounce period - sync is discarded`() {
         val lastSyncTimestamp = timestamp(Instant.now().minus(30, ChronoUnit.MINUTES))
         val lastSync = SyncAttempt(timestamp = lastSyncTimestamp, state = SUCCESS)
 

@@ -60,14 +60,14 @@ class ReinstallAtbListenerTest {
     }
 
     @Test
-    fun whenBeforeAtbInitIsCalledThenClearBackupServiceSharedPreferences() = runTest {
+    fun `beforeAtbInit - clear backup service shared preferences`() = runTest {
         testee.beforeAtbInit()
 
         verify(mockBackupDataStore).clearBackupPreferences()
     }
 
     @Test
-    fun whenAndroidVersionIs10OrLowerThenDontCheckForDownloadsDirectory() = runTest {
+    fun `beforeAtbInit - android version 10 or lower - don't check for downloads directory`() = runTest {
         whenever(mockAppBuildConfig.sdkInt).thenReturn(Build.VERSION_CODES.Q)
 
         testee.beforeAtbInit()
@@ -76,7 +76,7 @@ class ReinstallAtbListenerTest {
     }
 
     @Test
-    fun whenReturningUserHasBeenAlreadyCheckedThenDontCheckForDownloadsDirectory() = runTest {
+    fun `beforeAtbInit - returning user already checked - don't check for downloads directory`() = runTest {
         whenever(mockAppBuildConfig.sdkInt).thenReturn(Build.VERSION_CODES.R)
         setReturningUserChecked()
 
@@ -86,7 +86,7 @@ class ReinstallAtbListenerTest {
     }
 
     @Test
-    fun whenDDGDirectoryIsFoundThenUpdateVariantForReturningUser() = runTest {
+    fun `beforeAtbInit - DDG directory found - update variant for returning user`() = runTest {
         whenever(mockAppBuildConfig.sdkInt).thenReturn(Build.VERSION_CODES.R)
         val mockDownloadsDirectory: File = mock {
             on { list() } doReturn arrayOf("DuckDuckGo")
@@ -100,7 +100,7 @@ class ReinstallAtbListenerTest {
     }
 
     @Test
-    fun whenDDGDirectoryIsNotFoundThenVariantForReturningUserIsNotSet() = runTest {
+    fun `beforeAtbInit - DDG directory not found - variant for returning user not set`() = runTest {
         whenever(mockAppBuildConfig.sdkInt).thenReturn(Build.VERSION_CODES.R)
         val mockDownloadsDirectory: File = mock {
             on { list() } doReturn emptyArray()
@@ -114,7 +114,7 @@ class ReinstallAtbListenerTest {
     }
 
     @Test
-    fun whenDDGDirectoryIsNotFoundThenCreateIt() = runTest {
+    fun `beforeAtbInit - DDG directory not found - create it`() = runTest {
         whenever(mockAppBuildConfig.sdkInt).thenReturn(Build.VERSION_CODES.R)
         val mockDownloadsDirectory: File = mock {
             on { list() } doReturn emptyArray()

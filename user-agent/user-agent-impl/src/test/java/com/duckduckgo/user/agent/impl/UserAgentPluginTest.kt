@@ -41,19 +41,19 @@ class UserAgentPluginTest {
     }
 
     @Test
-    fun whenFeatureNameDoesNotMatchUserAgentThenReturnFalse() {
+    fun `store - feature name does not match user agent - returns false`() {
         UserAgentFeatureName.values().filter { it != FEATURE_NAME }.forEach {
             assertFalse(testee.store(it.value, EMPTY_JSON_STRING))
         }
     }
 
     @Test
-    fun whenFeatureNameMatchesUserAgentThenReturnTrue() {
+    fun `store - feature name matches user agent - returns true`() {
         assertTrue(testee.store(FEATURE_NAME_VALUE, EMPTY_JSON_STRING))
     }
 
     @Test
-    fun whenFeatureNameMatchesUserAgentAndIsEnabledThenStoreFeatureEnabled() {
+    fun `store - feature name matches user agent and is enabled - store feature enabled`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/useragent.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -62,7 +62,7 @@ class UserAgentPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesUserAgentAndIsNotEnabledThenStoreFeatureDisabled() {
+    fun `store - feature name matches user agent and is not enabled - store feature disabled`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/useragent_disabled.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -71,7 +71,7 @@ class UserAgentPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesUserAgentAndHasMinSupportedVersionThenStoreMinSupportedVersion() {
+    fun `store - feature name matches user agent and has min supported version - stores min supported version`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/useragent_min_supported_version.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -80,7 +80,7 @@ class UserAgentPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesUserAgentThenUpdateAllExistingExceptions() {
+    fun `store - feature name matches user agent - update all existing exceptions`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/useragent.json")
         val exceptionsCaptor = argumentCaptor<List<UserAgentExceptionEntity>>()
 

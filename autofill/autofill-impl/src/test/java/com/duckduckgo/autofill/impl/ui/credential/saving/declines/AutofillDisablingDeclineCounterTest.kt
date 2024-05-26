@@ -50,13 +50,13 @@ class AutofillDisablingDeclineCounterTest {
     }
 
     @Test
-    fun whenInitialisedThenNoPreviouslyStoredDomain() = runTest {
+    fun `initialiseDeclineCounter - no previously stored domain`() = runTest {
         initialiseDeclineCounter()
         assertNull(testee.currentSessionPreviousDeclinedDomain)
     }
 
     @Test
-    fun whenNotMonitoringDeclineCountsThenShouldNotRecordNewDeclines() = runTest {
+    fun `initialiseDeclineCounter - not monitoring decline counts - should not record new declines`() = runTest {
         whenever(autofillStore.monitorDeclineCounts).thenReturn(false)
         initialiseDeclineCounter()
 
@@ -65,7 +65,7 @@ class AutofillDisablingDeclineCounterTest {
     }
 
     @Test
-    fun whenMonitoringDeclineCountsThenShouldRecordNewDeclines() = runTest {
+    fun `monitorDeclineCounts - should record new declines`() = runTest {
         whenever(autofillStore.monitorDeclineCounts).thenReturn(true)
         initialiseDeclineCounter()
 
@@ -74,7 +74,7 @@ class AutofillDisablingDeclineCounterTest {
     }
 
     @Test
-    fun whenNewDomainMatchesOldDomainThenDeclineNotRecorded() = runTest {
+    fun `userDeclinedToSaveCredentials - current session previous declined domain matches old domain - decline not recorded`() = runTest {
         initialiseDeclineCounter()
         testee.currentSessionPreviousDeclinedDomain = "example.com"
         testee.userDeclinedToSaveCredentials("example.com")
@@ -82,7 +82,7 @@ class AutofillDisablingDeclineCounterTest {
     }
 
     @Test
-    fun whenNewDomainDoesNotMatchOldDomainThenDeclineRecorded() = runTest {
+    fun `userDeclinedToSaveCredentials - new domain does not match old domain - decline recorded`() = runTest {
         initialiseDeclineCounter()
         testee.currentSessionPreviousDeclinedDomain = "foo.com"
         testee.userDeclinedToSaveCredentials("example.com")
@@ -90,7 +90,7 @@ class AutofillDisablingDeclineCounterTest {
     }
 
     @Test
-    fun whenDeclineOnNewDomainWithNoPreviousDomainThenDomainStored() = runTest {
+    fun `userDeclinedToSaveCredentials - domain stored`() = runTest {
         initialiseDeclineCounter()
         testee.currentSessionPreviousDeclinedDomain = null
         testee.userDeclinedToSaveCredentials("example.com")
@@ -106,7 +106,7 @@ class AutofillDisablingDeclineCounterTest {
     }
 
     @Test
-    fun whenDeclineTotalCountBelowThresholdThenShouldNotOfferToDisable() = runTest {
+    fun `userDeclinedToSaveCredentials - decline total count below threshold - should not offer to disable`() = runTest {
         initialiseDeclineCounter()
         whenever(autofillStore.autofillDeclineCount).thenReturn(0)
         testee.userDeclinedToSaveCredentials("example.com")
@@ -114,7 +114,7 @@ class AutofillDisablingDeclineCounterTest {
     }
 
     @Test
-    fun whenDeclineIncreasesTotalCountAtThresholdThenShouldOfferToDisable() = runTest {
+    fun `userDeclines - should offer to disable at threshold`() = runTest {
         initialiseDeclineCounter()
         configureGlobalDeclineCountAtThreshold()
         testee.userDeclinedToSaveCredentials("a.com")
@@ -122,7 +122,7 @@ class AutofillDisablingDeclineCounterTest {
     }
 
     @Test
-    fun whenCounterNotActiveThenShouldNeverPromptToDisableAutofill() = runTest {
+    fun `isActive - counter not active - should never prompt to disable autofill`() = runTest {
         initialiseDeclineCounter()
         testee.isActive = false
         configureGlobalDeclineCountAtThreshold()
@@ -130,14 +130,14 @@ class AutofillDisablingDeclineCounterTest {
     }
 
     @Test
-    fun whenAutofillNotAvailableThenCounterNotActive() = runTest {
+    fun `initialiseDeclineCounter - autofill not available - counter not active`() = runTest {
         whenever(autofillStore.autofillAvailable).thenReturn(false)
         initialiseDeclineCounter()
         assertFalse(testee.isActive)
     }
 
     @Test
-    fun whenAutofillNotEnabledThenCounterNotActive() = runTest {
+    fun `initialiseDeclineCounter - autofill not enabled - counter not active`() = runTest {
         whenever(autofillStore.autofillEnabled).thenReturn(false)
         initialiseDeclineCounter()
         assertFalse(testee.isActive)

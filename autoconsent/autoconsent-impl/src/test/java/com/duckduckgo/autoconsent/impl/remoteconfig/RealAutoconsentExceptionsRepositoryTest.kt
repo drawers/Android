@@ -49,7 +49,7 @@ class RealAutoconsentExceptionsRepositoryTest {
     }
 
     @Test
-    fun whenRepositoryIsCreatedThenExceptionsLoadedIntoMemory() {
+    fun `whenRepositoryIsCreated - exceptions loaded into memory`() {
         givenDaoContainsExceptions()
 
         repository = RealAutoconsentExceptionsRepository(TestScope(), coroutineRule.testDispatcherProvider, mockDatabase, isMainProcess = true)
@@ -58,7 +58,7 @@ class RealAutoconsentExceptionsRepositoryTest {
     }
 
     @Test
-    fun whenUpdateAllThenUpdateAllCalled() = runTest {
+    fun `insertAll - update all called`() = runTest {
         repository = RealAutoconsentExceptionsRepository(TestScope(), coroutineRule.testDispatcherProvider, mockDatabase, isMainProcess = true)
 
         repository.insertAllExceptions(listOf())
@@ -67,7 +67,7 @@ class RealAutoconsentExceptionsRepositoryTest {
     }
 
     @Test
-    fun whenUpdateAllThenPreviousExceptionsAreCleared() = runTest {
+    fun `insertAll - previous exceptions cleared`() = runTest {
         givenDaoContainsExceptions()
         repository = RealAutoconsentExceptionsRepository(TestScope(), coroutineRule.testDispatcherProvider, mockDatabase, isMainProcess = true)
 

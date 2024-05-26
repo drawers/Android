@@ -52,7 +52,7 @@ object ChatModels {
     private fun getOpenAiModel() =
         OpenAiChatModel.builder()
             .apiKey(System.getProperty("com.duckduckgo.lint.openai.key"))
-            .modelName(System.getProperty("com.duckduckgo.lint.openai.model"))
+            .modelName(System.getProperty("com.duckduckgo.lint.openai.model", "gpt-3.5-turbo"))
             .temperature(0.0)
             .seed(0)
             .build()

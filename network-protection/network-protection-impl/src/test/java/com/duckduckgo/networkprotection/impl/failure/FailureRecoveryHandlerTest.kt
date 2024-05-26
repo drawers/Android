@@ -95,7 +95,7 @@ class FailureRecoveryHandlerTest {
     }
 
     @Test
-    fun whenDiffFromHandshakeIsBelowThresholdThenDoNothing() = runTest {
+    fun `onTunnelFailure - diff from handshake is below threshold - do nothing`() = runTest {
         whenever(currentTimeProvider.getTimeInEpochSeconds()).thenReturn(300)
 
         failureRecoveryHandler.onTunnelFailure(180)
@@ -107,7 +107,7 @@ class FailureRecoveryHandlerTest {
     }
 
     @Test
-    fun whenOnTunnelFailureRecoveredThenMarkTunnelHealthy() = runTest {
+    fun `onTunnelFailureRecovered - mark tunnel healthy`() = runTest {
         failureRecoveryHandler.onTunnelFailureRecovered()
 
         verify(wgTunnel).markTunnelHealthy()
@@ -115,7 +115,7 @@ class FailureRecoveryHandlerTest {
     }
 
     @Test
-    fun whenFailureRecoveryAndServerChangedThenSetConfigAndRefreshNetp() = runTest {
+    fun `onTunnelFailure - failure recovery and server changed - set config and refresh netp`() = runTest {
         val newConfig = getWgConfig(updatedServerDataDifferentServer)
         whenever(currentTimeProvider.getTimeInEpochSeconds()).thenReturn(1080)
         whenever(vpnFeaturesRegistry.isFeatureRegistered(NetPVpnFeature.NETP_VPN)).thenReturn(true)
@@ -134,7 +134,7 @@ class FailureRecoveryHandlerTest {
     }
 
     @Test
-    fun whenFailureRecoveryAndTunnelAddressChangedThenSetConfigAndRefreshNetp() = runTest {
+    fun `onTunnelFailure - set config and refresh netp - different tunnel address`() = runTest {
         val newConfig = getWgConfig(updatedServerDataDifferentAddress)
         whenever(currentTimeProvider.getTimeInEpochSeconds()).thenReturn(1080)
         whenever(vpnFeaturesRegistry.isFeatureRegistered(NetPVpnFeature.NETP_VPN)).thenReturn(true)
@@ -153,7 +153,7 @@ class FailureRecoveryHandlerTest {
     }
 
     @Test
-    fun whenFailureRecoveryAndServerDidnotChangedThenDoNothing() = runTest {
+    fun `onTunnelFailure - server did not change - do nothing`() = runTest {
         whenever(currentTimeProvider.getTimeInEpochSeconds()).thenReturn(1080)
         whenever(vpnFeaturesRegistry.isFeatureRegistered(NetPVpnFeature.NETP_VPN)).thenReturn(true)
         whenever(wgTunnelConfig.getWgConfig()).thenReturn(getWgConfig(defaultServerData))
@@ -170,7 +170,7 @@ class FailureRecoveryHandlerTest {
     }
 
     @Test
-    fun whenFailureRecoveryAndCreateConfigFailedThenAttemptMax5TimesOnly() = runTest {
+    fun `onTunnelFailure - failure recovery and create config failed - attempt max 5 times only`() = runTest {
         whenever(currentTimeProvider.getTimeInEpochSeconds()).thenReturn(1080)
         whenever(vpnFeaturesRegistry.isFeatureRegistered(NetPVpnFeature.NETP_VPN)).thenReturn(true)
         whenever(wgTunnelConfig.getWgConfig()).thenReturn(getWgConfig(defaultServerData))
@@ -184,7 +184,7 @@ class FailureRecoveryHandlerTest {
     }
 
     @Test
-    fun whenOnTunnelFailureCalledTwiceThenAttemptRecoveryOnceOnly() = runTest {
+    fun `onTunnelFailure - called twice - attempt recovery once only`() = runTest {
         val newConfig = getWgConfig(updatedServerDataDifferentServer)
         whenever(currentTimeProvider.getTimeInEpochSeconds()).thenReturn(1080)
         whenever(vpnFeaturesRegistry.isFeatureRegistered(NetPVpnFeature.NETP_VPN)).thenReturn(true)
@@ -204,7 +204,7 @@ class FailureRecoveryHandlerTest {
     }
 
     @Test
-    fun whenOnTunnelFailureCalledTwiceAndDifferentTunnelAddressThenAttemptRecoveryOnceOnly() = runTest {
+    fun `onTunnelFailure - different tunnel address - attempt recovery once only`() = runTest {
         val newConfig = getWgConfig(updatedServerDataDifferentAddress)
         whenever(currentTimeProvider.getTimeInEpochSeconds()).thenReturn(1080)
         whenever(vpnFeaturesRegistry.isFeatureRegistered(NetPVpnFeature.NETP_VPN)).thenReturn(true)
@@ -224,7 +224,7 @@ class FailureRecoveryHandlerTest {
     }
 
     @Test
-    fun whenOnTunnelFailureCalledAfterRecoveryThenAttemptRecoveryTwice() = runTest {
+    fun `onTunnelFailure - after recovery - attempt recovery twice`() = runTest {
         val newConfig = getWgConfig(updatedServerDataDifferentServer)
         whenever(currentTimeProvider.getTimeInEpochSeconds()).thenReturn(1080)
         whenever(vpnFeaturesRegistry.isFeatureRegistered(NetPVpnFeature.NETP_VPN)).thenReturn(true)
@@ -244,7 +244,7 @@ class FailureRecoveryHandlerTest {
     }
 
     @Test
-    fun whenOnTunnelFailureCalledAfterRecoveryAndDifferentTunnelAddrThenAttemptRecoveryTwice() = runTest {
+    fun `onTunnelFailure - after recovery and different tunnel addr - attempt recovery twice`() = runTest {
         val newConfig = getWgConfig(updatedServerDataDifferentAddress)
         whenever(currentTimeProvider.getTimeInEpochSeconds()).thenReturn(1080)
         whenever(vpnFeaturesRegistry.isFeatureRegistered(NetPVpnFeature.NETP_VPN)).thenReturn(true)

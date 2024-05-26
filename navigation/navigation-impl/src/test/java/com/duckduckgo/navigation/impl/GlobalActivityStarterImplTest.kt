@@ -42,17 +42,17 @@ class GlobalActivityStarterImplTest {
     private val globalActivityStarter = GlobalActivityStarterImpl(setOf(TestActivityWithParamsMapper(), TestActivityNoParamsMapper()))
 
     @Test
-    fun whenStartIntentNotFoundActivityThenReturnNull() {
+    fun `startIntent - not found activity - return null`() {
         assertNull(globalActivityStarter.startIntent(context, NotFoundParams))
     }
 
     @Test
-    fun whenStartIntentNotFoundDeeplinkActivityThenReturnNull() {
+    fun `startIntent - deeplink activity not found - return null`() {
         assertNull(globalActivityStarter.startIntent(context, notFoundDeeplinkParams))
     }
 
     @Test
-    fun whenStartIntentWithParamsFindsActivityThenReturnIntent() {
+    fun `startIntent - finds activity then returns intent`() {
         val intent = globalActivityStarter.startIntent(context, TestParams("test"))
 
         assertNotNull(intent)
@@ -60,7 +60,7 @@ class GlobalActivityStarterImplTest {
     }
 
     @Test
-    fun whenStartIntentWithDeeplinkNoParamsFindsActivityThenReturnIntent() {
+    fun `startIntent - deeplink no params - finds activity then returns intent`() {
         val intent = globalActivityStarter.startIntent(context, DeeplinkActivityParams("screenTest"))
 
         assertNotNull(intent)
@@ -68,7 +68,7 @@ class GlobalActivityStarterImplTest {
     }
 
     @Test
-    fun whenStartIntentWithDeeplinkParamsFindsActivityThenReturnIntent() {
+    fun `startIntent - deeplink params - finds activity then returns intent`() {
         val intent = globalActivityStarter.startIntent(context, DeeplinkActivityParams("screenTest", jsonArguments = "{\"value\": \"test\"}"))
 
         assertNotNull(intent)
@@ -76,17 +76,17 @@ class GlobalActivityStarterImplTest {
     }
 
     @Test(expected = IllegalArgumentException::class)
-    fun whenStartNotFoundActivityThenThrow() {
+    fun `start - start not found activity - throws`() {
         globalActivityStarter.start(context, NotFoundParams)
     }
 
     @Test(expected = IllegalArgumentException::class)
-    fun whenStartNotFoundDeeplinkActivityThenThrow() {
+    fun `start - deeplink activity not found - throws`() {
         globalActivityStarter.start(context, notFoundDeeplinkParams)
     }
 
     @Test
-    fun whenStartWithParamsFindsActivityThenSucceeds() {
+    fun `startWithParams - finds activity then succeeds`() {
         val context: Context = mock()
         globalActivityStarter.start(context, TestParams("test"))
 
@@ -94,7 +94,7 @@ class GlobalActivityStarterImplTest {
     }
 
     @Test
-    fun whenStartWithDeeplinkParamsArgumentsFindsActivityThenSucceeds() {
+    fun `startWithDeeplinkParams - finds activity then succeeds`() {
         val context: Context = mock()
         globalActivityStarter.start(context, DeeplinkActivityParams("screenTest", jsonArguments = "{\"value\": \"test\"}"))
 
@@ -102,7 +102,7 @@ class GlobalActivityStarterImplTest {
     }
 
     @Test
-    fun whenStartWithDeeplinkNoParamsArgumentsFindsActivityThenSucceeds() {
+    fun `startWithDeeplinkNoParamsArgumentsFindsActivity - succeeds`() {
         val context: Context = mock()
         globalActivityStarter.start(context, DeeplinkActivityParams("screenTest"))
 

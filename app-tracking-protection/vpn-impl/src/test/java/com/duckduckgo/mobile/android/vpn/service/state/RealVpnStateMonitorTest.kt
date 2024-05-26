@@ -61,12 +61,12 @@ class RealVpnStateMonitorTest {
     }
 
     @Test
-    fun whenIsAllaysOnEnabledThenReturnDefaultValueFalse() = runTest {
+    fun `isAlwaysOnEnabled - always on disabled - false`() = runTest {
         Assert.assertFalse(testee.isAlwaysOnEnabled())
     }
 
     @Test
-    fun whenVpnLastDisabledByAndroidAndVpnKilledBySystemThenReturnTrue() = runTest {
+    fun `vpnLastDisabledByAndroid - vpn killed by system - returns true`() = runTest {
         whenever(vpnServiceStateDao.getLastStateStats()).thenReturn(null)
         whenever(vpnHeartBeatDao.hearBeats()).thenReturn(listOf(HeartBeatEntity(type = VpnServiceHeartbeatMonitor.DATA_HEART_BEAT_TYPE_ALIVE)))
         whenever(vpnFeaturesRegistry.isAnyFeatureRunning()).thenReturn(false)
@@ -75,7 +75,7 @@ class RealVpnStateMonitorTest {
     }
 
     @Test
-    fun whenVpnLastDisabledByAndroidAndVpnUnexpectedlyDisabledThenReturnTrue() = runTest {
+    fun `vpnLastDisabledByAndroid - unexpected disable - returns true`() = runTest {
         whenever(vpnServiceStateDao.getLastStateStats()).thenReturn(
             VpnServiceStateStats(state = DISABLED),
         )
@@ -84,7 +84,7 @@ class RealVpnStateMonitorTest {
     }
 
     @Test
-    fun whenVpnLastDisabledByAndroidAndVpnDisabledByUserThenReturnFalse() = runTest {
+    fun `vpnLastDisabledByAndroid - disabled by user - returns false`() = runTest {
         whenever(vpnServiceStateDao.getLastStateStats()).thenReturn(
             VpnServiceStateStats(state = DISABLED, stopReason = SELF_STOP),
         )
@@ -93,7 +93,7 @@ class RealVpnStateMonitorTest {
     }
 
     @Test
-    fun whenVpnLastDisabledByAndroidAndVpnEnabledThenReturnFalse() = runTest {
+    fun `vpnLastDisabledByAndroid - enabled - returns false`() = runTest {
         whenever(vpnServiceStateDao.getLastStateStats()).thenReturn(
             VpnServiceStateStats(state = ENABLED),
         )

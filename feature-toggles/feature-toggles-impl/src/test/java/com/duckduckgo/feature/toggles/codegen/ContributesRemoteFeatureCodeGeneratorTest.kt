@@ -80,14 +80,14 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `the class is generated`() {
+    fun `class is generated - remote feature - not null`() {
         val generatedClass = Class
             .forName("com.duckduckgo.feature.toggles.codegen.TestTriggerFeature_RemoteFeature")
         assertNotNull(generatedClass)
     }
 
     @Test
-    fun `the class is generated implements Toggle Store and PrivacyFeaturePlugin`() {
+    fun `the class is generated - implements toggle store and privacy feature plugin`() {
         val generatedClass = Class
             .forName("com.duckduckgo.feature.toggles.codegen.TestTriggerFeature_RemoteFeature")
             .kotlin
@@ -98,14 +98,14 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `the class factory is generated`() {
+    fun `generate class factory - the class factory is generated`() {
         val generatedClass = Class
             .forName("com.duckduckgo.feature.toggles.codegen.TestTriggerFeature_RemoteFeature_Factory")
         assertNotNull(generatedClass)
     }
 
     @Test
-    fun `the generated class is singleInstance annotated in the right scope`() {
+    fun `the generated class is single instance annotated in the right scope - trigger test scope`() {
         val generatedClass = Class
             .forName("com.duckduckgo.feature.toggles.codegen.TestTriggerFeature_RemoteFeature")
             .kotlin
@@ -115,7 +115,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `the generated class is RemoteFeatureStoreNamed annotated in the right scope`() {
+    fun `the generated class is RemoteFeatureStoreNamed annotated in the right scope - TestTriggerFeature`() {
         val generatedClass = Class
             .forName("com.duckduckgo.feature.toggles.codegen.TestTriggerFeature_RemoteFeature")
             .kotlin
@@ -126,7 +126,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
 
     @Test
     @Ignore("ContributesBinding is only present in kotlin metadata now, we need to fix")
-    fun `the generated class contributes the toggle store binding`() {
+    fun `the generated class contributes the toggle store binding - scope and bound type`() {
         val generatedClass = Class
             .forName("com.duckduckgo.feature.toggles.codegen.TestTriggerFeature_RemoteFeature")
             .kotlin
@@ -138,7 +138,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
 
     @Test
     @Ignore("ContributesMultibinding is only present in kotlin metadata now, we need to fix")
-    fun `the generated class contributes the privacy plugin multibinding`() {
+    fun `contributes multibinding - privacy plugin - ignores qualifier`() {
         val generatedClass = Class
             .forName("com.duckduckgo.feature.toggles.codegen.TestTriggerFeature_RemoteFeature")
             .kotlin
@@ -150,7 +150,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `re-evaluate feature state when feature hash is null`() {
+    fun `store - feature state re-evaluated when hash is null - enabled and disabled states`() {
         val feature = generatedFeatureNewInstance()
 
         val privacyPlugin = (feature as PrivacyFeaturePlugin)
@@ -199,7 +199,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `do not re-evaluate feature state if hash hasn't changed`() {
+    fun `store - feature state unchanged if hash hasn't changed`() {
         val feature = generatedFeatureNewInstance()
 
         val privacyPlugin = (feature as PrivacyFeaturePlugin)
@@ -250,7 +250,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `re-evaluate feature state if hash changed`() {
+    fun `store - re-evaluate feature state if hash changed - enabled and disabled`() {
         val feature = generatedFeatureNewInstance()
 
         val privacyPlugin = (feature as PrivacyFeaturePlugin)
@@ -301,7 +301,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `re-evaluate feature when already preset in remote config but just added to client`() {
+    fun `re-evaluate feature when already preset in remote config but just added to client - new foo feature enabled`() {
         fun createAnotherFooFeature(): Any {
             return Class
                 .forName("com.duckduckgo.feature.toggles.codegen.AnotherTestTriggerFeature_RemoteFeature")
@@ -371,7 +371,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `when sub-feature is present remotely but missing locally continue without error`() {
+    fun `when sub-feature is present remotely but missing locally - continue without error`() {
         val feature = generatedFeatureNewInstance()
 
         val privacyPlugin = (feature as PrivacyFeaturePlugin)
@@ -399,7 +399,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `fresh install and later update returns correct feature values`() {
+    fun `store - fresh install and later update returns correct feature values`() {
         val feature = generatedFeatureNewInstance()
 
         val privacyPlugin = (feature as PrivacyFeaturePlugin)
@@ -443,7 +443,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `test internal always enabled annotation`() {
+    fun `test internal always enabled annotation - feature configuration`() {
         val feature = generatedFeatureNewInstance()
 
         val privacyPlugin = (feature as PrivacyFeaturePlugin)
@@ -480,7 +480,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test // see https://app.asana.com/0/0/1205806409373059/1205806409373112/f
-    fun `test internal always enabled truth table`() {
+    fun `store - internal always enabled truth table`() {
         val feature = generatedFeatureNewInstance()
         val privacyPlugin = (feature as PrivacyFeaturePlugin)
 
@@ -607,7 +607,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `test staged rollout for default-enabled feature flag`() {
+    fun `test staged rollout for default-enabled feature flag - privacy plugin - enabled`() {
         val feature = generatedFeatureNewInstance()
         val privacyPlugin = (feature as PrivacyFeaturePlugin)
 
@@ -638,7 +638,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `the disable state of the feature always wins`() {
+    fun `store - disable state always wins - disabled`() {
         val feature = generatedFeatureNewInstance()
 
         val privacyPlugin = (feature as PrivacyFeaturePlugin)
@@ -695,7 +695,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `the rollout step set to 0 disables the feature`() {
+    fun `store - rollout step set to 0 disables the feature`() {
         val jsonFeature = """
         {
             "state": "enabled",
@@ -723,7 +723,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `the parent feature disabled doesn't interfer with the sub-feature state`() {
+    fun `store - parent feature disabled - sub-feature state unchanged`() {
         val jsonFeature = """
         {
             "state": "disabled",
@@ -751,7 +751,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `the features have the right state for internal builds`() {
+    fun `generatedFeature - features have right state for internal builds - disabled`() {
         whenever(appBuildConfig.flavor).thenReturn(INTERNAL)
 
         val jsonFeature = """
@@ -782,7 +782,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `the feature incremental steps are ignored when feature disabled`() {
+    fun `store - feature disabled - foo feature ignored`() {
         val jsonFeature = """
         {
             "state": "enabled",
@@ -817,7 +817,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `the feature incremental steps are executed when feature is enabled`() {
+    fun `store - feature incremental steps executed when enabled`() {
         val jsonFeature = """
         {
             "state": "enabled",
@@ -855,7 +855,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `the invalid rollout steps are ignored and not executed`() {
+    fun `store - invalid rollout steps ignored and not executed`() {
         val jsonFeature = """
         {
             "state": "enabled",
@@ -890,7 +890,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `disable a previously enabled incremental rollout`() {
+    fun `store - disable previously enabled incremental rollout - disabled`() {
         val jsonFeature = """
         {
             "state": "enabled",
@@ -941,7 +941,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `re-enable a previously disabled incremental rollout`() {
+    fun `re-enable a previously disabled incremental rollout - feature enabled`() {
         whenever(appBuildConfig.versionCode).thenReturn(1)
         val feature = generatedFeatureNewInstance()
 
@@ -1027,7 +1027,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `feature was enabled remains enabled and rollout threshold is set`() {
+    fun `feature was enabled remains enabled and rollout threshold is set - feature state updated - enabled`() {
         whenever(appBuildConfig.versionCode).thenReturn(1)
         val feature = generatedFeatureNewInstance()
 
@@ -1506,7 +1506,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `test variant parsing when no remote variant provided`() {
+    fun `test variant parsing when no remote variant provided - all disabled`() {
         val feature = generatedFeatureNewInstance()
 
         val privacyPlugin = (feature as PrivacyFeaturePlugin)
@@ -1534,7 +1534,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `test variant parsing`() {
+    fun `test variant parsing - variant manager set to mc - all features enabled or disabled correctly`() {
         variantManager.variant = "mc"
         val feature = generatedFeatureNewInstance()
 
@@ -1614,7 +1614,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `test variant when assigned variant key is null`() {
+    fun `test variant when assigned variant key is null - feature state updated - all disabled`() {
         variantManager.variant = null
         val feature = generatedFeatureNewInstance()
 
@@ -1682,7 +1682,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `test variant when assigned variant key is not null`() {
+    fun `test variant when assigned variant key is not null - feature enabled - default variant assigned`() {
         variantManager.variant = "na"
         val feature = generatedFeatureNewInstance()
 
@@ -1747,7 +1747,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `test feature disabled and forces variant when variant is null`() {
+    fun `test feature disabled and forces variant when variant is null - privacy plugin - forces variant`() {
         variantManager.variant = null
         val feature = generatedFeatureNewInstance()
 
@@ -1788,7 +1788,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `test feature enabled and forces variant when variant is null`() {
+    fun `test feature enabled and forces variant when variant is null - privacy plugin state updated`() {
         variantManager.variant = null
         val feature = generatedFeatureNewInstance()
 
@@ -1829,7 +1829,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `test feature does not force variant when already assigned`() {
+    fun `test feature does not force variant when already assigned - privacy plugin - enabled`() {
         variantManager.variant = "mc"
         val feature = generatedFeatureNewInstance()
 
@@ -1870,7 +1870,7 @@ class ContributesRemoteFeatureCodeGeneratorTest {
     }
 
     @Test
-    fun `test rollout roll back`() {
+    fun `test rollout roll back - feature state updated`() {
         val feature = generatedFeatureNewInstance()
 
         val privacyPlugin = (feature as PrivacyFeaturePlugin)

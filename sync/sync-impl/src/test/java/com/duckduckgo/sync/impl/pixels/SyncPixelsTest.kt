@@ -55,7 +55,7 @@ class SyncPixelsTest {
     }
 
     @Test
-    fun whenDailyPixelCalledThenPixelFired() {
+    fun `fireDailySuccessRatePixel - pixel fired`() {
         val dailyStats = givenSomeDailyStats()
 
         testee.fireDailySuccessRatePixel()
@@ -69,7 +69,7 @@ class SyncPixelsTest {
     }
 
     @Test
-    fun whenDailyPixelCalledTwiceThenPixelFiredOnce() {
+    fun `fireDailySuccessRatePixel - pixel fired once`() {
         val dailyStats = givenSomeDailyStats()
 
         testee.fireDailySuccessRatePixel()
@@ -84,21 +84,21 @@ class SyncPixelsTest {
     }
 
     @Test
-    fun whenLoginPixelCalledThenPixelFired() {
+    fun `fireLoginPixel - pixel fired`() {
         testee.fireLoginPixel()
 
         verify(pixel).fire(SyncPixelName.SYNC_LOGIN)
     }
 
     @Test
-    fun whenSignupDirectPixelCalledThenPixelFired() {
+    fun `fireSignupDirectPixel - pixel fired`() {
         testee.fireSignupDirectPixel()
 
         verify(pixel).fire(SyncPixelName.SYNC_SIGNUP_DIRECT)
     }
 
     @Test
-    fun whenSignupConnectPixelCalledThenPixelFired() {
+    fun `fireSignupConnectPixel - pixel fired`() {
         testee.fireSignupConnectPixel()
 
         verify(pixel).fire(SyncPixelName.SYNC_SIGNUP_CONNECT)

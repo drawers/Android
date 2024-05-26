@@ -111,7 +111,7 @@ class SavedSitesTimestampPersisterTest {
     }
 
     @Test
-    fun whenProcessingBookmarkNotPresentLocallyThenBookmarkIsInserted() {
+    fun `processBookmark - bookmark not present locally - inserted`() {
         val bookmark = Bookmark("bookmark1", "title", "www.example.com", "folder2", threeHoursAgo)
         assertTrue(repository.getBookmarkById(bookmark.id) == null)
 
@@ -121,7 +121,7 @@ class SavedSitesTimestampPersisterTest {
     }
 
     @Test
-    fun whenProcessingDeletedBookmarkNotPresentLocallyThenBookmarkIsNotInserted() {
+    fun `processBookmark - bookmark not present locally - not inserted`() {
         val bookmark = Bookmark("bookmark1", "title", "www.example.com", "folder2", threeHoursAgo, deleted = "1")
         assertTrue(repository.getBookmarkById(bookmark.id) == null)
 
@@ -131,7 +131,7 @@ class SavedSitesTimestampPersisterTest {
     }
 
     @Test
-    fun whenProcessingRemoteBookmarkModifiedAfterThenBookmarkIsReplaced() {
+    fun `processRemoteBookmark - bookmark modified after - replaced`() {
         val bookmark = Bookmark("bookmark1", "title", "www.example.com", "folder2", threeHoursAgo)
         repository.insert(bookmark)
 
@@ -146,7 +146,7 @@ class SavedSitesTimestampPersisterTest {
     }
 
     @Test
-    fun whenProcessingRemoteBookmarkModifiedBeforeThenBookmarkIsNotReplaced() {
+    fun `processRemoteBookmark - modified before - not replaced`() {
         val bookmark = Bookmark("bookmark1", "title", "www.example.com", "folder2", twoHoursAgo)
         repository.insert(bookmark)
 
@@ -161,7 +161,7 @@ class SavedSitesTimestampPersisterTest {
     }
 
     @Test
-    fun whenProcessingDeletedRemoteBookmarkThenBookmarkIsDeleted() {
+    fun `processBookmark - processing deleted remote bookmark - bookmark is deleted`() {
         val bookmark = Bookmark("bookmark1", "title", "www.example.com", "folder2", threeHoursAgo)
         repository.insert(bookmark)
 
@@ -175,7 +175,7 @@ class SavedSitesTimestampPersisterTest {
     }
 
     @Test
-    fun whenProcessingEmptyFavouriteFoldersThenFavouritesAreAdded() {
+    fun `processFavouritesFolder - empty favourite folders - favourites are added`() {
         // given some bookmarks
         val firstBatch = BookmarkTestUtils.givenSomeBookmarks(10)
         savedSitesEntitiesDao.insertList(firstBatch)
@@ -190,7 +190,7 @@ class SavedSitesTimestampPersisterTest {
     }
 
     @Test
-    fun whenProcessingNotEmptyFavouriteFoldersThenFavouritesAreReplaced() {
+    fun `processFavouritesFolder - favourites replaced`() {
         // given some favourites
         val firstBatch = BookmarkTestUtils.givenSomeBookmarks(10)
         savedSitesEntitiesDao.insertList(firstBatch)
@@ -211,7 +211,7 @@ class SavedSitesTimestampPersisterTest {
     }
 
     @Test
-    fun whenProcessingFolderNotPresentLocallyThenFolderIsInserted() {
+    fun `processBookmarkFolder - folder not present locally - folder inserted`() {
         val folder = BookmarkFolder("folder1", "title", SavedSitesNames.BOOKMARKS_ROOT, 0, 0)
         assertTrue(repository.getFolder(folder.id) == null)
 
@@ -221,7 +221,7 @@ class SavedSitesTimestampPersisterTest {
     }
 
     @Test
-    fun whenProcessingDeletedFolderPresentLocallyThenFolderIsDeleted() {
+    fun `processBookmarkFolder - processing deleted folder present locally - folder is deleted`() {
         val folder = BookmarkFolder("folder1", "title", SavedSitesNames.BOOKMARKS_ROOT, 0, 0)
         repository.insert(folder)
         assertTrue(repository.getFolder(folder.id) != null)
@@ -233,7 +233,7 @@ class SavedSitesTimestampPersisterTest {
     }
 
     @Test
-    fun whenProcessingFolderModifiedAfterThenFolderIsReplaced() {
+    fun `processBookmarkFolder - folder modified after - folder replaced`() {
         val folder = BookmarkFolder("folder1", "title", SavedSitesNames.BOOKMARKS_ROOT, 0, 0, lastModified = threeHoursAgo)
         repository.insert(folder)
         assertTrue(repository.getFolder(folder.id) != null)
@@ -246,7 +246,7 @@ class SavedSitesTimestampPersisterTest {
     }
 
     @Test
-    fun whenProcessingFolderModifiedBeforeThenFolderIsNotReplaced() {
+    fun `processBookmarkFolder - folder modified before - not replaced`() {
         val folder = BookmarkFolder("folder1", "title", SavedSitesNames.BOOKMARKS_ROOT, 0, 0, lastModified = twoHoursAgo)
         repository.insert(folder)
         assertTrue(repository.getFolder(folder.id) != null)
@@ -259,7 +259,7 @@ class SavedSitesTimestampPersisterTest {
     }
 
     @Test
-    fun whenProcessingFolderSameTimestampThenFolderIsReplaced() {
+    fun `processBookmarkFolder - same timestamp - folder replaced`() {
         val timestamp = twoHoursAgo
         val folder = BookmarkFolder("folder1", "title", SavedSitesNames.BOOKMARKS_ROOT, 0, 0, lastModified = timestamp)
         repository.insert(folder)

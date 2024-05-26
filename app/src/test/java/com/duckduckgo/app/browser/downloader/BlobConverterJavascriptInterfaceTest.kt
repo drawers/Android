@@ -31,7 +31,7 @@ class BlobConverterJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenConvertToBlobDataUriThenLambdaCalled() {
+    fun `convertBlobToDataUri - lambda called`() {
         testee.convertBlobToDataUri("first", "second")
 
         assertEquals("firstsecond", result)

@@ -44,7 +44,7 @@ class FirstPartyCookiesModifierWorkerSchedulerTest {
     }
 
     @Test
-    fun whenOnStopIfFeatureEnabledThenEnqueueWorkWithReplacePolicy() {
+    fun `onStop - feature enabled - enqueue work with replace policy`() {
         whenever(mockToggle.isFeatureEnabled(CookiesFeatureName.Cookie.value)).thenReturn(true)
 
         firstPartyCookiesModifierWorkerScheduler.onStop(mockOwner)
@@ -53,7 +53,7 @@ class FirstPartyCookiesModifierWorkerSchedulerTest {
     }
 
     @Test
-    fun whenOnStopIfFeatureNotEnabledThenDeleteTag() {
+    fun `onStop - feature not enabled - delete tag`() {
         whenever(mockToggle.isFeatureEnabled(CookiesFeatureName.Cookie.value)).thenReturn(false)
 
         firstPartyCookiesModifierWorkerScheduler.onStop(mockOwner)
@@ -62,7 +62,7 @@ class FirstPartyCookiesModifierWorkerSchedulerTest {
     }
 
     @Test
-    fun whenOnStartIfFeatureEnabledThenEnqueueWorkWithKeepPolicy() {
+    fun `onStart - feature enabled - enqueue work with keep policy`() {
         whenever(mockToggle.isFeatureEnabled(CookiesFeatureName.Cookie.value)).thenReturn(true)
 
         firstPartyCookiesModifierWorkerScheduler.onStart(mockOwner)
@@ -71,7 +71,7 @@ class FirstPartyCookiesModifierWorkerSchedulerTest {
     }
 
     @Test
-    fun whenOnStartIfFeatureNotEnabledThenDeleteTag() {
+    fun `onStart - feature not enabled - delete tag`() {
         whenever(mockToggle.isFeatureEnabled(CookiesFeatureName.Cookie.value)).thenReturn(false)
 
         firstPartyCookiesModifierWorkerScheduler.onStart(mockOwner)

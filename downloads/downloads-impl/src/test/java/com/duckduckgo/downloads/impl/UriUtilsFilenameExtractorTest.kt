@@ -34,7 +34,7 @@ class UriUtilsFilenameExtractorTest {
     private val testee: FilenameExtractor = FilenameExtractor(mockedPixel)
 
     @Test
-    fun whenUrlEndsWithFilenameAsJpgNoMimeOrContentDispositionThenFilenameShouldBeExtracted() {
+    fun `extract - url ends with filename as jpg no mime or content disposition - filename extracted`() {
         val url = "https://example.com/realFilename.jpg"
         val mimeType: String? = null
         val contentDisposition: String? = null
@@ -47,7 +47,7 @@ class UriUtilsFilenameExtractorTest {
     }
 
     @Test
-    fun whenUrlContainsFilenameButContainsAdditionalPathSegmentsThenFilenameShouldBeExtracted() {
+    fun `extract - url contains filename but additional path segments - extracted`() {
         val url = "https://foo.example.com/path/images/b/b1/realFilename.jpg/other/stuff"
         val mimeType: String? = null
         val contentDisposition: String? = null
@@ -60,7 +60,7 @@ class UriUtilsFilenameExtractorTest {
     }
 
     @Test
-    fun whenUrlContainsFilenameButContainsAdditionalPathSegmentsAndQueryParamsThenFilenameShouldBeExtracted() {
+    fun `extract - url contains filename but additional path segments and query params - extracted`() {
         val url = "https://foo.example.com/path/images/b/b1/realFilename.jpg/other/stuff?cb=123"
         val mimeType: String? = null
         val contentDisposition: String? = null
@@ -73,7 +73,7 @@ class UriUtilsFilenameExtractorTest {
     }
 
     @Test
-    fun whenUrlContainsFilenameButContainsPathSegmentsWhichLookLikeAFilenameThenFilenameShouldBeExtracted() {
+    fun `extract - url contains filename but path segments look like a filename - extracted`() {
         val url = "https://foo.example.com/path/dotted.path/b/b1/realFilename.jpg"
         val mimeType: String? = null
         val contentDisposition: String? = null
@@ -86,7 +86,7 @@ class UriUtilsFilenameExtractorTest {
     }
 
     @Test
-    fun whenUrlContainsAmbiguousFilenameButContainsPathSegmentsWhichLookLikeAFilenameAndMimeTypeProvidedThenFilenameShouldBeExtracted() {
+    fun `extract - url contains ambiguous filename but contains path segments which look like a filename and mime type provided - extracted`() {
         shadowOf(MimeTypeMap.getSingleton()).addExtensionMimeTypMapping("jpg", "image/jpeg")
 
         val url = "https://foo.example.com/path/dotted.path/b/b1/realFilename"
@@ -101,7 +101,7 @@ class UriUtilsFilenameExtractorTest {
     }
 
     @Test
-    fun whenUrlContainsFilenameAndContainsMultiplePathSegmentsAndMimeTypeProvidedThenFilenameShouldBeExtracted() {
+    fun `extract - url contains filename and multiple path segments - extracted filename`() {
         val url = "https://foo.example.com/path/images/b/b1/realFilename.jpg"
         val mimeType = "image/jpeg"
         val contentDisposition: String? = null
@@ -114,7 +114,7 @@ class UriUtilsFilenameExtractorTest {
     }
 
     @Test
-    fun whenUrlContainsFilenameButContainsAdditionalPathSegmentsAndQueryParamsWhichLookLikeAFilenameThenFilenameShouldBeExtracted() {
+    fun `extract - url contains filename but additional path segments and query params which look like a filename - extracted`() {
         val url = "https://foo.example.com/path/images/b/b1/realFilename.jpg/other/stuff?cb=123.com"
         val mimeType: String? = null
         val contentDisposition: String? = null
@@ -127,7 +127,7 @@ class UriUtilsFilenameExtractorTest {
     }
 
     @Test
-    fun whenUrlContainsFilenameButContentDispositionSaysOtherwiseThenExtractFromContentDisposition() {
+    fun `extract - url contains filename but content disposition says otherwise - extracted from content disposition`() {
         val url = "https://example.com/filename.jpg"
         val mimeType: String? = null
         val contentDisposition = "Content-Disposition: attachment; filename=fromDisposition.jpg"
@@ -140,7 +140,7 @@ class UriUtilsFilenameExtractorTest {
     }
 
     @Test
-    fun whenFilenameEndsInBinThenThatIsExtracted() {
+    fun `extract - filename ends in bin - extracted`() {
         val url = "https://example.com/realFilename.bin"
         val mimeType: String? = null
         val contentDisposition: String? = null
@@ -154,7 +154,7 @@ class UriUtilsFilenameExtractorTest {
     }
 
     @Test
-    fun whenUrlContainsNoFileNameButLotsOfPathsSegmentsThenFirstSegmentNameIsUsed() {
+    fun `extract - url contains no file name but lots of path segments - uses first segment name`() {
         val url = "https://example.com/foo/bar/files"
         val mimeType: String? = null
         val contentDisposition: String? = null
@@ -167,7 +167,7 @@ class UriUtilsFilenameExtractorTest {
     }
 
     @Test
-    fun whenFilenameEndsInBinWithASlashThenThatIsExtracted() {
+    fun `extract - filename ends in bin with a slash - extracted`() {
         val url = "https://example.com/realFilename.bin/"
         val mimeType: String? = null
         val contentDisposition: String? = null
@@ -181,7 +181,7 @@ class UriUtilsFilenameExtractorTest {
     }
 
     @Test
-    fun whenFilenameContainsBinThenThatIsExtracted() {
+    fun `extract - filename contains bin - extracted`() {
         val url = "https://example.com/realFilename.bin/foo/bar"
         val mimeType: String? = null
         val contentDisposition: String? = null
@@ -195,7 +195,7 @@ class UriUtilsFilenameExtractorTest {
     }
 
     @Test
-    fun whenUrlIsEmptyStringAndNoOtherDataProvidedThenDefaultNameFiletypeReturned() {
+    fun `extract - url empty string and no other data provided - default name and filetype returned`() {
         val url = ""
         val mimeType: String? = null
         val contentDisposition: String? = null
@@ -209,7 +209,7 @@ class UriUtilsFilenameExtractorTest {
     }
 
     @Test
-    fun whenUrlIsEmptyStringAndMimeTypeProvidedThenDefaultNameAndFiletypeFromMimeReturned() {
+    fun `extract - url empty string and mime type provided - default name and filetype from mime returned`() {
         shadowOf(MimeTypeMap.getSingleton()).addExtensionMimeTypMapping("jpg", "image/jpeg")
 
         val url = ""
@@ -225,7 +225,7 @@ class UriUtilsFilenameExtractorTest {
     }
 
     @Test
-    fun whenUrlIsEmptyStringAndContentDispositionProvidedThenExtractFromContentDisposition() {
+    fun `extract - url empty string and content disposition provided - extracted from content disposition`() {
         val url = ""
         val mimeType: String? = null
         val contentDisposition = "Content-Disposition: attachment; filename=fromDisposition.jpg"
@@ -239,7 +239,7 @@ class UriUtilsFilenameExtractorTest {
     }
 
     @Test
-    fun whenNoFilenameAndNoPathSegmentsThenDomainNameReturned() {
+    fun `extract - no filename and no path segments - domain name returned`() {
         val url = "http://example.com"
         val mimeType: String? = null
         val contentDisposition: String? = null
@@ -253,7 +253,7 @@ class UriUtilsFilenameExtractorTest {
     }
 
     @Test
-    fun whenNoFilenameAndPathSegmentsThenPathNameFileIsReturned() {
+    fun `extract - no filename and path segments - returns best guess`() {
         val url = "http://example.com/cat/600/400"
         val mimeType: String? = null
         val contentDisposition: String? = null
@@ -267,7 +267,7 @@ class UriUtilsFilenameExtractorTest {
     }
 
     @Test
-    fun whenUrlContainsFilenameAndMimeTypeIsTextXPython3AndContentDispositionIsEmptyThenFilenameIsReturned() {
+    fun `extract - url contains filename and mime type text x python 3 and content disposition empty - filename returned`() {
         val url = """
             https://ddg-name-test-ubsgiobgibsdgsbklsdjgm.netlify.app/uploads/qwertyuiopasdfghjklzxcvbnm1234567890qwertyuiopasdfghjklzxcvbnm/bat.py
         """.trimIndent()

@@ -17,7 +17,7 @@ class SurveyEndpointInterceptorTest {
     }
 
     @Test
-    fun interceptSurveyUrlWhenEnabled() {
+    fun `interceptSurveyUrl - enabled - sandbox url`() {
         surveyEndpointDataStore.useSurveyCustomEnvironmentUrl = true
 
         val chain = FakeChain(SURVEY_URL)
@@ -27,7 +27,7 @@ class SurveyEndpointInterceptorTest {
     }
 
     @Test
-    fun doNotInterceptSurveyUrlWhenDisabled() {
+    fun `intercept - survey url disabled - does not intercept`() {
         surveyEndpointDataStore.useSurveyCustomEnvironmentUrl = false
 
         val chain = FakeChain(SURVEY_URL)
@@ -37,7 +37,7 @@ class SurveyEndpointInterceptorTest {
     }
 
     @Test
-    fun ignoreUnknownUrlWhenEnabled() {
+    fun `intercept - use custom environment url enabled - unknown url`() {
         surveyEndpointDataStore.useSurveyCustomEnvironmentUrl = true
 
         val chain = FakeChain(UNKNOWN_URL)
@@ -47,7 +47,7 @@ class SurveyEndpointInterceptorTest {
     }
 
     @Test
-    fun ignoreUnknownUrlWhenDisabled() {
+    fun `intercept - use survey custom environment url disabled - unknown url`() {
         surveyEndpointDataStore.useSurveyCustomEnvironmentUrl = false
 
         val chain = FakeChain(UNKNOWN_URL)

@@ -31,19 +31,19 @@ class VariantManagerTest {
     // SERP Experiment(s)
 
     @Test
-    fun serpControlVariantHasExpectedWeightAndNoFeatures() {
+    fun `getSerpControlVariant - has expected weight and no features`() {
         val variant = variants.first { it.key == "sc" }
         assertEqualsDouble(0.0, variant.weight)
     }
 
     @Test
-    fun serpExperimentalVariantHasExpectedWeightAndNoFeatures() {
+    fun `getSerpExperimentalVariant - has expected weight and no features`() {
         val variant = variants.first { it.key == "se" }
         assertEqualsDouble(0.0, variant.weight)
     }
 
     @Test
-    fun verifyNoDuplicateVariantNames() {
+    fun `verifyNoDuplicateVariantNames - no duplicate variant names`() {
         val existingNames = mutableSetOf<String>()
         variants.forEach {
             if (!existingNames.add(it.key)) {

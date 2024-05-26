@@ -90,7 +90,7 @@ class TrackerDataLoaderTest {
     }
 
     @Test
-    fun whenPersistTdsThenPersistEntities() {
+    fun `persistTds - when persisting tds then persist entities`() {
         val tdsJson = TdsJson()
 
         tdsJson.cnames = mapOf(Pair("host.com", "uncloaked-host.com"))

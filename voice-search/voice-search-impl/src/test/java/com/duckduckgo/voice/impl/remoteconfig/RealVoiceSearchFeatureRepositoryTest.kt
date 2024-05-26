@@ -46,7 +46,7 @@ class RealVoiceSearchFeatureRepositoryTest {
     }
 
     @Test
-    fun whenRepositoryIsCreatedThenExceptionsLoadedIntoMemory() = runTest {
+    fun `whenRepositoryIsCreated - exceptions loaded into memory`() = runTest {
         givenDaoContainsExceptions()
 
         repository = RealVoiceSearchFeatureRepository(mockDatabase, TestScope(), coroutineRule.testDispatcherProvider, isMainProcess = true)
@@ -61,7 +61,7 @@ class RealVoiceSearchFeatureRepositoryTest {
     }
 
     @Test
-    fun whenUpdateAllExceptionsIsCalledThenDatabaseIsUpdated() = runTest {
+    fun `updateAll - database updated`() = runTest {
         repository = RealVoiceSearchFeatureRepository(mockDatabase, TestScope(), coroutineRule.testDispatcherProvider, isMainProcess = true)
 
         val manufacturerExceptions = listOf(Manufacturer("manufacturer"))
@@ -78,7 +78,7 @@ class RealVoiceSearchFeatureRepositoryTest {
     }
 
     @Test
-    fun whenUpdateAllThenPreviousExceptionsAreCleared() = runTest {
+    fun `updateAll - previous exceptions cleared`() = runTest {
         givenDaoContainsExceptions()
         repository = RealVoiceSearchFeatureRepository(mockDatabase, TestScope(), coroutineRule.testDispatcherProvider, isMainProcess = true)
 

@@ -45,7 +45,7 @@ class BrowserServiceWorkerClientTest {
     }
 
     @Test
-    fun whenShouldInterceptRequestAndOriginHeaderExistThenSendItToInterceptor() = runTest {
+    fun `shouldInterceptRequest - origin header exists - send to interceptor`() = runTest {
         val webResourceRequest: WebResourceRequest = mock()
         whenever(webResourceRequest.requestHeaders).thenReturn(mapOf("Origin" to "example.com"))
 
@@ -55,7 +55,7 @@ class BrowserServiceWorkerClientTest {
     }
 
     @Test
-    fun whenShouldInterceptRequestAndOriginHeaderDoesNotExistButRefererExistThenSendItToInterceptor() = runTest {
+    fun `shouldInterceptRequest - referer exists - send to interceptor`() = runTest {
         val webResourceRequest: WebResourceRequest = mock()
         whenever(webResourceRequest.requestHeaders).thenReturn(mapOf("Referer" to "example.com"))
 
@@ -65,7 +65,7 @@ class BrowserServiceWorkerClientTest {
     }
 
     @Test
-    fun whenShouldInterceptRequestAndNoOriginOrRefererHeadersExistThenSendNullToInterceptor() = runTest {
+    fun `shouldInterceptRequest - no origin or referer headers exist - send null to interceptor`() = runTest {
         val webResourceRequest: WebResourceRequest = mock()
         whenever(webResourceRequest.requestHeaders).thenReturn(mapOf())
 

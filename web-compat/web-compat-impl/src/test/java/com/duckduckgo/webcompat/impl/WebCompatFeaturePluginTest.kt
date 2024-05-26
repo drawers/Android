@@ -36,19 +36,19 @@ class WebCompatFeaturePluginTest {
     }
 
     @Test
-    fun whenFeatureNameDoesNotMatchWebCompatThenReturnFalse() {
+    fun `store - feature name does not match webcompat - returns false`() {
         WebCompatFeatureName.values().filter { it != FEATURE_NAME }.forEach {
             assertFalse(testee.store(it.value, JSON_STRING))
         }
     }
 
     @Test
-    fun whenFeatureNameMatchesWebCompatThenReturnTrue() {
+    fun `store - feature name matches web compat - returns true`() {
         assertTrue(testee.store(FEATURE_NAME_VALUE, JSON_STRING))
     }
 
     @Test
-    fun whenFeatureNameMatchesWebCompatThenUpdateAll() {
+    fun `whenFeatureNameMatchesWebCompat - update all - matches web compat`() {
         testee.store(FEATURE_NAME_VALUE, JSON_STRING)
         val captor = argumentCaptor<WebCompatEntity>()
         verify(mockWebCompatRepository).updateAll(captor.capture())

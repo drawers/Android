@@ -33,21 +33,21 @@ class RealUserAgentFeatureToggleRepositoryTest {
     }
 
     @Test
-    fun whenDeleteAllThenDeleteAllCalled() {
+    fun `deleteAll - privacy feature toggles store deleted`() {
         testee.deleteAll()
 
         verify(mockPrivacyFeatureTogglesStore).deleteAll()
     }
 
     @Test
-    fun whenGetThenGetCalled() {
+    fun `get - get called`() {
         testee.get(UserAgentFeatureName.UserAgent, true)
 
         verify(mockPrivacyFeatureTogglesStore).get(UserAgentFeatureName.UserAgent, true)
     }
 
     @Test
-    fun whenInsertThenInsertCalled() {
+    fun `insert - called`() {
         val privacyFeatureToggle = UserAgentFeatureToggle(UserAgentFeatureName.UserAgent.value, true, null)
         testee.insert(privacyFeatureToggle)
 

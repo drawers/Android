@@ -55,7 +55,7 @@ class DuckDuckGoRequestRewriterTest {
     }
 
     @Test
-    fun whenAddingCustomParamsSourceParameterIsAdded() {
+    fun `addCustomQueryParams - source parameter added`() {
         testee.addCustomQueryParams(builder)
         val uri = builder.build()
         assertTrue(uri.queryParameterNames.contains(ParamKey.SOURCE))
@@ -63,7 +63,7 @@ class DuckDuckGoRequestRewriterTest {
     }
 
     @Test
-    fun whenAddingCustomParamsAndUserSourcedFromEuAuctionThenEuSourceParameterIsAdded() {
+    fun `addCustomQueryParams - user sourced from eu auction - eu source parameter added`() {
         whenever(mockAppReferrerDataStore.installedFromEuAuction).thenReturn(true)
         testee.addCustomQueryParams(builder)
         val uri = builder.build()
@@ -72,7 +72,7 @@ class DuckDuckGoRequestRewriterTest {
     }
 
     @Test
-    fun whenAddingCustomParamsIfStoreContainsAtbIsAdded() {
+    fun `addCustomQueryParams - store contains atb is added`() {
         whenever(mockStatisticsStore.atb).thenReturn(Atb("v105-2ma"))
         testee.addCustomQueryParams(builder)
         val uri = builder.build()
@@ -81,7 +81,7 @@ class DuckDuckGoRequestRewriterTest {
     }
 
     @Test
-    fun whenAddingCustomParamsIfIsStoreMissingAtbThenAtbIsNotAdded() {
+    fun `addCustomQueryParams - is store missing atb - atb not added`() {
         whenever(mockStatisticsStore.atb).thenReturn(null)
 
         testee.addCustomQueryParams(builder)
@@ -90,7 +90,7 @@ class DuckDuckGoRequestRewriterTest {
     }
 
     @Test
-    fun whenSerpRemovalFeatureIsActiveThenHideParamIsAddedToSerpUrl() {
+    fun `addCustomQueryParams - serp removal feature active - hide param added to serp url`() {
         testee.addCustomQueryParams(builder)
 
         val uri = builder.build()
@@ -98,19 +98,19 @@ class DuckDuckGoRequestRewriterTest {
     }
 
     @Test
-    fun whenShouldRewriteRequestAndUrlIsSerpQueryThenReturnTrue() {
+    fun `shouldRewriteRequest - serp query - returns true`() {
         val uri = "http://duckduckgo.com/?q=weather".toUri()
         assertTrue(testee.shouldRewriteRequest(uri))
     }
 
     @Test
-    fun whenShouldRewriteRequestAndUrlIsSerpQueryWithSourceAndAtbThenReturnFalse() {
+    fun `shouldRewriteRequest - serp query with source and atb - return false`() {
         val uri = "http://duckduckgo.com/?q=weather&atb=test&t=test".toUri()
         assertFalse(testee.shouldRewriteRequest(uri))
     }
 
     @Test
-    fun whenShouldRewriteRequestAndUrlIsADuckDuckGoStaticUrlThenReturnTrue() {
+    fun `shouldRewriteRequest - url is a duckduckgo static url - returns true`() {
         val uri = "http://duckduckgo.com/settings".toUri()
         assertTrue(testee.shouldRewriteRequest(uri))
 
@@ -119,7 +119,7 @@ class DuckDuckGoRequestRewriterTest {
     }
 
     @Test
-    fun whenShouldRewriteRequestAndUrlIsDuckDuckGoEmailThenReturnFalse() {
+    fun `shouldRewriteRequest - url is duckduckgo email - return false`() {
         val uri = "http://duckduckgo.com/email".toUri()
         assertFalse(testee.shouldRewriteRequest(uri))
     }

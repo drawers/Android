@@ -28,12 +28,12 @@ class ManagementScreenCredentialListFilterTest {
     private val testee = ManagementScreenCredentialListFilter(matcher)
 
     @Test
-    fun whenEmptyListAndEmptyQueryThenEmptyListReturned() = runTest {
+    fun `filter - empty list and query - returns empty list`() = runTest {
         assertTrue(testee.filter(emptyList(), "").isEmpty())
     }
 
     @Test
-    fun whenNonEmptyListAndEmptyQueryThenUnfilteredListReturned() = runTest {
+    fun `filter - non-empty list and empty query - unfiltered list returned`() = runTest {
         val originalList = listOf(
             creds(),
             creds(),
@@ -43,7 +43,7 @@ class ManagementScreenCredentialListFilterTest {
     }
 
     @Test
-    fun whenEmptyListWithAQueryThenEmptyListReturned() = runTest {
+    fun `filter - empty list with a query - empty list returned`() = runTest {
         assertTrue(testee.filter(emptyList(), "foo").isEmpty())
     }
 

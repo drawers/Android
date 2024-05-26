@@ -33,126 +33,126 @@ class DuckDuckGoUrlDetectorTest {
     }
 
     @Test
-    fun whenCheckingSearchTermThenIdentifiedAsNotDDGUrl() {
+    fun `when checking search term - identified as not DDG URL`() {
         assertFalse(testee.isDuckDuckGoUrl("foo"))
     }
 
     @Test
-    fun whenCheckingNonDDGUrlThenIdentifiedAsNotDDGUrl() {
+    fun `isDuckDuckGoUrl - not DDG URL`() {
         assertFalse(testee.isDuckDuckGoUrl("example.com"))
     }
 
     @Test
-    fun whenCheckingFullDDGUrlThenIdentifiedAsDDGUrl() {
+    fun `isDuckDuckGoUrl - checking full DDG URL`() {
         assertTrue(testee.isDuckDuckGoUrl("https://duckduckgo.com/?q=test%20search&tappv=android_0_2_0&t=ddg_android"))
     }
 
     @Test
-    fun whenCheckingSubdomainAndETLDisDDGThenReturnTrue() {
+    fun `isDuckDuckGoUrl - checking subdomain and ETL dis DGG - returns true`() {
         assertTrue(testee.isDuckDuckGoUrl("https://test.duckduckgo.com"))
     }
 
     @Test
-    fun whenCheckingSubdomainAndETLDisNotDDGThenReturnFalse() {
+    fun `isDuckDuckGoUrl - checking subdomain and ETL dis not DDG - returns false`() {
         assertFalse(testee.isDuckDuckGoUrl("https://test.duckduckgo.test.com"))
     }
 
     @Test
-    fun whenDDGUrlContainsQueryThenQueryCanBeExtracted() {
+    fun `extractQuery - DDG url contains query - query can be extracted`() {
         val query = testee.extractQuery("https://duckduckgo.com?q=test%20search")
         assertEquals("test search", query)
     }
 
     @Test
-    fun whenDDGUrlDoesNotContainsQueryThenQueryIsNull() {
+    fun `extractQuery - DDG URL does not contain query - null`() {
         val query = testee.extractQuery("https://duckduckgo.com")
         assertNull(query)
     }
 
     @Test
-    fun whenDDGUrlContainsQueryThenQueryDetected() {
+    fun `isDuckDuckGoQueryUrl - contains query - query detected`() {
         assertTrue(testee.isDuckDuckGoQueryUrl("https://duckduckgo.com?q=test%20search"))
     }
 
     @Test
-    fun whenDDGUrlDoesNotContainsQueryThenQueryIsNotDetected() {
+    fun `isDuckDuckGoQueryUrl - does not contain query - query is not detected`() {
         assertFalse(testee.isDuckDuckGoQueryUrl("https://duckduckgo.com"))
     }
 
     @Test
-    fun whenNonDDGUrlContainsQueryThenQueryIsNotDetected() {
+    fun `isDuckDuckGoQueryUrl - non DDG URL contains query - not detected`() {
         assertFalse(testee.isDuckDuckGoQueryUrl("https://example.com?q=test%20search"))
     }
 
     @Test
-    fun whenDDGUrlContainsVerticalThenVerticalCanBeExtracted() {
+    fun `extractVertical - DDG url contains vertical - images`() {
         val vertical = testee.extractVertical("https://duckduckgo.com/?q=new+zealand+images&t=ffab&atb=v218-6&iar=images&iax=images&ia=images")
         assertEquals("images", vertical)
     }
 
     @Test
-    fun whenDDGUrlDoesNotContainVerticalThenVerticalIsNull() {
+    fun `extractVertical - DDG URL does not contain vertical - null`() {
         val vertical = testee.extractVertical("https://duckduckgo.com")
         assertNull(vertical)
     }
 
     @Test
-    fun whenDDGUrlContainsVerticalThenVerticalUrlDetected() {
+    fun `isDuckDuckGoVerticalUrl - contains vertical url - detected`() {
         assertTrue(testee.isDuckDuckGoVerticalUrl("https://duckduckgo.com?ia=images"))
     }
 
     @Test
-    fun whenDDGUrlDoesNotContainsVerticalThenVerticalUrlIsNotDetected() {
+    fun `isDuckDuckGoVerticalUrl - does not contain vertical - is not detected`() {
         assertFalse(testee.isDuckDuckGoVerticalUrl("https://duckduckgo.com"))
     }
 
     @Test
-    fun whenCheckingNonDDGUrThenVerticalUrlIsNotDetected() {
+    fun `isDuckDuckGoVerticalUrl - non DDG URL - not detected`() {
         assertFalse(testee.isDuckDuckGoVerticalUrl("https://example.com?ia=images"))
     }
 
     @Test
-    fun whenDDGIsSettingsPageThenStaticPageIsDetected() {
+    fun `isDuckDuckGoStatic - settings page detected`() {
         assertTrue(testee.isDuckDuckGoStaticUrl("https://duckduckgo.com/settings"))
     }
 
     @Test
-    fun whenDDGIsParamsPageThenStaticPageIsDetected() {
+    fun `isDuckDuckGoStaticUrl - params page - static page detected`() {
         assertTrue(testee.isDuckDuckGoStaticUrl("https://duckduckgo.com/params"))
     }
 
     @Test
-    fun whenDDGIsNotStaticPageThenStaticPageIsNotDetected() {
+    fun `isDuckDuckGoStatic - not static page`() {
         assertFalse(testee.isDuckDuckGoStaticUrl("https://duckduckgo.com/something"))
     }
 
     @Test
-    fun whenNonDDGThenStaticPageIsDetected() {
+    fun `isDuckDuckGoStatic - non DDG - static page detected`() {
         assertFalse(testee.isDuckDuckGoStaticUrl("https://example.com/settings"))
     }
 
     @Test
-    fun whenIsNotDuckDuckGoEmailUrlThenReturnFalse() {
+    fun `isDuckDuckGoEmailUrl - is not DuckDuckGo email URL - returns false`() {
         assertFalse(testee.isDuckDuckGoEmailUrl("https://example.com"))
     }
 
     @Test
-    fun whenIsDuckDuckEmailUrlGoThenReturnTrue() {
+    fun `isDuckDuckGoEmailUrl - returns true`() {
         assertTrue(testee.isDuckDuckGoEmailUrl("https://duckduckgo.com/email"))
     }
 
     @Test
-    fun whenUrlContainsSubdomainAndIsETLDForDuckDuckGoEmailUrlThenReturnTrue() {
+    fun `isDuckDuckGoEmailUrl - url contains subdomain and is ETLD for DuckDuckGo email URL - returns true`() {
         assertTrue(testee.isDuckDuckGoEmailUrl("https://test.duckduckgo.com/email"))
     }
 
     @Test
-    fun whenUrlContainsSubdomainAndIsNotETLDForDuckDuckGoEmailUrlThenReturnTrue() {
+    fun `isDuckDuckGoEmailUrl - url contains subdomain and is not ETLD for DuckDuckGo email URL - returns true`() {
         assertFalse(testee.isDuckDuckGoEmailUrl("https://test.duckduckgo.test.com/email"))
     }
 
     @Test
-    fun whenUrlHasNoSchemeAndIsFromDuckDuckGoUrlThenReturnsFalse() {
+    fun `isDuckDuckGoEmailUrl - no scheme and from duckduckgo url - returns false`() {
         assertFalse(testee.isDuckDuckGoEmailUrl("duckduckgo.com/email"))
     }
 }

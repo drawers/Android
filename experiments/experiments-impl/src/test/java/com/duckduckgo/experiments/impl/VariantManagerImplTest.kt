@@ -54,28 +54,28 @@ class VariantManagerImplTest {
     }
 
     @Test
-    fun whenVariantAlreadyPersistedThenVariantReturned() {
+    fun `getVariantKey - variant already persisted - variant returned`() {
         whenever(mockExperimentVariantRepository.getUserVariant()).thenReturn("variantKey")
 
         assertEquals("variantKey", testee.getVariantKey())
     }
 
     @Test
-    fun whenVariantNeverPersistedThenNullReturned() {
+    fun `getVariantKey - variant never persisted - null returned`() {
         whenever(mockExperimentVariantRepository.getUserVariant()).thenReturn(null)
 
         assertEquals(null, testee.getVariantKey())
     }
 
     @Test
-    fun whenGetVariantsKeyThenVariantIsNeverUpdated() {
+    fun `getVariantKey - variant is never updated`() {
         testee.getVariantKey()
 
         verify(mockExperimentVariantRepository, never()).updateVariant(any())
     }
 
     @Test
-    fun whenVariantAlreadyPersistedThenVariantAllocatorNeverInvoked() {
+    fun `updateVariants - variant already persisted - never invoked`() {
         val variantsConfig = listOf(VariantConfig("variantKey", 1.0))
         whenever(mockExperimentVariantRepository.getUserVariant()).thenReturn("variantKey")
         testee.updateVariants(variantsConfig)
@@ -84,7 +84,7 @@ class VariantManagerImplTest {
     }
 
     @Test
-    fun givenVariantsUpdateWhenVariantNeverPersistedThenVariantAllocatorNeverInvoked() {
+    fun `givenVariantsUpdate - variant never persisted - variant allocator never invoked`() {
         val variantsConfig = listOf(VariantConfig("variantKey", 1.0))
         whenever(mockExperimentVariantRepository.getUserVariant()).thenReturn(null)
         testee.updateVariants(variantsConfig)
@@ -94,7 +94,7 @@ class VariantManagerImplTest {
     }
 
     @Test
-    fun givenReturnUserVariantWhenVariantsConfigUpdatedThenNewVariantNoAllocated() {
+    fun `givenReturnUserVariant - variants config updated - new variant no allocated`() {
         val variantsConfig = listOf(VariantConfig("variant1", 1.0), VariantConfig("variant2", 1.0))
         whenever(mockExperimentVariantRepository.getUserVariant()).thenReturn("ru")
 
@@ -105,7 +105,7 @@ class VariantManagerImplTest {
     }
 
     @Test
-    fun whenNoVariantsAvailableThenDefaultVariantIsAssigned() {
+    fun `updateVariants - no variants available - default variant assigned`() {
         whenever(mockExperimentVariantRepository.getUserVariant()).thenReturn(null)
         testee.updateVariants(emptyList())
 
@@ -113,7 +113,7 @@ class VariantManagerImplTest {
     }
 
     @Test
-    fun whenVariantPersistedIsNotFoundInActiveVariantListThenRestoredToDefaultVariant() {
+    fun `updateVariants - variant persisted is not found in active variant list - restored to default variant`() {
         whenever(mockExperimentVariantRepository.getUserVariant()).thenReturn("variantKey")
         testee.updateVariants(emptyList())
 
@@ -121,7 +121,7 @@ class VariantManagerImplTest {
     }
 
     @Test
-    fun whenVariantPersistedHasWeightEqualToZeroInActiveVariantListThenVariantIsNotRestored() {
+    fun `updateVariants - persisted variant has weight equal to zero in active variant list - not restored`() {
         val variantsConfig = listOf(VariantConfig("variantKey", 0.0))
         whenever(mockExperimentVariantRepository.getUserVariant()).thenReturn("variantKey")
         testee.updateVariants(variantsConfig)
@@ -130,7 +130,7 @@ class VariantManagerImplTest {
     }
 
     @Test
-    fun whenNoVariantPersistedThenNewVariantAllocated() {
+    fun `updateVariants - no variant persisted - new variant allocated`() {
         val variantsConfig = listOf(VariantConfig("variantKey", 1.0))
         whenever(mockExperimentVariantRepository.getUserVariant()).thenReturn(null)
 
@@ -139,7 +139,7 @@ class VariantManagerImplTest {
     }
 
     @Test
-    fun whenNoVariantPersistedThenNewVariantKeyIsAllocatedAndPersisted() {
+    fun `updateVariants - no variant persisted - new variant key allocated and persisted`() {
         val variantsConfig = listOf(VariantConfig("variantKey", 1.0))
         whenever(mockExperimentVariantRepository.getUserVariant()).thenReturn(null)
 
@@ -149,7 +149,7 @@ class VariantManagerImplTest {
     }
 
     @Test
-    fun whenReferrerVariantSetWithNoActiveVariantsThenReferrerVariantReturned() {
+    fun `getVariantKey - referrer variant set with no active variants - referrer variant returned`() {
         val referrerVariantKey = "xx"
         mockUpdateScenario(referrerVariantKey)
 
@@ -158,7 +158,7 @@ class VariantManagerImplTest {
     }
 
     @Test
-    fun whenReferrerVariantSetWithActiveVariantsThenReferrerVariantReturned() {
+    fun `getVariantKey - referrer variant set with active variants - returned`() {
         val referrerVariantKey = "xx"
         mockUpdateScenario(referrerVariantKey)
 
@@ -170,14 +170,14 @@ class VariantManagerImplTest {
     }
 
     @Test
-    fun whenUpdatingReferrerVariantThenDataStoreHasItsDataUpdated() {
+    fun `updateAppReferrerVariant - data store has its data updated`() {
         testee.updateAppReferrerVariant("xx")
 
         verify(mockExperimentVariantRepository).updateAppReferrerVariant("xx")
     }
 
     @Test
-    fun whenUpdatingReferrerVariantThenNewReferrerVariantReturned() {
+    fun `getVariantKey - updating referrer variant - new referrer variant returned`() {
         val originalVariant = testee.getVariantKey()
         mockUpdateScenario("xx")
         val newVariant = testee.getVariantKey()

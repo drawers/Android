@@ -49,7 +49,7 @@ class RealAutoconsentFeatureSettingsRepositoryTest {
     }
 
     @Test
-    fun whenRepositoryIsCreatedThenExceptionsLoadedIntoMemory() {
+    fun `whenRepositoryIsCreated - exceptions loaded into memory`() {
         givenDaoContainsDisabledCmps()
 
         repository = RealAutoconsentFeatureSettingsRepository(TestScope(), coroutineRule.testDispatcherProvider, mockDatabase, isMainProcess = true)
@@ -58,7 +58,7 @@ class RealAutoconsentFeatureSettingsRepositoryTest {
     }
 
     @Test
-    fun whenUpdateAllThenUpdateAllCalled() = runTest {
+    fun `updateAll - update all settings called - update all disabled cmps`() = runTest {
         repository = RealAutoconsentFeatureSettingsRepository(TestScope(), coroutineRule.testDispatcherProvider, mockDatabase, isMainProcess = true)
 
         repository.updateAllSettings(AutoconsentSettings(listOf()))
@@ -67,7 +67,7 @@ class RealAutoconsentFeatureSettingsRepositoryTest {
     }
 
     @Test
-    fun whenUpdateAllThenPreviousExceptionsAreCleared() = runTest {
+    fun `updateAll - previous exceptions cleared`() = runTest {
         givenDaoContainsDisabledCmps()
         repository = RealAutoconsentFeatureSettingsRepository(TestScope(), coroutineRule.testDispatcherProvider, mockDatabase, isMainProcess = true)
 
