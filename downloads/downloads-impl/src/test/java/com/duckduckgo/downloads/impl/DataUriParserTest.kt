@@ -42,103 +42,103 @@ class DataUriParserTest {
     }
 
     @Test
-    fun whenMimeTypeProvidedAsImagePngThenPngSuffixGenerated() {
+    fun `generate - mimeType image·png - png suffix generated`() {
         val parsed = testee.generate("data:image/png;base64,AAAA") as ParsedDataUri
         assertEquals("png", parsed.filename.fileType)
     }
 
     @Test
-    fun whenMimeTypeProvidedAsImageJpegThenJpgSuffixGenerated() {
+    fun `generate - mime type image·jpeg - jpg suffix generated`() {
         val parsed = testee.generate("data:image/jpeg;base64,AAAA") as ParsedDataUri
         assertEquals("jpg", parsed.filename.fileType)
     }
 
     @Test
-    fun whenMimeTypeProvidedAsArbitraryImageTypeThenNoSuffixGenerated() {
+    fun `generate - arbitrary image type - no suffix generated`() {
         val parsed = testee.generate("data:image/foo;base64,AAAA") as ParsedDataUri
         assertEquals("", parsed.filename.fileType)
     }
 
     @Test
-    fun whenMimeTypeNotProvidedThenNoSuffixAdded() {
+    fun `generate - mime type not provided - no suffix added`() {
         val parsed = testee.generate("data:,AAAA") as ParsedDataUri
         assertEquals("", parsed.filename.fileType)
     }
 
     @Test
-    fun whenInvalidDataUriProvidedInvalidTypeTurned() {
+    fun `generate - invalid data URI provided - invalid type returned`() {
         val parsed = testee.generate("AAAA")
         assertTrue(parsed === Invalid)
     }
 
     @Test
-    fun whenInvalidDataUriContainingCommaIsProvidedTheInvalidTypeTurned() {
+    fun `generate - invalid data URI containing comma - invalid type returned`() {
         val parsed = testee.generate("data:,")
         assertTrue(parsed === Invalid)
     }
 
     @Test
-    fun whenKnownMimeTypeProvidedAsNonImageTypeThenSuffixStillGenerated() {
+    fun `generate - known non-image mime type - suffix generated`() {
         val parsed = testee.generate("data:text/plain;base64,AAAA") as ParsedDataUri
         assertEquals("txt", parsed.filename.fileType)
     }
 
     @Test
-    fun whenMimeTypeNotProvidedThenNoSuffixAddedInToString() {
+    fun `generate - mime type not provided - no suffix added in toString`() {
         val filename = testee.generate("data:,AAAA") as ParsedDataUri
         assertFalse(filename.toString().contains("."))
     }
 
     @Test
-    fun whenMimeTypeIsTextPlainAndDataIsBase64AndIsPngThenSuffixIsPng() {
+    fun `generate - text·plain base64 data is png - suffix is png`() {
         val parsed = testee.generate("data:text/plain;base64,iVBORw0KGgo") as ParsedDataUri
         assertEquals("png", parsed.filename.fileType)
     }
 
     @Test
-    fun whenMimeTypeIsTextPlainAndDataIsBase64AndIsJfifThenSuffixIsJpg() {
+    fun `generate - mime type is text plain and data is base64 and is jfif - suffix is jpg`() {
         val parsed = testee.generate("data:text/plain;base64,/9j/4AAQSkZJRgABAQ") as ParsedDataUri
         assertEquals("jpg", parsed.filename.fileType)
     }
 
     @Test
-    fun whenMimeTypeIsTextPlainAndDataIsBase64AndIsSvgThenSuffixIsSvg() {
+    fun `generate - text·plain base64 SVG data - suffix is svg`() {
         val parsed = testee.generate("data:text/plain;base64,PHN2ZyB2ZXJzaW9uPSIxLjIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy") as ParsedDataUri
         assertEquals("svg", parsed.filename.fileType)
     }
 
     @Test
-    fun whenMimeTypeIsTextPlainAndDataIsBase64AndIsGifThenSuffixIsGif() {
+    fun `generate - text plain base64 gif data - suffix is gif`() {
         val parsed = testee.generate("data:text/plain;base64,R0lGODlhAAXQAocAAP") as ParsedDataUri
         assertEquals("gif", parsed.filename.fileType)
     }
 
     @Test
-    fun whenMimeTypeIsTextPlainAndDataIsBase64AndIsPdfThenSuffixIsPdf() {
+    fun `generate - text·plain base64 PDF data - suffix is pdf`() {
         val parsed = testee.generate("data:text/plain;base64,JVBERi0xLjEKMSAwIG9iag") as ParsedDataUri
         assertEquals("pdf", parsed.filename.fileType)
     }
 
     @Test
-    fun whenMimeTypeIsTextPlainAndDataIsBase64AndIsWebpThenSuffixIsWebp() {
+    fun `generate - text·plain base64 webp data - suffix is webp`() {
         val parsed = testee.generate("data:text/plain;base64,UklGRs4IAABXRUJQVlA4WAo") as ParsedDataUri
         assertEquals("webp", parsed.filename.fileType)
     }
 
     @Test
-    fun whenMimeTypeIsTextPlainAndDataIsBase64AndIsBpThenSuffixIsBmp() {
+    fun `generate - text·plain base64 data - suffix is bmp`() {
         val parsed = testee.generate("data:text/plain;base64,Qk1AwgEA") as ParsedDataUri
         assertEquals("bmp", parsed.filename.fileType)
     }
 
     @Test
-    fun whenMimeTypeIsTextPlainAndDataIsBase64AndIsUnknownThenSuffixIsTxt() {
+    fun `generate - text·plain base64 unknown - suffix is txt`() {
         val parsed = testee.generate("data:text/plain;base64,RUJQVlA4WAo") as ParsedDataUri
         assertEquals("txt", parsed.filename.fileType)
     }
 
     @Test
-    fun whenMimeTypeIsImageJpegThenSuffixIsJpg() {
+    fun `generate - mime type is image·jpeg - suffix is jpg`() {
         val parsed = testee.generate("data:image/jpeg;base64,RUJQVlA4WAo") as ParsedDataUri
         assertEquals("jpg", parsed.filename.fileType)
     }

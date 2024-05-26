@@ -50,12 +50,12 @@ class RealDrmBlockTest {
     }
 
     @Test
-    fun whenFeatureDisabledThenFalseIsReturned() {
+    fun `isDrmBlockedForUrl - feature disabled - false returned`() {
         assertFalse(testee.isDrmBlockedForUrl(url))
     }
 
     @Test
-    fun whenFeatureEnabledUrlNotBlockedThenFalseIsReturned() {
+    fun `isDrmBlockedForUrl - feature enabled and URL not blocked - false returned`() {
         givenFeatureIsEnabled()
         givenUrlIsNotInExceptionList()
 
@@ -63,7 +63,7 @@ class RealDrmBlockTest {
     }
 
     @Test
-    fun whenFeatureEnabledUrlBlockedUserAllowedThenFalseIsReturned() {
+    fun `isDrmBlockedForUrl - feature enabled, URL blocked, user allowed - false returned`() {
         givenFeatureIsEnabled()
         givenUrlIsInExceptionList()
         givenUriIsInUserAllowList()
@@ -72,7 +72,7 @@ class RealDrmBlockTest {
     }
 
     @Test
-    fun whenFeatureEnabledUrlBlockedNotUserAllowedUnprotectedTempThenFalseIsReturned() {
+    fun `isDrmBlockedForUrl - feature enabled, url blocked, not user allowed, unprotected temp - false returned`() {
         givenFeatureIsEnabled()
         givenUrlIsInExceptionList()
         givenUrlIsInUnprotectedTemporary()
@@ -81,7 +81,7 @@ class RealDrmBlockTest {
     }
 
     @Test
-    fun whenFeatureEnabledUrlBlockedNotUserAllowedNotUnprotectedTempThenTrueIsReturned() {
+    fun `isDrmBlockedForUrl - feature enabled and url blocked - true returned`() {
         givenFeatureIsEnabled()
         givenUrlIsInExceptionList()
 

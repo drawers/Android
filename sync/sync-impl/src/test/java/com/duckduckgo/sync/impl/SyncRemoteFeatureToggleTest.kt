@@ -56,7 +56,7 @@ class SyncRemoteFeatureToggleTest {
     private lateinit var testee: SyncRemoteFeatureToggle
 
     @Test
-    fun whenFeatureDisabledThenInternalBuildShowSyncTrue() {
+    fun `showSync - feature disabled - internal build shows sync true`() {
         whenever(appBuildConfig.flavor).thenReturn(BuildFlavor.INTERNAL)
         val syncFeature = TestSyncFeature(appBuildConfig).apply {
             sync = false
@@ -67,7 +67,7 @@ class SyncRemoteFeatureToggleTest {
     }
 
     @Test
-    fun whenFeatureDisabledThenShowSyncIsFalse() {
+    fun `showSync - feature disabled - false`() {
         whenever(appBuildConfig.flavor).thenReturn(BuildFlavor.PLAY)
         val syncFeature = TestSyncFeature(appBuildConfig).apply {
             sync = false
@@ -78,7 +78,7 @@ class SyncRemoteFeatureToggleTest {
     }
 
     @Test
-    fun whenShowSyncDisabledThenAllFeaturesDisabled() {
+    fun `showSyncDisabled - all features disabled`() {
         val syncFeature = TestSyncFeature(appBuildConfig).apply {
             showSync = false
         }
@@ -90,7 +90,7 @@ class SyncRemoteFeatureToggleTest {
     }
 
     @Test
-    fun whenAllowDataSyncingFalseThenAllowDataSyncingFalse() {
+    fun `allowDataSyncing - allowDataSyncing false - false`() {
         val syncFeature = TestSyncFeature(appBuildConfig).apply {
             allowDataSyncing = false
         }
@@ -100,7 +100,7 @@ class SyncRemoteFeatureToggleTest {
     }
 
     @Test
-    fun whenAllowDataSyncEnabledButNotForThisVersionThenAllowDataSyncingOnNewerVersionTrue() {
+    fun `allowDataSyncing - enabled but not for this version - allow data syncing on newer version true`() {
         whenever(appBuildConfig.versionCode).thenReturn(1)
         val syncFeature = TestSyncFeature(appBuildConfig).apply {
             allowDataSyncing = true
@@ -113,7 +113,7 @@ class SyncRemoteFeatureToggleTest {
     }
 
     @Test
-    fun whenAllowDataSyncingFalseThenSetupFlowsAndCreateAccountDisabled() {
+    fun `allowSetupFlows - allow data syncing false - setup flows and create account disabled`() {
         val syncFeature = TestSyncFeature(appBuildConfig).apply {
             allowDataSyncing = false
         }
@@ -124,7 +124,7 @@ class SyncRemoteFeatureToggleTest {
     }
 
     @Test
-    fun whenAllowSetupFlowsFalseThenAllowDataSyncingEnabled() {
+    fun `allowDataSyncing - setup flows false - enabled`() {
         val syncFeature = TestSyncFeature(appBuildConfig).apply {
             allowSetupFlows = false
         }
@@ -134,7 +134,7 @@ class SyncRemoteFeatureToggleTest {
     }
 
     @Test
-    fun whenAllowSetupFlowsEnabledButNotForThisVersionThenAllowSetupFlowsOnNewerVersionTrue() {
+    fun `allowSetupFlows - enabled but not for this version - allow setup flows on newer version true`() {
         whenever(appBuildConfig.versionCode).thenReturn(1)
         val syncFeature = TestSyncFeature(appBuildConfig).apply {
             allowSetupFlows = true
@@ -147,7 +147,7 @@ class SyncRemoteFeatureToggleTest {
     }
 
     @Test
-    fun whenAllowSetupFlowsFalseThenSetupFlowsAndCreateAccountDisabled() {
+    fun `allowSetupFlows - setup flows disabled - setup flows and create account disabled`() {
         val syncFeature = TestSyncFeature(appBuildConfig).apply {
             allowSetupFlows = false
         }
@@ -158,7 +158,7 @@ class SyncRemoteFeatureToggleTest {
     }
 
     @Test
-    fun whenAllowCreateAccountFalseThenAllowCreateAccountFalse() {
+    fun `allowCreateAccount - allowCreateAccount false - false`() {
         val syncFeature = TestSyncFeature(appBuildConfig).apply {
             allowCreateAccount = false
         }
@@ -168,7 +168,7 @@ class SyncRemoteFeatureToggleTest {
     }
 
     @Test
-    fun whenAllowCreateAccountTrueButNotForThisVersionThenAllowCreateAccountOnNewerVersionTrue() {
+    fun `allowCreateAccount - not for this version - allowCreateAccountOnNewerVersion true`() {
         whenever(appBuildConfig.versionCode).thenReturn(1)
         val syncFeature = TestSyncFeature(appBuildConfig).apply {
             allowCreateAccount = true
@@ -181,7 +181,7 @@ class SyncRemoteFeatureToggleTest {
     }
 
     @Test
-    fun whenAllowCreateAccountFalseThenDataSyncingAndSetupFlowsEnabled() {
+    fun `allowDataSyncing and allowSetupFlows - allowCreateAccount false - enabled`() {
         val syncFeature = TestSyncFeature(appBuildConfig).apply {
             allowCreateAccount = false
         }

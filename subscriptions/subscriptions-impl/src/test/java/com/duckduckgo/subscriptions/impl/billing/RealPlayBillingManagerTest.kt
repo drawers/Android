@@ -59,7 +59,7 @@ class RealPlayBillingManagerTest {
     }
 
     @Test
-    fun `when process created then connects to billing service and loads data`() = runTest {
+    fun `process created - connects to billing service and loads data`() = runTest {
         processLifecycleOwner.currentState = CREATED
 
         billingClientAdapter.verifyConnectInvoked()
@@ -68,7 +68,7 @@ class RealPlayBillingManagerTest {
     }
 
     @Test
-    fun `when connection failed then does not attempt loading anything`() = runTest {
+    fun `processLifecycleOwner - connection failed - does not attempt loading anything`() = runTest {
         billingClientAdapter.billingInitResult = BillingInitResult.Failure(BILLING_UNAVAILABLE)
 
         processLifecycleOwner.currentState = CREATED
@@ -79,7 +79,7 @@ class RealPlayBillingManagerTest {
     }
 
     @Test
-    fun `when connected then returns products`() = runTest {
+    fun `getProducts - connected - returns products`() = runTest {
         billingClientAdapter.subscriptions = listOf(
             mock {
                 whenever(it.productId).thenReturn("test-sub")
@@ -93,7 +93,7 @@ class RealPlayBillingManagerTest {
     }
 
     @Test
-    fun `when service not ready before launching billing flow then attempts to connect`() = runTest {
+    fun `launchBillingFlow - service not ready - attempts to connect`() = runTest {
         processLifecycleOwner.currentState = RESUMED
         billingClientAdapter.connected = false
         billingClientAdapter.launchBillingFlowResult = LaunchBillingFlowResult.Success
@@ -115,7 +115,7 @@ class RealPlayBillingManagerTest {
     }
 
     @Test
-    fun `when can't connect to service then launching billing flow is cancelled`() = runTest {
+    fun `launchBillingFlow - can't connect to service - cancelled`() = runTest {
         billingClientAdapter.billingInitResult = BillingInitResult.Failure(BILLING_UNAVAILABLE)
         processLifecycleOwner.currentState = RESUMED
         billingClientAdapter.launchBillingFlowResult = LaunchBillingFlowResult.Failure
@@ -136,7 +136,7 @@ class RealPlayBillingManagerTest {
     }
 
     @Test
-    fun `when service disconnected then attempt to connect`() = runTest {
+    fun `disconnectionListener - service disconnected - attempt to connect`() = runTest {
         processLifecycleOwner.currentState = RESUMED
         billingClientAdapter.methodInvocations.clear()
 
@@ -148,7 +148,7 @@ class RealPlayBillingManagerTest {
     }
 
     @Test
-    fun `when connect fails with recoverable error then retry with exponential backoff`() = runTest {
+    fun `connect - recoverable error - retry with exponential backoff`() = runTest {
         billingClientAdapter.billingInitResult = BillingInitResult.Failure(NETWORK_ERROR)
 
         processLifecycleOwner.currentState = RESUMED
@@ -164,7 +164,7 @@ class RealPlayBillingManagerTest {
     }
 
     @Test
-    fun `when launch billing flow then retrieves ProductDetails for provided plan id`() = runTest {
+    fun `launchBillingFlow - retrieves ProductDetails for provided plan id`() = runTest {
         processLifecycleOwner.currentState = RESUMED
         billingClientAdapter.launchBillingFlowResult = LaunchBillingFlowResult.Success
 

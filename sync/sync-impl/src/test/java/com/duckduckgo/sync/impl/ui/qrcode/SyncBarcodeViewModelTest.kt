@@ -63,7 +63,7 @@ class SyncBarcodeViewModelTest {
     }
 
     @Test
-    fun whenHandleCameraAvailabilityWithCameraUnavailableThenViewStateCameraUnavailable() = runTest {
+    fun `handleCameraAvailability - camera unavailable - viewState camera unavailable`() = runTest {
         testee.handleCameraAvailability(false)
 
         testee.viewState.test {
@@ -73,7 +73,7 @@ class SyncBarcodeViewModelTest {
     }
 
     @Test
-    fun whenHandlePermissionsWithPermissionGrantedThenViewStatePermissionsGranted() = runTest {
+    fun `handlePermissions - permission granted - viewState permissions granted`() = runTest {
         testee.handlePermissions(true)
 
         testee.viewState.test {
@@ -83,7 +83,7 @@ class SyncBarcodeViewModelTest {
     }
 
     @Test
-    fun whenHandlePermissionsWithPermissionNotGrantedAndPermissionNotDeniedYetThenCommandRequestPermissions() = runTest {
+    fun `handlePermissions - permission not granted and not denied yet - request permissions`() = runTest {
         permissionDeniedWrapper.permissionAlreadyDenied = false
         testee.handlePermissions(false)
 
@@ -94,7 +94,7 @@ class SyncBarcodeViewModelTest {
     }
 
     @Test
-    fun whenHandlePermissionsWithPermissionNotGrantedThenViewStateUnknown() = runTest {
+    fun `handlePermissions - permission not granted - viewState unknown`() = runTest {
         testee.handlePermissions(false)
 
         testee.viewState.test {
@@ -104,7 +104,7 @@ class SyncBarcodeViewModelTest {
     }
 
     @Test
-    fun whenHandlePermissionsWithPermissionNotGrantedAndPermissionAlreadyDeniedThenViewStatePermissionsNotGranted() = runTest {
+    fun `handlePermissions - permission not granted and permission already denied - viewState permissions not granted`() = runTest {
         permissionDeniedWrapper.permissionAlreadyDenied = true
         testee.handlePermissions(false)
 
@@ -115,7 +115,7 @@ class SyncBarcodeViewModelTest {
     }
 
     @Test
-    fun whenGoToSettingsThenCommandOpenSettings() = runTest {
+    fun `goToSettings - command open settings`() = runTest {
         testee.goToSettings()
 
         testee.commands().test {
@@ -125,7 +125,7 @@ class SyncBarcodeViewModelTest {
     }
 
     @Test
-    fun whenGoToSettingsThenViewStateUnknown() = runTest {
+    fun `goToSettings - viewState unknown`() = runTest {
         testee.goToSettings()
 
         testee.viewState.test {
@@ -135,7 +135,7 @@ class SyncBarcodeViewModelTest {
     }
 
     @Test
-    fun whenOnResumeThenCommandCheckCameraAvailable() = runTest {
+    fun `onResume - command check camera available`() = runTest {
         testee.onResume(fakeLifecycleOwner)
 
         testee.commands().test {
@@ -145,7 +145,7 @@ class SyncBarcodeViewModelTest {
     }
 
     @Test
-    fun whenOnResumeThenViewStateUnknown() = runTest {
+    fun `onResume - viewState unknown`() = runTest {
         testee.onResume(fakeLifecycleOwner)
 
         testee.viewState.test {
@@ -155,7 +155,7 @@ class SyncBarcodeViewModelTest {
     }
 
     @Test
-    fun whenHandleCameraAvailabilityWithCameraAvailableThenCommandCheckPermissions() = runTest {
+    fun `handleCameraAvailability - camera available - command check permissions`() = runTest {
         testee.handleCameraAvailability(true)
 
         testee.commands().test {
@@ -165,7 +165,7 @@ class SyncBarcodeViewModelTest {
     }
 
     @Test
-    fun whenHandleCameraAvailabilityWithCameraAvailableThenViewStateUnknown() = runTest {
+    fun `handleCameraAvailability - camera available - viewState unknown`() = runTest {
         testee.handleCameraAvailability(true)
 
         testee.viewState.test {
@@ -175,7 +175,7 @@ class SyncBarcodeViewModelTest {
     }
 
     @Test
-    fun whenHandlePermissionsWithPermissionNotGrantedAndPermissionNotDeniedYetThenPermissionAlreadyDeniedTrue() = runTest {
+    fun `handlePermissions - permission not granted and not denied yet - permission already denied true`() = runTest {
         permissionDeniedWrapper.permissionAlreadyDenied = false
 
         testee.handlePermissions(false)

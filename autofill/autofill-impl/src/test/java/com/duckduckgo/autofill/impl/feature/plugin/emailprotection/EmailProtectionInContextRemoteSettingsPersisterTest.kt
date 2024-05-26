@@ -28,25 +28,25 @@ class EmailProtectionInContextRemoteSettingsPersisterTest {
     )
 
     @Test
-    fun whenInvalidJsonThenNotSaved() = runTest {
+    fun `store - invalid json - not saved`() = runTest {
         testee.store("invalid json")
         verify(dataStore, never()).updateMaximumPermittedDaysSinceInstallation(any())
     }
 
     @Test
-    fun whenValidJsonButMissingInstalledDaysFieldThenSavedAsMaxValue() = runTest {
+    fun `store - valid JSON but missing installed days field - saved as max value`() = runTest {
         testee.store("{}")
         verify(dataStore).updateMaximumPermittedDaysSinceInstallation(Int.MAX_VALUE)
     }
 
     @Test
-    fun whenValidJsonPositiveNumberThenStoredCorrectly() = runTest {
+    fun `store - valid JSON positive number - stored correctly`() = runTest {
         testee.store(validJson(10))
         verify(dataStore).updateMaximumPermittedDaysSinceInstallation(10)
     }
 
     @Test
-    fun whenValidJsonNegativeNumberThenStoredCorrectly() = runTest {
+    fun `store - valid json negative number - stored correctly`() = runTest {
         testee.store(validJson(-1))
         verify(dataStore).updateMaximumPermittedDaysSinceInstallation(-1)
     }

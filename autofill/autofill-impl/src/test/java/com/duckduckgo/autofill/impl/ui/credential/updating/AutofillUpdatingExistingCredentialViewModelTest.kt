@@ -26,14 +26,14 @@ class AutofillUpdatingExistingCredentialViewModelTest {
     private val testee = AutofillUpdatingExistingCredentialViewModel()
 
     @Test
-    fun whenUsernameIsShortThenNoEllipsizing() {
+    fun `ellipsizeIfNecessary - short username - no ellipsizing`() {
         val result = testee.ellipsizeIfNecessary("foo")
         result.assertDoesNotEndInEllipsis()
         assertEquals("foo", result)
     }
 
     @Test
-    fun whenUsernameIsExactlyOnLimitThenNoEllipsizing() {
+    fun `ellipsizeIfNecessary - username exactly on limit - no ellipsizing`() {
         val usernameExactlyAsLongAsLimit = "A".repeat(50)
         val result = testee.ellipsizeIfNecessary(usernameExactlyAsLongAsLimit)
         result.assertDoesNotEndInEllipsis()
@@ -41,7 +41,7 @@ class AutofillUpdatingExistingCredentialViewModelTest {
     }
 
     @Test
-    fun whenUsernameIsLongerThanLimitThenEllipsizing() {
+    fun `ellipsizeIfNecessary - username longer than limit - ellipsizing`() {
         val usernameLongerThanLimit = "A".repeat(51)
         val result = testee.ellipsizeIfNecessary(usernameLongerThanLimit)
         result.assertEndsInEllipsis()

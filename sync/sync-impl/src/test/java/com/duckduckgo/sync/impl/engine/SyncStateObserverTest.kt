@@ -26,7 +26,7 @@ class SyncStateObserverTest {
     )
 
     @Test
-    fun whenSignedOutThenFirstEventDropsAndDoesNotNotifySyncEngine() = runTest {
+    fun `signedOut - first event drops - does not notify sync engine`() = runTest {
         val isSignedInFlow = MutableStateFlow(false)
         whenever(syncStore.isSignedInFlow()).thenReturn(isSignedInFlow)
         testee.onCreate(mock())
@@ -34,7 +34,7 @@ class SyncStateObserverTest {
     }
 
     @Test
-    fun whenSignedInTheDoesNotNotifySyncEngine() = runTest {
+    fun `onCreate - signed in - does not notify sync engine`() = runTest {
         val isSignedInFlow = MutableStateFlow(true)
         whenever(syncStore.isSignedInFlow()).thenReturn(isSignedInFlow)
         testee.onCreate(mock())
@@ -42,7 +42,7 @@ class SyncStateObserverTest {
     }
 
     @Test
-    fun whenSignedInAndSignedOutEventReceivedTheNotifySyncEngine() = runTest {
+    fun `onCreate - signed in and signed out event received - notify sync engine`() = runTest {
         val isSignedInFlow = MutableStateFlow(true)
         whenever(syncStore.isSignedInFlow()).thenReturn(isSignedInFlow)
         testee.onCreate(mock())

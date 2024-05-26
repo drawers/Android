@@ -122,18 +122,18 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenInitializedThenCanSubmit() {
+    fun `initialized - can submit`() {
         assertTrue(viewState.submitAllowed)
     }
 
     @Test
-    fun whenNoCategorySelectedThenCanSubmit() {
+    fun `canSubmit - no category selected`() {
         selectAndAcceptCategory(-1)
         assertTrue(viewState.submitAllowed)
     }
 
     @Test
-    fun whenCategorySelectedButNotChangedThenReturnOldCategory() {
+    fun `onCategoryAccepted - category selected but not changed - return old category`() {
         testee.onCategoryIndexChanged(0)
         testee.onCategoryAccepted()
         testee.onCategoryIndexChanged(1)
@@ -141,13 +141,13 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenCategoryAcceptedAndIncorrectIndexThenReturnNullCategory() {
+    fun `selectAndAcceptCategory - incorrect index - return null category`() {
         selectAndAcceptCategory(-1)
         assertNull(viewState.categorySelected)
     }
 
     @Test
-    fun whenCategoryAcceptedAndCorrectIndexThenReturnCategory() {
+    fun `selectAndAcceptCategory - correct index - return category`() {
         val indexSelected = 0
         selectAndAcceptCategory(indexSelected)
 
@@ -156,7 +156,7 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenCanSubmitBrokenSiteAndUrlNotNullAndSubmitPressedThenReportAndPixelSubmitted() {
+    fun `onSubmitPressed - url not null - report and pixel submitted`() {
         testee.setInitialBrokenSite(
             url = url,
             blockedTrackers = "",
@@ -199,7 +199,7 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenCanSubmitBrokenSiteAndUrlIsEmptyAndSubmitPressedThenDoNotSubmit() {
+    fun `onSubmitPressed - url is empty - do not submit`() {
         val nullUrl = ""
         testee.setInitialBrokenSite(
             url = nullUrl,
@@ -243,7 +243,7 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenCanSubmitBrokenSiteAndLastAmpLinkIsNullAndSubmitPressedThenReportUrlAndPixelSubmitted() {
+    fun `onSubmitPressed - last AMP link is null - report URL and pixel submitted`() {
         whenever(mockAmpLinks.lastAmpLinkInfo).thenReturn(null)
 
         testee.setInitialBrokenSite(
@@ -288,7 +288,7 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenCanSubmitBrokenSiteAndUrlHasAssociatedAmpLinkAndSubmitPressedThenAmpLinkReportedAndPixelSubmitted() {
+    fun `onSubmitPressed - url has associated amp link - amp link reported and pixel submitted`() {
         whenever(mockAmpLinks.lastAmpLinkInfo).thenReturn(AmpLinkInfo(trackingUrl, url))
 
         testee.setInitialBrokenSite(
@@ -333,7 +333,7 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenCanSubmitBrokenSiteAndUrlNotNullAndSubmitPressedThenReportAndPixelSubmittedWithParams() {
+    fun `onSubmitPressed - url not null - report and pixel submitted with params`() {
         whenever(mockAmpLinks.lastAmpLinkInfo).thenReturn(AmpLinkInfo(trackingUrl, url))
 
         testee.setInitialBrokenSite(
@@ -362,7 +362,7 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenIsDesktopModeTrueThenSendDesktopParameter() {
+    fun `setInitialBrokenSite - is desktop mode true - send desktop parameter`() {
         testee.setInitialBrokenSite(
             url = url,
             blockedTrackers = "",
@@ -384,7 +384,7 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenDesktopModeIsFalseThenSendMobileParameter() {
+    fun `setInitialBrokenSite - desktop mode false - send mobile parameter`() {
         testee.setInitialBrokenSite(
             url = url,
             blockedTrackers = "",
@@ -406,7 +406,7 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenGetBrokenSiteThenReturnCorrectCategory() {
+    fun `getBrokenSite - return correct category`() {
         val url = "http://m.example.com"
         val categoryIndex = 0
         testee.setInitialBrokenSite(
@@ -431,7 +431,7 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenCancelSelectionThenAssignOldIndexValue() {
+    fun `onCategorySelectionCancelled - assign old index value`() {
         testee.setInitialBrokenSite(
             url = "",
             blockedTrackers = "",
@@ -454,7 +454,7 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenCancelSelectionAndNoPreviousValueThenAssignMinusOne() {
+    fun `onCategorySelectionCancelled - no previous value - assign minus one`() {
         testee.setInitialBrokenSite(
             url = "",
             blockedTrackers = "",
@@ -476,7 +476,7 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenCategoryLoginsThenUseLoginSite() {
+    fun `onSubmitPressed - category logins - use login site`() {
         val categoryIndex = testee.shuffledCategories.indexOfFirst { it.key == BrokenSiteCategory.LOGIN_CATEGORY_KEY }
 
         testee.setInitialBrokenSite(
@@ -521,7 +521,7 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenCategoryIsNotLoginsThenDoNotUseLoginSite() {
+    fun `onSubmitPressed - category is not logins - do not use login site`() {
         val categoryIndex = testee.shuffledCategories.indexOfFirst { it.key == BrokenSiteCategory.COMMENTS_CATEGORY_KEY }
 
         testee.setInitialBrokenSite(
@@ -566,7 +566,7 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenSiteProtectionsToggledAllowlistIsUpdated() = runTest {
+    fun `onProtectionsToggled - site protections toggled - allowlist is updated`() = runTest {
         val url = "https://stuff.example.com"
 
         testee.setInitialBrokenSite(
@@ -598,7 +598,7 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenContentBlockingIsDisabledThenSiteProtectionsAreDisabled() {
+    fun `setInitialBrokenSite - content blocking disabled - site protections disabled`() {
         whenever(mockFeatureToggle.isFeatureEnabled(PrivacyFeatureName.ContentBlockingFeatureName.value))
             .thenReturn(false)
 
@@ -621,7 +621,7 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenUrlIsInUnprotectedTemporaryExceptionsThenSiteProtectionsAreDisabled() {
+    fun `setInitialBrokenSite - url in unprotected temporary exceptions - site protections disabled`() {
         whenever(mockFeatureToggle.isFeatureEnabled(PrivacyFeatureName.ContentBlockingFeatureName.value))
             .thenReturn(true)
 
@@ -647,7 +647,7 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenUrlIsInContentBlockingExceptionsThenSiteProtectionsAreDisabled() {
+    fun `setInitialBrokenSite - url in content blocking exceptions - site protections disabled`() {
         whenever(mockFeatureToggle.isFeatureEnabled(PrivacyFeatureName.ContentBlockingFeatureName.value))
             .thenReturn(true)
 
@@ -673,7 +673,7 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenUrlIsInUserAllowlistThenSiteProtectionsAreDisabled() {
+    fun `setInitialBrokenSite - url in user allowlist - site protections are disabled`() {
         whenever(mockFeatureToggle.isFeatureEnabled(PrivacyFeatureName.ContentBlockingFeatureName.value))
             .thenReturn(true)
 
@@ -698,7 +698,7 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenUrlIsNotInUserAllowlistThenSiteProtectionsAreEnabled() {
+    fun `setInitialBrokenSite - url not in user allowlist - site protections enabled`() {
         whenever(mockFeatureToggle.isFeatureEnabled(PrivacyFeatureName.ContentBlockingFeatureName.value))
             .thenReturn(true)
 
@@ -723,7 +723,7 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenUrlIsAddedToUserAllowlistThenPixelIsFired() = runTest {
+    fun `onProtectionsToggled - url added to user allowlist - pixel fired`() = runTest {
         testee.setInitialBrokenSite(
             url = url,
             blockedTrackers = "",
@@ -744,7 +744,7 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenUrlIsRemovedFromUserAllowlistThenPixelIsFired() = runTest {
+    fun `onProtectionsToggled - url removed from user allowlist - pixel fired`() = runTest {
         testee.setInitialBrokenSite(
             url = url,
             blockedTrackers = "",
@@ -765,7 +765,7 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenProtectionsAreToggledThenPrivacyProtectionsPopupListenerIsInvoked() = runTest {
+    fun `onProtectionsToggled - privacy protections popup listener invoked`() = runTest {
         testee.setInitialBrokenSite(
             url = url,
             blockedTrackers = "",
@@ -788,7 +788,7 @@ class BrokenSiteViewModelTest {
     }
 
     @Test
-    fun whenPrivacyProtectionsAreToggledThenCorrectPixelsAreSent() = runTest {
+    fun `onProtectionsToggled - privacy protections toggled - correct pixels sent`() = runTest {
         val params = mapOf("test_key" to "test_value")
         whenever(privacyProtectionsPopupExperimentExternalPixels.getPixelParams()).thenReturn(params)
         testee.setInitialBrokenSite(

@@ -46,14 +46,14 @@ class BrowserApplicationStateInfoTest {
     }
 
     @Test
-    fun whenActivityCreatedThenNoop() {
+    fun `onActivityCreated - noop`() {
         browserApplicationStateInfo.onActivityCreated(activity, null)
 
         verifyNoInteractions(observer)
     }
 
     @Test
-    fun whenFirstActivityCreatedAndStartedThenNotifyFreshAppLaunch() {
+    fun `onActivityStarted - first activity created - notify fresh app launch`() {
         browserApplicationStateInfo.onActivityCreated(activity, null)
 
         browserApplicationStateInfo.onActivityStarted(activity)
@@ -62,7 +62,7 @@ class BrowserApplicationStateInfoTest {
     }
 
     @Test
-    fun whenAllActivitiesStopAndRestartThenNotifyAppOpen() {
+    fun `onActivityStateChange - all activities stop and restart - notify app open`() {
         browserApplicationStateInfo.onActivityCreated(activity, null)
         browserApplicationStateInfo.onActivityCreated(activity, null)
 
@@ -82,7 +82,7 @@ class BrowserApplicationStateInfoTest {
     }
 
     @Test
-    fun whenAllActivitiesAreDestroyedAndRecreatedThenNotifyFreshAppLaunch() {
+    fun `onActivityCreated - all activities destroyed and recreated - notify fresh app launch`() {
         browserApplicationStateInfo.onActivityCreated(activity, null)
         browserApplicationStateInfo.onActivityCreated(activity, null)
 
@@ -106,7 +106,7 @@ class BrowserApplicationStateInfoTest {
     }
 
     @Test
-    fun whenAllActivitiesAreDestroyedByBackPressAndRecreatedThenDoNotNotifyFreshAppLaunch() {
+    fun `onActivityDestroyed - all activities destroyed by back press and recreated - do not notify fresh app launch`() {
         activity.destroyedByBackPress = true
 
         browserApplicationStateInfo.onActivityCreated(activity, null)
@@ -132,7 +132,7 @@ class BrowserApplicationStateInfoTest {
     }
 
     @Test
-    fun whenAllActivitiesAreDestroyedByConfigChangeAndRecreatedThenDoNotNotifyFreshAppLaunch() {
+    fun `onActivityLifecycle - config change and recreate - do not notify fresh app launch`() {
         activity.isConfigChange = true
 
         browserApplicationStateInfo.onActivityCreated(activity, null)

@@ -37,7 +37,7 @@ class SubscriptionSettingsViewModelTest {
     }
 
     @Test
-    fun whenRemoveFromDeviceThenFinishSignOut() = runTest {
+    fun `removeFromDevice - finish sign out`() = runTest {
         viewModel.commands().test {
             viewModel.removeFromDevice()
             assertTrue(awaitItem() is FinishSignOut)
@@ -45,7 +45,7 @@ class SubscriptionSettingsViewModelTest {
     }
 
     @Test
-    fun whenSubscriptionThenFormatDateCorrectly() = runTest {
+    fun `onCreate - subscription - format date correctly`() = runTest {
         whenever(subscriptionsManager.getSubscription()).thenReturn(
             Subscription(
                 productId = SubscriptionsConstants.MONTHLY_PLAN,
@@ -67,7 +67,7 @@ class SubscriptionSettingsViewModelTest {
     }
 
     @Test
-    fun whenSubscriptionMonthlyThenReturnMonthly() = runTest {
+    fun `onCreate - subscription monthly - return monthly`() = runTest {
         whenever(subscriptionsManager.getSubscription()).thenReturn(
             Subscription(
                 productId = SubscriptionsConstants.MONTHLY_PLAN,
@@ -89,7 +89,7 @@ class SubscriptionSettingsViewModelTest {
     }
 
     @Test
-    fun whenSubscriptionYearlyThenReturnYearly() = runTest {
+    fun `onCreate - subscription yearly - return yearly`() = runTest {
         whenever(subscriptionsManager.getSubscription()).thenReturn(
             Subscription(
                 productId = SubscriptionsConstants.YEARLY_PLAN,
@@ -112,7 +112,7 @@ class SubscriptionSettingsViewModelTest {
     }
 
     @Test
-    fun whenGoToStripeIfNoUrlThenDoNothing() = runTest {
+    fun `goToStripe - no URL - do nothing`() = runTest {
         whenever(subscriptionsManager.getPortalUrl()).thenReturn(null)
 
         viewModel.commands().test {
@@ -123,7 +123,7 @@ class SubscriptionSettingsViewModelTest {
     }
 
     @Test
-    fun whenGoToStripeIfNoUrlThenDoSendCommandWithUrl() = runTest {
+    fun `goToStripe - no URL - send command with URL`() = runTest {
         whenever(subscriptionsManager.getPortalUrl()).thenReturn("example.com")
 
         viewModel.commands().test {
@@ -135,7 +135,7 @@ class SubscriptionSettingsViewModelTest {
     }
 
     @Test
-    fun whenRemoveFromDeviceThenPixelIsSent() = runTest {
+    fun `removeFromDevice - pixel is sent`() = runTest {
         viewModel.removeFromDevice()
         verify(pixelSender).reportSubscriptionSettingsRemoveFromDeviceClick()
     }

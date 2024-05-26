@@ -95,7 +95,7 @@ class AppTPAndNetPEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getInitialContentNoServerLocationThenReturnsCorrectNotificationContent() = runTest {
+    fun `getInitialContent - no server location - returns correct notification content`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(true)
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
         whenever(networkProtectionState.serverLocation()).thenReturn(null)
@@ -107,7 +107,7 @@ class AppTPAndNetPEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getInitialContentWithServerLocationThenReturnsCorrectNotificationContent() = runTest {
+    fun `getInitialContent - server location - returns correct notification content`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(true)
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
         whenever(networkProtectionState.serverLocation()).thenReturn("Stockholm, SE")
@@ -119,7 +119,7 @@ class AppTPAndNetPEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getInitialContentAppTpNotEnabledThenReturnsCorrectNotificationContent() = runTest {
+    fun `getInitialContent - app tracking protection not enabled - returns correct notification content`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(false)
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
 
@@ -127,7 +127,7 @@ class AppTPAndNetPEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getInitialContentNetPNotEnabledThenReturnsCorrectNotificationContent() = runTest {
+    fun `getInitialContent - netP not enabled - returns correct notification content`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(true)
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
 
@@ -135,7 +135,7 @@ class AppTPAndNetPEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getUpdateContentThenReturnsCorrectInitialUpdatedNotificationContent() = runTest {
+    fun `getUpdatedContent - returns correct initial updated notification content`() = runTest {
         whenever(networkProtectionState.serverLocation()).thenReturn("Stockholm, SE")
 
         plugin.getUpdatedContent().test {
@@ -149,7 +149,7 @@ class AppTPAndNetPEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getUpdateContentOneCompanyThenReturnsCorrectUpdatedNotificationContent() = runTest {
+    fun `getUpdatedContent - one company - returns correct updated notification content`() = runTest {
         whenever(networkProtectionState.serverLocation()).thenReturn("Stockholm, SE")
 
         plugin.getUpdatedContent().test {
@@ -167,7 +167,7 @@ class AppTPAndNetPEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getUpdateContentMultipleDifferentAppsThenReturnsCorrectUpdatedNotificationContent() = runTest {
+    fun `getUpdatedContent - multiple different apps - returns correct updated notification content`() = runTest {
         whenever(networkProtectionState.serverLocation()).thenReturn("Stockholm, SE")
 
         plugin.getUpdatedContent().test {
@@ -191,7 +191,7 @@ class AppTPAndNetPEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getUpdateContentMultipleDifferentAppsNoLocationThenReturnsCorrectUpdatedNotificationContent() = runTest {
+    fun `getUpdatedContent - no location - returns correct updated notification content`() = runTest {
         whenever(networkProtectionState.serverLocation()).thenReturn(null)
 
         plugin.getUpdatedContent().test {
@@ -215,7 +215,7 @@ class AppTPAndNetPEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getUpdateContentTrackersWithoutEntityThenReturnsCorrectUpdatedNotificationContent() = runTest {
+    fun `getUpdatedContent - no entity - returns correct updated notification content`() = runTest {
         whenever(networkProtectionState.serverLocation()).thenReturn("Stockholm, SE")
 
         plugin.getUpdatedContent().test {
@@ -245,7 +245,7 @@ class AppTPAndNetPEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getUpdateContentMultipleSameThenReturnsCorrectUpdatedNotificationContent() = runTest {
+    fun `getUpdatedContent - multiple same updates - returns correct updated notification content`() = runTest {
         whenever(networkProtectionState.serverLocation()).thenReturn("Stockholm, SE")
 
         plugin.getUpdatedContent().test {
@@ -281,14 +281,14 @@ class AppTPAndNetPEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun isActiveWhenAppTpAndNetPEnabledThenReturnsTrue() = runTest {
+    fun `isActive - appTp and netP enabled - returns true`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(true)
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
         assertTrue(plugin.isActive())
     }
 
     @Test
-    fun isActiveWhenAppTpAndNetPNotEnabledThenReturnsFalse() = runTest {
+    fun `isActive - appTp and netP not enabled - returns false`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(false)
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
 
@@ -296,7 +296,7 @@ class AppTPAndNetPEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun isActiveWhenAppTpOnlyEnabledThenReturnsFalse() = runTest {
+    fun `isActive - app tracking protection only enabled - returns false`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(true)
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
 
@@ -304,7 +304,7 @@ class AppTPAndNetPEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun isActiveWhenNetPOnlyEnabledThenReturnsFalse() = runTest {
+    fun `isActive - NetP only enabled - returns false`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(false)
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
 

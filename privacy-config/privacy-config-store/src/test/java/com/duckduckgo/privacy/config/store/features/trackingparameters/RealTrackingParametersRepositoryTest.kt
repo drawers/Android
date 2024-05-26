@@ -52,7 +52,7 @@ class RealTrackingParametersRepositoryTest {
     }
 
     @Test
-    fun whenRepositoryIsCreatedThenValuesLoadedIntoMemory() {
+    fun `RealTrackingParametersRepository - repository created - values loaded into memory`() {
         givenTrackingParametersDaoContainsEntities()
 
         testee = RealTrackingParametersRepository(
@@ -67,7 +67,7 @@ class RealTrackingParametersRepositoryTest {
     }
 
     @Test
-    fun whenUpdateAllThenUpdateAllCalled() = runTest {
+    fun `updateAll - updateAll called`() = runTest {
         testee = RealTrackingParametersRepository(
             mockDatabase,
             TestScope(),
@@ -81,7 +81,7 @@ class RealTrackingParametersRepositoryTest {
     }
 
     @Test
-    fun whenUpdateAllThenPreviousValuesAreCleared() = runTest {
+    fun `updateAll - previous values are cleared`() = runTest {
         givenTrackingParametersDaoContainsEntities()
 
         testee = RealTrackingParametersRepository(

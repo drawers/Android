@@ -32,7 +32,7 @@ class RealCohortCalculatorTest {
     }
 
     @Test
-    fun whenLocalDateIsFirstDayOfLastDayOf2021ThenReturnWeeklyCohort() {
+    fun `calculateCohortForDate - first day of last week of 2021 - return weekly cohort`() {
         val date = LocalDate.of(2022, 1, 1)
         val now = date.plusWeeks(3)
 
@@ -42,7 +42,7 @@ class RealCohortCalculatorTest {
     }
 
     @Test
-    fun whenLocalDateIsFirstDayOfLastDayOf2021ThenReturnMonthlyCohort() {
+    fun `calculateCohortForDate - first day of last day of 2021 - return monthly cohort`() {
         val date = LocalDate.of(2022, 1, 1)
         val now = date.plusWeeks(12)
 
@@ -51,7 +51,7 @@ class RealCohortCalculatorTest {
     }
 
     @Test
-    fun whenLocalDateIsFirstDayOfLastDayOf2021ThenReturnQuarterCohort() {
+    fun `calculateCohortForDate - first day of 2022 - return quarter cohort`() {
         val date = LocalDate.of(2022, 1, 1)
         val now = date.plusWeeks(25)
 
@@ -60,7 +60,7 @@ class RealCohortCalculatorTest {
     }
 
     @Test
-    fun whenLocalDateIsFirstDayOfLastDayOf2021ThenReturnHalfYearCohort() {
+    fun `calculateCohortForDate - first day of last week of 2021 - return half year cohort`() {
         val date = LocalDate.of(2022, 1, 1)
         val now = date.plusWeeks(51)
 
@@ -69,7 +69,7 @@ class RealCohortCalculatorTest {
     }
 
     @Test
-    fun whenLocalDateIsFirstDayOfLastDayOf2021ThenReturnUniqueCohort() {
+    fun `calculateCohortForDate - first day of last week of 2021 - return unique cohort`() {
         val date = LocalDate.of(2022, 1, 1)
         val now = date.plusWeeks(53)
 
@@ -78,49 +78,49 @@ class RealCohortCalculatorTest {
     }
 
     @Test
-    fun whenLocalDateNowThenReturnWeeklyCohort() {
+    fun `calculateCohortForDate - local date now - return weekly cohort`() {
         val date = LocalDate.now()
         val year = date.year
         assertEquals("$year-week-${date.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR)}", cohortCalculator.calculateCohortForDate(date))
     }
 
     @Test
-    fun whenLocalDate4WeeksAgoThenReturnWeeklyCohort() {
+    fun `calculateCohortForDate - local date 4 weeks ago - return weekly cohort`() {
         val date = LocalDate.now().minusWeeks(4)
         val year = date.get(IsoFields.WEEK_BASED_YEAR)
         assertEquals("$year-week-${date.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR)}", cohortCalculator.calculateCohortForDate(date))
     }
 
     @Test
-    fun whenLocalDateMoreThan4WeeksAgoThenReturnMonthCohort() {
+    fun `calculateCohortForDate - local date more than 4 weeks ago - return month cohort`() {
         val date = LocalDate.now().minusWeeks(5)
         val year = date.year
         assertEquals("$year-${date.month}", cohortCalculator.calculateCohortForDate(date))
     }
 
     @Test
-    fun whenLocalDate13WeeksAgoThenReturnMonthCohort() {
+    fun `calculateCohortForDate - local date 13 weeks ago - return month cohort`() {
         val date = LocalDate.now().minusWeeks(13)
         val year = date.year
         assertEquals("$year-${date.month}", cohortCalculator.calculateCohortForDate(date))
     }
 
     @Test
-    fun whenLocalDateMoreThan13WeeksAgoThenReturnQuarterCohort() {
+    fun `calculateCohortForDate - local date more than 13 weeks ago - return quarter cohort`() {
         val date = LocalDate.now().minusWeeks(14)
         val year = date.year
         assertEquals("$year-q${date.get(IsoFields.QUARTER_OF_YEAR)}", cohortCalculator.calculateCohortForDate(date))
     }
 
     @Test
-    fun whenLocalDate26WeeksAgoThenReturnQuarterCohort() {
+    fun `calculateCohortForDate - 26 weeks ago - return quarter cohort`() {
         val date = LocalDate.now().minusWeeks(26)
         val year = date.year
         assertEquals("$year-q${date.get(IsoFields.QUARTER_OF_YEAR)}", cohortCalculator.calculateCohortForDate(date))
     }
 
     @Test
-    fun whenLocalDateMoreThan26WeeksAgoThenReturnHalfCohort() {
+    fun `calculateCohortForDate - local date more than 26 weeks ago - return half cohort`() {
         val date = LocalDate.now().minusWeeks(27)
         val year = date.year
         val half = if (date.monthValue > 6) "2" else "1"

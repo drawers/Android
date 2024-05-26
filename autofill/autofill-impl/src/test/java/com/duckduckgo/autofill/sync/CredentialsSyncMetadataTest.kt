@@ -49,7 +49,7 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenAddNewEntityThenEntityInserted() {
+    fun `addOrUpdate - new entity - entity inserted`() {
         assertNull(dao.getLocalId("syncId"))
 
         testee.addOrUpdate(CredentialsSyncMetadataEntity("syncId", 123L, null, null))
@@ -58,7 +58,7 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenUpdateSyncIdExistingEntityThenEntityUpdated() {
+    fun `addOrUpdate - existing entity - entity updated`() {
         dao.insert(CredentialsSyncMetadataEntity("syncId", 123L, null, null))
 
         testee.addOrUpdate(CredentialsSyncMetadataEntity("syncId", 456L, null, null))
@@ -67,7 +67,7 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenUpdateExistingEntityByLocalIdThenEntityUpdated() {
+    fun `addOrUpdate - update existing entity by local id - entity updated`() {
         dao.insert(CredentialsSyncMetadataEntity("syncId", 123L, null, null))
 
         testee.addOrUpdate(CredentialsSyncMetadataEntity("syncId2", 123L, null, null))
@@ -76,14 +76,14 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenAutofillIdNotFoundThenReturnNull() {
+    fun `getSyncMetadata - autofill ID not found - return null`() {
         val syncId = testee.getSyncMetadata(123L)
 
         assertNull(syncId)
     }
 
     @Test
-    fun whenLoginIdExistsThenReturnSyncMetadata() {
+    fun `getSyncMetadata - loginId exists - return sync metadata`() {
         val loginId = 123L
         val syncId = "syncId"
         dao.insert(CredentialsSyncMetadataEntity(syncId = syncId, localId = loginId, null, null))
@@ -94,14 +94,14 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenCreateSyncIdForNonExistingIdThenReturnNewSyncId() {
+    fun `createSyncId - non-existing id - return new sync id`() {
         val syncId = testee.createSyncId(123L)
 
         assertNotNull(syncId)
     }
 
     @Test
-    fun whenCreateSyncIdForExistingIdThenReturnExistingSyncId() {
+    fun `createSyncId - existing id - return existing syncId`() {
         val loginId = 123L
         val syncId = "syncId"
         dao.insert(CredentialsSyncMetadataEntity(syncId = syncId, localId = loginId, null, null))
@@ -113,14 +113,14 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenLocalIdNotFoundThenReturnNull() {
+    fun `getLocalId - local id not found - return null`() {
         val localId = testee.getLocalId("syncId")
 
         assertNull(localId)
     }
 
     @Test
-    fun whenLocalIdExistsThenReturnLocalId() {
+    fun `getLocalId - localId exists - return localId`() {
         val localId = 123L
         val syncId = "syncId"
         dao.insert(CredentialsSyncMetadataEntity(syncId = syncId, localId = localId, null, null))
@@ -131,7 +131,7 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenGetRemovedEntitiesThenReturnEntitiesWithDeletedAt() {
+    fun `getRemovedEntitiesSince - entities with deleted_at - return entities`() {
         val loginId = 123L
         val syncId = "syncId"
         dao.insert(CredentialsSyncMetadataEntity(syncId = syncId, localId = loginId, deleted_at = "2023-07-21T20:21:40.552Z", null))
@@ -144,7 +144,7 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenGetRemovedEntitiesThenDoNotReturnEntitiesPreviousToSince() {
+    fun `getRemovedEntitiesSince - entities previous to since - do not return`() {
         val loginId = 123L
         val syncId = "syncId"
         dao.insert(CredentialsSyncMetadataEntity(syncId = syncId, localId = loginId, deleted_at = "2021-08-30T00:39:00Z", null))
@@ -155,7 +155,7 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenEntityRemovedThenUpdateDeletedAtIfExists() {
+    fun `onEntityRemoved - update deletedAt if exists`() {
         val loginId = 123L
         val syncId = "syncId"
         dao.insert(CredentialsSyncMetadataEntity(syncId = syncId, localId = loginId, null, null))
@@ -167,7 +167,7 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenEntitiesRemovedThenUpdateDeletedAtIfExists() {
+    fun `onEntitiesRemoved - entities removed - update deleted_at if exists`() {
         val loginId1 = 1L
         val syncId1 = "syncId_1"
         dao.insert(CredentialsSyncMetadataEntity(syncId = syncId1, localId = loginId1, null, null))
@@ -183,7 +183,7 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenRemoveDeletedEntitiesThenDeleteEntitiesBeforeDate() {
+    fun `removeDeletedEntities - delete entities before date`() {
         val loginId = 123L
         val syncId = "syncId"
         dao.insert(CredentialsSyncMetadataEntity(syncId = syncId, localId = loginId, deleted_at = "2022-08-30T00:00:00Z", null))
@@ -194,7 +194,7 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenRemoveDeletedEntitiesThenKeepEntitiesAfterDate() {
+    fun `removeDeletedEntities - keep entities after date`() {
         val syncId = "syncId"
         dao.insert(CredentialsSyncMetadataEntity(syncId = syncId, localId = 123L, deleted_at = "2022-08-30T00:00:00Z", null))
         dao.insert(CredentialsSyncMetadataEntity(syncId = syncId, localId = 345L, deleted_at = "2022-09-30T00:00:00Z", null))
@@ -206,7 +206,7 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenRemoveEntityWithLocalIdThenRemoveEntity() {
+    fun `removeEntityWith - localId - remove entity`() {
         val loginId = 123L
         dao.insert(CredentialsSyncMetadataEntity(syncId = "syncId", localId = loginId, null, null))
 
@@ -216,7 +216,7 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenRemoveEntityWithSyncIdThenRemoveEntity() {
+    fun `removeEntityWith - syncId - remove entity`() {
         val syncId = "syncId"
         dao.insert(CredentialsSyncMetadataEntity(syncId = syncId, localId = 123L, null, null))
 
@@ -226,7 +226,7 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenEntityChangedThenUpdateModifiedAt() {
+    fun `onEntityChanged - update modified_at`() {
         val loginId = 123L
         val syncId = "syncId"
         dao.insert(CredentialsSyncMetadataEntity(syncId = syncId, localId = loginId, null, null))
@@ -238,7 +238,7 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenEntityChangedInAListThenUpdateModifiedAt() {
+    fun `onEntitiesChanged - entity in list - update modified_at`() {
         val loginId = 123L
         val syncId = "syncId"
         dao.insert(CredentialsSyncMetadataEntity(syncId = syncId, localId = loginId, null, null))
@@ -250,7 +250,7 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenEntityChangedDoesNotExistThenInsertedWithModifiedAt() {
+    fun `onEntityChanged - entity does not exist - inserted with modifiedAt`() {
         val loginId = 123L
 
         testee.onEntityChanged(loginId)
@@ -260,7 +260,7 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenEntityChangedInAListDoesNotExistThenInsertedWithModifiedAt() {
+    fun `onEntitiesChanged - entity does not exist - inserted with modifiedAt`() {
         val loginId = 123L
 
         testee.onEntitiesChanged(listOf(loginId))
@@ -270,7 +270,7 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenGetChangesSinceThenReturnChanges() {
+    fun `getChangesSince - return changes`() {
         val loginId = 123L
         val syncId = "syncId"
         dao.insert(CredentialsSyncMetadataEntity(syncId = syncId, localId = loginId, null, "2022-08-30T00:40:00Z"))
@@ -282,7 +282,7 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenGetAllThenReturnAll() {
+    fun `getAllCredentials - returns all`() {
         val loginId = 123L
         val syncId = "syncId"
         dao.insert(CredentialsSyncMetadataEntity(syncId = syncId, localId = loginId, null, null))
@@ -294,7 +294,7 @@ internal class CredentialsSyncMetadataTest {
     }
 
     @Test
-    fun whenClearAllThenRemoveAll() {
+    fun `clearAll - remove all`() {
         val loginId = 123L
         val syncId = "syncId"
         dao.insert(CredentialsSyncMetadataEntity(syncId = syncId, localId = loginId, null, null))

@@ -69,7 +69,7 @@ class RealVoiceSearchActivityLauncherTest {
     }
 
     @Test
-    fun whenResultFromVoiceSearchBrowserIsOKAndNotEmptyThenEmitVoiceRecognitionSuccess() {
+    fun `registerResultsCallback - result from voice search browser is OK and not empty - emit voice recognition success`() {
         var lastKnownEvent: Event? = null
         testee.registerResultsCallback(mock(), mock(), BROWSER) {
             lastKnownEvent = it
@@ -83,7 +83,7 @@ class RealVoiceSearchActivityLauncherTest {
     }
 
     @Test
-    fun whenResultFromVoiceSearchBrowserIsErrorThenEmitVoiceRecognitionError() {
+    fun `registerResultsCallback - result from voice search browser is error - emit voice recognition error`() {
         var lastKnownEvent: Event? = null
         testee.registerResultsCallback(mock(), mock(), BROWSER) {
             lastKnownEvent = it
@@ -97,7 +97,7 @@ class RealVoiceSearchActivityLauncherTest {
     }
 
     @Test
-    fun whenResultFromVoiceSearchWidgetIsOKAndNotEmptyThenEmitVoiceRecognitionSuccess() {
+    fun `registerResultsCallback - result from voice search widget is OK and not empty - emit voice recognition success`() {
         var lastKnownEvent: Event? = null
         testee.registerResultsCallback(mock(), mock(), WIDGET) {
             lastKnownEvent = it
@@ -111,7 +111,7 @@ class RealVoiceSearchActivityLauncherTest {
     }
 
     @Test
-    fun whenResultFromVoiceSearchIsOKAndEmptyThenEmitSearchCancelled() {
+    fun `registerResultsCallback - result from voice search is OK and empty - emit search cancelled`() {
         var lastKnownEvent: Event? = null
         testee.registerResultsCallback(mock(), mock(), BROWSER) {
             lastKnownEvent = it
@@ -125,7 +125,7 @@ class RealVoiceSearchActivityLauncherTest {
     }
 
     @Test
-    fun whenResultFromVoiceSearchIsCancelledThenEmitSearchCancelled() {
+    fun `registerResultsCallback - result from voice search cancelled - emit search cancelled`() {
         var lastKnownEvent: Event? = null
         testee.registerResultsCallback(mock(), mock(), BROWSER) {
             lastKnownEvent = it
@@ -140,7 +140,7 @@ class RealVoiceSearchActivityLauncherTest {
     }
 
     @Test
-    fun whenResultFromVoiceSearchIsCancelledSeveralTimesThenShowDialog() {
+    fun `registerResultsCallback - result from voice search cancelled several times - show dialog`() {
         var lastKnownEvent: Event? = null
         testee.registerResultsCallback(mock(), mock(), BROWSER) {
             lastKnownEvent = it
@@ -156,7 +156,7 @@ class RealVoiceSearchActivityLauncherTest {
     }
 
     @Test
-    fun whenResultFromVoiceSearchIsCancelledLessThanTwoTimesThenDoNotShowDialog() {
+    fun `registerResultsCallback - voice search cancelled less than two times - do not show dialog`() {
         var lastKnownEvent: Event? = null
         testee.registerResultsCallback(mock(), mock(), BROWSER) {
             lastKnownEvent = it
@@ -172,7 +172,7 @@ class RealVoiceSearchActivityLauncherTest {
     }
 
     @Test
-    fun whenResultFromVoiceSearchIsOkThenResetDismissedCounter() {
+    fun `registerResultsCallback - result from voice search is OK - reset dismissed counter`() {
         var lastKnownEvent: Event? = null
         testee.registerResultsCallback(mock(), mock(), BROWSER) {
             lastKnownEvent = it
@@ -187,7 +187,7 @@ class RealVoiceSearchActivityLauncherTest {
     }
 
     @Test
-    fun whenBrowserVoiceSearchLaunchedThenEmitStartedPixelAndCallLaunchVoiceSearch() {
+    fun `launch - browser voice search - emit started pixel and call launch voice search`() {
         testee.registerResultsCallback(mock(), mock(), BROWSER) { }
 
         testee.launch(mock())
@@ -197,7 +197,7 @@ class RealVoiceSearchActivityLauncherTest {
     }
 
     @Test
-    fun whenWidgetVoiceSearchLaunchedThenEmitStartedPixelAndCallLaunchVoiceSearch() {
+    fun `launch - widget voice search - emit started pixel and call launch voice search`() {
         testee.registerResultsCallback(mock(), mock(), WIDGET) { }
 
         testee.launch(mock())

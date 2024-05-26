@@ -26,7 +26,7 @@ import org.junit.Test
 class PixelNameTest {
 
     @Test
-    fun verifyNoDuplicatePixelNames() {
+    fun `verifyNoDuplicatePixelNames - no duplicates`() {
         val existingNames = mutableSetOf<String>()
         AppPixelName.values().forEach {
             if (!existingNames.add(it.pixelName)) {

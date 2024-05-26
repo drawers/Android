@@ -64,7 +64,7 @@ class SurveyDownloaderTest {
     }
 
     @Test
-    fun whenNewSurveyAllocatedThenSavedAsScheduledAndUnusedSurveysDeleted() {
+    fun `download - new survey allocated - saved as scheduled and unused surveys deleted`() {
         whenever(mockCall.execute()).thenReturn(Response.success(surveyWithAllocation("abc")))
         whenever(mockService.survey()).thenReturn(mockCall)
         testee.download().blockingAwait()
@@ -73,7 +73,7 @@ class SurveyDownloaderTest {
     }
 
     @Test
-    fun whenNewSurveyNotAllocatedThenSavedAsUnallocatedAndUnusedSurveysDeleted() {
+    fun `download - new survey not allocated - saved as unallocated and unused surveys deleted`() {
         val surveyNotAllocated = Survey("abc", null, null, NOT_ALLOCATED)
         whenever(mockSurveyRepository.isUserEligibleForSurvey(surveyNotAllocated)).thenReturn(true)
         whenever(mockCall.execute()).thenReturn(Response.success(surveyNoAllocation("abc")))
@@ -84,7 +84,7 @@ class SurveyDownloaderTest {
     }
 
     @Test
-    fun whenSurveyAlreadyExistsThenNotSavedAndUnusedSurveysNotDeleted() {
+    fun `download - survey already exists - not saved and unused surveys not deleted`() {
         whenever(mockSurveyRepository.surveyExists(any())).thenReturn(true)
         whenever(mockCall.execute()).thenReturn(Response.success(surveyWithAllocation("abc")))
         whenever(mockService.survey()).thenReturn(mockCall)
@@ -94,7 +94,7 @@ class SurveyDownloaderTest {
     }
 
     @Test
-    fun whenSuccessfulRequestReturnsNoSurveysThenUnusedSurveysDeleted() {
+    fun `download - successful request returns no surveys - unused surveys deleted`() {
         whenever(mockCall.execute()).thenReturn(Response.success(null))
         whenever(mockService.survey()).thenReturn(mockCall)
         testee.download().blockingAwait()
@@ -102,14 +102,14 @@ class SurveyDownloaderTest {
     }
 
     @Test(expected = RuntimeException::class)
-    fun whenRequestUnsuccessfulThenExceptionThrown() {
+    fun `download - request unsuccessful - exception thrown`() {
         whenever(mockCall.execute()).thenReturn(Response.error(500, ResponseBody.create(null, "")))
         whenever(mockService.survey()).thenReturn(mockCall)
         testee.download().blockingAwait()
     }
 
     @Test
-    fun whenSurveyForEmailReceivedAndUserIsSignedInThenCreateSurveyWithCorrectCohort() {
+    fun `download - survey for email received and user is signed in - create survey with correct cohort`() {
         val surveyWithCohort = Survey("abc", SURVEY_URL_WITH_COHORT, -1, SCHEDULED)
         whenever(mockSurveyRepository.isUserEligibleForSurvey(surveyWithCohort)).thenReturn(true)
         whenever(mockEmailManager.isSignedIn()).thenReturn(true)
@@ -121,7 +121,7 @@ class SurveyDownloaderTest {
     }
 
     @Test
-    fun whenSurveyForEmailReceivedAndUserIsNotSignedInThenDoNotCreateSurvey() {
+    fun `download - survey for email received and user is not signed in - do not create survey`() {
         whenever(mockEmailManager.isSignedIn()).thenReturn(false)
         whenever(mockEmailManager.getCohort()).thenReturn("cohort")
         whenever(mockCall.execute()).thenReturn(Response.success(surveyWithAllocationForEmail("abc")))
@@ -131,7 +131,7 @@ class SurveyDownloaderTest {
     }
 
     @Test
-    fun whenNewSurveyAllocatedAndUserIsEligibleThenSavedAsScheduled() = runTest {
+    fun `download - new survey allocated and user is eligible - saved as scheduled`() = runTest {
         whenever(mockCall.execute()).thenReturn(Response.success(surveyWithAllocation("abc")))
         whenever(mockService.survey()).thenReturn(mockCall)
         testee.download().blockingAwait()
@@ -140,7 +140,7 @@ class SurveyDownloaderTest {
     }
 
     @Test
-    fun whenNewSurveyAllocatedAndUserIsNotEligibleThenSavedAsScheduled() = runTest {
+    fun `download - user not eligible for new survey - saved as scheduled`() = runTest {
         whenever(mockSurveyRepository.isUserEligibleForSurvey(testSurvey)).thenReturn(false)
         whenever(mockCall.execute()).thenReturn(Response.success(surveyWithAllocation("abc")))
         whenever(mockService.survey()).thenReturn(mockCall)

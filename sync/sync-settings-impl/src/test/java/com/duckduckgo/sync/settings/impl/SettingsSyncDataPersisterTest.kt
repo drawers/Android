@@ -67,7 +67,7 @@ class SettingsSyncDataPersisterTest {
     }
 
     @Test
-    fun whenPersistChangesDeduplicationWithdValueThenCallDeduplicateWithValue() {
+    fun `onSuccess - deduplication with value - call deduplicate with value`() {
         val result = testee.onSuccess(
             changes = SyncChangesResponse(
                 type = SyncableType.SETTINGS,
@@ -81,7 +81,7 @@ class SettingsSyncDataPersisterTest {
     }
 
     @Test
-    fun whenPersistChangesDeduplicationWithDeletedValueThenCallDeduplicateWithNull() {
+    fun `onSuccess - deduplication with deleted value - call deduplicate with null`() {
         val result = testee.onSuccess(
             changes = SyncChangesResponse(
                 type = SyncableType.SETTINGS,
@@ -95,7 +95,7 @@ class SettingsSyncDataPersisterTest {
     }
 
     @Test
-    fun whenPersistChangesTimestampAndNoRecentChangeThenCallMergeWithValue() {
+    fun `onSuccess - no recent change - call merge with value`() {
         settingSyncStore.startTimeStamp = "2023-08-31T10:06:16.022Z"
         val result = testee.onSuccess(
             changes = SyncChangesResponse(
@@ -110,7 +110,7 @@ class SettingsSyncDataPersisterTest {
     }
 
     @Test
-    fun whenPersistChangesTimestampWithDeletedValueThenCallSaveWithNull() {
+    fun `onSuccess - persist changes timestamp with deleted value - call save with null`() {
         val result = testee.onSuccess(
             changes = SyncChangesResponse(
                 type = SyncableType.SETTINGS,
@@ -124,7 +124,7 @@ class SettingsSyncDataPersisterTest {
     }
 
     @Test
-    fun whenPersistChangesTimestampButRecentlyModifiedThenSkip() {
+    fun `onSuccess - recently modified - skip`() {
         settingSyncStore.startTimeStamp = "2023-08-31T10:06:16.022Z"
         metadataDao.addOrUpdate(
             SettingsSyncMetadataEntity(
@@ -147,7 +147,7 @@ class SettingsSyncDataPersisterTest {
     }
 
     @Test
-    fun whenPersistChangesSucceedsThenUpdateServerAndClientTimestamps() {
+    fun `onSuccess - persist changes succeeds - update server and client timestamps`() {
         settingSyncStore.startTimeStamp = "2023-08-31T10:06:16.022Z"
 
         val result = testee.onSuccess(

@@ -30,7 +30,7 @@ internal class SyncOperationErrorRecorderTest {
     private val recorder = RealSyncOperationErrorRecorder(syncPixels, repository)
 
     @Test
-    fun wheneverEncryptErrorReportedThenRepositoryAddsError() {
+    fun `record - encrypt error reported - repository adds error`() {
         val error = SyncOperationErrorType.DATA_ENCRYPT
 
         recorder.record(error)
@@ -39,7 +39,7 @@ internal class SyncOperationErrorRecorderTest {
     }
 
     @Test
-    fun wheneverDecryptErrorReportedThenRepositoryAddsError() {
+    fun `record - decrypt error reported - repository adds error`() {
         val error = SyncOperationErrorType.DATA_DECRYPT
 
         recorder.record(error)

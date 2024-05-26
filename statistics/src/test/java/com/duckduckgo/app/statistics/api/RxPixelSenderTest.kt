@@ -112,7 +112,7 @@ class RxPixelSenderTest {
     }
 
     @Test
-    fun whenPixelFiredThenPixelServiceCalledWithCorrectAtbAndVariant() {
+    fun `sendPixel - pixel fired - pixel service called with correct atb and variant`() {
         givenPixelApiSucceeds()
         givenAtbVariant(Atb("atb"))
         givenVariant("variant")
@@ -125,7 +125,7 @@ class RxPixelSenderTest {
     }
 
     @Test
-    fun whenPixelFiredTabletFormFactorThenPixelServiceCalledWithTabletParameter() {
+    fun `sendPixel - tablet form factor - pixel service called with tablet parameter`() {
         givenApiSendPixelSucceeds()
         givenFormFactor(DeviceInfo.FormFactor.TABLET)
 
@@ -136,7 +136,7 @@ class RxPixelSenderTest {
     }
 
     @Test
-    fun whenPixelFiredWithNoAtbThenPixelServiceCalledWithCorrectPixelNameAndNoAtb() {
+    fun `sendPixel - no atb - pixel service called with correct pixel name and no atb`() {
         givenApiSendPixelSucceeds()
         givenFormFactor(DeviceInfo.FormFactor.PHONE)
 
@@ -147,7 +147,7 @@ class RxPixelSenderTest {
     }
 
     @Test
-    fun whenPixelFiredWithAdditionalParametersThenPixelServiceCalledWithDefaultAndAdditionalParameters() {
+    fun `sendPixel - with additional parameters - pixel service called with default and additional parameters`() {
         givenPixelApiSucceeds()
         givenAtbVariant(Atb("atb"))
         givenVariant("variant")
@@ -163,7 +163,7 @@ class RxPixelSenderTest {
     }
 
     @Test
-    fun whenPixelFiredWithoutAdditionalParametersThenPixelServiceCalledWithOnlyDefaultParameters() {
+    fun `sendPixel - without additional parameters - called with only default parameters`() {
         givenPixelApiSucceeds()
         givenAtbVariant(Atb("atb"))
         givenVariant("variant")
@@ -178,7 +178,7 @@ class RxPixelSenderTest {
     }
 
     @Test
-    fun whenPixelEnqueuedWitAdditionalParametersThenPixelEnqueuedWithParameters() {
+    fun `enqueuePixel - with additional parameters - pixel enqueued with parameters`() {
         givenAtbVariant(Atb("atb"))
         givenVariant("variant")
         givenFormFactor(DeviceInfo.FormFactor.PHONE)
@@ -203,7 +203,7 @@ class RxPixelSenderTest {
     }
 
     @Test
-    fun whenPixelEnqueuedWithoutAdditionalParametersThenPixelEnqueuedWithOnlyDefaultParameters() {
+    fun `enqueuePixel - without additional parameters - enqueued with only default parameters`() {
         givenAtbVariant(Atb("atb"))
         givenVariant("variant")
         givenFormFactor(DeviceInfo.FormFactor.PHONE)
@@ -225,7 +225,7 @@ class RxPixelSenderTest {
     }
 
     @Test
-    fun whenAppForegroundedThenPixelSent() {
+    fun `onStart - app foregrounded - pixel sent`() {
         givenPixelApiSucceeds()
         val pixelEntity = PixelEntity(
             pixelName = "test",
@@ -248,7 +248,7 @@ class RxPixelSenderTest {
     }
 
     @Test
-    fun whenAppForegroundedAndPixelSentThenPixelRemoved() {
+    fun `onStart - app foregrounded and pixel sent - pixel removed`() {
         givenPixelApiSucceeds()
         val pixelEntity = PixelEntity(
             pixelName = "test",
@@ -266,7 +266,7 @@ class RxPixelSenderTest {
     }
 
     @Test
-    fun whenAppForegroundedAndSendPixelFailsThenPixelNotRemoved() {
+    fun `onStart - app foregrounded and send pixel fails - pixel not removed`() {
         givenPixelApiFails()
         val pixelEntity = PixelEntity(
             pixelName = "test",
@@ -285,7 +285,7 @@ class RxPixelSenderTest {
     }
 
     @Test
-    fun whenAppForegroundedWithMultiplePixelsEnqueuedThenSendAllPixels() {
+    fun `onStart - multiple pixels enqueued - send all pixels`() {
         givenPixelApiSucceeds()
         val pixelEntity = PixelEntity(
             pixelName = "test",
@@ -308,7 +308,7 @@ class RxPixelSenderTest {
     }
 
     @Test
-    fun whenDailyPixelIsFiredThenPixelNameIsStored() = runTest {
+    fun `sendPixel - daily pixel fired - pixel name stored`() = runTest {
         givenPixelApiSucceeds()
         givenFormFactor(DeviceInfo.FormFactor.PHONE)
 
@@ -320,7 +320,7 @@ class RxPixelSenderTest {
     }
 
     @Test
-    fun whenDailyPixelFireFailsThenPixelNameIsNotStored() = runTest {
+    fun `sendPixel - daily pixel fire fails - pixel name not stored`() = runTest {
         givenPixelApiFails()
         givenFormFactor(DeviceInfo.FormFactor.PHONE)
 
@@ -332,7 +332,7 @@ class RxPixelSenderTest {
     }
 
     @Test
-    fun whenDailyPixelHasAlreadyBeenFiredTodayThenItIsNotFiredAgain() = runTest {
+    fun `sendPixel - daily pixel already fired today - not fired again`() = runTest {
         pixelFiredRepository.dailyPixelsFiredToday += TEST.pixelName
 
         testee.sendPixel(TEST.pixelName, emptyMap(), emptyMap(), DAILY)
@@ -343,7 +343,7 @@ class RxPixelSenderTest {
     }
 
     @Test
-    fun whenUniquePixelIsFiredThenPixelNameIsStored() = runTest {
+    fun `sendPixel - unique pixel fired - pixel name stored`() = runTest {
         givenPixelApiSucceeds()
         givenFormFactor(DeviceInfo.FormFactor.PHONE)
 
@@ -355,7 +355,7 @@ class RxPixelSenderTest {
     }
 
     @Test
-    fun whenUniquePixelFireFailsThenPixelNameIsNotStored() = runTest {
+    fun `sendPixel - unique pixel fire fails - pixel name not stored`() = runTest {
         givenPixelApiFails()
         givenFormFactor(DeviceInfo.FormFactor.PHONE)
 
@@ -367,7 +367,7 @@ class RxPixelSenderTest {
     }
 
     @Test
-    fun whenUniquePixelHasAlreadyBeenFiredThenItIsNotFiredAgain() = runTest {
+    fun `sendPixel - unique pixel already fired - not fired again`() = runTest {
         pixelFiredRepository.uniquePixelsFired += TEST.pixelName
 
         testee.sendPixel(TEST.pixelName, emptyMap(), emptyMap(), UNIQUE)

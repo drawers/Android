@@ -29,13 +29,13 @@ class EmailProtectionInContextSignUpPromptViewModelTest {
     )
 
     @Test
-    fun whenUserPressesToProtectEmailThenCorrectPixelSent() {
+    fun `onProtectEmailButtonPressed - correct pixel sent`() {
         testee.onProtectEmailButtonPressed()
         verify(pixel).fire(EMAIL_PROTECTION_IN_CONTEXT_PROMPT_CONFIRMED)
     }
 
     @Test
-    fun whenUserPressesToProtectEmailThenCorrectResultTypeReturned() = runTest {
+    fun `onProtectEmailButtonPressed - correct result type returned`() = runTest {
         testee.onProtectEmailButtonPressed()
         testee.commands.test {
             assertTrue((awaitItem() as FinishWithResult).result is SignUp)
@@ -44,13 +44,13 @@ class EmailProtectionInContextSignUpPromptViewModelTest {
     }
 
     @Test
-    fun whenUserPressesToDismissPromptThenCorrectPixelSent() {
+    fun `onCloseButtonPressed - correct pixel sent`() {
         testee.onCloseButtonPressed()
         verify(pixel).fire(EMAIL_PROTECTION_IN_CONTEXT_PROMPT_DISMISSED)
     }
 
     @Test
-    fun whenUserPressesToDismissPromptThenCorrectResultTypeReturned() = runTest {
+    fun `onCloseButtonPressed - dismiss prompt - correct result type returned`() = runTest {
         testee.onCloseButtonPressed()
         testee.commands.test {
             assertTrue((awaitItem() as FinishWithResult).result is Cancel)
@@ -59,13 +59,13 @@ class EmailProtectionInContextSignUpPromptViewModelTest {
     }
 
     @Test
-    fun whenUserPressesToDismissPromptPermanentlyThenCorrectPixelSent() {
+    fun `onDoNotShowAgainButtonPressed - correct pixel sent`() {
         testee.onDoNotShowAgainButtonPressed()
         verify(pixel).fire(EMAIL_PROTECTION_IN_CONTEXT_PROMPT_NEVER_AGAIN)
     }
 
     @Test
-    fun whenUserPressesToDismissPromptPermanentlyThenCorrectResultTypeReturned() = runTest {
+    fun `onDoNotShowAgainButtonPressed - correct result type returned`() = runTest {
         testee.onDoNotShowAgainButtonPressed()
         testee.commands.test {
             assertTrue((awaitItem() as FinishWithResult).result is DoNotShowAgain)

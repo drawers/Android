@@ -37,14 +37,14 @@ class GpcMigrationPluginTest {
     }
 
     @Test
-    fun whenRunIfPreviousSettingWasEnabledThenEnableGpc() {
+    fun `run - previous setting enabled - enable Gpc`() {
         whenever(mockSettingsDataStore.globalPrivacyControlEnabled).thenReturn(true)
         testee.run()
         verify(mockGpc).enableGpc()
     }
 
     @Test
-    fun whenRunIfPreviousSettingWasDisabledThenDisableGpc() {
+    fun `run - previous setting disabled - disable Gpc`() {
         whenever(mockSettingsDataStore.globalPrivacyControlEnabled).thenReturn(false)
         testee.run()
         verify(mockGpc).disableGpc()

@@ -75,7 +75,7 @@ class BookmarkFoldersViewModelTest {
     }
 
     @Test
-    fun whenFetchBookmarkFoldersThenCallRepoAndUpdateViewState() = runTest {
+    fun `fetchBookmarkFolders - call repo and update viewState`() = runTest {
         val selectedFolderId = SavedSitesNames.BOOKMARKS_ROOT
         val rootFolderName = "Bookmarks"
         val folder = BookmarkFolder("folder2", "a folder", "folder1", 0, 0, "timestamp")
@@ -90,7 +90,7 @@ class BookmarkFoldersViewModelTest {
     }
 
     @Test
-    fun whenItemSelectedThenIssueSelectFolderCommand() = runTest {
+    fun `onItemSelected - issue select folder command`() = runTest {
         val folder = BookmarkFolder("folder2", "a folder", "folder1", 0, 0, "timestamp")
 
         testee.onItemSelected(folder)
@@ -101,7 +101,7 @@ class BookmarkFoldersViewModelTest {
     }
 
     @Test
-    fun newFolderAddedThenCallRepoAndUpdateViewState() = runTest {
+    fun `newFolderAdded - call repo and update viewState`() = runTest {
         val newFolder = BookmarkFolder("folder3", "new folder", "folder1", 0, 0, "timestamp")
         val selectedFolderId = SavedSitesNames.BOOKMARKS_ROOT
 

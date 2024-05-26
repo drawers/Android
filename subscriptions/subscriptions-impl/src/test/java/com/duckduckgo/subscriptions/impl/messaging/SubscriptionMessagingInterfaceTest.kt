@@ -58,7 +58,7 @@ class SubscriptionMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessUnknownMessageDoNothing() = runTest {
+    fun `process - unknown message - do nothing`() = runTest {
         givenInterfaceIsRegistered()
 
         messagingInterface.process("", "secret")
@@ -68,7 +68,7 @@ class SubscriptionMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessUnknownSecretDoNothing() = runTest {
+    fun `process - unknown secret - do nothing`() = runTest {
         givenInterfaceIsRegistered()
 
         val message = """
@@ -82,7 +82,7 @@ class SubscriptionMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessNoUrlDoNothing() = runTest {
+    fun `process - no URL - do nothing`() = runTest {
         messagingInterface.register(webView, callback)
 
         val message = """
@@ -96,7 +96,7 @@ class SubscriptionMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessInterfaceNotRegisteredDoNothing() = runTest {
+    fun `process - interface not registered - do nothing`() = runTest {
         whenever(webView.url).thenReturn("https://duckduckgo.com/test")
 
         val message = """
@@ -110,7 +110,7 @@ class SubscriptionMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessIfMethodDoesNotMatchDoNothing() = runTest {
+    fun `process - method does not match - do nothing`() = runTest {
         givenInterfaceIsRegistered()
         givenAuthTokenIsSuccess()
 
@@ -124,7 +124,7 @@ class SubscriptionMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessAndGetSubscriptionsMessageIfActiveThenReturnResponse() = runTest {
+    fun `process - subscription active - return response`() = runTest {
         givenInterfaceIsRegistered()
         givenAuthTokenIsSuccess()
         givenSubscriptionIsActive()
@@ -152,7 +152,7 @@ class SubscriptionMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessAndGetSubscriptionsMessageIfNotActiveThenReturnError() = runTest {
+    fun `process - not active subscription - return error`() = runTest {
         givenInterfaceIsRegistered()
         givenAuthTokenIsSuccess()
 
@@ -179,7 +179,7 @@ class SubscriptionMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessAndGetSubscriptionsMessageErrorThenReturnResponse() = runTest {
+    fun `process - auth token failure - return response`() = runTest {
         givenInterfaceIsRegistered()
         givenAuthTokenIsFailure()
 
@@ -206,7 +206,7 @@ class SubscriptionMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessAndGetSubscriptionsIfFeatureNameDoesNotMatchDoNothing() = runTest {
+    fun `process - feature name does not match - do nothing`() = runTest {
         givenInterfaceIsRegistered()
         givenAuthTokenIsSuccess()
 
@@ -220,7 +220,7 @@ class SubscriptionMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessAndGetSubscriptionIfNoIdDoNothing() = runTest {
+    fun `process - no subscription id - do nothing`() = runTest {
         givenInterfaceIsRegistered()
         givenAuthTokenIsSuccess()
 
@@ -247,7 +247,7 @@ class SubscriptionMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessAndBackToSettingsThenCallbackExecuted() = runTest {
+    fun `process - back to settings - callback executed`() = runTest {
         givenInterfaceIsRegistered()
 
         val message = """
@@ -274,7 +274,7 @@ class SubscriptionMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessAndSetSubscriptionMessageThenAuthenticate() = runTest {
+    fun `process - set subscription message - authenticate`() = runTest {
         givenInterfaceIsRegistered()
 
         val message = """
@@ -290,7 +290,7 @@ class SubscriptionMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessAndSetSubscriptionMessageAndNoTokenThenDoNothing() = runTest {
+    fun `process - no token - do nothing`() = runTest {
         givenInterfaceIsRegistered()
 
         val message = """
@@ -317,7 +317,7 @@ class SubscriptionMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessAndGetSubscriptionOptionsMessageThenCallbackCalled() = runTest {
+    fun `process - getSubscriptionOptions message - callback called`() = runTest {
         givenInterfaceIsRegistered()
 
         val message = """
@@ -330,7 +330,7 @@ class SubscriptionMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessAndGetSubscriptionOptionsMessageAndNoIdThenDoNothing() = runTest {
+    fun `process - getSubscriptionOptions message with no id - do nothing`() = runTest {
         givenInterfaceIsRegistered()
 
         val message = """
@@ -357,7 +357,7 @@ class SubscriptionMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessAndSubscriptionSelectedMessageThenCallbackCalled() = runTest {
+    fun `process - subscription selected message - callback called`() = runTest {
         givenInterfaceIsRegistered()
 
         val message = """
@@ -383,7 +383,7 @@ class SubscriptionMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessAndActivateSubscriptionThenCallbackExecuted() = runTest {
+    fun `process - activate subscription - callback executed`() = runTest {
         givenInterfaceIsRegistered()
 
         val message = """
@@ -409,7 +409,7 @@ class SubscriptionMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessAndFeatureSelectedThenCallbackExecuted() = runTest {
+    fun `process - feature selected - callback executed`() = runTest {
         givenInterfaceIsRegistered()
 
         val message = """
@@ -422,7 +422,7 @@ class SubscriptionMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessAndFeatureSelectedMessageIfUrlNotInAllowListedDomainsThenDoNothing() = runTest {
+    fun `process - url not in allow listed domains - do nothing`() = runTest {
         messagingInterface.register(webView, callback)
         whenever(webView.url).thenReturn("https://duckduckgo.example.com")
 
@@ -449,7 +449,7 @@ class SubscriptionMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessAndBackToSettingsActiveSuccessThenCallbackExecuted() = runTest {
+    fun `process - backToSettingsActivateSuccess - callback executed`() = runTest {
         givenInterfaceIsRegistered()
 
         val message = """
@@ -462,7 +462,7 @@ class SubscriptionMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessAndMonthlyPriceClickedThenPixelSent() = runTest {
+    fun `process - monthly price clicked - pixel sent`() = runTest {
         givenInterfaceIsRegistered()
 
         val message = """
@@ -476,7 +476,7 @@ class SubscriptionMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessAndYearlyPriceClickedThenPixelSent() = runTest {
+    fun `process - yearly price clicked - pixel sent`() = runTest {
         givenInterfaceIsRegistered()
 
         val message = """
@@ -490,7 +490,7 @@ class SubscriptionMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessAndAddEmailSuccessThenPixelSent() = runTest {
+    fun `process - add email success - pixel sent`() = runTest {
         givenInterfaceIsRegistered()
 
         val message = """
@@ -504,7 +504,7 @@ class SubscriptionMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessAndFaqClickedThenCallbackExecuted() = runTest {
+    fun `process - faq clicked - callback executed`() = runTest {
         val jsMessageCallback: JsMessageCallback = mock()
         messagingInterface.register(webView, jsMessageCallback)
         whenever(webView.url).thenReturn("https://duckduckgo.com/test")
@@ -519,7 +519,7 @@ class SubscriptionMessagingInterfaceTest {
     }
 
     @Test
-    fun whenProcessAndAddEmailClickedThenCallbackExecuted() = runTest {
+    fun `process - add email clicked - callback executed`() = runTest {
         val jsMessageCallback: JsMessageCallback = mock()
         messagingInterface.register(webView, jsMessageCallback)
         whenever(webView.url).thenReturn("https://duckduckgo.com/test")

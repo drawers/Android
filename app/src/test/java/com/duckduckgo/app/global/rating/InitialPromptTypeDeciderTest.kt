@@ -61,19 +61,19 @@ class InitialPromptTypeDeciderTest {
     }
 
     @Test
-    fun whenPlayNotInstalledThenNoPromptShown() = runTest {
+    fun `determineInitialPromptType - play not installed - no prompt shown`() = runTest {
         whenever(mockPlayStoreUtils.isPlayStoreInstalled()).thenReturn(false)
         assertPromptNotShown(testee.determineInitialPromptType())
     }
 
     @Test
-    fun whenNotEnoughSearchesMadeThenNoPromptShown() = runTest {
+    fun `determineInitialPromptType - not enough searches made - no prompt shown`() = runTest {
         whenever(mockSearchCountDao.getSearchesMade()).thenReturn(0)
         assertPromptNotShown(testee.determineInitialPromptType())
     }
 
     @Test
-    fun whenEnoughSearchesMadeAndFirstPromptNotShownBeforeThenShouldShowFirstPrompt() = runTest {
+    fun `determineInitialPromptType - enough searches made and first prompt not shown - should show first prompt`() = runTest {
         whenever(mockInitialPromptDecider.shouldShowPrompt()).thenReturn(true)
         whenever(mockSearchCountDao.getSearchesMade()).thenReturn(Long.MAX_VALUE)
         val type = testee.determineInitialPromptType() as AppEnjoymentPromptOptions.ShowEnjoymentPrompt

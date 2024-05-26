@@ -42,7 +42,7 @@ class RealVoiceSearchAvailabilityPixelLoggerTest {
     }
 
     @Test
-    fun whenHasNotLoggedAvailabilityThenLogPixel() {
+    fun `log - has not logged availability - log pixel`() {
         whenever(voiceSearchRepository.getHasLoggedAvailability()).thenReturn(false)
 
         testee.log()
@@ -52,7 +52,7 @@ class RealVoiceSearchAvailabilityPixelLoggerTest {
     }
 
     @Test
-    fun whenHasLoggedAvailabilityThenDoNothing() {
+    fun `log - has logged availability - do nothing`() {
         whenever(voiceSearchRepository.getHasLoggedAvailability()).thenReturn(true)
 
         testee.log()

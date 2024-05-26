@@ -51,7 +51,7 @@ class AppTpRemoteFeaturesStoreTest {
     }
 
     @Test
-    fun `test value set`() {
+    fun `set - value set`() {
         val expected = Toggle.State(enable = true)
         appTpRemoteFeaturesStore.set("key", expected)
 
@@ -59,12 +59,12 @@ class AppTpRemoteFeaturesStoreTest {
     }
 
     @Test
-    fun `test get when value is missing`() {
+    fun `get - value is missing - returns null`() {
         assertNull(appTpRemoteFeaturesStore.get("key"))
     }
 
     @Test
-    fun `test get when value is not present`() {
+    fun `get - value not present - returns null`() {
         val expected = Toggle.State(enable = true)
         appTpRemoteFeaturesStore.set("key", expected)
 
@@ -72,7 +72,7 @@ class AppTpRemoteFeaturesStoreTest {
     }
 
     @Test
-    fun `test load values`() {
+    fun `get - load values`() {
         val expected = Toggle.State(enable = true)
         // use this store just to populate the preferences
         appTpRemoteFeaturesStore.set("key", expected)
@@ -104,7 +104,7 @@ class AppTpRemoteFeaturesStoreTest {
     }
 
     @Test
-    fun `test preference change propagation`() {
+    fun `get - preference change - propagates correctly`() {
         val adapter = Moshi.Builder().add(KotlinJsonAdapterFactory()).build().adapter(State::class.java)
         assertNull(appTpRemoteFeaturesStore.get("key"))
 

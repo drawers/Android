@@ -24,7 +24,7 @@ import org.junit.Test
 class HttpsBloomFilterSpecJsonTest {
 
     @Test
-    fun whenGivenValidJsonThenParsesCorrectly() {
+    fun `fromJson - valid JSON - parses correctly`() {
         val moshi = Moshi.Builder().build()
         val jsonAdapter = moshi.adapter(HttpsBloomFilterSpec::class.java)
         val result = jsonAdapter.fromJson(json())!!

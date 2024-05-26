@@ -30,26 +30,26 @@ class ResourceSurrogatesTest {
     }
 
     @Test
-    fun whenInitialisedThenHasNoSurrogatesLoaded() {
+    fun `getAll - initialised - has no surrogates loaded`() {
         assertEquals(0, testee.getAll().size)
     }
 
     @Test
-    fun whenOneSurrogateLoadedThenOneReturnedFromFullList() {
+    fun `getAll - one surrogate loaded - one returned`() {
         val surrogate = SurrogateResponse()
         testee.loadSurrogates(listOf(surrogate))
         assertEquals(1, testee.getAll().size)
     }
 
     @Test
-    fun whenMultipleSurrogatesLoadedThenAllReturnedFromFullList() {
+    fun `loadSurrogates - multiple surrogates - all returned from full list`() {
         val surrogate = SurrogateResponse()
         testee.loadSurrogates(listOf(surrogate, surrogate, surrogate))
         assertEquals(3, testee.getAll().size)
     }
 
     @Test
-    fun whenSearchingForExactMatchingExistingSurrogateThenCanFindByScriptId() {
+    fun `get - exact matching existing surrogate - can find by scriptId`() {
         val surrogate = SurrogateResponse(scriptId = "fooId", name = "foo")
         testee.loadSurrogates(listOf(surrogate))
         val retrieved = testee.get("fooId")
@@ -57,7 +57,7 @@ class ResourceSurrogatesTest {
     }
 
     @Test
-    fun whenSearchingByNonExistentScriptIdThenResponseUnavailableSurrogateResultReturned() {
+    fun `get - non existent script id - response unavailable surrogate result returned`() {
         val surrogate = SurrogateResponse(scriptId = "fooId", name = "foo")
         testee.loadSurrogates(listOf(surrogate))
         val retrieved = testee.get("bar")

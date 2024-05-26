@@ -67,7 +67,7 @@ class TrackingProtectionAppsRepositoryTest {
     }
 
     @Test
-    fun whenGetExclusionAppListThenReturnExclusionList() = runTest {
+    fun `getExclusionAppsList - return exclusion list`() = runTest {
         val exclusionList = trackingProtectionAppsRepository.getExclusionAppsList()
 
         assertEquals(
@@ -77,7 +77,7 @@ class TrackingProtectionAppsRepositoryTest {
     }
 
     @Test
-    fun whenIsProtectionEnabledCalledOnDisabledAppThenReturnFalse() = runTest {
+    fun `getAppProtectionStatus - app disabled - return false`() = runTest {
         whenever(packageManager.getApplicationInfo("com.example.app2", 0))
             .thenReturn(ApplicationInfo().apply { packageName = "com.example.app2" })
         whenever(networkProtectionExclusionList.isExcluded("com.example.app2")).thenReturn(false)
@@ -88,7 +88,7 @@ class TrackingProtectionAppsRepositoryTest {
     }
 
     @Test
-    fun whenGetAppProtectionStatusCalledOnEnabledAppThenReturnProtected() = runTest {
+    fun `getAppProtectionStatus - enabled app - return protected`() = runTest {
         whenever(packageManager.getApplicationInfo("com.example.app1", 0))
             .thenReturn(ApplicationInfo().apply { packageName = "com.example.app1" })
         whenever(networkProtectionExclusionList.isExcluded("com.example.app1")).thenReturn(false)
@@ -99,7 +99,7 @@ class TrackingProtectionAppsRepositoryTest {
     }
 
     @Test
-    fun whenGetAppProtectionStatusCalledOnEnabledAppButExcludedInNetpThenReturnUnprotectedThroughNetP() = runTest {
+    fun `getAppProtectionStatus - enabled app but excluded in NetP - return unprotected through NetP`() = runTest {
         whenever(packageManager.getApplicationInfo("com.example.app1", 0))
             .thenReturn(ApplicationInfo().apply { packageName = "com.example.app1" })
         whenever(networkProtectionExclusionList.isExcluded("com.example.app1")).thenReturn(true)
@@ -110,7 +110,7 @@ class TrackingProtectionAppsRepositoryTest {
     }
 
     @Test
-    fun whenGetAppProtectionStatusCalledOnGameThenReturnUnprotected() = runTest {
+    fun `getAppProtectionStatus - game - return unprotected`() = runTest {
         whenever(packageManager.getApplicationInfo("com.example.game", 0))
             .thenReturn(
                 ApplicationInfo().apply {
@@ -126,7 +126,7 @@ class TrackingProtectionAppsRepositoryTest {
     }
 
     @Test
-    fun whenGetAppProtectionStatusCalledOnDdgAppThenReturnUnprotected() = runTest {
+    fun `getAppProtectionStatus - ddg app - return unprotected`() = runTest {
         whenever(packageManager.getApplicationInfo("com.duckduckgo.mobile.android.vpn.test", 0))
             .thenReturn(ApplicationInfo().apply { packageName = "com.duckduckgo.mobile.android.vpn.test" })
         whenever(networkProtectionExclusionList.isExcluded("com.duckduckgo.mobile.android.vpn.test")).thenReturn(false)
@@ -137,7 +137,7 @@ class TrackingProtectionAppsRepositoryTest {
     }
 
     @Test
-    fun whenGetAppProtectionStatusCalledOnUnknownPackageThenReturnProtected() = runTest {
+    fun `getAppProtectionStatus - unknown package - return protected`() = runTest {
         whenever(packageManager.getApplicationInfo("com.example.unknown", 0))
             .thenReturn(ApplicationInfo().apply { packageName = "com.example.unknown" })
         whenever(networkProtectionExclusionList.isExcluded("com.example.unknown")).thenReturn(false)
@@ -148,7 +148,7 @@ class TrackingProtectionAppsRepositoryTest {
     }
 
     @Test
-    fun whenGetAppProtectionStatusCalledAndNameNotFoundExceptionIsThrownThenReturnProtected() = runTest {
+    fun `getAppProtectionStatus - name not found exception - return protected`() = runTest {
         whenever(packageManager.getApplicationInfo("com.example.unknown", 0))
             .thenThrow(NameNotFoundException())
 
@@ -158,7 +158,7 @@ class TrackingProtectionAppsRepositoryTest {
     }
 
     @Test
-    fun whenManuallyEnabledAppThenRemoveFromExclusionList() = runTest {
+    fun `manuallyEnabledApp - remove from exclusion list`() = runTest {
         trackingProtectionAppsRepository.manuallyEnabledApp("com.example.app2")
 
         val exclusionList = trackingProtectionAppsRepository.getExclusionAppsList()
@@ -167,7 +167,7 @@ class TrackingProtectionAppsRepositoryTest {
     }
 
     @Test
-    fun whenManuallyExcludedAppsThenReturnExcludedApps() = runTest {
+    fun `manuallyExcludedApps - return excluded apps`() = runTest {
         trackingProtectionAppsRepository.manuallyExcludedApps().test {
             assertEquals(
                 listOf("com.example.app1" to true, "com.example.app2" to false, "com.example.app3" to false),
@@ -178,7 +178,7 @@ class TrackingProtectionAppsRepositoryTest {
     }
 
     @Test
-    fun whenManuallyExcludeAppThenAddToExclusionList() = runTest {
+    fun `manuallyExcludeApp - adds to exclusion list`() = runTest {
         trackingProtectionAppsRepository.manuallyExcludeApp("com.example.app1")
 
         val exclusionList = trackingProtectionAppsRepository.getExclusionAppsList()
@@ -197,7 +197,7 @@ class TrackingProtectionAppsRepositoryTest {
     }
 
     @Test
-    fun whenRestoreDefaultProtectedListThenClearManualExclusionList() = runTest {
+    fun `restoreDefaultProtectedList - clear manual exclusion list`() = runTest {
         trackingProtectionAppsRepository.restoreDefaultProtectedList()
 
         val exclusionList = trackingProtectionAppsRepository.getExclusionAppsList()
@@ -209,7 +209,7 @@ class TrackingProtectionAppsRepositoryTest {
     }
 
     @Test
-    fun whenGetAppsAndProtectionInfoThenReturnAppsWithProtectionInfo() = runTest {
+    fun `getAppsAndProtectionInfo - return apps with protection info`() = runTest {
         whenever(networkProtectionExclusionList.isExcluded(any())).thenReturn(false)
         trackingProtectionAppsRepository.getAppsAndProtectionInfo().test {
             assertEquals(
@@ -230,7 +230,7 @@ class TrackingProtectionAppsRepositoryTest {
     }
 
     @Test
-    fun whenGetAppsAndProtectionInfoWithAppInNetpExclusionListThenReturnAppsWithProtectionInfo() = runTest {
+    fun `getAppsAndProtectionInfo - app in exclusion list - return apps with protection info`() = runTest {
         whenever(networkProtectionExclusionList.isExcluded(any())).thenReturn(true)
 
         trackingProtectionAppsRepository.getAppsAndProtectionInfo().test {
@@ -252,7 +252,7 @@ class TrackingProtectionAppsRepositoryTest {
     }
 
     @Test
-    fun whenGetAppsAndProtectionInfoWithAppInNetpExclusionListThenReturnAppsWithProtectionInfoWithCorrectKnownProblem() = runTest {
+    fun `getAppsAndProtectionInfo - app in netp exclusion list - correct known problem`() = runTest {
         whenever(networkProtectionExclusionList.isExcluded(any())).thenReturn(true)
 
         trackingProtectionAppsRepository.getAppsAndProtectionInfo().test {

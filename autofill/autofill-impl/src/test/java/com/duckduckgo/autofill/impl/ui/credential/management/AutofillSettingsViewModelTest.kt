@@ -123,7 +123,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenUserEnablesAutofillThenViewStateUpdatedToReflectChange() = runTest {
+    fun `onEnableAutofill - viewState updated`() = runTest {
         testee.onEnableAutofill()
         testee.viewState.test {
             assertTrue(this.awaitItem().autofillEnabled)
@@ -132,7 +132,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenUserDisablesAutofillThenViewStateUpdatedToReflectChange() = runTest {
+    fun `onDisableAutofill - viewState updated`() = runTest {
         testee.onDisableAutofill()
         testee.viewState.test {
             assertFalse(this.awaitItem().autofillEnabled)
@@ -141,19 +141,19 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenUserEnablesAutofillThenCorrectPixelFired() {
+    fun `onEnableAutofill - correct pixel fired`() {
         testee.onEnableAutofill()
         verify(pixel).fire(AUTOFILL_ENABLE_AUTOFILL_TOGGLE_MANUALLY_ENABLED)
     }
 
     @Test
-    fun whenUserDisablesAutofillThenCorrectPixelFired() {
+    fun `onDisableAutofill - correct pixel fired`() {
         testee.onDisableAutofill()
         verify(pixel).fire(AUTOFILL_ENABLE_AUTOFILL_TOGGLE_MANUALLY_DISABLED)
     }
 
     @Test
-    fun whenUserCopiesPasswordThenCommandIssuedToShowChange() = runTest {
+    fun `onCopyPassword - command issued to show change`() = runTest {
         testee.onCopyPassword("hello")
 
         verify(clipboardInteractor).copyToClipboard("hello", isSensitive = true)
@@ -164,7 +164,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenUserCopiesUsernameThenCommandIssuedToShowChange() = runTest {
+    fun `onCopyUsername - command issued to show change`() = runTest {
         testee.onCopyUsername("username")
 
         verify(clipboardInteractor).copyToClipboard("username", isSensitive = false)
@@ -175,14 +175,14 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenUserDeletesViewedCredentialsThenStoreDeletionCalled() = runTest {
+    fun `onDeleteCredentials - viewed credentials - store deletion called`() = runTest {
         val credentials = someCredentials()
         testee.onDeleteCredentials(credentials)
         verify(mockStore).deleteCredentials(credentials.id!!)
     }
 
     @Test
-    fun whenUserDeletesViewedCredentialsLaunchedDirectlyThenCredentialsDeleted() = runTest {
+    fun `onDeleteCredentials - launched directly - credentials deleted`() = runTest {
         val credentials = someCredentials()
         testee.onViewCredentials(credentials)
         testee.onDeleteCredentials(credentials)
@@ -190,7 +190,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenOnViewCredentialsCalledFromListThenShowCredentialViewingMode() = runTest {
+    fun `onViewCredentials - called from list - show credential viewing mode`() = runTest {
         val credentials = someCredentials()
         testee.onViewCredentials(credentials)
 
@@ -205,7 +205,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenOnViewCredentialsCalledFirstThenShowCredentialViewingMode() = runTest {
+    fun `onViewCredentials - first call - show credential viewing mode`() = runTest {
         val credentials = someCredentials()
         testee.onViewCredentials(credentials)
 
@@ -220,7 +220,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenOnViewCredentialsCalledWithWebsiteThenShowLinkButton() = runTest {
+    fun `onViewCredentials - called with website - show link button`() = runTest {
         whenever(webUrlIdentifier.isLikelyAUrl(anyOrNull())).thenReturn(true)
         val credentials = someCredentials()
         testee.onViewCredentials(credentials)
@@ -236,7 +236,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenOnViewCredentialsCalledWithoutValidWebsiteThenHideLinkButton() = runTest {
+    fun `onViewCredentials - without valid website - hide link button`() = runTest {
         whenever(webUrlIdentifier.isLikelyAUrl(anyOrNull())).thenReturn(false)
         val credentials = someCredentials()
         testee.onViewCredentials(credentials)
@@ -252,7 +252,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenOnEditCredentialsCalledThenShowCredentialEditingMode() = runTest {
+    fun `onEditCurrentCredentials - show credential editing mode`() = runTest {
         val credentials = someCredentials()
         testee.onViewCredentials(credentials)
         testee.onEditCurrentCredentials()
@@ -267,7 +267,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenOnEditCredentialsCalledDirectlyThenShowCredentialEditingMode() = runTest {
+    fun `onEditCredentials - show credential editing mode`() = runTest {
         val credentials = someCredentials()
         testee.onEditCredentials(credentials)
 
@@ -281,7 +281,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenOnEditCredentialsCalledNotFromViewThenShowCredentialEditingMode() = runTest {
+    fun `onEditCredentials - not from view - show credential editing mode`() = runTest {
         val credentials = someCredentials()
 
         testee.onEditCredentials(credentials)
@@ -304,7 +304,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenOnCredentialEditModePopulatedThenViewStateUpdated() = runTest {
+    fun `onCredentialEditModePopulated - viewState updated`() = runTest {
         val credentials = someCredentials()
 
         testee.onEditCredentials(credentials)
@@ -320,7 +320,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenLockCalledThenShowLockedMode() = runTest {
+    fun `lock - show locked mode`() = runTest {
         testee.lock()
 
         testee.commands.test {
@@ -330,7 +330,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenLockModeCalledMOreThanOnceThenShowLockedModeOnlyOnce() = runTest {
+    fun `lock - called more than once - show locked mode only once`() = runTest {
         testee.lock()
 
         testee.commands.test {
@@ -341,7 +341,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenUnlockCalledThenExitLockedMode() = runTest {
+    fun `unlock - exit locked mode`() = runTest {
         testee.unlock()
 
         testee.commands.test {
@@ -352,7 +352,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenDisableCalledThenShowDisabledMode() = runTest {
+    fun `disabled - show disabled mode`() = runTest {
         testee.disabled()
 
         testee.commands.test {
@@ -370,7 +370,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenUpdateCredentialsCalledThenUpdateAutofillStore() = runTest {
+    fun `saveOrUpdateCredentials - update credentials called - update autofill store`() = runTest {
         val credentials = someCredentials()
         testee.onEditCredentials(credentials)
 
@@ -382,7 +382,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenUpdateCredentialsCalledFromManualCreationThenSaveAutofillStore() = runTest {
+    fun `saveOrUpdateCredentials - called from manual creation - save autofill store`() = runTest {
         val credentials = someCredentials()
         testee.onCreateNewCredentials()
         testee.saveOrUpdateCredentials(credentials)
@@ -390,7 +390,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenOnExitEditModeThenUpdateCredentialModeStateToViewing() = runTest {
+    fun `onCancelEditMode - update credential mode state to viewing`() = runTest {
         val credentials = someCredentials()
         testee.onViewCredentials(credentials)
         testee.onEditCurrentCredentials()
@@ -404,7 +404,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenOnExitEditModeButNotFromViewThenExitCredentialMode() = runTest {
+    fun `onCancelEditMode - not from view - exit credential mode`() = runTest {
         val credentials = someCredentials()
         testee.onEditCredentials(credentials)
 
@@ -417,7 +417,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenOnExitCredentialModeThenExitCredentialMode() = runTest {
+    fun `onExitCredentialMode - exit credential mode`() = runTest {
         testee.onExitCredentialMode()
 
         testee.commands.test {
@@ -427,7 +427,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenLockingAndUnlockingPreviousViewStateRestoredIfWasListMode() = runTest {
+    fun `unlock - was list mode - previous viewState restored`() = runTest {
         testee.onInitialiseListMode()
         testee.lock()
         testee.unlock()
@@ -439,7 +439,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenLockingAndUnlockingPreviousViewStateRestoredIfWasCredentialViewingMode() = runTest {
+    fun `unlock - was credential viewing mode - previous view state restored`() = runTest {
         testee.onViewCredentials(someCredentials())
         testee.lock()
         testee.unlock()
@@ -451,7 +451,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenInEditModeAndChangedToDisabledThenUpdateNotInCredentialModeAndShowDisabledMode() = runTest {
+    fun `disabled - in edit mode - update not in credential mode and show disabled mode`() = runTest {
         testee.onEditCredentials(someCredentials())
         testee.disabled()
 
@@ -466,7 +466,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenAllowSaveInEditModeSetToFalseThenUpdateViewStateToEditingSaveableFalse() = runTest {
+    fun `allowSaveInEditMode - set to false - update viewState to editing saveable false`() = runTest {
         val credentials = someCredentials()
         testee.onViewCredentials(credentials)
         testee.onEditCurrentCredentials()
@@ -484,7 +484,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenLaunchDeviceAuthWithDeviceUnsupportedThenEmitUnsupportedModeCommand() = runTest {
+    fun `launchDeviceAuth - device unsupported - emit unsupported mode command`() = runTest {
         configureDeviceToBeUnsupported()
         testee.launchDeviceAuth()
 
@@ -503,7 +503,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenLaunchDeviceAuthThenUpdateStateToIsAuthenticatingAndEmitLaunchDeviceCommand() = runTest {
+    fun `launchDeviceAuth - update state to is authenticating - emit launch device command`() = runTest {
         configureDeviceToBeSupported()
         configureDeviceToHaveValidAuthentication(true)
         configureStoreToHaveThisManyCredentialsStored(1)
@@ -516,7 +516,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenLaunchDeviceAuthWithNoSavedCredentialsThenIsUnlockedAndAuthNotLaunched() = runTest {
+    fun `launchDeviceAuth - no saved credentials - is unlocked and auth not launched`() = runTest {
         configureDeviceToHaveValidAuthentication(true)
         configureStoreToHaveThisManyCredentialsStored(0)
         testee.launchDeviceAuth()
@@ -530,7 +530,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenLaunchDeviceAuthWithNoValidAuthThenDisabledShown() = runTest {
+    fun `launchDeviceAuth - no valid auth - disabled shown`() = runTest {
         configureDeviceToHaveValidAuthentication(false)
         testee.launchDeviceAuth()
 
@@ -543,7 +543,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenLaunchedDeviceAuthHasEndedAndLaunchedAgainThenEmitLaunchDeviceCommandTwice() = runTest {
+    fun `launchDeviceAuth - launched twice - emit launch device command twice`() = runTest {
         configureDeviceToBeSupported()
         configureDeviceToHaveValidAuthentication(true)
         configureStoreToHaveThisManyCredentialsStored(1)
@@ -560,7 +560,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenLaunchDeviceAuthWithNoValidAuthenticationThenShowDisabledViewAndAuthNotLaunched() = runTest {
+    fun `launchDeviceAuth - no valid authentication - show disabled view and auth not launched`() = runTest {
         configureDeviceToBeSupported()
         configureDeviceToHaveValidAuthentication(false)
         testee.launchDeviceAuth()
@@ -573,7 +573,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenObserveCredentialsCalledWithAutofillDisabledThenAutofillEnabledStateIsReturned() = runTest {
+    fun `onViewCreated - autofill disabled - autofill enabled state returned`() = runTest {
         whenever(mockStore.autofillEnabled).thenReturn(false)
         configureDeviceToHaveValidAuthentication(true)
 
@@ -585,7 +585,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenObserveCredentialsCalledWithAutofillEnabledThenAutofillEnabledStateIsReturned() = runTest {
+    fun `onViewCreated - autofill enabled - autofill enabled state returned`() = runTest {
         whenever(mockStore.autofillEnabled).thenReturn(true)
         configureDeviceToHaveValidAuthentication(true)
 
@@ -597,7 +597,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenSearchQueryChangesEmptyThenShouldShowEnableToggle() = runTest {
+    fun `onSearchQueryChanged - empty query - show enable toggle`() = runTest {
         testee.onSearchQueryChanged("")
 
         testee.onViewCreated()
@@ -608,7 +608,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenSearchQueryChangesNonEmptyThenShouldNotShowEnableToggle() = runTest {
+    fun `onSearchQueryChanged - non-empty query - should not show enable toggle`() = runTest {
         testee.onSearchQueryChanged("foo")
 
         testee.onViewCreated()
@@ -619,7 +619,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenScreenLaunchedDirectlyIntoCredentialViewThenNoLaunchPixelSent() {
+    fun `sendLaunchPixel - launched directly into credential view - no launch pixel sent`() {
         val launchedFromBrowser = false
         val directLinkToCredentials = true
         testee.sendLaunchPixel(launchedFromBrowser, directLinkToCredentials)
@@ -627,7 +627,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenScreenLaunchedDirectlyIntoCredentialViewAndLaunchedFromBrowserThenNoLaunchPixelSent() {
+    fun `sendLaunchPixel - launched from browser and direct link to credentials - no launch pixel sent`() {
         val launchedFromBrowser = true
         val directLinkToCredentials = true
         testee.sendLaunchPixel(launchedFromBrowser, directLinkToCredentials)
@@ -635,7 +635,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenScreenLaunchedFromBrowserAndNotDirectLinkThenCorrectLaunchPixelSent() {
+    fun `sendLaunchPixel - launched from browser and not direct link - correct launch pixel sent`() {
         val launchedFromBrowser = true
         val directLinkToCredentials = false
         testee.sendLaunchPixel(launchedFromBrowser, directLinkToCredentials)
@@ -643,7 +643,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenScreenLaunchedNotFromBrowserAndNotDirectLinkThenCorrectLaunchPixelSent() {
+    fun `sendLaunchPixel - not from browser and not direct link - correct launch pixel sent`() {
         val launchedFromBrowser = false
         val directLinkToCredentials = false
         testee.sendLaunchPixel(launchedFromBrowser, directLinkToCredentials)
@@ -651,31 +651,31 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenUserFirstChoosesToResetNeverSavedSiteListThenCorrectPixelFired() = runTest {
+    fun `onResetNeverSavedSitesInitialSelection - correct pixel fired`() = runTest {
         testee.onResetNeverSavedSitesInitialSelection()
         verify(pixel).fire(AUTOFILL_NEVER_SAVE_FOR_THIS_SITE_CONFIRMATION_PROMPT_DISPLAYED)
     }
 
     @Test
-    fun whenUserConfirmsTheyWantToResetNeverSavedSiteListThenRepositoryCleared() = runTest {
+    fun `onUserConfirmationToClearNeverSavedSites - repository cleared`() = runTest {
         testee.onUserConfirmationToClearNeverSavedSites()
         verify(neverSavedSiteRepository).clearNeverSaveList()
     }
 
     @Test
-    fun whenUserConfirmsTheyWantToResetNeverSavedSiteListThenCorrectPixelFired() = runTest {
+    fun `onUserConfirmationToClearNeverSavedSites - correct pixel fired`() = runTest {
         testee.onUserConfirmationToClearNeverSavedSites()
         verify(pixel).fire(AUTOFILL_NEVER_SAVE_FOR_THIS_SITE_CONFIRMATION_PROMPT_CONFIRMED)
     }
 
     @Test
-    fun whenUserDismissesPromptToResetNeverSavedSiteListThenCorrectPixelFired() = runTest {
+    fun `onUserCancelledFromClearNeverSavedSitesPrompt - correct pixel fired`() = runTest {
         testee.onUserCancelledFromClearNeverSavedSitesPrompt()
         verify(pixel).fire(AUTOFILL_NEVER_SAVE_FOR_THIS_SITE_CONFIRMATION_PROMPT_DISMISSED)
     }
 
     @Test
-    fun whenDeleteAllFirstCalledWithNoSavedLoginsThenNoCommandSentToShowConfirmationDialog() = runTest {
+    fun `onDeleteAllPasswordsInitialSelection - no saved logins - no command sent to show confirmation dialog`() = runTest {
         configureStoreToHaveThisManyCredentialsStored(0)
         testee.onViewCreated()
         testee.onDeleteAllPasswordsInitialSelection()
@@ -686,7 +686,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenDeleteAllFirstCalledWithOneSavedLoginThenCommandSentToShowConfirmationDialog() = runTest {
+    fun `onDeleteAllPasswordsInitialSelection - one saved login - show confirmation dialog`() = runTest {
         configureStoreToHaveThisManyCredentialsStored(1)
         testee.onViewCreated()
         testee.onDeleteAllPasswordsInitialSelection()
@@ -697,7 +697,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenDeleteAllPasswordsConfirmedButNoPasswordsSavedThenDoesNotIssueCommandToShowUndoSnackbar() = runTest {
+    fun `onDeleteAllPasswordsConfirmed - no passwords saved - does not issue command to show undo snackbar`() = runTest {
         whenever(mockStore.deleteAllCredentials()).thenReturn(emptyList())
         testee.onDeleteAllPasswordsConfirmed()
         testee.commandsListView.test {
@@ -707,7 +707,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenDeleteAllPasswordsConfirmedWithPasswordsSavedThenDoesIssueCommandToShowUndoSnackbar() = runTest {
+    fun `onDeleteAllPasswordsConfirmed - passwords saved - issue command to show undo snackbar`() = runTest {
         testee.onDeleteAllPasswordsConfirmed()
         testee.commandsListView.test {
             awaitItem().verifyHasCommandToAuthenticateMassDeletion()
@@ -716,7 +716,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenAuthenticationSucceedsToMassDeletePasswordsThenDoesIssueCommandToShowUndoSnackbar() = runTest {
+    fun `onAuthenticatedToDeleteAllPasswords - authentication succeeds - issues command to show undo snackbar`() = runTest {
         whenever(mockStore.deleteAllCredentials()).thenReturn(listOf(someCredentials()))
         testee.onAuthenticatedToDeleteAllPasswords()
         testee.commands.test {
@@ -726,7 +726,7 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenDeleteAllFirstCalledWithManySavedLoginThenCommandSentToShowConfirmationDialog() = runTest {
+    fun `onDeleteAllPasswordsInitialSelection - many saved logins - show confirmation dialog`() = runTest {
         configureStoreToHaveThisManyCredentialsStored(100)
         testee.onViewCreated()
         testee.onDeleteAllPasswordsInitialSelection()
@@ -737,38 +737,38 @@ class AutofillSettingsViewModelTest {
     }
 
     @Test
-    fun whenNoSurveysAvailableThenNoSurveyInViewState() = runTest {
+    fun `onViewStarted - no surveys available - no survey in viewState`() = runTest {
         testee.onViewStarted()
         verifySurveyNotAvailable()
     }
 
     @Test
-    fun whenUnusedSurveyAvailableThenSurveyInViewState() = runTest {
+    fun `onInitialiseListMode - unused survey available - survey in viewState`() = runTest {
         whenever(autofillSurvey.firstUnusedSurvey()).thenReturn(SurveyDetails("surveyId-1", "example.com"))
         testee.onInitialiseListMode()
         "surveyId-1".verifySurveyAvailable()
     }
 
     @Test
-    fun whenSurveyShownThenNoSurveyInViewState() = runTest {
+    fun `onSurveyShown - no survey in viewState`() = runTest {
         testee.onSurveyShown("surveyId-1")
         verifySurveyNotAvailable()
     }
 
     @Test
-    fun whenSurveyShownThenSurveyMarkedAsUsed() = runTest {
+    fun `onSurveyShown - survey marked as used`() = runTest {
         testee.onSurveyShown("surveyId-1")
         verify(autofillSurvey).recordSurveyAsUsed("surveyId-1")
     }
 
     @Test
-    fun whenSurveyPromptDismissedThenNoSurveyInViewState() = runTest {
+    fun `onSurveyPromptDismissed - no survey in viewState`() = runTest {
         testee.onSurveyPromptDismissed("surveyId-1")
         verifySurveyNotAvailable()
     }
 
     @Test
-    fun whenSurveyPromptDismissedThenSurveyMarkedAsUsed() = runTest {
+    fun `onSurveyPromptDismissed - survey marked as used`() = runTest {
         testee.onSurveyPromptDismissed("surveyId-1")
         verify(autofillSurvey).recordSurveyAsUsed("surveyId-1")
     }

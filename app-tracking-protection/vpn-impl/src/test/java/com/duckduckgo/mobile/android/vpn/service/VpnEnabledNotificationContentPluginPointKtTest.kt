@@ -23,12 +23,12 @@ import org.junit.Test
 
 class VpnEnabledNotificationContentPluginPointKtTest {
     @Test
-    fun whenEmptyPluginPointThenReturnNull() {
+    fun `getHighestPriorityPlugin - empty plugin point - return null`() {
         assertNull(createPluginPoint(emptyList()).getHighestPriorityPlugin())
     }
 
     @Test
-    fun whenInactivePluginsThenReturnNull() {
+    fun `getHighestPriorityPlugin - inactive plugins - return null`() {
         assertNull(
             createPluginPoint(
                 listOf(
@@ -40,7 +40,7 @@ class VpnEnabledNotificationContentPluginPointKtTest {
     }
 
     @Test
-    fun whenActivePluginsThenReturnThemInPriorityOrder() {
+    fun `getHighestPriorityPlugin - active plugins - return them in priority order`() {
         val plugin = createPluginPoint(
             listOf(
                 FakeVpnEnabledNotificationContentPlugin(isActive = true, VpnEnabledNotificationContentPlugin.VpnEnabledNotificationPriority.NORMAL),

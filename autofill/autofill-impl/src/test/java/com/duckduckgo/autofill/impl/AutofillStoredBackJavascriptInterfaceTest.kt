@@ -121,14 +121,14 @@ class AutofillStoredBackJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenInjectingNoCredentialResponseThenCorrectJsonWriterInvoked() = runTest {
+    fun `injectNoCredentials - correct JsonWriter invoked`() = runTest {
         testee.injectNoCredentials()
         verify(autofillResponseWriter).generateEmptyResponseGetAutofillData()
         verifyMessageSent()
     }
 
     @Test
-    fun whenInjectingCredentialResponseThenCorrectJsonWriterInvoked() = runTest {
+    fun `injectCredentials - correct JsonWriter invoked`() = runTest {
         val loginCredentials = LoginCredentials(0, "example.com", "username", "password")
         testee.injectCredentials(loginCredentials)
         verify(autofillResponseWriter).generateResponseGetAutofillData(any())
@@ -136,7 +136,7 @@ class AutofillStoredBackJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenGetAutofillDataCalledNoCredentialsAvailableThenNoCredentialsCallbackInvoked() = runTest {
+    fun `getAutofillData - no credentials available - no credentials callback invoked`() = runTest {
         setupRequestForSubTypeUsername()
         whenever(autofillStore.getCredentials(any())).thenReturn(emptyList())
         initiateGetAutofillDataRequest()
@@ -144,14 +144,14 @@ class AutofillStoredBackJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenGetAutofillDataCalledWithCredentialsAvailableThenCredentialsAvailableCallbackInvoked() = runTest {
+    fun `getAutofillData - credentials available - callback invoked`() = runTest {
         whenever(autofillStore.getCredentials(any())).thenReturn(listOf(LoginCredentials(0, "example.com", "username", "password")))
         initiateGetAutofillDataRequest()
         assertCredentialsAvailable()
     }
 
     @Test
-    fun whenGetAutofillDataCalledWithCredentialsAvailableWithNullUsernameUsernameConvertedToEmptyString() = runTest {
+    fun `getAutofillData - credentials available with null username - username converted to empty string`() = runTest {
         setupRequestForSubTypePassword()
         whenever(autofillStore.getCredentials(any())).thenReturn(
             listOf(
@@ -168,7 +168,7 @@ class AutofillStoredBackJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenRequestSpecifiesSubtypeUsernameAndNoEntriesThenNoCredentialsCallbackInvoked() = runTest {
+    fun `initiateGetAutofillDataRequest - subtype username and no entries - no credentials callback invoked`() = runTest {
         setupRequestForSubTypeUsername()
         whenever(autofillStore.getCredentials(any())).thenReturn(emptyList())
         initiateGetAutofillDataRequest()
@@ -176,7 +176,7 @@ class AutofillStoredBackJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenRequestSpecifiesSubtypeUsernameAndNoEntriesWithAUsernameThenNoCredentialsCallbackInvoked() = runTest {
+    fun `initiateGetAutofillDataRequest - no entries with username - no credentials callback invoked`() = runTest {
         setupRequestForSubTypeUsername()
         whenever(autofillStore.getCredentials(any())).thenReturn(
             listOf(
@@ -189,7 +189,7 @@ class AutofillStoredBackJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenRequestSpecifiesSubtypeUsernameAndSingleEntryWithAUsernameThenCredentialsAvailableCallbackInvoked() = runTest {
+    fun `initiateGetAutofillDataRequest - subtype username with single entry - credentials available callback invoked`() = runTest {
         setupRequestForSubTypeUsername()
         whenever(autofillStore.getCredentials(any())).thenReturn(
             listOf(
@@ -204,7 +204,7 @@ class AutofillStoredBackJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenRequestSpecifiesSubtypeUsernameAndMultipleEntriesWithAUsernameThenCredentialsAvailableCallbackInvoked() = runTest {
+    fun `initiateGetAutofillDataRequest - subtype username with multiple entries - credentials available callback invoked`() = runTest {
         setupRequestForSubTypeUsername()
         whenever(autofillStore.getCredentials(any())).thenReturn(
             listOf(
@@ -221,7 +221,7 @@ class AutofillStoredBackJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenRequestSpecifiesSubtypePasswordAndNoEntriesThenNoCredentialsCallbackInvoked() = runTest {
+    fun `initiateGetAutofillDataRequest - subtype password and no entries - no credentials callback invoked`() = runTest {
         setupRequestForSubTypePassword()
         whenever(autofillStore.getCredentials(any())).thenReturn(emptyList())
         initiateGetAutofillDataRequest()
@@ -229,7 +229,7 @@ class AutofillStoredBackJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenRequestSpecifiesSubtypePasswordAndNoEntriesWithAPasswordThenNoCredentialsCallbackInvoked() = runTest {
+    fun `initiateGetAutofillDataRequest - subtype password with no entries - no credentials callback invoked`() = runTest {
         setupRequestForSubTypePassword()
         whenever(autofillStore.getCredentials(any())).thenReturn(
             listOf(
@@ -242,7 +242,7 @@ class AutofillStoredBackJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenRequestSpecifiesSubtypePasswordAndSingleEntryWithAPasswordThenCredentialsAvailableCallbackInvoked() = runTest {
+    fun `initiateGetAutofillDataRequest - subtype password with single entry - credentials available callback invoked`() = runTest {
         setupRequestForSubTypePassword()
         whenever(autofillStore.getCredentials(any())).thenReturn(
             listOf(
@@ -257,7 +257,7 @@ class AutofillStoredBackJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenRequestSpecifiesSubtypePasswordAndMultipleEntriesWithAPasswordThenCredentialsAvailableCallbackInvoked() = runTest {
+    fun `initiateGetAutofillDataRequest - subtype password with multiple entries - credentials available callback invoked`() = runTest {
         setupRequestForSubTypePassword()
         whenever(autofillStore.getCredentials(any())).thenReturn(
             listOf(
@@ -275,14 +275,14 @@ class AutofillStoredBackJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenStoreFormDataCalledWithNoUsernameThenCallbackInvoked() = runTest {
+    fun `storeFormData - no username - callback invoked`() = runTest {
         configureRequestParserToReturnSaveCredentialRequestType(username = null, password = "password")
         testee.storeFormData("")
         assertNotNull(testCallback.credentialsToSave)
     }
 
     @Test
-    fun whenStoreFormDataCalledWithNoPasswordThenCallbackInvoked() = runTest {
+    fun `storeFormData - no password - callback invoked`() = runTest {
         configureRequestParserToReturnSaveCredentialRequestType(username = "dax@duck.com", password = null)
         testee.storeFormData("")
         assertNotNull(testCallback.credentialsToSave)
@@ -290,14 +290,14 @@ class AutofillStoredBackJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenStoreFormDataCalledWithNullUsernameAndPasswordThenCallbackNotInvoked() = runTest {
+    fun `storeFormData - null username and password - callback not invoked`() = runTest {
         configureRequestParserToReturnSaveCredentialRequestType(username = null, password = null)
         testee.storeFormData("")
         assertNull(testCallback.credentialsToSave)
     }
 
     @Test
-    fun whenStoreFormDataCalledWithBlankUsernameThenCallbackInvoked() = runTest {
+    fun `storeFormData - blank username - callback invoked`() = runTest {
         configureRequestParserToReturnSaveCredentialRequestType(username = " ", password = "password")
         testee.storeFormData("")
         assertEquals(" ", testCallback.credentialsToSave!!.username)
@@ -305,7 +305,7 @@ class AutofillStoredBackJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenStoreFormDataCalledWithBlankPasswordThenCallbackInvoked() = runTest {
+    fun `storeFormData - blank password - callback invoked`() = runTest {
         configureRequestParserToReturnSaveCredentialRequestType(username = "username", password = " ")
         testee.storeFormData("")
         assertEquals("username", testCallback.credentialsToSave!!.username)
@@ -313,7 +313,7 @@ class AutofillStoredBackJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenStoreFormDataCalledButSiteInNeverSaveListThenCallbackNotInvoked() = runTest {
+    fun `storeFormData - site in never save list - callback not invoked`() = runTest {
         configureRequestParserToReturnSaveCredentialRequestType(username = "username", password = "password")
         whenever(neverSavedSiteRepository.isInNeverSaveList(any())).thenReturn(true)
         testee.storeFormData("")
@@ -321,14 +321,14 @@ class AutofillStoredBackJavascriptInterfaceTest {
     }
 
     @Test
-    fun whenStoreFormDataCalledWithBlankUsernameAndBlankPasswordThenCallbackNotInvoked() = runTest {
+    fun `storeFormData - blank username and password - callback not invoked`() = runTest {
         configureRequestParserToReturnSaveCredentialRequestType(username = " ", password = " ")
         testee.storeFormData("")
         assertNull(testCallback.credentialsToSave)
     }
 
     @Test
-    fun whenStoreFormDataCalledAndParsingErrorThenExceptionIsContained() = runTest {
+    fun `storeFormData - parsing error - exception is contained`() = runTest {
         configureRequestParserToReturnSaveCredentialRequestType(username = "username", password = "password")
         whenever(requestParser.parseStoreFormDataRequest(any())).thenReturn(Result.failure(RuntimeException("Parsing error")))
         testee.storeFormData("")

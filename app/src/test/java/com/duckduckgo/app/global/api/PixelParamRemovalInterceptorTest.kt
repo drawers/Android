@@ -46,7 +46,7 @@ class PixelParamRemovalInterceptorTest {
     }
 
     @Test
-    fun whenSendPixelRedactAppVersion() {
+    fun `sendPixel - redact app version`() {
         testPixels.filter { it.second == PixelParameter.removeVersion() }.map { it.first }.forEach { pixelName ->
             val pixelUrl = String.format(PIXEL_TEMPLATE, pixelName)
             val interceptedUrl = pixelRemovalInterceptor.intercept(FakeChain(pixelUrl)).request.url
@@ -56,7 +56,7 @@ class PixelParamRemovalInterceptorTest {
     }
 
     @Test
-    fun whenSendPixelRedactAtb() {
+    fun `sendPixel - redact atb`() {
         testPixels.filter { it.second == PixelParameter.removeAtb() }.map { it.first }.forEach { pixelName ->
             val pixelUrl = String.format(PIXEL_TEMPLATE, pixelName)
             val interceptedUrl = pixelRemovalInterceptor.intercept(FakeChain(pixelUrl)).request.url
@@ -66,7 +66,7 @@ class PixelParamRemovalInterceptorTest {
     }
 
     @Test
-    fun whenSendPixelRedactOSVersion() {
+    fun `sendPixel - redact OS version`() {
         testPixels.filter { it.second == PixelParameter.removeOSVersion() }.map { it.first }.forEach { pixelName ->
             val pixelUrl = String.format(PIXEL_TEMPLATE, pixelName)
             val interceptedUrl = pixelRemovalInterceptor.intercept(FakeChain(pixelUrl)).request.url
@@ -77,7 +77,7 @@ class PixelParamRemovalInterceptorTest {
     }
 
     @Test
-    fun whenSendPixelRedactAtbAndAppAndOSVersion() {
+    fun `sendPixel - redact atb and app and OS version`() {
         testPixels.filter { it.second.containsAll(PixelParameter.removeAll()) }
             .map { it.first }
             .forEach { pixelName ->

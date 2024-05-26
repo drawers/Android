@@ -33,21 +33,21 @@ class RealFiltererRequestFeatureToggleRepositoryTest {
     }
 
     @Test
-    fun whenDeleteAllThenDeleteAllCalled() {
+    fun `deleteAll - deleteAll called`() {
         testee.deleteAll()
 
         verify(mockRequestFiltererFeatureToggleStore).deleteAll()
     }
 
     @Test
-    fun whenGetThenGetCalled() {
+    fun `get - get called`() {
         testee.get(RequestFilterer, true)
 
         verify(mockRequestFiltererFeatureToggleStore).get(RequestFilterer, true)
     }
 
     @Test
-    fun whenInsertThenInsertCalled() {
+    fun `insert - insert called`() {
         val requestFiltererFeatureToggle = RequestFiltererFeatureToggles(RequestFilterer, true, null)
         testee.insert(requestFiltererFeatureToggle)
 

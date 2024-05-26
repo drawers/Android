@@ -46,14 +46,14 @@ class NetPVpnSettingsViewModelTest {
     }
 
     @Test
-    fun whenVpnSettingsScreenShownThenEmitImpressionPixels() {
+    fun `onCreate - vpn settings screen shown - emit impression pixels`() {
         viewModel.onCreate(mock())
 
         verify(networkProtectionPixels).reportVpnSettingsShown()
     }
 
     @Test
-    fun whenIgnoringBatteryOptimizationsFalseThenRecommendedSettingsAreCorrect() = runTest {
+    fun `recommendedSettings - ignoring battery optimizations false - correct settings`() = runTest {
         viewModel.recommendedSettings().test {
             isIgnoringBatteryOptimizations = false
             assertEquals(NetPVpnSettingsViewModel.RecommendedSettings(false), awaitItem())
@@ -62,7 +62,7 @@ class NetPVpnSettingsViewModelTest {
     }
 
     @Test
-    fun whenIgnoringBatteryOptimizationsTrueThenRecommendedSettingsAreCorrect() = runTest {
+    fun `recommendedSettings - ignoring battery optimizations true - correct settings`() = runTest {
         viewModel.recommendedSettings().test {
             isIgnoringBatteryOptimizations = true
             assertEquals(NetPVpnSettingsViewModel.RecommendedSettings(false), awaitItem())
@@ -71,7 +71,7 @@ class NetPVpnSettingsViewModelTest {
     }
 
     @Test
-    fun onStartEmitDefaultState() = runTest {
+    fun `onStart - emit default state`() = runTest {
         whenever(vpnDisableOnCall.isEnabled()).thenReturn(false)
         viewModel.viewState().test {
             viewModel.onStart(mock())
@@ -88,7 +88,7 @@ class NetPVpnSettingsViewModelTest {
     }
 
     @Test
-    fun onStartEmitCorrectState() = runTest {
+    fun `onStart - emit correct state`() = runTest {
         whenever(vpnDisableOnCall.isEnabled()).thenReturn(true)
         viewModel.viewState().test {
             netPSettingsLocalConfig.vpnExcludeLocalNetworkRoutes().setEnabled(Toggle.State(remoteEnableState = true))
@@ -102,7 +102,7 @@ class NetPVpnSettingsViewModelTest {
     }
 
     @Test
-    fun onExcludeLocalRoutesEmitsCorrectState() = runTest {
+    fun `onExcludeLocalRoutes - emits correct state`() = runTest {
         viewModel.viewState().test {
             viewModel.onExcludeLocalRoutes(false)
             assertEquals(NetPVpnSettingsViewModel.ViewState(false), awaitItem())
@@ -114,14 +114,14 @@ class NetPVpnSettingsViewModelTest {
     }
 
     @Test
-    fun onPauseDoNotRestartVpn() = runTest {
+    fun `onStart - vpn disable on call not enabled - do not restart vpn`() = runTest {
         whenever(vpnDisableOnCall.isEnabled()).thenReturn(false)
         viewModel.onStart(mock())
         verify(networkProtectionState, never()).restart()
     }
 
     @Test
-    fun onPauseDoNotRestartVpnWhenNothingChanges() = runTest {
+    fun `onPause - nothing changes - do not restart VPN`() = runTest {
         viewModel.onExcludeLocalRoutes(false)
 
         viewModel.onPause(mock())
@@ -133,21 +133,21 @@ class NetPVpnSettingsViewModelTest {
     }
 
     @Test
-    fun onPauseRestartVpnWhenSettingChanged() = runTest {
+    fun `onPause - setting changed - restart VPN`() = runTest {
         viewModel.onExcludeLocalRoutes(true)
         viewModel.onPause(mock())
         verify(networkProtectionState).restart()
     }
 
     @Test
-    fun whenOnEnablePauseDuringWifiCallsThenEnableFeature() {
+    fun `onEnablePauseDuringWifiCalls - enable feature`() {
         viewModel.onEnablePauseDuringWifiCalls()
 
         verify(vpnDisableOnCall).enable()
     }
 
     @Test
-    fun whenOnDisablePauseDuringWifiCallsThenDisableFeature() {
+    fun `onDisablePauseDuringWifiCalls - disable feature`() {
         viewModel.onDisablePauseDuringWifiCalls()
 
         verify(vpnDisableOnCall).disable()

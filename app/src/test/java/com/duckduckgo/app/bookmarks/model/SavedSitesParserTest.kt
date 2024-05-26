@@ -106,7 +106,7 @@ class SavedSitesParserTest {
     }
 
     @Test
-    fun whenSomeBookmarksExistThenHtmlIsGenerated() = runTest {
+    fun `generateHtml - some bookmarks exist - html is generated`() = runTest {
         val bookmark = Bookmark(
             id = "bookmark1",
             title = "example",
@@ -142,7 +142,7 @@ class SavedSitesParserTest {
     }
 
     @Test
-    fun whenNoSavedSitesExistThenNothingIsGenerated() = runTest {
+    fun `generateHtml - no saved sites - nothing is generated`() = runTest {
         val node = TreeNode(FolderTreeItem(SavedSitesNames.BOOKMARKS_ROOT, RealSavedSitesParser.BOOKMARKS_FOLDER, "", null, 0))
 
         val result = parser.generateHtml(node, emptyList())
@@ -152,7 +152,7 @@ class SavedSitesParserTest {
     }
 
     @Test
-    fun doesNotImportAnythingWhenFileIsNotProperlyFormatted() = runTest {
+    fun `parseHtml - file not properly formatted - does not import anything`() = runTest {
         val inputStream = FileUtilities.loadResource(javaClass.classLoader!!, "bookmarks/bookmarks_invalid.html")
         val document = Jsoup.parse(inputStream, Charsets.UTF_8.name(), "duckduckgo.com")
 
@@ -162,7 +162,7 @@ class SavedSitesParserTest {
     }
 
     @Test
-    fun canImportFromFirefox() = runTest {
+    fun `parseHtml - firefox bookmarks - imported successfully`() = runTest {
         val inputStream = FileUtilities.loadResource(javaClass.classLoader!!, "bookmarks/bookmarks_firefox.html")
         val document = Jsoup.parse(inputStream, Charsets.UTF_8.name(), "duckduckgo.com")
 
@@ -181,7 +181,7 @@ class SavedSitesParserTest {
     }
 
     @Test
-    fun canImportFromBrave() = runTest {
+    fun `parseHtml - brave bookmarks - imports successfully`() = runTest {
         val inputStream = FileUtilities.loadResource(javaClass.classLoader!!, "bookmarks/bookmarks_brave.html")
         val document = Jsoup.parse(inputStream, Charsets.UTF_8.name(), "duckduckgo.com")
 
@@ -202,7 +202,7 @@ class SavedSitesParserTest {
     }
 
     @Test
-    fun canImportFromChrome() = runTest {
+    fun `parseHtml - chrome bookmarks - imported successfully`() = runTest {
         val inputStream = FileUtilities.loadResource(javaClass.classLoader!!, "bookmarks/bookmarks_chrome.html")
         val document = Jsoup.parse(inputStream, Charsets.UTF_8.name(), "duckduckgo.com")
 
@@ -224,7 +224,7 @@ class SavedSitesParserTest {
     }
 
     @Test
-    fun canImportBookmarksFromDDGAndroid() = runTest {
+    fun `parseHtml - DDG Android bookmarks - imports correctly`() = runTest {
         val inputStream = FileUtilities.loadResource(javaClass.classLoader!!, "bookmarks/bookmarks_ddg_android.html")
         val document = Jsoup.parse(inputStream, Charsets.UTF_8.name(), "duckduckgo.com")
 
@@ -246,7 +246,7 @@ class SavedSitesParserTest {
     }
 
     @Test
-    fun canImportBookmarksFromDDGMacOS() = runTest {
+    fun `importBookmarks - from DDG macOS - bookmarks parsed correctly`() = runTest {
         val inputStream = FileUtilities.loadResource(javaClass.classLoader!!, "bookmarks/bookmarks_ddg_macos.html")
         val document = Jsoup.parse(inputStream, Charsets.UTF_8.name(), "duckduckgo.com")
 
@@ -269,7 +269,7 @@ class SavedSitesParserTest {
     }
 
     @Test
-    fun canImportBookmarksFromSafari() = runTest {
+    fun `parseHtml - import bookmarks from Safari - bookmarks parsed correctly`() = runTest {
         val inputStream = FileUtilities.loadResource(javaClass.classLoader!!, "bookmarks/bookmarks_safari.html")
         val document = Jsoup.parse(inputStream, Charsets.UTF_8.name(), "duckduckgo.com")
 
@@ -291,7 +291,7 @@ class SavedSitesParserTest {
     }
 
     @Test
-    fun canImportBookmarksAndFavoritesFromDDG() = runTest {
+    fun `parseHtml - import bookmarks and favorites from DDG`() = runTest {
         val inputStream = FileUtilities.loadResource(javaClass.classLoader!!, "bookmarks/bookmarks_favorites_ddg.html")
         val document = Jsoup.parse(inputStream, Charsets.UTF_8.name(), "duckduckgo.com")
 
@@ -306,7 +306,7 @@ class SavedSitesParserTest {
     }
 
     @Test
-    fun parsesBookmarksAndFavorites() {
+    fun `parsesBookmarksAndFavorites - correct counts`() {
         val inputStream = FileUtilities.loadResource(javaClass.classLoader!!, "bookmarks/bookmarks_favorites_ddg.html")
         val document = Jsoup.parse(inputStream, Charsets.UTF_8.name(), "duckduckgo.com")
 

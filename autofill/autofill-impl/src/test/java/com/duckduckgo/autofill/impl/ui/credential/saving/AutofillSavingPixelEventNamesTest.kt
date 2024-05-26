@@ -36,49 +36,49 @@ import org.junit.Test
 class AutofillSavingPixelEventNamesTest {
 
     @Test
-    fun whenSavingAcceptedWithUsernameAndPasswordThenCorrectPixelUsed() {
+    fun `savingAcceptedWithUsernameAndPassword - correct pixel used`() {
         assertEquals(pixelNameDialogAccepted(UsernameAndPassword), AUTOFILL_SAVE_LOGIN_PROMPT_SAVED)
     }
 
     @Test
-    fun whenSavingAcceptedWithPasswordOnlyThenCorrectPixelUsed() {
+    fun `savingAcceptedWithPasswordOnly - correct pixel used`() {
         assertEquals(pixelNameDialogAccepted(PasswordOnly), AUTOFILL_SAVE_PASSWORD_PROMPT_SAVED)
     }
 
     @Test
-    fun whenDialogShownWithUsernameAndPasswordThenCorrectPixelUsed() {
+    fun `pixelNameDialogShown - username and password - correct pixel used`() {
         assertEquals(pixelNameDialogShown(UsernameAndPassword), AUTOFILL_SAVE_LOGIN_PROMPT_SHOWN)
     }
 
     @Test
-    fun whenDialogShownWithPasswordOnlyThenCorrectPixelUsed() {
+    fun `pixelNameDialogShown - password only - correct pixel used`() {
         assertEquals(pixelNameDialogShown(PasswordOnly), AUTOFILL_SAVE_PASSWORD_PROMPT_SHOWN)
     }
 
     @Test
-    fun whenDialogDismissedWithUsernameAndPasswordThenCorrectPixelUsed() {
+    fun `pixelNameDialogDismissed - username and password - correct pixel used`() {
         assertEquals(pixelNameDialogDismissed(UsernameAndPassword), AUTOFILL_SAVE_LOGIN_PROMPT_DISMISSED)
     }
 
     @Test
-    fun whenDialogDismissedWithPasswordOnlyThenCorrectPixelUsed() {
+    fun `pixelNameDialogDismissed - password only - correct pixel used`() {
         assertEquals(pixelNameDialogDismissed(PasswordOnly), AUTOFILL_SAVE_PASSWORD_PROMPT_DISMISSED)
     }
 
     @Test
-    fun whenUsernameAndPasswordProvidedThenSaveTypeIsUsernameAndPassword() {
+    fun `saveType - username and password provided - username and password`() {
         val loginCredentials = loginCredentials(username = "username", password = "password")
         assertEquals(loginCredentials.saveType(), UsernameAndPassword)
     }
 
     @Test
-    fun whenUsernameOnlyProvidedThenSaveTypeIsUsernameOnly() {
+    fun `saveType - username only provided - username only`() {
         val loginCredentials = loginCredentials(username = "username", password = null)
         assertEquals(loginCredentials.saveType(), UsernameOnly)
     }
 
     @Test
-    fun whenPassworldOnlyProvidedThenSaveTypeIsUsernameOnly() {
+    fun `saveType - password only provided - username only`() {
         val loginCredentials = loginCredentials(username = null, password = "password")
         assertEquals(loginCredentials.saveType(), PasswordOnly)
     }

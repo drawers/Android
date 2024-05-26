@@ -75,7 +75,7 @@ class SyncServiceRemoteTest {
     private val syncStore: SyncStore = mock()
 
     @Test
-    fun whenCreateAccountSucceedsThenReturnAccountCreatedSuccess() {
+    fun `createAccount - success - account created`() {
         val syncRemote = SyncServiceRemote(syncService, syncStore)
         val call: Call<AccountCreatedResponse> = mock()
         whenever(syncService.signup(signUpRequest)).thenReturn(call)
@@ -89,7 +89,7 @@ class SyncServiceRemoteTest {
     }
 
     @Test
-    fun whenCreateAccountIsInvalidThenReturnError() {
+    fun `createAccount - invalid account - return error`() {
         val syncRemote = SyncServiceRemote(syncService, syncStore)
         val call: Call<AccountCreatedResponse> = mock()
         whenever(syncService.signup(signUpRequest)).thenReturn(call)
@@ -103,7 +103,7 @@ class SyncServiceRemoteTest {
     }
 
     @Test
-    fun whenCreateAccountDuplicateUserThenReturnError() {
+    fun `createAccount - duplicate user - return error`() {
         val syncRemote = SyncServiceRemote(syncService, syncStore)
         val call: Call<AccountCreatedResponse> = mock()
         whenever(syncService.signup(signUpRequest)).thenReturn(call)
@@ -117,7 +117,7 @@ class SyncServiceRemoteTest {
     }
 
     @Test
-    fun whenLogoutSucceedsThenReturnLogoutSuccess() {
+    fun `logout - logout succeeds - return logout success`() {
         val syncRemote = SyncServiceRemote(syncService, syncStore)
         val call: Call<Logout> = mock()
         whenever(syncService.logout(anyString(), eq(deviceLogoutBody))).thenReturn(call)
@@ -129,7 +129,7 @@ class SyncServiceRemoteTest {
     }
 
     @Test
-    fun whenLogoutIsInvalidThenReturnError() {
+    fun `logout - invalid - return error`() {
         val syncRemote = SyncServiceRemote(syncService, syncStore)
         val call: Call<Logout> = mock()
         whenever(syncService.logout(anyString(), eq(deviceLogoutBody))).thenReturn(call)
@@ -142,7 +142,7 @@ class SyncServiceRemoteTest {
     }
 
     @Test
-    fun whenDeleteAccountSucceedsThenReturnDeleteAccountSuccess() {
+    fun `deleteAccount - succeeds - return delete account success`() {
         val syncRemote = SyncServiceRemote(syncService, syncStore)
         val call: Call<Void> = mock()
         whenever(syncService.deleteAccount(anyString())).thenReturn(call)
@@ -154,7 +154,7 @@ class SyncServiceRemoteTest {
     }
 
     @Test
-    fun whenDeleteAccountIsInvalidThenReturnError() {
+    fun `deleteAccount - invalid account - return error`() {
         val syncRemote = SyncServiceRemote(syncService, syncStore)
         val call: Call<Void> = mock()
         whenever(syncService.deleteAccount(anyString())).thenReturn(call)
@@ -167,7 +167,7 @@ class SyncServiceRemoteTest {
     }
 
     @Test
-    fun whenLoginSucceedsThenReturnLoginSuccess() {
+    fun `login - login succeeds - return login success`() {
         val syncRemote = SyncServiceRemote(syncService, syncStore)
         val call: Call<LoginResponse> = mock()
         whenever(syncService.login(loginRequestBody)).thenReturn(call)
@@ -179,7 +179,7 @@ class SyncServiceRemoteTest {
     }
 
     @Test
-    fun whenLoginIsInvalidThenReturnError() {
+    fun `login - invalid credentials - return error`() {
         val syncRemote = SyncServiceRemote(syncService, syncStore)
         val call: Call<LoginResponse> = mock()
         whenever(syncService.login(loginRequestBody)).thenReturn(call)
@@ -191,7 +191,7 @@ class SyncServiceRemoteTest {
     }
 
     @Test
-    fun whenGetDevicesSuccessThenResultSuccess() {
+    fun `getDevices - success - result success`() {
         val syncRemote = SyncServiceRemote(syncService, syncStore)
         val call: Call<DeviceResponse> = mock()
         whenever(syncService.getDevices(anyString())).thenReturn(call)
@@ -203,7 +203,7 @@ class SyncServiceRemoteTest {
     }
 
     @Test
-    fun whenGetDevicesSuccessFailsThenResultError() {
+    fun `getDevices - success fails - result error`() {
         val syncRemote = SyncServiceRemote(syncService, syncStore)
         val call: Call<DeviceResponse> = mock()
         whenever(syncService.getDevices(anyString())).thenReturn(call)
@@ -215,7 +215,7 @@ class SyncServiceRemoteTest {
     }
 
     @Test
-    fun whenGetDevicesIsInvalidCodeThenResultError() {
+    fun `getDevices - invalid code - result error`() {
         val syncRemote = SyncServiceRemote(syncService, syncStore)
         val call: Call<DeviceResponse> = mock()
         whenever(syncService.getDevices(anyString())).thenReturn(call)
@@ -228,7 +228,7 @@ class SyncServiceRemoteTest {
     }
 
     @Test
-    fun whenConnectSuccedsThenReturnSuccess() {
+    fun `connect - succeeds - return success`() {
         val syncRemote = SyncServiceRemote(syncService, syncStore)
         val call: Call<Void> = mock()
         whenever(syncService.connect(anyString(), eq(connectBody))).thenReturn(call)
@@ -240,7 +240,7 @@ class SyncServiceRemoteTest {
     }
 
     @Test
-    fun whenConnectFailsThenReturnError() {
+    fun `connect - connect fails - return error`() {
         val syncRemote = SyncServiceRemote(syncService, syncStore)
         val call: Call<Void> = mock()
         whenever(syncService.connect(anyString(), eq(connectBody))).thenReturn(call)
@@ -252,7 +252,7 @@ class SyncServiceRemoteTest {
     }
 
     @Test
-    fun whenConnectDeviceSuccedsThenReturnSuccess() {
+    fun `connectDevice - succeeds - return success`() {
         val syncRemote = SyncServiceRemote(syncService, syncStore)
         val call: Call<ConnectKey> = mock()
         whenever(syncService.connectDevice(deviceId)).thenReturn(call)
@@ -264,7 +264,7 @@ class SyncServiceRemoteTest {
     }
 
     @Test
-    fun whenConnectDeviceFailsThenReturnError() {
+    fun `connectDevice - connect device fails - return error`() {
         val syncRemote = SyncServiceRemote(syncService, syncStore)
         val call: Call<ConnectKey> = mock()
         whenever(syncService.connectDevice(deviceId)).thenReturn(call)

@@ -72,7 +72,7 @@ class FileDownloadCallbackTest {
     }
 
     @Test
-    fun whenOnStartCalledThenPixelFiredAndItemInsertedAndDownloadStartedCommandSent() = runTest {
+    fun `onStart - pixel fired and item inserted - download started command sent`() = runTest {
         val item = oneItem()
 
         callback.onStart(downloadItem = item)
@@ -89,7 +89,7 @@ class FileDownloadCallbackTest {
     }
 
     @Test
-    fun whenOnSuccessCalledForDownloadIdThenPixelFiredAndItemUpdatedAndDownloadSuccessCommandSent() = runTest {
+    fun `onSuccess - download id - pixel fired and item updated and download success command sent`() = runTest {
         val item = oneItem()
         val updatedContentLength = 20L
         whenever(mockDownloadsRepository.getDownloadItem(item.downloadId)).thenReturn(item.copy(contentLength = updatedContentLength))
@@ -115,7 +115,7 @@ class FileDownloadCallbackTest {
     }
 
     @Test
-    fun whenOnSuccessCalledForFileThenPixelFiredAndItemUpdatedAndDownloadSuccessCommandSent() = runTest {
+    fun `onSuccess - file - pixel fired and item updated and download success command sent`() = runTest {
         val item = oneItem()
         val mimeType = "image/jpeg"
         val file = File(item.fileName)
@@ -141,7 +141,7 @@ class FileDownloadCallbackTest {
     }
 
     @Test
-    fun whenOnErrorCalledForDownloadIdAndConnectionRefusedThenPixelFiredAndItemDeleted() = runTest {
+    fun `onError - connection refused - pixel fired and item deleted`() = runTest {
         val downloadId = 1L
         val failReason = DownloadFailReason.ConnectionRefused
 
@@ -154,7 +154,7 @@ class FileDownloadCallbackTest {
     }
 
     @Test
-    fun whenOnCancelCalledForDownloadIdAndNoItemInDbThenPixelFired() = runTest {
+    fun `onCancel - no item in db - pixel fired`() = runTest {
         val downloadId = 1L
 
         whenever(mockDownloadsRepository.getDownloadItem(downloadId)).thenReturn(null)
@@ -166,7 +166,7 @@ class FileDownloadCallbackTest {
     }
 
     @Test
-    fun whenOnCancelCalledForDownloadIdAndExistingItemInDbThenPixelFired() = runTest {
+    fun `onCancel - existing item in db - pixel fired`() = runTest {
         val downloadId = 1L
         whenever(mockDownloadsRepository.getDownloadItem(downloadId)).thenReturn(oneItem())
 
@@ -177,7 +177,7 @@ class FileDownloadCallbackTest {
     }
 
     @Test
-    fun whenOnErrorCalledForUrlAndConnectionRefusedThenPixelFiredAndDownloadFailedCommandSent() = runTest {
+    fun `onError - connection refused - pixel fired and download failed command sent`() = runTest {
         val failReason = DownloadFailReason.ConnectionRefused
 
         callback.onError(url = "url", reason = failReason)
@@ -192,7 +192,7 @@ class FileDownloadCallbackTest {
     }
 
     @Test
-    fun whenOnErrorCalledForNoDownloadIdAndUnsupportedUrlThenPixelFiredAndNotificationSentAndDownloadFailedCommandSent() = runTest {
+    fun `onError - no download id and unsupported url - pixel fired, notification sent, download failed command sent`() = runTest {
         callback.onError(url = "url", reason = DownloadFailReason.UnsupportedUrlType)
 
         verify(mockPixel).fire(DownloadsPixelName.DOWNLOAD_REQUEST_FAILED)

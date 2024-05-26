@@ -30,12 +30,12 @@ import org.junit.Test
 
 class VpnReminderNotificationContentPluginKtTest {
     @Test
-    fun whenEmptyPluginPointThenReturnNull() {
+    fun `getHighestPriorityPluginForType - empty plugin point - return null`() {
         assertNull(createPluginPoint(emptyList()).getHighestPriorityPluginForType(REVOKED))
     }
 
     @Test
-    fun whenPluginForTypeAvailableThenReturnPLugin() {
+    fun `getHighestPriorityPluginForType - plugin for type available - return plugin`() {
         val plugin = createPluginPoint(
             listOf(
                 FakeVpnReminderNotificationContentPlugin(type = DISABLED, NORMAL),
@@ -46,7 +46,7 @@ class VpnReminderNotificationContentPluginKtTest {
     }
 
     @Test
-    fun whenNoPluginsForTypeThenReturnNull() {
+    fun `getHighestPriorityPluginForType - no plugins for type - return null`() {
         val plugin = createPluginPoint(
             listOf(
                 FakeVpnReminderNotificationContentPlugin(type = REVOKED, NORMAL),
@@ -57,7 +57,7 @@ class VpnReminderNotificationContentPluginKtTest {
     }
 
     @Test
-    fun whenMultiplePluginsForTypeThenReturnHighestPriority() {
+    fun `getHighestPriorityPluginForType - multiple plugins for type - return highest priority`() {
         val plugin = createPluginPoint(
             listOf(
                 FakeVpnReminderNotificationContentPlugin(type = DISABLED, NORMAL),

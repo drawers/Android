@@ -47,14 +47,14 @@ class VpnAppTrackerListInfoCollectorTest {
     }
 
     @Test
-    fun whenCollectStateAndBlocklistEtagNotPesentThenJsonEtagIsEmpty() = runTest {
+    fun `collectVpnRelatedState - blocklist etag not present - json etag is empty`() = runTest {
         val jsonObject = collector.collectVpnRelatedState(PACKAGE_ID)
 
         assertEquals("", jsonObject.get("appTrackerListEtag"))
     }
 
     @Test
-    fun whenCollectStateAndBlocklistEtagPesentThenJsonEtagHasValue() = runTest {
+    fun `collectVpnRelatedState - blocklist etag present - json etag has value`() = runTest {
         whenever(vpnAppTrackerBlockingDao.getTrackerBlocklistMetadata()).thenReturn(AppTrackerMetadata(0, "etag"))
         val jsonObject = collector.collectVpnRelatedState(PACKAGE_ID)
 
@@ -62,14 +62,14 @@ class VpnAppTrackerListInfoCollectorTest {
     }
 
     @Test
-    fun whenCollectStateAndExclusionListEtagNotPresentThenJsonEtagIsEmpty() = runTest {
+    fun `collectVpnRelatedState - exclusion list etag not present - json etag is empty`() = runTest {
         val jsonObject = collector.collectVpnRelatedState(PACKAGE_ID)
 
         assertEquals("", jsonObject.get("appExclusionListEtag"))
     }
 
     @Test
-    fun whenCollectStateAndExclusionListEtagPresentThenJsonEtagHasValue() = runTest {
+    fun `collectVpnRelatedState - exclusion list etag present - json etag has value`() = runTest {
         whenever(vpnAppTrackerBlockingDao.getExclusionListMetadata()).thenReturn(AppTrackerExclusionListMetadata(0, "etag"))
         val jsonObject = collector.collectVpnRelatedState(PACKAGE_ID)
 
@@ -77,14 +77,14 @@ class VpnAppTrackerListInfoCollectorTest {
     }
 
     @Test
-    fun whenCollectStateAndExclusionRuleListEtagNotPresentThenJsonEtagIsEmpty() = runTest {
+    fun `collectVpnRelatedState - exclusion rule list etag not present - json etag is empty`() = runTest {
         val jsonObject = collector.collectVpnRelatedState(PACKAGE_ID)
 
         assertEquals("", jsonObject.get("appExceptionRuleListEtag"))
     }
 
     @Test
-    fun whenCollectStateAndExclusionRuleListEtagPresentThenJsonEtagHasValue() = runTest {
+    fun `collectVpnRelatedState - exclusion rule list etag present - json etag has value`() = runTest {
         whenever(vpnAppTrackerBlockingDao.getTrackerExceptionRulesMetadata()).thenReturn(AppTrackerExceptionRuleMetadata(0, "etag"))
         val jsonObject = collector.collectVpnRelatedState(PACKAGE_ID)
 
@@ -92,14 +92,14 @@ class VpnAppTrackerListInfoCollectorTest {
     }
 
     @Test
-    fun whenCollectStateAndAppNotGameOrInExclusionListThenReturnUnprotectedByDefaultFalse() = runTest {
+    fun `collectVpnRelatedState - app not game or in exclusion list - return unprotected by default false`() = runTest {
         val jsonObject = collector.collectVpnRelatedState(PACKAGE_ID)
 
         assertEquals("false", jsonObject.get("reportedAppUnprotectedByDefault"))
     }
 
     @Test
-    fun whenCollectStateAndProtectionOverridenThenOverridenDefaultProtectionTrue() = runTest {
+    fun `collectVpnRelatedState - protection overridden - overridden default protection true`() = runTest {
         whenever(appTrackerRepository.getManualAppExclusionList()).thenReturn(listOf((AppTrackerManualExcludedApp(PACKAGE_ID, true))))
         val jsonObject = collector.collectVpnRelatedState(PACKAGE_ID)
 
@@ -107,7 +107,7 @@ class VpnAppTrackerListInfoCollectorTest {
     }
 
     @Test
-    fun whenCollectStateAndProtectionOverridenThenOverridenDefaultProtectionFalse() = runTest {
+    fun `collectVpnRelatedState - protection overridden - overridden default protection false`() = runTest {
         whenever(appTrackerRepository.getManualAppExclusionList()).thenReturn(listOf((AppTrackerManualExcludedApp("other.package.id", true))))
         val jsonObject = collector.collectVpnRelatedState(PACKAGE_ID)
 

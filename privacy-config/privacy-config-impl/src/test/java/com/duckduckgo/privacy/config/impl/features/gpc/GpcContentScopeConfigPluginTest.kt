@@ -35,19 +35,19 @@ class GpcContentScopeConfigPluginTest {
     }
 
     @Test
-    fun whenGetConfigThenReturnCorrectlyFormattedJson() {
+    fun `config - return correctly formatted json`() {
         whenever(mockGpcRepository.gpcContentScopeConfig).thenReturn(config)
         assertEquals("\"gpc\":$config", testee.config())
     }
 
     @Test
-    fun whenGetPreferencesThenReturnCorrectlyFormattedJsonWhenGpcIsEnabled() {
+    fun `preferences - GPC enabled - correctly formatted JSON`() {
         whenever(mockGpcRepository.isGpcEnabled()).thenReturn(true)
         assertEquals(testee.preferences(), "\"globalPrivacyControlValue\":true")
     }
 
     @Test
-    fun whenGetPreferencesThenReturnCorrectlyFormattedJsonWhenGpcIsDisabled() {
+    fun `preferences - GPC disabled - correctly formatted JSON`() {
         whenever(mockGpcRepository.isGpcEnabled()).thenReturn(false)
         assertEquals(testee.preferences(), "\"globalPrivacyControlValue\":false")
     }

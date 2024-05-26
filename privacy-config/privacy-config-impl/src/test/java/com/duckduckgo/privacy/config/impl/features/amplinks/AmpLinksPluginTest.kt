@@ -41,19 +41,19 @@ class AmpLinksPluginTest {
     }
 
     @Test
-    fun whenFeatureNameDoesNotMatchAmpLinksThenReturnFalse() {
+    fun `store - feature name does not match AMP links - return false`() {
         PrivacyFeatureName.values().filter { it != FEATURE_NAME }.forEach {
             Assert.assertFalse(testee.store(it.value, EMPTY_JSON_STRING))
         }
     }
 
     @Test
-    fun whenFeatureNameMatchesAmpLinksThenReturnTrue() {
+    fun `store - feature name matches AMP links - return true`() {
         assertTrue(testee.store(FEATURE_NAME_VALUE, EMPTY_JSON_STRING))
     }
 
     @Test
-    fun whenFeatureNameMatchesAmpLinksAndIsEnabledThenStoreFeatureEnabled() {
+    fun `store - feature name matches amp links and is enabled - store feature enabled`() {
         val jsonString = FileUtilities.loadText(AmpLinksPluginTest::class.java.classLoader!!, "json/amp_links.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -62,7 +62,7 @@ class AmpLinksPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesAmpLinksAndIsNotEnabledThenStoreFeatureDisabled() {
+    fun `store - feature name matches amp links and is not enabled - store feature disabled`() {
         val jsonString = FileUtilities.loadText(
             AmpLinksPluginTest::class.java.classLoader!!,
             "json/amp_links_disabled.json",
@@ -74,7 +74,7 @@ class AmpLinksPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesAmpLinksAndHasMinSupportedVersionThenStoreMinSupportedVersion() {
+    fun `store - feature name matches amp links and has min supported version - store min supported version`() {
         val jsonString = FileUtilities.loadText(AmpLinksPluginTest::class.java.classLoader!!, "json/amp_links_min_supported_version.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -83,7 +83,7 @@ class AmpLinksPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesAmpLinksThenUpdateAllExistingValues() {
+    fun `store - feature name matches amp links - update all existing values`() {
         val jsonString = FileUtilities.loadText(AmpLinksPluginTest::class.java.classLoader!!, "json/amp_links.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)

@@ -59,7 +59,7 @@ class SavedSitesManagerTest {
     }
 
     @Test
-    fun whenBookmarksImportSucceedsThenPixelIsSent() = runTest {
+    fun `import - bookmarks import succeeds - pixel is sent`() = runTest {
         val someUri = Uri.parse("")
         val importedBookmarks = listOf(aBookmark())
         whenever(importer.import(someUri)).thenReturn(ImportSavedSitesResult.Success(importedBookmarks))
@@ -73,7 +73,7 @@ class SavedSitesManagerTest {
     }
 
     @Test
-    fun whenFavoritesImportSucceedsThenPixelIsSent() = runTest {
+    fun `import - favorites import succeeds - pixel is sent`() = runTest {
         val someUri = Uri.parse("")
         val importedFavorites = listOf(aFavorite())
         whenever(importer.import(someUri)).thenReturn(ImportSavedSitesResult.Success(importedFavorites))
@@ -87,7 +87,7 @@ class SavedSitesManagerTest {
     }
 
     @Test
-    fun whenSavedSitesImportFailsThenPixelIsSent() = runTest {
+    fun `import - saved sites import fails - pixel is sent`() = runTest {
         val someUri = Uri.parse("")
         whenever(importer.import(someUri)).thenReturn(ImportSavedSitesResult.Error(Exception()))
 
@@ -97,7 +97,7 @@ class SavedSitesManagerTest {
     }
 
     @Test
-    fun whenSavedSitesExportSucceedsThenPixelIsSent() = runTest {
+    fun `export - saved sites export succeeds - pixel is sent`() = runTest {
         val someUri = Uri.parse("")
         whenever(exporter.export(someUri)).thenReturn(ExportSavedSitesResult.Success)
 
@@ -107,7 +107,7 @@ class SavedSitesManagerTest {
     }
 
     @Test
-    fun whenSavedSitesExportFailsThenPixelIsSent() = runTest {
+    fun `export - saved sites export fails - pixel is sent`() = runTest {
         val someUri = Uri.parse("")
         whenever(exporter.export(someUri)).thenReturn(ExportSavedSitesResult.Error(Exception()))
 

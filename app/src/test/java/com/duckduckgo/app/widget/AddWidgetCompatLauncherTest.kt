@@ -36,7 +36,7 @@ class AddWidgetCompatLauncherTest {
     )
 
     @Test
-    fun whenAutomaticWidgetAddIsNotSupportedThenDelegateToLegacyAddWidgetLauncher() {
+    fun `launchAddWidget - automatic widget add not supported - delegate to legacy add widget launcher`() {
         whenever(widgetCapabilities.supportsAutomaticWidgetAdd).thenReturn(false)
 
         testee.launchAddWidget(null)
@@ -45,7 +45,7 @@ class AddWidgetCompatLauncherTest {
     }
 
     @Test
-    fun whenAutomaticWidgetAddIsSupportedThenDelegateToAppWidgetManagerAddWidgetLauncher() {
+    fun `launchAddWidget - automatic widget add supported - delegate to app widget manager`() {
         whenever(widgetCapabilities.supportsAutomaticWidgetAdd).thenReturn(true)
 
         testee.launchAddWidget(null)

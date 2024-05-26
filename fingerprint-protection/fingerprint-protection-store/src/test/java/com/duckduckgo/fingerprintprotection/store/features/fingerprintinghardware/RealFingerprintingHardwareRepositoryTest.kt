@@ -44,7 +44,7 @@ class RealFingerprintingHardwareRepositoryTest {
     }
 
     @Test
-    fun whenInitializedAndDoesNotHaveStoredValueThenLoadEmptyJsonToMemory() =
+    fun `RealFingerprintingHardwareRepository - no stored value - load empty JSON to memory`() =
         runTest {
             testee =
                 RealFingerprintingHardwareRepository(
@@ -59,7 +59,7 @@ class RealFingerprintingHardwareRepositoryTest {
         }
 
     @Test
-    fun whenInitializedAndHasStoredValueThenLoadStoredJsonToMemory() =
+    fun `RealFingerprintingHardwareRepository - initialized with stored value - load stored JSON to memory`() =
         runTest {
             whenever(mockFingerprintingHardwareDao.get()).thenReturn(fingerprintingHardwareEntity)
             testee =
@@ -75,7 +75,7 @@ class RealFingerprintingHardwareRepositoryTest {
         }
 
     @Test
-    fun whenUpdateAllThenUpdateAllCalled() =
+    fun `updateAll - updateAll called`() =
         runTest {
             testee =
                 RealFingerprintingHardwareRepository(

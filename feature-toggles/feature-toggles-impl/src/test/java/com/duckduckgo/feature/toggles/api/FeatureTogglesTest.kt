@@ -52,53 +52,53 @@ class FeatureTogglesTest {
     }
 
     @Test
-    fun whenDisableByDefaultThenReturnDisabled() {
+    fun `disableByDefault - return disabled`() {
         assertFalse(feature.disableByDefault().isEnabled())
     }
 
     @Test
-    fun whenDisableByDefaultAndSetEnabledThenReturnEnabled() {
+    fun `setEnabled - disable by default - return enabled`() {
         feature.disableByDefault().setEnabled(Toggle.State(enable = true))
         assertTrue(feature.disableByDefault().isEnabled())
     }
 
     @Test
-    fun whenEnabledByDefaultThenReturnEnabled() {
+    fun `enabledByDefault - return enabled`() {
         assertTrue(feature.enabledByDefault().isEnabled())
     }
 
     @Test
-    fun whenEnabledByDefaultAndSetDisabledThenReturnDisabled() {
+    fun `setEnabled - enabled by default - return disabled`() {
         feature.enabledByDefault().setEnabled(Toggle.State(enable = false))
         assertFalse(feature.enabledByDefault().isEnabled())
     }
 
     @Test(expected = IllegalStateException::class)
-    fun whenNoDefaultValueThenThrow() {
+    fun `noDefaultValue - throw`() {
         feature.noDefaultValue().isEnabled()
     }
 
     @Test(expected = IllegalArgumentException::class)
-    fun whenWrongReturnValueThenThrow() {
+    fun `wrongReturnValue - wrong return value - throw IllegalArgumentException`() {
         feature.wrongReturnValue()
     }
 
     @Test
-    fun whenNotAllowedMinVersionThenReturnDisabled() {
+    fun `enabledByDefault - min version not allowed - return disabled`() {
         provider.version = 10
         feature.enabledByDefault().setEnabled(Toggle.State(enable = true, minSupportedVersion = 11))
         assertFalse(feature.enabledByDefault().isEnabled())
     }
 
     @Test
-    fun whenAllowedMinVersionThenReturnDisabled() {
+    fun `enabledByDefault - allowed min version - return disabled`() {
         provider.version = 10
         feature.enabledByDefault().setEnabled(Toggle.State(enable = true, minSupportedVersion = 9))
         assertTrue(feature.enabledByDefault().isEnabled())
     }
 
     @Test
-    fun testInternalAlwaysEnabledAnnotation() {
+    fun `internal - always enabled annotation`() {
         assertFalse(feature.internal().isEnabled())
 
         provider.flavorName = BuildFlavor.PLAY.name
@@ -133,7 +133,7 @@ class FeatureTogglesTest {
     }
 
     @Test
-    fun testForcesDefaultVariantIfNullOnExperiment() {
+    fun `experimentDisabledByDefault - null variant - forces default`() {
         toggleStore.set(
             "test_forcesDefaultVariant",
             State(
@@ -146,38 +146,38 @@ class FeatureTogglesTest {
     }
 
     @Test
-    fun testForcesDefaultVariantOnExperiment() {
+    fun `experimentDisabledByDefault - forces default variant`() {
         assertNull(provider.variantKey)
         assertFalse(feature.experimentDisabledByDefault().isEnabled())
         assertEquals("", provider.variantKey)
     }
 
     @Test
-    fun testDoesNotForcesDefaultVariantOnFeatureFlag() {
+    fun `disableByDefault - does not force default variant`() {
         assertNull(provider.variantKey)
         assertFalse(feature.disableByDefault().isEnabled())
         assertNull(provider.variantKey)
     }
 
     @Test
-    fun testSkipForcesDefaultVariantWhenNotNull() {
+    fun `experimentDisabledByDefault - variant not null - forces default variant`() {
         provider.variantKey = "ma"
         assertFalse(feature.experimentDisabledByDefault().isEnabled())
         assertEquals("ma", provider.variantKey)
     }
 
     @Test(expected = java.lang.IllegalArgumentException::class)
-    fun whenMethodWithArgumentsThenThrow() {
+    fun `methodWithArguments - empty argument - throws IllegalArgumentException`() {
         feature.methodWithArguments("")
     }
 
     @Test(expected = java.lang.IllegalArgumentException::class)
-    fun whenSuspendFunctionThenThrow() = runTest {
+    fun `suspendFun - throws IllegalArgumentException`() = runTest {
         feature.suspendFun()
     }
 
     @Test(expected = IllegalArgumentException::class)
-    fun whenValidFeatureAndMissingFeatureNameBuilderParameterThenThrow() {
+    fun `create - missing feature name builder parameter - throws IllegalArgumentException`() {
         FeatureToggles.Builder()
             .store(FakeToggleStore())
             .appVersionProvider { provider.version }
@@ -187,7 +187,7 @@ class FeatureTogglesTest {
     }
 
     @Test(expected = IllegalArgumentException::class)
-    fun whenValidFeatureAndMissingStoreBuilderParameterThenThrow() {
+    fun `create - missing store builder parameter - throws IllegalArgumentException`() {
         FeatureToggles.Builder()
             .featureName("test")
             .appVersionProvider { provider.version }
@@ -197,7 +197,7 @@ class FeatureTogglesTest {
     }
 
     @Test
-    fun whenEnabledAndInvalidOrValidRolloutThenIsEnableReturnsTrue() {
+    fun `isEnabled - enabled and invalid or valid rollout - returns true`() {
         val state = Toggle.State(
             enable = true,
             rollout = null,
@@ -223,7 +223,7 @@ class FeatureTogglesTest {
     }
 
     @Test
-    fun whenEnabledAndValidRolloutThenReturnKeepRolloutStep() {
+    fun `setEnabled - valid rollout - return keep rollout step`() {
         val state = Toggle.State(
             enable = true,
             rollout = listOf(100.0),
@@ -236,7 +236,7 @@ class FeatureTogglesTest {
     }
 
     @Test
-    fun whenDisabledAndValidRolloutThenDetermineRolloutValue() {
+    fun `determineRolloutValue - disabled and valid rollout`() {
         val state = Toggle.State(
             enable = false,
             rollout = listOf(100.0),
@@ -250,7 +250,7 @@ class FeatureTogglesTest {
     }
 
     @Test
-    fun whenDisabledAndValidRolloutWithMultipleStepsThenDetermineRolloutValue() {
+    fun `determineRolloutValue - disabled and valid rollout with multiple steps`() {
         val state = Toggle.State(
             enable = false,
             rollout = listOf(1.0, 10.0, 20.0, 40.0, 100.0),
@@ -264,7 +264,7 @@ class FeatureTogglesTest {
     }
 
     @Test
-    fun whenIncrementalRolloutThresholdIsSetOnlyOnce() {
+    fun `setEnabled - incremental rollout threshold set only once`() {
         var state = Toggle.State(
             enable = false,
             rollout = listOf(0.0),
@@ -289,7 +289,7 @@ class FeatureTogglesTest {
     }
 
     @Test
-    fun whenDisabledWithPreviousStepsAndValidRolloutWithMultipleStepsThenDetermineRolloutValue() {
+    fun `setEnabled - valid rollout with multiple steps - determine rollout value`() {
         val state = Toggle.State(
             enable = false,
             rollout = listOf(1.0, 10.0, 20.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0),
@@ -303,7 +303,7 @@ class FeatureTogglesTest {
     }
 
     @Test
-    fun whenDisabledWithValidRolloutStepsAndNotSupportedVersionThenReturnDisabled() {
+    fun `isEnabled - valid rollout steps and not supported version - return disabled`() {
         provider.version = 10
         val state = Toggle.State(
             enable = false,
@@ -323,7 +323,7 @@ class FeatureTogglesTest {
     }
 
     @Test
-    fun whenRemoteEnableStateIsNullThenHonourLocalEnableStateAndUpdate() {
+    fun `setEnabled - remote enable state is null - honour local enable state and update`() {
         val state = Toggle.State(enable = false)
         feature.self().setEnabled(state)
 
@@ -336,7 +336,7 @@ class FeatureTogglesTest {
     }
 
     @Test
-    fun whenRemoteStateDisabledThenIgnoreLocalState() {
+    fun `setEnabled - remote state disabled - ignore local state`() {
         val state = Toggle.State(
             remoteEnableState = false,
             enable = true,
@@ -347,7 +347,7 @@ class FeatureTogglesTest {
     }
 
     @Test
-    fun whenRemoteStateDisabledAndValidRolloutThenIgnoreRollout() {
+    fun `setEnabled - remote state disabled and valid rollout - ignore rollout`() {
         val state = Toggle.State(
             remoteEnableState = false,
             enable = true,
@@ -360,7 +360,7 @@ class FeatureTogglesTest {
     }
 
     @Test
-    fun whenRemoteStateEnabledAndLocalStateEnabledWithValidRolloutThenIgnoreRollout() {
+    fun `setEnabled - remote and local state enabled with valid rollout - ignore rollout`() {
         val state = Toggle.State(
             remoteEnableState = true,
             enable = true,
@@ -374,7 +374,7 @@ class FeatureTogglesTest {
     }
 
     @Test
-    fun whenRemoteStateEnabledAndLocalStateDisabledWithValidRolloutThenDoRollout() {
+    fun `setEnabled - remote state enabled and local state disabled with valid rollout - do rollout`() {
         val state = Toggle.State(
             remoteEnableState = true,
             enable = false,
@@ -388,7 +388,7 @@ class FeatureTogglesTest {
     }
 
     @Test
-    fun whenAppUpdateThenEvaluatePreviousState() {
+    fun `evaluatePreviousState - app update`() {
         // when remoteEnableState is null it means app update
         val state = Toggle.State(
             remoteEnableState = null,
@@ -405,7 +405,7 @@ class FeatureTogglesTest {
     }
 
     @Test
-    fun whenNoMatchingVariantThenFeatureIsDisabled() {
+    fun `experimentDisabledByDefault - no matching variant - feature is disabled`() {
         val state = Toggle.State(
             remoteEnableState = null,
             enable = true,
@@ -422,7 +422,7 @@ class FeatureTogglesTest {
     }
 
     @Test
-    fun whenMatchingVariantThenReturnFeatureState() {
+    fun `experimentDisabledByDefault - matching variant - feature state enabled`() {
         provider.variantKey = "ma"
         val state = Toggle.State(
             remoteEnableState = null,
@@ -440,7 +440,7 @@ class FeatureTogglesTest {
     }
 
     @Test
-    fun testVariantsAreIgnoredInFeatureFlags() {
+    fun `featureFlags - variants ignored`() {
         provider.variantKey = "ma"
         val state = Toggle.State(
             remoteEnableState = null,
@@ -466,7 +466,7 @@ class FeatureTogglesTest {
     }
 
     @Test
-    fun whenMultipleNotMatchingVariantThenReturnFeatureState() {
+    fun `experimentDisabledByDefault - multiple not matching variant - feature state`() {
         provider.variantKey = "zz"
         val state = Toggle.State(
             remoteEnableState = null,
@@ -487,7 +487,7 @@ class FeatureTogglesTest {
     }
 
     @Test
-    fun whenAnyMatchingVariantThenReturnFeatureState() {
+    fun `disableByDefault - matching variant - feature state enabled`() {
         provider.variantKey = "zz"
         val state = Toggle.State(
             remoteEnableState = null,

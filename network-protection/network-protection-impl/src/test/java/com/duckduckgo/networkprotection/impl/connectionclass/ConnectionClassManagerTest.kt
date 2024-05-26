@@ -28,14 +28,14 @@ class ConnectionClassManagerTest {
     }
 
     @Test
-    fun addLatencyThenGetLatency() = runTest {
+    fun `addLatency - getLatency - correct average`() = runTest {
         connectionClassManager.addLatency(100.0)
 
         assertEquals(100.0, connectionClassManager.getLatencyAverage(), 0.1)
     }
 
     @Test
-    fun addLatencyThenGetConnectionQuality() = runTest {
+    fun `addLatency - various latencies - getConnectionQuality`() = runTest {
         connectionClassManager.addLatency(0.0)
         assertEquals(ConnectionQuality.UNKNOWN, connectionClassManager.getConnectionQuality())
         connectionClassManager.reset()
@@ -78,7 +78,7 @@ class ConnectionClassManagerTest {
     }
 
     @Test
-    fun addLatencyThenCalculateRunningAverage() = runTest {
+    fun `addLatency - calculate running average`() = runTest {
         val expected = ExponentialGeometricAverage()
 
         for (i in 0..2000 step 1) {

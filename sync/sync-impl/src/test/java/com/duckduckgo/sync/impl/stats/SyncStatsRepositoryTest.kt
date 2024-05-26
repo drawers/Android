@@ -50,7 +50,7 @@ class SyncStatsRepositoryTest {
     }
 
     @Test
-    fun whenNoAttemptsThenDailyStatsIsEmpty() {
+    fun `getYesterdayDailyStats - no attempts - daily stats is empty`() {
         whenever(syncStateRepository.attempts()).thenReturn(emptyList())
         whenever(syncApiErrorRepository.getErrorsByDate(any())).thenReturn(emptyList())
         whenever(syncOperationErrorRepository.getErrorsByDate(any())).thenReturn(emptyList())
@@ -63,7 +63,7 @@ class SyncStatsRepositoryTest {
     }
 
     @Test
-    fun whenOnlyPastAttemptsAndErrorsThenDailyStatsHasCorrectData() {
+    fun `getYesterdayDailyStats - only past attempts and errors - correct data`() {
         val lastSyncTimestamp = timestamp(Instant.now().minus(5, ChronoUnit.DAYS))
         val lastSync = SyncAttempt(timestamp = lastSyncTimestamp, state = SUCCESS)
         whenever(syncStateRepository.attempts()).thenReturn(listOf(lastSync))
@@ -78,7 +78,7 @@ class SyncStatsRepositoryTest {
     }
 
     @Test
-    fun whenOnlyYesterdayAttemptsThenDailyStatsHasCorrectData() {
+    fun `getYesterdayDailyStats - only yesterday attempts - correct data`() {
         val lastSyncTimestamp = timestamp(Instant.now().minus(1, ChronoUnit.DAYS))
         val lastSync = SyncAttempt(timestamp = lastSyncTimestamp, state = SUCCESS)
         whenever(syncStateRepository.attempts()).thenReturn(listOf(lastSync))
@@ -99,7 +99,7 @@ class SyncStatsRepositoryTest {
     }
 
     @Test
-    fun whenOnlyTodayAttemptsThenDailyStatsHasCorrectData() {
+    fun `getYesterdayDailyStats - only today attempts - correct data`() {
         val lastSyncTimestamp = timestamp(Instant.now().minus(5, ChronoUnit.MINUTES))
         val lastSync = SyncAttempt(timestamp = lastSyncTimestamp, state = SUCCESS)
         whenever(syncStateRepository.attempts()).thenReturn(listOf(lastSync))
@@ -115,7 +115,7 @@ class SyncStatsRepositoryTest {
     }
 
     @Test
-    fun whenOnlySuccessfulAttemptsThenDailyStatsHasCorrectData() {
+    fun `getYesterdayDailyStats - only successful attempts - correct data`() {
         val lastSyncTimestamp = timestamp(Instant.now().minus(1, ChronoUnit.DAYS))
         val lastSync = SyncAttempt(timestamp = lastSyncTimestamp, state = SUCCESS)
         whenever(syncStateRepository.attempts()).thenReturn(listOf(lastSync))
@@ -136,7 +136,7 @@ class SyncStatsRepositoryTest {
     }
 
     @Test
-    fun whenOnlyFailedAttemptsThenDailyStatsHasCorrectData() {
+    fun `getYesterdayDailyStats - only failed attempts - correct data`() {
         val lastSyncTimestamp = timestamp(Instant.now().minus(1, ChronoUnit.DAYS))
         val lastSync = SyncAttempt(timestamp = lastSyncTimestamp, state = FAIL)
 
@@ -152,7 +152,7 @@ class SyncStatsRepositoryTest {
     }
 
     @Test
-    fun whenFewAttemptsThenDailyStatsHasCorrectData() {
+    fun `getYesterdayDailyStats - few attempts - correct data`() {
         val lastSyncTimestamp = timestamp(Instant.now().minus(1, ChronoUnit.DAYS))
         val first = SyncAttempt(timestamp = lastSyncTimestamp, state = FAIL)
         val second = SyncAttempt(timestamp = lastSyncTimestamp, state = SUCCESS)

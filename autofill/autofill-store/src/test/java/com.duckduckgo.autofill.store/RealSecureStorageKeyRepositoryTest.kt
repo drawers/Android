@@ -39,70 +39,70 @@ class RealSecureStorageKeyRepositoryTest {
     }
 
     @Test
-    fun whenPasswordIsSetThenUpdateKeyForPasswordInKeyStore() {
+    fun `password - set - update key in keyStore`() {
         testee.password = testValue
 
         verify(keyStore).updateKey("KEY_GENERATED_PASSWORD", testValue)
     }
 
     @Test
-    fun whenGettingPasswordThenGetKeyForPasswordInKeyStore() {
+    fun `password - get key for password in key store`() {
         whenever(keyStore.getKey("KEY_GENERATED_PASSWORD")).thenReturn(testValue)
 
         assertEquals(testValue, testee.password)
     }
 
     @Test
-    fun whenL1KeyIsSetThenUpdateKeyForL1KeyInKeyStore() {
+    fun `l1Key - set - update key in keyStore`() {
         testee.l1Key = testValue
 
         verify(keyStore).updateKey("KEY_L1KEY", testValue)
     }
 
     @Test
-    fun whenGettingL1KeyThenGetKeyForL1KeyInKeyStore() {
+    fun `l1Key - get key for L1 key in key store`() {
         whenever(keyStore.getKey("KEY_L1KEY")).thenReturn(testValue)
 
         assertEquals(testValue, testee.l1Key)
     }
 
     @Test
-    fun whenPasswordSaltIsSetThenUpdateKeyForPasswordSaltInKeyStore() {
+    fun `passwordSalt - set - update key in keyStore`() {
         testee.passwordSalt = testValue
 
         verify(keyStore).updateKey("KEY_PASSWORD_SALT", testValue)
     }
 
     @Test
-    fun whenGettingPasswordSaltThenGetKeyForPasswordSaltKeyInKeyStore() {
+    fun `passwordSalt - get key for password salt key in key store`() {
         whenever(keyStore.getKey("KEY_PASSWORD_SALT")).thenReturn(testValue)
 
         assertEquals(testValue, testee.passwordSalt)
     }
 
     @Test
-    fun whenEncryptedL2KeyIsSetThenUpdateKeyForEncryptedL2KeyInKeyStore() {
+    fun `encryptedL2Key - set - update key in keyStore`() {
         testee.encryptedL2Key = testValue
 
         verify(keyStore).updateKey("KEY_ENCRYPTED_L2KEY", testValue)
     }
 
     @Test
-    fun whenGettingEncryptedL2KeyThenGetKeyForEncryptedL2KeyInKeyStore() {
+    fun `encryptedL2Key - get key from keystore`() {
         whenever(keyStore.getKey("KEY_ENCRYPTED_L2KEY")).thenReturn(testValue)
 
         assertEquals(testValue, testee.encryptedL2Key)
     }
 
     @Test
-    fun whenEncryptedL2KeyIVIsSetThenUpdateKeyForEncryptedL2KeyIVInKeyStore() {
+    fun `encryptedL2KeyIV - update key in keyStore`() {
         testee.encryptedL2KeyIV = testValue
 
         verify(keyStore).updateKey("KEY_ENCRYPTED_L2KEY_IV", testValue)
     }
 
     @Test
-    fun whenGettingEncryptedL2KeyIVThenGetKeyForEncryptedL2KeyIVInKeyStore() {
+    fun `encryptedL2KeyIV - get key from keystore`() {
         whenever(keyStore.getKey("KEY_ENCRYPTED_L2KEY_IV")).thenReturn(testValue)
 
         assertEquals(testValue, testee.encryptedL2KeyIV)

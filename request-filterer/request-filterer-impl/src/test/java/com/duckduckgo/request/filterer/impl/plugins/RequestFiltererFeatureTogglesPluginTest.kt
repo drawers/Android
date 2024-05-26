@@ -45,12 +45,12 @@ class RequestFiltererFeatureTogglesPluginTest {
     }
 
     @Test
-    fun whenIsEnabledAndFeatureIsNotRequestFiltererFeatureThenReturnNull() = runTest {
+    fun `isEnabled - feature is not request filterer - return null`() = runTest {
         assertNull(testee.isEnabled(NonRequestFiltererFeature().value, true))
     }
 
     @Test
-    fun whenIsEnabledAndFeatureIsRequestFiltererFeatureThenReturnTrueWhenEnabled() =
+    fun `isEnabled - request filterer feature enabled - return true`() =
         runTest {
             givenRequestFiltererFeatureIsEnabled()
 
@@ -60,7 +60,7 @@ class RequestFiltererFeatureTogglesPluginTest {
         }
 
     @Test
-    fun whenIsEnabledAndFeatureIsRequestFiltererFeatureThenReturnFalseWhenDisabled() =
+    fun `isEnabled - request filterer feature disabled - return false`() =
         runTest {
             givenRequestFiltererFeatureIsDisabled()
 
@@ -70,7 +70,7 @@ class RequestFiltererFeatureTogglesPluginTest {
         }
 
     @Test
-    fun whenIsEnabledAndFeatureIsRequestFiltererFeatureThenReturnDefaultValueIfFeatureDoesNotExist() =
+    fun `isEnabled - request filterer feature does not exist - return default value`() =
         runTest {
             val defaultValue = true
             givenRequestFiltererFeatureReturnsDefaultValue(defaultValue)
@@ -82,7 +82,7 @@ class RequestFiltererFeatureTogglesPluginTest {
         }
 
     @Test
-    fun whenIsEnabledAndFeatureIsRequestFiltererFeatureAndAppVersionEqualToMinSupportedVersionThenReturnTrueWhenEnabled() =
+    fun `isEnabled - request filterer feature enabled and app version equal to min supported version - return true`() =
         runTest {
             givenRequestFiltererFeatureIsEnabled()
             givenAppVersionIsEqualToMinSupportedVersion()
@@ -93,7 +93,7 @@ class RequestFiltererFeatureTogglesPluginTest {
         }
 
     @Test
-    fun whenIsEnabledAndFeatureIsRequestFiltererFeatureAndAppVersionIsGreaterThanMinSupportedVersionThenReturnTrueWhenEnabled() =
+    fun `isEnabled - request filterer feature enabled and app version greater than min supported - return true`() =
         runTest {
             givenRequestFiltererFeatureIsEnabled()
             givenAppVersionIsGreaterThanMinSupportedVersion()
@@ -104,7 +104,7 @@ class RequestFiltererFeatureTogglesPluginTest {
         }
 
     @Test
-    fun whenIsEnabledAndFeatureIsRequestFiltererFeatureAndAppVersionIsSmallerThanMinSupportedVersionThenReturnFalseWhenEnabled() =
+    fun `isEnabled - request filterer feature and app version smaller than min supported version - return false`() =
         runTest {
             givenRequestFiltererFeatureIsEnabled()
             givenAppVersionIsSmallerThanMinSupportedVersion()

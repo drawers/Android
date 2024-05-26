@@ -32,7 +32,7 @@ class ItrSettingViewModelTest {
     }
 
     @Test
-    fun whenOnItrThenCommandSent() = runTest {
+    fun `onItr - command sent`() = runTest {
         viewModel.commands().test {
             viewModel.onItr()
             assertTrue(awaitItem() is OpenItr)
@@ -41,13 +41,13 @@ class ItrSettingViewModelTest {
     }
 
     @Test
-    fun whenOnItrThenPixelSent() = runTest {
+    fun `onItr - pixel sent`() = runTest {
         viewModel.onItr()
         verify(pixelSender).reportAppSettingsIdtrClick()
     }
 
     @Test
-    fun whenOnResumeIfSubscriptionEmitViewState() = runTest {
+    fun `onCreate - subscription emit - viewState updated`() = runTest {
         whenever(subscriptions.getEntitlementStatus()).thenReturn(
             flowOf(
                 listOf(ITR),
@@ -62,7 +62,7 @@ class ItrSettingViewModelTest {
     }
 
     @Test
-    fun whenOnResumeIfNotSubscriptionEmitViewState() = runTest {
+    fun `onResume - not subscription - emit viewState`() = runTest {
         whenever(subscriptions.getEntitlementStatus()).thenReturn(flowOf(emptyList()))
 
         viewModel.onResume(mock())

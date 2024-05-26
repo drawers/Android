@@ -20,7 +20,7 @@ class ConnectionQualityStoreTest {
     }
 
     @Test
-    fun saveConnectionLatency() = runTest {
+    fun `saveConnectionLatency - connection latency saved`() = runTest {
         connectionQualityStore.saveConnectionLatency(100)
 
         assertEquals(100, connectionQualityStore.getConnectionLatency())

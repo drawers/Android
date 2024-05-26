@@ -76,7 +76,7 @@ class AppRemoteMessagingRepositoryTest {
     }
 
     @Test
-    fun whenAddMediumMessageThenMessageStored() = runTest {
+    fun `activeMessage - add medium message - message stored`() = runTest {
         testee.activeMessage(
             RemoteMessage(
                 id = "id",
@@ -111,7 +111,7 @@ class AppRemoteMessagingRepositoryTest {
     }
 
     @Test
-    fun whenAddSmallMessageThenMessageStored() = runTest {
+    fun `activeMessage - add small message - message stored`() = runTest {
         testee.activeMessage(
             RemoteMessage(
                 id = "id",
@@ -144,7 +144,7 @@ class AppRemoteMessagingRepositoryTest {
     }
 
     @Test
-    fun whenAddBigSingleActionMessageThenMessageStored() = runTest {
+    fun `activeMessage - add big single action message - message stored`() = runTest {
         testee.activeMessage(
             RemoteMessage(
                 id = "id",
@@ -183,7 +183,7 @@ class AppRemoteMessagingRepositoryTest {
     }
 
     @Test
-    fun whenAddBigTwoActionMessageThenMessageStored() = runTest {
+    fun `activeMessage - add BigTwoAction message - message stored`() = runTest {
         testee.activeMessage(
             RemoteMessage(
                 id = "id",
@@ -226,7 +226,7 @@ class AppRemoteMessagingRepositoryTest {
     }
 
     @Test
-    fun whenAddPromoSingleActionMessageThenMessageStored() = runTest {
+    fun `activeMessage - add promo single action message - message stored`() = runTest {
         testee.activeMessage(
             RemoteMessage(
                 id = "id",
@@ -265,7 +265,7 @@ class AppRemoteMessagingRepositoryTest {
     }
 
     @Test
-    fun whenDismissMessageThenUpdateState() = runTest {
+    fun `dismissMessage - update state`() = runTest {
         testee.activeMessage(
             RemoteMessage(
                 id = "id",
@@ -294,7 +294,7 @@ class AppRemoteMessagingRepositoryTest {
     }
 
     @Test
-    fun whenGetDismissedMessagesThenReturnDismissedMessageIds() = runTest {
+    fun `dismissedMessages - after dismissing message - return dismissed message ids`() = runTest {
         testee.activeMessage(
             RemoteMessage(
                 id = "id",
@@ -319,7 +319,7 @@ class AppRemoteMessagingRepositoryTest {
     }
 
     @Test
-    fun whenNewMessageAddedThenPreviousNonDismissedMessagesRemoved() = runTest {
+    fun `activeMessage - new message added - previous non-dismissed messages removed`() = runTest {
         dao.insert(
             RemoteMessageEntity(
                 id = "id",

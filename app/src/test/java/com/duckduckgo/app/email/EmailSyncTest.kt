@@ -21,7 +21,7 @@ class EmailSyncTest {
     private val testee = EmailSync(emailDataStoreMock, syncSettingsListenerMock, pixelMock)
 
     @Test
-    fun whenUserSignedInThenReturnAccountInfo() {
+    fun `getValue - user signed in - return account info`() {
         whenever(emailDataStoreMock.emailUsername).thenReturn("username")
         whenever(emailDataStoreMock.emailToken).thenReturn("token")
 
@@ -34,7 +34,7 @@ class EmailSyncTest {
     }
 
     @Test
-    fun whenUserSignedOutThenReturnNull() {
+    fun `getValue - user signed out - return null`() {
         whenever(emailDataStoreMock.emailUsername).thenReturn(null)
         whenever(emailDataStoreMock.emailToken).thenReturn(null)
 
@@ -44,7 +44,7 @@ class EmailSyncTest {
     }
 
     @Test
-    fun whenSaveValueThenStoreCredentials() {
+    fun `save - store credentials`() {
         testee.save("{\"username\":\"email\",\"personal_access_token\":\"token\"}")
 
         verify(emailDataStoreMock).emailUsername = "email"
@@ -52,7 +52,7 @@ class EmailSyncTest {
     }
 
     @Test
-    fun whenSaveNullThenLogoutUser() {
+    fun `save - null - logout user`() {
         testee.save(null)
 
         verify(emailDataStoreMock).emailUsername = ""
@@ -60,7 +60,7 @@ class EmailSyncTest {
     }
 
     @Test
-    fun whenDeduplicateRemoteAddressWithSameLocalAddressThenDoNothing() {
+    fun `deduplicate - same local address - do nothing`() {
         whenever(emailDataStoreMock.emailUsername).thenReturn("username")
         whenever(emailDataStoreMock.emailToken).thenReturn("token")
 
@@ -71,7 +71,7 @@ class EmailSyncTest {
     }
 
     @Test
-    fun whenDeduplicateRemoteAddressWithDifferentLocalAddressThenRemoteWins() {
+    fun `deduplicate - different local address - remote wins`() {
         whenever(emailDataStoreMock.emailUsername).thenReturn("username2")
         whenever(emailDataStoreMock.emailToken).thenReturn("token2")
 
@@ -82,7 +82,7 @@ class EmailSyncTest {
     }
 
     @Test
-    fun whenDeduplicateRemoteAddressWithDifferentLocalAddressThenPixelEvent() {
+    fun `deduplicate - different local address - pixel event`() {
         whenever(emailDataStoreMock.emailUsername).thenReturn("username2")
         whenever(emailDataStoreMock.emailToken).thenReturn("token2")
 
@@ -92,7 +92,7 @@ class EmailSyncTest {
     }
 
     @Test
-    fun whenDeduplicateRemoteAddressWithNoLocalAccountThenStoreRemote() {
+    fun `deduplicate - no local account - store remote`() {
         whenever(emailDataStoreMock.emailUsername).thenReturn(null)
         whenever(emailDataStoreMock.emailToken).thenReturn(null)
 
@@ -103,7 +103,7 @@ class EmailSyncTest {
     }
 
     @Test
-    fun whenDeduplicateNullAddresThenDoNothing() {
+    fun `deduplicate - null address - do nothing`() {
         whenever(emailDataStoreMock.emailUsername).thenReturn("username")
         whenever(emailDataStoreMock.emailToken).thenReturn("token")
 

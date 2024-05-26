@@ -96,7 +96,7 @@ class PrivacyDashboardHybridViewModelTest {
     }
 
     @Test
-    fun whenUserClicksOnReportBrokenSiteThenCommandEmitted() = runTest {
+    fun `onReportBrokenSiteSelected - command emitted`() = runTest {
         testee.onReportBrokenSiteSelected()
 
         testee.commands().test {
@@ -106,7 +106,7 @@ class PrivacyDashboardHybridViewModelTest {
     }
 
     @Test
-    fun whenSiteChangesThenViewStateUpdates() = runTest {
+    fun `onSiteChanged - viewState updates`() = runTest {
         testee.onSiteChanged(site())
 
         testee.viewState.test {
@@ -117,7 +117,7 @@ class PrivacyDashboardHybridViewModelTest {
     }
 
     @Test
-    fun whenOnPrivacyProtectionClickedThenUpdateViewState() = runTest {
+    fun `onPrivacyProtectionsClicked - update viewState`() = runTest {
         testee.onSiteChanged(site(siteAllowed = false))
         testee.onPrivacyProtectionsClicked(enabled = false)
 
@@ -131,7 +131,7 @@ class PrivacyDashboardHybridViewModelTest {
     }
 
     @Test
-    fun whenOnPrivacyProtectionClickedThenValueStoredInStore() = runTest {
+    fun `onPrivacyProtectionsClicked - value stored in store`() = runTest {
         val site = site(siteAllowed = false)
         testee.onSiteChanged(site)
 
@@ -144,7 +144,7 @@ class PrivacyDashboardHybridViewModelTest {
     }
 
     @Test
-    fun whenAllowlistIsChangedThenViewStateIsUpdated() = runTest {
+    fun `onSiteChanged - allowlist changed - viewState updated`() = runTest {
         val site = site(siteAllowed = false)
         testee.onSiteChanged(site)
 
@@ -156,7 +156,7 @@ class PrivacyDashboardHybridViewModelTest {
     }
 
     @Test
-    fun whenOnPrivacyProtectionClickedThenListenerIsNotified() = runTest {
+    fun `onPrivacyProtectionsClicked - listener notified`() = runTest {
         val site = site(siteAllowed = false)
         testee.onSiteChanged(site)
 
@@ -166,7 +166,7 @@ class PrivacyDashboardHybridViewModelTest {
     }
 
     @Test
-    fun whenPrivacyProtectionsPopupExperimentParamsArePresentThenTheyShouldBeIncludedInPixels() = runTest {
+    fun `onPrivacyProtectionsClicked - experiment params present - included in pixels`() = runTest {
         val params = mapOf("test_key" to "test_value")
         whenever(privacyProtectionsPopupExperimentExternalPixels.getPixelParams()).thenReturn(params)
         val site = site(siteAllowed = false)
@@ -184,7 +184,7 @@ class PrivacyDashboardHybridViewModelTest {
     }
 
     @Test
-    fun whenOnPrivacyProtectionClickedAndProtectionsEnabledAndOpenedFromCustomTabThenFireCustomTabSpecificPixel() = runTest {
+    fun `onPrivacyProtectionsClicked - protections enabled and opened from custom tab - fire custom tab specific pixel`() = runTest {
         val site = site(siteAllowed = false)
         testee.onSiteChanged(site)
         testee.onPrivacyProtectionsClicked(enabled = true, dashboardOpenedFromCustomTab = true)
@@ -193,7 +193,7 @@ class PrivacyDashboardHybridViewModelTest {
     }
 
     @Test
-    fun whenOnPrivacyProtectionClickedAndProtectionsDisabledAndOpenedFromCustomTabThenFireCustomTabSpecificPixel() = runTest {
+    fun `onPrivacyProtectionsClicked - protections disabled and opened from custom tab - fire custom tab specific pixel`() = runTest {
         val site = site(siteAllowed = false)
         testee.onSiteChanged(site)
         testee.onPrivacyProtectionsClicked(enabled = false, dashboardOpenedFromCustomTab = true)

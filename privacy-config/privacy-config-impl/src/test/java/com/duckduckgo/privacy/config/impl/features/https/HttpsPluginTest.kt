@@ -40,19 +40,19 @@ class HttpsPluginTest {
     }
 
     @Test
-    fun whenFeatureNameDoesNotMatchHttpsThenReturnFalse() {
+    fun `store - feature name does not match HTTPS - return false`() {
         PrivacyFeatureName.values().filter { it != FEATURE_NAME }.forEach {
             assertFalse(testee.store(it.value, EMPTY_JSON_STRING))
         }
     }
 
     @Test
-    fun whenFeatureNameMatchesHttpsThenReturnTrue() {
+    fun `store - feature name matches HTTPS - return true`() {
         assertTrue(testee.store(FEATURE_NAME_VALUE, EMPTY_JSON_STRING))
     }
 
     @Test
-    fun whenFeatureNameMatchesHttpsAndIsEnabledThenStoreFeatureEnabled() {
+    fun `store - feature name matches https and is enabled - store feature enabled`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/https.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -61,7 +61,7 @@ class HttpsPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesHttpsAndIsNotEnabledThenStoreFeatureDisabled() {
+    fun `store - feature name matches https and is not enabled - store feature disabled`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/https_disabled.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -70,7 +70,7 @@ class HttpsPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesHttpsAndHasMinSupportedVersionThenStoreMinSupportedVersion() {
+    fun `store - feature name matches https and has min supported version - store min supported version`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/https_min_supported_version.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -79,7 +79,7 @@ class HttpsPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesHttpsThenUpdateAllExistingExceptions() {
+    fun `store - feature name matches https - update all existing exceptions`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/https.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)

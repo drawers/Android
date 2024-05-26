@@ -63,7 +63,7 @@ class AppTrackerBlockingStatsRepositoryTest {
     }
 
     @Test
-    fun whenSingleTrackerEntryAddedButNoRelatedEntityThenReturnNoTracker() = runBlocking {
+    fun `getVpnTrackers - single tracker entry added but no related entity - no tracker`() = runBlocking {
         val trackerDomain = "example.com"
         addTrackerAndReturn(trackerDomain)
         val vpnTrackers = repository.getVpnTrackers({ dateOfPreviousMidnightAsString() }).firstOrNull()
@@ -71,7 +71,7 @@ class AppTrackerBlockingStatsRepositoryTest {
     }
 
     @Test
-    fun whenSingleTrackerEntryAddedForTodayBucketThenBlockerReturned() = runBlocking {
+    fun `getVpnTrackers - single tracker entry added for today bucket - blocker returned`() = runBlocking {
         val trackerDomain = "example.com"
         val entity = addTrackerAndReturn(trackerDomain).asEntity()
         db.vpnAppTrackerBlockingDao().insertTrackerEntities(listOf(entity))
@@ -81,7 +81,7 @@ class AppTrackerBlockingStatsRepositoryTest {
     }
 
     @Test
-    fun whenSameTrackerFoundMultipleTimesTodayThenAllInstancesOfBlockerReturned() = runBlocking {
+    fun `getVpnTrackers - same tracker found multiple times today - all instances returned`() = runBlocking {
         val trackerDomain = "example.com"
         addTrackerAndReturn(trackerDomain)
         val entity = addTrackerAndReturn(trackerDomain).asEntity()
@@ -92,19 +92,19 @@ class AppTrackerBlockingStatsRepositoryTest {
     }
 
     @Test
-    fun whenTrackerFoundBeforeTodayThenNotReturned() = runBlocking {
+    fun `getVpnTrackers - tracker found before today - not returned`() = runBlocking {
         trackerFoundYesterday()
         val vpnTrackers = repository.getVpnTrackers({ dateOfPreviousMidnightAsString() }).firstOrNull()
         assertNoTrackers(vpnTrackers)
     }
 
     @Test
-    fun whenContainsVpnTrackersAndDbTableEmptyThenReturnFalse() = runTest {
+    fun `containsVpnTrackers - db table empty - return false`() = runTest {
         assertFalse(repository.containsVpnTrackers())
     }
 
     @Test
-    fun whenContainsVpnTrackersAndDbTableNotEmptyThenReturnTrue() = runTest {
+    fun `containsVpnTrackers - db table not empty - return true`() = runTest {
         addTrackerAndReturn()
 
         assertTrue(repository.containsVpnTrackers())

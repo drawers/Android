@@ -37,13 +37,13 @@ class ElementHidingContentScopeConfigPluginTest {
     }
 
     @Test
-    fun whenGetConfigThenReturnCorrectlyFormattedJson() {
+    fun `config - return correctly formatted json`() {
         whenever(mockElementHidingRepository.elementHidingEntity).thenReturn(ElementHidingEntity(json = config))
         assertEquals("\"elementHiding\":$config", testee.config())
     }
 
     @Test
-    fun whenGetPreferencesThenReturnNull() {
+    fun `preferences - return null`() {
         assertNull(testee.preferences())
     }
 

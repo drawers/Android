@@ -59,7 +59,7 @@ class NotifyMeViewModelTest {
     }
 
     @Test
-    fun whenNotificationsNotAllowedAndDismissNotCalledAndViewIsNotDismissedThenViewIsVisible() = runTest {
+    fun `viewState - notifications not allowed and dismiss not called and view not dismissed - view is visible`() = runTest {
         setup(
             notificationsAllowed = false,
             dismissCalled = false,
@@ -73,7 +73,7 @@ class NotifyMeViewModelTest {
     }
 
     @Test
-    fun whenNotificationsNotAllowedAndDismissNotCalledAndViewIsDismissedThenViewIsNotVisible() = runTest {
+    fun `viewState - notifications not allowed and view dismissed - view is not visible`() = runTest {
         setup(
             notificationsAllowed = false,
             dismissCalled = false,
@@ -87,7 +87,7 @@ class NotifyMeViewModelTest {
     }
 
     @Test
-    fun whenNotificationsNotAllowedAndDismissCalledAndViewIsNotDismissedThenViewIsNotVisible() = runTest {
+    fun `viewState - notifications not allowed and dismiss called and view not dismissed - view not visible`() = runTest {
         setup(
             notificationsAllowed = false,
             dismissCalled = true,
@@ -101,7 +101,7 @@ class NotifyMeViewModelTest {
     }
 
     @Test
-    fun whenNotificationsNotAllowedAndDismissCalledAndViewIsDismissedThenViewIsNotVisible() = runTest {
+    fun `viewState - notifications not allowed and dismiss called and view dismissed - view is not visible`() = runTest {
         setup(
             notificationsAllowed = false,
             dismissCalled = true,
@@ -115,7 +115,7 @@ class NotifyMeViewModelTest {
     }
 
     @Test
-    fun whenNotificationsAllowedAndDismissNotCalledAndViewIsNotDismissedThenViewIsNotVisible() = runTest {
+    fun `viewState - notifications allowed and dismiss not called and view not dismissed - view not visible`() = runTest {
         setup(
             notificationsAllowed = true,
             dismissCalled = false,
@@ -129,7 +129,7 @@ class NotifyMeViewModelTest {
     }
 
     @Test
-    fun whenNotificationsAllowedAndDismissNotCalledAndViewIsDismissedThenViewIsNotVisible() = runTest {
+    fun `viewState - notifications allowed and view dismissed - view is not visible`() = runTest {
         setup(
             notificationsAllowed = true,
             dismissCalled = false,
@@ -143,7 +143,7 @@ class NotifyMeViewModelTest {
     }
 
     @Test
-    fun whenNotificationsAllowedAndDismissCalledAndViewIsNotDismissedThenViewIsNotVisible() = runTest {
+    fun `viewState - notifications allowed and dismiss called and view not dismissed - view not visible`() = runTest {
         setup(
             notificationsAllowed = true,
             dismissCalled = true,
@@ -171,7 +171,7 @@ class NotifyMeViewModelTest {
     }
 
     @Test
-    fun whenOnResumeCalledThenCheckPermissionsCommandIsSent() = runTest {
+    fun `onResume - check permissions command sent`() = runTest {
         testee.onResume(mockLifecycleOwner)
 
         testee.commands().test {
@@ -183,7 +183,7 @@ class NotifyMeViewModelTest {
     }
 
     @Test
-    fun whenOnNotifyMeButtonClickedOnAndroid13ThenCheckPermissionRationaleCommandIsSent() = runTest {
+    fun `onNotifyMeButtonClicked - Android 13 - check permission rationale command sent`() = runTest {
         whenever(mockAppBuildConfig.sdkInt).thenReturn(Build.VERSION_CODES.TIRAMISU)
         testee.onNotifyMeButtonClicked()
 
@@ -196,7 +196,7 @@ class NotifyMeViewModelTest {
     }
 
     @Test
-    fun whenOnNotifyMeButtonClickedOnAndroid8ThenOpenSettingsOnAndroid8PlusCommandIsSent() = runTest {
+    fun `onNotifyMeButtonClicked - Android 8 - open settings command sent`() = runTest {
         whenever(mockAppBuildConfig.sdkInt).thenReturn(Build.VERSION_CODES.O)
 
         testee.onNotifyMeButtonClicked()
@@ -210,7 +210,7 @@ class NotifyMeViewModelTest {
     }
 
     @Test
-    fun whenOnCloseButtonClickedThenCloseCommandIsSentAndSetDismissedIsCalled() = runTest {
+    fun `onCloseButtonClicked - close command sent and set dismissed called`() = runTest {
         testee.onCloseButtonClicked()
 
         testee.commands().test {
@@ -223,7 +223,7 @@ class NotifyMeViewModelTest {
     }
 
     @Test
-    fun whenHandleRequestPermissionRationaleWithShouldShowRationaleTrueThenShowPermissionRationaleIsSent() = runTest {
+    fun `handleRequestPermissionRationale - should show rationale true - show permission rationale sent`() = runTest {
         val shouldShowRationale = true
 
         testee.handleRequestPermissionRationale(shouldShowRationale)
@@ -237,7 +237,7 @@ class NotifyMeViewModelTest {
     }
 
     @Test
-    fun whenHandleRequestPermissionRationaleOnAndroid8WithShouldShowRationaleFalseThenOpenSettingsOnAndroid8PlusCommandIsSent() = runTest {
+    fun `handleRequestPermissionRationale - Android 8 with shouldShowRationale false - open settings command sent`() = runTest {
         whenever(mockAppBuildConfig.sdkInt).thenReturn(Build.VERSION_CODES.O)
         val shouldShowRationale = false
 
@@ -252,7 +252,7 @@ class NotifyMeViewModelTest {
     }
 
     @Test
-    fun whenOnResumeCalledForAndroid13PlusThenUpdateNotificationsStateOnAndroid13PlusCommandIsSent() = runTest {
+    fun `onResume - Android 13+ - update notifications state command sent`() = runTest {
         whenever(mockAppBuildConfig.sdkInt).thenReturn(Build.VERSION_CODES.TIRAMISU)
 
         testee.onResume(mockLifecycleOwner)
@@ -266,7 +266,7 @@ class NotifyMeViewModelTest {
     }
 
     @Test
-    fun whenOnResumeCalledForAndroid12OrBelowThenUpdateNotificationsStateCommandIsSent() = runTest {
+    fun `onResume - Android 12 or below - update notifications state command sent`() = runTest {
         whenever(mockAppBuildConfig.sdkInt).thenReturn(Build.VERSION_CODES.S)
 
         testee.onResume(mockLifecycleOwner)

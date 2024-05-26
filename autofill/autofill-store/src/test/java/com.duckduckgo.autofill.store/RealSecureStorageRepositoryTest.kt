@@ -70,12 +70,12 @@ class RealSecureStorageRepositoryTest {
     }
 
     @Test
-    fun whenRetrievingLoginCredentialByIdThenNullReturnedIfNotExists() = runTest {
+    fun `getWebsiteLoginCredentialsById - id not exists - null returned`() = runTest {
         assertNull(websiteLoginCredentialsDao.getWebsiteLoginCredentialsById(entity().id))
     }
 
     @Test
-    fun whenRetrievingLoginCredentialByIdThenReturnedIfExists() = runTest {
+    fun `getWebsiteLoginCredentialsForId - credential exists - returned`() = runTest {
         val testEntity = entity()
         websiteLoginCredentialsDao.insert(entity())
         val result = testee.getWebsiteLoginCredentialsForId(testEntity.id)
@@ -83,7 +83,7 @@ class RealSecureStorageRepositoryTest {
     }
 
     @Test
-    fun whenRetrievingLoginCredentialByDomainThenReturnedIfDirectMatch() = runTest {
+    fun `websiteLoginCredentialsForDomain - direct match - returned`() = runTest {
         val testEntity = entity()
         websiteLoginCredentialsDao.insert(testEntity)
         val result: List<WebsiteLoginCredentialsEntity> = testee.websiteLoginCredentialsForDomain("test.com").first()
@@ -91,7 +91,7 @@ class RealSecureStorageRepositoryTest {
     }
 
     @Test
-    fun whenRetrievingLoginCredentialByEmptyDomainThenReturnedIfDirectMatch() = runTest {
+    fun `websiteLoginCredentialsForDomain - empty domain - returned if direct match`() = runTest {
         val testEntity = entity().copy(domain = "")
         websiteLoginCredentialsDao.insert(testEntity)
         val result: List<WebsiteLoginCredentialsEntity> = testee.websiteLoginCredentialsForDomain("").first()
@@ -99,7 +99,7 @@ class RealSecureStorageRepositoryTest {
     }
 
     @Test
-    fun whenRetrievingLoginCredentialByNullDomainThenReturnedIfDirectMatch() = runTest {
+    fun `websiteLoginCredentialsForDomain - null domain - returned if direct match`() = runTest {
         val testEntity = entity().copy(domain = null)
         websiteLoginCredentialsDao.insert(testEntity)
         val result: List<WebsiteLoginCredentialsEntity> = testee.websiteLoginCredentialsForDomain("").first()
@@ -107,7 +107,7 @@ class RealSecureStorageRepositoryTest {
     }
 
     @Test
-    fun whenRetrievingLoginCredentialByDomainThenEmptyListReturnedIfNoMatches() = runTest {
+    fun `websiteLoginCredentialsForDomain - no matches - empty list returned`() = runTest {
         val testEntity = entity()
         websiteLoginCredentialsDao.insert(testEntity)
         val result: List<WebsiteLoginCredentialsEntity> = testee.websiteLoginCredentialsForDomain("no-matches.com").first()
@@ -115,13 +115,13 @@ class RealSecureStorageRepositoryTest {
     }
 
     @Test
-    fun whenGetAllWebsiteLoginCredentialsWithSitesThenEmptyListReturned() = runTest {
+    fun `websiteLoginCredentials - with sites - empty list returned`() = runTest {
         val result: List<WebsiteLoginCredentialsEntity> = testee.websiteLoginCredentials().first()
         assertTrue(result.isEmpty())
     }
 
     @Test
-    fun whenGetAllWebsiteLoginCredentialsWithASingleSiteThenThatOneIsReturned() = runTest {
+    fun `websiteLoginCredentials - single site - one returned`() = runTest {
         val testEntity = entity()
         websiteLoginCredentialsDao.insert(testEntity)
         val result: List<WebsiteLoginCredentialsEntity> = testee.websiteLoginCredentials().first()
@@ -129,7 +129,7 @@ class RealSecureStorageRepositoryTest {
     }
 
     @Test
-    fun whenGetAllWebsiteLoginCredentialsWithMultipleSitesThenThatAllReturned() = runTest {
+    fun `websiteLoginCredentials - multiple sites - all returned`() = runTest {
         val testEntity = entity()
         val anotherEntity = entity(id = testEntity.id + 1)
         websiteLoginCredentialsDao.insert(testEntity)
@@ -139,7 +139,7 @@ class RealSecureStorageRepositoryTest {
     }
 
     @Test
-    fun whenUpdateWebsiteLoginCredentialsThenCallUpdateToDao() = runTest {
+    fun `updateWebsiteLoginCredentials - call update to DAO`() = runTest {
         val testEntity = entity()
         websiteLoginCredentialsDao.insert(testEntity)
         testee.updateWebsiteLoginCredentials(testEntity.copy(username = "newUsername"))
@@ -149,7 +149,7 @@ class RealSecureStorageRepositoryTest {
     }
 
     @Test
-    fun whenDeleteWebsiteLoginCredentialsThenEntityRemoved() = runTest {
+    fun `deleteWebsiteLoginCredentials - entity removed`() = runTest {
         val testEntity = entity()
         websiteLoginCredentialsDao.insert(testEntity)
         testee.deleteWebsiteLoginCredentials(1)
@@ -158,7 +158,7 @@ class RealSecureStorageRepositoryTest {
     }
 
     @Test
-    fun whenNoSitesEverAddedToNeverSaveListThenCountIs0() = runTest {
+    fun `neverSaveListCount - no sites added - count is 0`() = runTest {
         testee.neverSaveListCount().test {
             assertEquals(0, awaitItem())
             cancelAndIgnoreRemainingEvents()
@@ -166,7 +166,7 @@ class RealSecureStorageRepositoryTest {
     }
 
     @Test
-    fun whenNeverSavedSiteAddedThenCountIncreases() = runTest {
+    fun `neverSaveListCount - never saved site added - count increases`() = runTest {
         testee.neverSaveListCount().test {
             assertEquals(0, awaitItem())
             neverSavedSitesDao.insert(NeverSavedSiteEntity(domain = "test.com"))
@@ -176,7 +176,7 @@ class RealSecureStorageRepositoryTest {
     }
 
     @Test
-    fun whenNeverSavedSiteAddedButExactDomainAlreadyInDbThenCountDoesNotIncrease() = runTest {
+    fun `neverSaveListCount - exact domain already in db - count does not increase`() = runTest {
         testee.neverSaveListCount().test {
             // starts at count = 0
             assertEquals(0, awaitItem())

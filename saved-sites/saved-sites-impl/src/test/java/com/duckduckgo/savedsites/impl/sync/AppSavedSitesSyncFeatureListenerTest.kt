@@ -54,12 +54,12 @@ class AppSavedSitesSyncFeatureListenerTest {
     )
 
     @Test
-    fun whenNoValuesThenIsSyncPausedIsFalse() {
+    fun `isSyncPaused - no values - false`() {
         assertFalse(savedSitesSyncStore.isSyncPaused)
     }
 
     @Test
-    fun whenSyncPausedAndOnSuccessWithChangesThenIsSyncPausedIsFalse() {
+    fun `onSuccess - sync paused with changes - isSyncPaused is false`() {
         savedSitesSyncStore.isSyncPaused = true
         val updatesJSON = FileUtilities.loadText(javaClass.classLoader!!, "json/merger_first_get.json")
         val validChanges = SyncChangesResponse(BOOKMARKS, updatesJSON)
@@ -70,7 +70,7 @@ class AppSavedSitesSyncFeatureListenerTest {
     }
 
     @Test
-    fun whenSyncPausedAndOnSuccessWithoutChangesThenSyncPaused() {
+    fun `onSuccess - sync paused without changes - sync paused`() {
         savedSitesSyncStore.isSyncPaused = true
         val validChanges = SyncChangesResponse.empty(BOOKMARKS)
 
@@ -80,7 +80,7 @@ class AppSavedSitesSyncFeatureListenerTest {
     }
 
     @Test
-    fun whenSyncPausedAndOnErrorThenSyncPaused() {
+    fun `onError - sync paused and collection limit reached - sync paused`() {
         savedSitesSyncStore.isSyncPaused = true
 
         testee.onError(FeatureSyncError.COLLECTION_LIMIT_REACHED)
@@ -89,7 +89,7 @@ class AppSavedSitesSyncFeatureListenerTest {
     }
 
     @Test
-    fun whenSyncActiveAndOnErrorThenSyncPaused() {
+    fun `onError - sync active - sync paused`() {
         savedSitesSyncStore.isSyncPaused = false
 
         testee.onError(FeatureSyncError.COLLECTION_LIMIT_REACHED)
@@ -98,7 +98,7 @@ class AppSavedSitesSyncFeatureListenerTest {
     }
 
     @Test
-    fun whenOnSyncDisabledThenSyncPausedFalse() {
+    fun `onSyncDisabled - sync paused - false`() {
         savedSitesSyncStore.isSyncPaused = true
 
         testee.onSyncDisabled()
