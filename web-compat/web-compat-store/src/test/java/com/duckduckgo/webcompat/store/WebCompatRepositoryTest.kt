@@ -42,7 +42,7 @@ class WebCompatRepositoryTest {
     }
 
     @Test
-    fun whenInitializedAndDoesNotHaveStoredValueThenLoadEmptyJsonToMemory() =
+    fun `getWebCompatEntity - initialized and no stored value - load empty json to memory`() =
         runTest {
             testee =
                 RealWebCompatRepository(
@@ -57,7 +57,7 @@ class WebCompatRepositoryTest {
         }
 
     @Test
-    fun whenInitializedAndHasStoredValueThenLoadStoredJsonToMemory() =
+    fun `getWebCompatEntity - initialized and has stored value - loads stored json to memory`() =
         runTest {
             whenever(mockWebCompatDao.get()).thenReturn(webCompatEntity)
             testee =
@@ -73,7 +73,7 @@ class WebCompatRepositoryTest {
         }
 
     @Test
-    fun whenUpdateAllThenUpdateAllCalled() =
+    fun `updateAll - update all called`() =
         runTest {
             testee =
                 RealWebCompatRepository(

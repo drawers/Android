@@ -72,7 +72,7 @@ class DownloadsViewModelTest {
     }
 
     @Test
-    fun whenNoDownloadsAndVisibilityChangedCalledWithValueFalseThenViewStateEmittedWithEmptyItem() = runTest {
+    fun `onItemVisibilityChanged - view state emitted with empty item`() = runTest {
         val visible = false
         val list = emptyList<DownloadItem>()
         whenever(mockDownloadsRepository.getDownloadsAsFlow()).thenReturn(flowOf(list))
@@ -86,7 +86,7 @@ class DownloadsViewModelTest {
     }
 
     @Test
-    fun whenNoDownloadsAndVisibilityChangedCalledWithValueTrueThenViewStateEmittedWithNotifyMeAndEmptyItems() = runTest {
+    fun `onItemVisibilityChanged - view state emitted with notify me and empty items`() = runTest {
         val visible = true
         val list = emptyList<DownloadItem>()
         whenever(mockDownloadsRepository.getDownloadsAsFlow()).thenReturn(flowOf(list))
@@ -101,7 +101,7 @@ class DownloadsViewModelTest {
     }
 
     @Test
-    fun whenOneDownloadAndVisibilityChangedCalledWithValueFalseThenViewStateEmittedWithHeaderAndOneItem() = runTest {
+    fun `onItemVisibilityChanged - value false - view state emitted with header and one item`() = runTest {
         val visible = false
         val list = listOf(oneItem())
         whenever(mockDownloadsRepository.getDownloadsAsFlow()).thenReturn(flowOf(list))
@@ -117,7 +117,7 @@ class DownloadsViewModelTest {
     }
 
     @Test
-    fun whenOneDownloadAndVisibilityChangedCalledWithValueTrueThenViewStateEmittedWithNotifyMeAndHeaderAndOneItem() = runTest {
+    fun `onItemVisibilityChanged - value true - view state emitted with notify me and header and one item`() = runTest {
         val visible = true
         val list = listOf(oneItem())
         whenever(mockDownloadsRepository.getDownloadsAsFlow()).thenReturn(flowOf(list))
@@ -134,7 +134,7 @@ class DownloadsViewModelTest {
     }
 
     @Test
-    fun whenMultipleDownloadsAndVisibilityChangedCalledWithValueFalseThenViewStateEmittedWithMultipleItemsAndHeaders() = runTest {
+    fun `onItemVisibilityChanged - viewState emitted with multiple items and headers`() = runTest {
         val visible = false
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
         val today = LocalDateTime.parse(TODAY, formatter)
@@ -198,7 +198,7 @@ class DownloadsViewModelTest {
     }
 
     @Test
-    fun whenDeleteAllCalledThenRepositoryDeleteAllCalledAndMessageCommandSent() = runTest {
+    fun `deleteAll - repository delete all called and message command sent`() = runTest {
         val itemsToDelete = listOf(oneItem())
         whenever(mockDownloadsRepository.getDownloads()).thenReturn(itemsToDelete)
 
@@ -214,7 +214,7 @@ class DownloadsViewModelTest {
     }
 
     @Test
-    fun whenDeleteCalledThenRepositoryDeleteCalledAndMessageCommandSent() = runTest {
+    fun `delete - repository delete called and message command sent`() = runTest {
         val item = oneItem()
 
         testee.delete(item)
@@ -229,7 +229,7 @@ class DownloadsViewModelTest {
     }
 
     @Test
-    fun whenInsertCalledThenRepositoryInsertAllCalled() = runTest {
+    fun `insert - repository insert all called`() = runTest {
         val firstItem = oneItem()
         val secondItem = otherItem()
 
@@ -239,7 +239,7 @@ class DownloadsViewModelTest {
     }
 
     @Test
-    fun whenOnQueryTextChangeThenViewStateEmittedWithTwoFilteredItems() = runTest {
+    fun `onQueryTextChange - view state emitted with two filtered items`() = runTest {
         val list = listOf(oneItem(), otherItem())
         whenever(mockDownloadsRepository.getDownloadsAsFlow()).thenReturn(flowOf(list))
         testee.onItemVisibilityChanged(false)
@@ -257,7 +257,7 @@ class DownloadsViewModelTest {
     }
 
     @Test
-    fun whenOnQueryTextChangeThenViewStateEmittedWithZeroFilteredItems() = runTest {
+    fun `onQueryTextChange - view state emitted with zero filtered items`() = runTest {
         val list = listOf(oneItem(), otherItem())
         whenever(mockDownloadsRepository.getDownloadsAsFlow()).thenReturn(flowOf(list))
         testee.onItemVisibilityChanged(false)
@@ -273,7 +273,7 @@ class DownloadsViewModelTest {
     }
 
     @Test
-    fun whenItemClickedThenOpenFileCommandSent() = runTest {
+    fun `onItemClicked - open file command sent`() = runTest {
         val item = oneItem()
 
         testee.onItemClicked(item)
@@ -287,7 +287,7 @@ class DownloadsViewModelTest {
     }
 
     @Test
-    fun whenItemShareClickedThenShareFileCommandSent() = runTest {
+    fun `onShareItemClicked - share file command sent`() = runTest {
         val item = oneItem()
 
         testee.onShareItemClicked(item)
@@ -301,7 +301,7 @@ class DownloadsViewModelTest {
     }
 
     @Test
-    fun whenDeleteItemClickedThenItemDeletedAndMessageCommandSent() = runTest {
+    fun `onDeleteItemClicked - item deleted and message command sent`() = runTest {
         val item = oneItem()
 
         testee.onDeleteItemClicked(item)
@@ -320,7 +320,7 @@ class DownloadsViewModelTest {
     }
 
     @Test
-    fun whenCancelItemClickedThenItemDeletedAndCancelDownloadCommandSent() = runTest {
+    fun `onCancelItemClicked - item deleted and cancel download command sent`() = runTest {
         val item = oneItem()
 
         testee.onCancelItemClicked(item)
@@ -335,7 +335,7 @@ class DownloadsViewModelTest {
     }
 
     @Test
-    fun whenRemoveFromDownloadManagerThenRemoveIt() = runTest {
+    fun `removeFromDownloadManager - remove from downloads repository`() = runTest {
         val downloadId = 1L
 
         testee.removeFromDownloadManager(downloadId)

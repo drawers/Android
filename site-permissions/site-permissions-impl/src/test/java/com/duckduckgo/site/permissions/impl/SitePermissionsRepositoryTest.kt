@@ -63,7 +63,7 @@ class SitePermissionsRepositoryTest {
     private val domain = "domain.com"
 
     @Test
-    fun givenPermissionNotSupportedThenDomainIsNotAllowedToAsk() {
+    fun `givenPermissionNotSupported - domain is not allowed to ask`() {
         setInitialSettings()
         val permission = PermissionRequest.RESOURCE_MIDI_SYSEX
 
@@ -71,7 +71,7 @@ class SitePermissionsRepositoryTest {
     }
 
     @Test
-    fun givenPermissionSupportedThenDomainIsAllowedToAsk() {
+    fun `givenPermissionSupported - domain allowed to ask`() {
         setInitialSettings()
         val permission = PermissionRequest.RESOURCE_AUDIO_CAPTURE
 
@@ -79,7 +79,7 @@ class SitePermissionsRepositoryTest {
     }
 
     @Test
-    fun whenAskForPermissionIsDisabledThenDomainIsNotAllowedToAsk() {
+    fun `askForPermission - is disabled - domain not allowed to ask`() {
         setInitialSettings(cameraEnabled = false)
         val permission = PermissionRequest.RESOURCE_VIDEO_CAPTURE
 
@@ -87,7 +87,7 @@ class SitePermissionsRepositoryTest {
     }
 
     @Test
-    fun whenAskForPermissionDisabledButSitePermissionSettingIsAlwaysAllowThenIsAllowedToAsk() {
+    fun `isDomainAllowedToAsk - ask for permission disabled but site permission setting is always allow`() {
         val testEntity = SitePermissionsEntity(domain, askMicSetting = SitePermissionAskSettingType.ALLOW_ALWAYS.name)
         setInitialSettings(micEnabled = false, sitePermissionEntity = testEntity)
         val permission = PermissionRequest.RESOURCE_AUDIO_CAPTURE
@@ -96,7 +96,7 @@ class SitePermissionsRepositoryTest {
     }
 
     @Test
-    fun whenSitePermissionSettingIsDenyAlwaysThenDomainIsNotAllowedToAsk() {
+    fun `isDomainAllowedToAsk - site permission setting is deny always`() {
         val testEntity = SitePermissionsEntity(domain, askCameraSetting = SitePermissionAskSettingType.DENY_ALWAYS.name)
         setInitialSettings(sitePermissionEntity = testEntity)
         val permission = PermissionRequest.RESOURCE_VIDEO_CAPTURE
@@ -105,7 +105,7 @@ class SitePermissionsRepositoryTest {
     }
 
     @Test
-    fun whenNoSitePermissionSettingAndDrmBlockedThenDomainIsNotAllowedToAsk() {
+    fun `isDomainAllowedToAsk - no site permission setting and drm blocked - domain not allowed to ask`() {
         val permission = PermissionRequest.RESOURCE_PROTECTED_MEDIA_ID
 
         whenever(mockDrmBlock.isDrmBlockedForUrl(url)).thenReturn(true)
@@ -114,7 +114,7 @@ class SitePermissionsRepositoryTest {
     }
 
     @Test
-    fun whenSitePermissionSettingIsAskAndDrmBlockedThenDomainIsAllowedToAsk() {
+    fun `isDomainAllowedToAsk - site permission setting ask and drm blocked - allowed to ask`() {
         val testEntity = SitePermissionsEntity(domain, askDrmSetting = SitePermissionAskSettingType.ASK_EVERY_TIME.name)
         setInitialSettings(sitePermissionEntity = testEntity)
         val permission = PermissionRequest.RESOURCE_PROTECTED_MEDIA_ID
@@ -125,7 +125,7 @@ class SitePermissionsRepositoryTest {
     }
 
     @Test
-    fun whenSitePermissionsWasGrantedWithin24hThenReturnPermissionGranted() {
+    fun `isDomainGranted - site permissions granted within 24h - permission granted`() {
         setInitialSettings()
         val permission = PermissionRequest.RESOURCE_VIDEO_CAPTURE
         val tabId = "tabId"
@@ -136,7 +136,7 @@ class SitePermissionsRepositoryTest {
     }
 
     @Test
-    fun whenSitePermissionsWasMoreThen24hAgoThenReturnPermissionNotGranted() {
+    fun `getSitePermission - site permissions was more than 24 hours ago - return permission not granted`() {
         setInitialSettings()
         val permission = PermissionRequest.RESOURCE_VIDEO_CAPTURE
         val tabId = "tabId"
@@ -147,7 +147,7 @@ class SitePermissionsRepositoryTest {
     }
 
     @Test
-    fun whenSitePermissionsSettingIsAllowAlwaysThenReturnPermissionGranted() {
+    fun `getSitePermission - site permissions setting allow always - permission granted`() {
         val testEntity = SitePermissionsEntity(domain, askCameraSetting = SitePermissionAskSettingType.ALLOW_ALWAYS.name)
         setInitialSettings(sitePermissionEntity = testEntity)
         val permission = PermissionRequest.RESOURCE_VIDEO_CAPTURE
@@ -158,7 +158,7 @@ class SitePermissionsRepositoryTest {
     }
 
     @Test
-    fun whenUserGrantsSitePermissionFirstTimeThenSaveEntity() = runTest {
+    fun `whenUserGrantsSitePermissionFirstTime - save entity`() = runTest {
         val testEntity = SitePermissionsEntity(domain)
         setInitialSettings()
         repository.sitePermissionGranted(url, "tabId", PermissionRequest.RESOURCE_VIDEO_CAPTURE)
@@ -167,7 +167,7 @@ class SitePermissionsRepositoryTest {
     }
 
     @Test
-    fun whenUserGrantsSitePermissionAlreadyInDbThenSkipSaveEntity() = runTest {
+    fun `whenUserGrantsSitePermissionAlreadyInDb - skip save entity`() = runTest {
         val testEntity = SitePermissionsEntity(domain)
         setInitialSettings(sitePermissionEntity = testEntity)
         repository.sitePermissionGranted(url, "tabId", PermissionRequest.RESOURCE_VIDEO_CAPTURE)
@@ -176,7 +176,7 @@ class SitePermissionsRepositoryTest {
     }
 
     @Test
-    fun whenUserGrantsSitePermissionThenSaveAllowedEntity() = runTest {
+    fun `whenUserGrantsSitePermission - save allowed entity`() = runTest {
         setInitialSettings()
         repository.sitePermissionGranted(url, "tabId", PermissionRequest.RESOURCE_VIDEO_CAPTURE)
 
@@ -184,28 +184,28 @@ class SitePermissionsRepositoryTest {
     }
 
     @Test
-    fun whenSitePermissionsWebsitesFlowIsCalledThenGetSitePermissionsWebsitesFlow() = runTest {
+    fun `sitePermissionsWebsitesFlow - get site permissions websites flow`() = runTest {
         repository.sitePermissionsWebsitesFlow()
 
         verify(mockSitePermissionsDao).getAllSitesPermissionsAsFlow()
     }
 
     @Test
-    fun whenSitePermissionsForAllWebsitesIsCalledThenGetSitePermissionsForAllWebsites() = runTest {
+    fun `sitePermissionsForAllWebsites - get site permissions for all websites`() = runTest {
         repository.sitePermissionsForAllWebsites()
 
         verify(mockSitePermissionsDao).getAllSitesPermissions()
     }
 
     @Test
-    fun whenSitePermissionsAllowedFlowIsCalledThenGetSitePermissionsAllowedFlow() = runTest {
+    fun `sitePermissionsAllowedFlow - get site permissions allowed flow`() = runTest {
         repository.sitePermissionsAllowedFlow()
 
         verify(mockSitePermissionsAllowedDao).getAllSitesPermissionsAllowedAsFlow()
     }
 
     @Test
-    fun whenUndoDeleteAllThenInsertSitePermissionsBackToAllowedDao() = runTest {
+    fun `undoDeleteAll - site permissions back to allowed dao`() = runTest {
         val tabId = "tabId"
         val permission = PermissionRequest.RESOURCE_AUDIO_CAPTURE
         val testAllowedEntity = SitePermissionAllowedEntity(domain, tabId, permission, setAllowedAtTime(12))
@@ -217,7 +217,7 @@ class SitePermissionsRepositoryTest {
     }
 
     @Test
-    fun whenUndoDeleteAllThenInsertSitePermissionsBackToSitePermissionsDao() = runTest {
+    fun `undoDeleteAll - site permissions dao inserted`() = runTest {
         val testEntity = SitePermissionsEntity(domain)
         val sitePermissions = listOf(testEntity)
 
@@ -227,7 +227,7 @@ class SitePermissionsRepositoryTest {
     }
 
     @Test
-    fun whenDeleteAllThenDeleteEntitiesFromDatabases() = runTest {
+    fun `deleteAll - delete entities from databases`() = runTest {
         repository.deleteAll()
 
         verify(mockSitePermissionsDao).deleteAll()
@@ -235,14 +235,14 @@ class SitePermissionsRepositoryTest {
     }
 
     @Test
-    fun whenGetSitePermissionsForWebsiteCalledThenGetSitePermissionsByDomain() = runTest {
+    fun `getSitePermissionsForWebsite - get site permissions by domain`() = runTest {
         repository.getSitePermissionsForWebsite(url)
 
         verify(mockSitePermissionsDao).getSitePermissionsByDomain(domain)
     }
 
     @Test
-    fun whenDeletePermissionForSiteThenDeleteItFromDbs() = runTest {
+    fun `deletePermissionForSite - delete from dbs`() = runTest {
         val testEntity = SitePermissionsEntity(domain)
         whenever(mockSitePermissionsDao.getSitePermissionsByDomain(domain)).thenReturn(testEntity)
         repository.deletePermissionsForSite(url)
@@ -252,7 +252,7 @@ class SitePermissionsRepositoryTest {
     }
 
     @Test
-    fun whenSavePermissionCalledThenInsertEntityInDb() = runTest {
+    fun `savePermission - insert entity in db`() = runTest {
         val testEntity = SitePermissionsEntity(domain)
         repository.savePermission(testEntity)
 

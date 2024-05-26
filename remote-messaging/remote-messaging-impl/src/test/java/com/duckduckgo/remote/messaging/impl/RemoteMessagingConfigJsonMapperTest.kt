@@ -51,7 +51,7 @@ class RemoteMessagingConfigJsonMapperTest {
     }
 
     @Test
-    fun whenValidJsonParsedThenMessagesMappedIntoRemoteConfig() = runTest {
+    fun `mapConfigFromJson - valid json parsed - messages mapped into remote config`() = runTest {
         val result = getConfigFromJson("json/remote_messaging_config.json")
 
         val testee = RemoteMessagingConfigJsonMapper(appBuildConfig, jsonMatchingAttributeMappers, messageActionPlugins)
@@ -118,7 +118,7 @@ class RemoteMessagingConfigJsonMapperTest {
     }
 
     @Test
-    fun whenValidJsonParsedThenRulesMappedIntoRemoteConfig() = runTest {
+    fun `whenValidJsonParsedThenRulesMappedIntoRemoteConfig - remote config rules mapped`() = runTest {
         val result = getConfigFromJson("json/remote_messaging_config.json")
 
         val testee = RemoteMessagingConfigJsonMapper(appBuildConfig, jsonMatchingAttributeMappers, messageActionPlugins)
@@ -148,7 +148,7 @@ class RemoteMessagingConfigJsonMapperTest {
     }
 
     @Test
-    fun whenJsonMessagesHaveUnknownTypesThenMessagesNotMappedIntoConfig() = runTest {
+    fun `map - json messages have unknown types - not mapped into config`() = runTest {
         val result = getConfigFromJson("json/remote_messaging_config_unsupported_items.json")
 
         val testee = RemoteMessagingConfigJsonMapper(appBuildConfig, jsonMatchingAttributeMappers, messageActionPlugins)
@@ -159,7 +159,7 @@ class RemoteMessagingConfigJsonMapperTest {
     }
 
     @Test
-    fun whenJsonMessagesHaveUnknownTypesThenRulesMappedIntoConfig() = runTest {
+    fun `map - json messages have unknown types - rules mapped into config`() = runTest {
         val result = getConfigFromJson("json/remote_messaging_config_unsupported_items.json")
 
         val testee = RemoteMessagingConfigJsonMapper(appBuildConfig, jsonMatchingAttributeMappers, messageActionPlugins)
@@ -176,7 +176,7 @@ class RemoteMessagingConfigJsonMapperTest {
     }
 
     @Test
-    fun whenJsonMessagesMalformedOrMissingInformationThenMessagesNotParsedIntoConfig() = runTest {
+    fun `getConfigFromJson - json messages malformed or missing information - not parsed into config`() = runTest {
         val result = getConfigFromJson("json/remote_messaging_config_malformed.json")
 
         val testee = RemoteMessagingConfigJsonMapper(appBuildConfig, jsonMatchingAttributeMappers, messageActionPlugins)
@@ -197,7 +197,7 @@ class RemoteMessagingConfigJsonMapperTest {
     }
 
     @Test
-    fun whenJsonMatchingAttributesMalformedThenParsedAsUnknownIntoConfig() = runTest {
+    fun `map - json matching attributes malformed - parsed as unknown into config`() = runTest {
         val result = getConfigFromJson("json/remote_messaging_config_malformed.json")
 
         val testee = RemoteMessagingConfigJsonMapper(appBuildConfig, jsonMatchingAttributeMappers, messageActionPlugins)
@@ -212,7 +212,7 @@ class RemoteMessagingConfigJsonMapperTest {
     }
 
     @Test
-    fun whenUnknownMatchingAttributeDoesNotProvideFallbackThenFallbackIsNull() = runTest {
+    fun `getConfigFromJson - unknown matching attribute does not provide fallback - fallback is null`() = runTest {
         val result = getConfigFromJson("json/remote_messaging_config_malformed.json")
 
         val testee = RemoteMessagingConfigJsonMapper(appBuildConfig, jsonMatchingAttributeMappers, messageActionPlugins)

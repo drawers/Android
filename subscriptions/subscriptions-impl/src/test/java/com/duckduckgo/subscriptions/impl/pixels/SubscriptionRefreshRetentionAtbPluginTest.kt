@@ -27,7 +27,7 @@ class SubscriptionRefreshRetentionAtbPluginTest {
     )
 
     @Test
-    fun `when subscription is active then pixel is sent`() = runTest {
+    fun `onAppRetentionAtbRefreshed - subscription active - pixel sent`() = runTest {
         whenever(subscriptionsManager.subscriptionStatus()).thenReturn(AUTO_RENEWABLE)
 
         subject.onAppRetentionAtbRefreshed()
@@ -36,7 +36,7 @@ class SubscriptionRefreshRetentionAtbPluginTest {
     }
 
     @Test
-    fun `when subscription is not active then pixel is not sent`() = runTest {
+    fun `onAppRetentionAtbRefreshed - subscription not active - pixel not sent`() = runTest {
         whenever(subscriptionsManager.subscriptionStatus()).thenReturn(EXPIRED)
 
         subject.onAppRetentionAtbRefreshed()

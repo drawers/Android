@@ -45,7 +45,7 @@ internal class WindowsViewModelTest {
     }
 
     @Test
-    fun whenOnShareClickedThenEmitShareLinkCommand() = runTest {
+    fun `onShareClicked - emit share link command`() = runTest {
         testee.commands.test {
             testee.onShareClicked()
             assertEquals(ShareLink, awaitItem())
@@ -53,7 +53,7 @@ internal class WindowsViewModelTest {
     }
 
     @Test
-    fun whenOnGoToMacClickedThenEmitGoToMacClientSettingsCommand() = runTest {
+    fun `onGoToMacClicked - emit GoToMacClientSettings command`() = runTest {
         testee.commands.test {
             testee.onGoToMacClicked()
             assertEquals(GoToMacClientSettings, awaitItem())

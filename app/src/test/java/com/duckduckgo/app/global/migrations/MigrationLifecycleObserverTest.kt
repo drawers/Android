@@ -41,7 +41,7 @@ class MigrationLifecycleObserverTest {
     }
 
     @Test
-    fun whenMigrateIfStoredVersionIsLowerThanCurrentThenRunMigrations() {
+    fun `onCreate - migrate if stored version is lower than current - run migrations`() {
         whenever(mockMigrationStore.version).thenReturn(CURRENT_VERSION - 1)
 
         testee.onCreate(mockOwner)
@@ -51,7 +51,7 @@ class MigrationLifecycleObserverTest {
     }
 
     @Test
-    fun whenMigrateIfStoredVersionIsLowerThanCurrentThenStoreCurrentVersion() {
+    fun `migrateIfStoredVersionIsLowerThanCurrent - store current version`() {
         whenever(mockMigrationStore.version).thenReturn(CURRENT_VERSION - 1)
 
         testee.onCreate(mockOwner)
@@ -60,7 +60,7 @@ class MigrationLifecycleObserverTest {
     }
 
     @Test
-    fun whenMigrateIfStoredVersionIsHigherThanCurrentThenDoNotRunMigrations() {
+    fun `onCreate - migrate if stored version is higher than current - do not run migrations`() {
         whenever(mockMigrationStore.version).thenReturn(CURRENT_VERSION + 1)
 
         testee.onCreate(mockOwner)
@@ -70,7 +70,7 @@ class MigrationLifecycleObserverTest {
     }
 
     @Test
-    fun whenMigrateIfStoredVersionIsEqualsThanCurrentThenDoNotRunMigrations() {
+    fun `onCreate - stored version equals current - do not run migrations`() {
         whenever(mockMigrationStore.version).thenReturn(CURRENT_VERSION)
 
         testee.onCreate(mockOwner)

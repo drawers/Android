@@ -164,7 +164,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenFolderMetadataNotPresentThenAllChildrenInCurrentAndInsertField() = runTest {
+    fun `getFolderDiff - no metadata present - all children in current and insert field`() = runTest {
         givenSomeContentIn(folderId = folder.id, children = 5, saveMetadata = false)
 
         val folderChildren = repository.getFolderDiff(folder.id)
@@ -174,7 +174,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenFolderMetadataNotPresentThenDeletedChildrenNotPresentInDeletedField() = runTest {
+    fun `whenFolderMetadataNotPresentThenDeletedChildrenNotPresentInDeletedField - folder children updated`() = runTest {
         val entities = BookmarkTestUtils.givenSomeBookmarks(5)
         savedSitesEntitiesDao.insertList(entities)
 
@@ -195,7 +195,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenFolderMetadataPresentAndSameContentThenAllChildrenInCurrentAndInsertEmpty() = runTest {
+    fun `getFolderDiff - folder metadata present and same content - all children in current and insert empty`() = runTest {
         givenSomeContentIn(folderId = folder.id, children = 5, saveMetadata = true, metadataRequest = false)
 
         val folderChildren = repository.getFolderDiff(folder.id)
@@ -205,7 +205,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenFolderMetadataPresentAndLocalContentHasItemAddedThenFolderDiffContainsInsertedItem() = runTest {
+    fun `whenFolderMetadataPresentAndLocalContentHasItemAddedThenFolderDiffContainsInsertedItem - folder diff contains inserted item`() = runTest {
         val entities = BookmarkTestUtils.givenSomeBookmarks(5)
         savedSitesEntitiesDao.insertList(entities)
 
@@ -230,7 +230,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenFolderMetadataPresentAndLocalContentHasItemRemovedThenFolderDiffContainsDeletedItem() = runTest {
+    fun `getFolderDiff - folder metadata present and local content has item removed - contains deleted item`() = runTest {
         val entities = BookmarkTestUtils.givenSomeBookmarks(5)
         val entityRemoved =
             Entity(title = "entity6", url = "https://testUrl6", type = BOOKMARK, lastModified = DatabaseDateFormatter.iso8601(), deleted = true)
@@ -257,7 +257,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenFolderMetadataPresentAndLocalContentHasMissingRelationsThenFolderDiffDoesNotContainDeletedItem() = runTest {
+    fun `getFolderDiff - folder metadata present and local content has missing relations - does not contain deleted item`() = runTest {
         val entities = BookmarkTestUtils.givenSomeBookmarks(5)
         savedSitesEntitiesDao.insertList(entities.dropLast(1))
 
@@ -278,7 +278,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenFolderIsReplacedThenChildrenAreUpdated() {
+    fun `replaceBookmarkFolder - folder children updated`() {
         val bookmarks = BookmarkTestUtils.givenSomeBookmarks(10)
         savedSitesEntitiesDao.insertList(bookmarks)
 
@@ -297,7 +297,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenFolderIsReplacedThenOrphanedChildrenAreRemoved() {
+    fun `replaceBookmarkFolder - when folder is replaced then orphaned children are removed`() {
         val bookmarks = BookmarkTestUtils.givenSomeBookmarks(10)
         savedSitesEntitiesDao.insertList(bookmarks)
 
@@ -312,7 +312,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenRemoteFolderDoesNotContainLocallyStoredChildThenOrphanIsCreated() {
+    fun `replaceBookmarkFolder - remote folder does not contain locally stored child - orphan is created`() {
         val bookmarks = BookmarkTestUtils.givenSomeBookmarks(10)
         savedSitesEntitiesDao.insertList(bookmarks)
 
@@ -330,7 +330,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenRemoteFolderContainsAddedChildrenThenOrphansAreNotCreated() {
+    fun `whenRemoteFolderContainsAddedChildrenThenOrphansAreNotCreated - no orphans created`() {
         val bookmarks = BookmarkTestUtils.givenSomeBookmarks(10)
         savedSitesEntitiesDao.insertList(bookmarks)
 
@@ -346,7 +346,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenOrphansPresentThenOrphansAttachedToBookmarksRoot() {
+    fun `fixOrphans - orphans present - orphans attached to bookmarks root`() {
         // given a root folder that contains a subfolder
         val subfolder = Entity(folder.id, "Folder", "", FOLDER, "", false)
         savedSitesEntitiesDao.insert(subfolder)
@@ -377,7 +377,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenFolderContentIsReplacedThenRelationsAreNotDuplicated() {
+    fun `replaceBookmarkFolder - folder content replaced - relations not duplicated`() {
         val remoteChildren = BookmarkTestUtils.givenSomeBookmarks(5)
         savedSitesEntitiesDao.insertList(remoteChildren)
         val folderRelation = BookmarkTestUtils.givenFolderWithContent(bookmarksRoot.entityId, remoteChildren)
@@ -390,7 +390,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun fixingOrphansDoesNotAffectFavourites() {
+    fun `fixOrphans - bookmarks root updated`() {
         // given a root folder that contains a subfolder
         savedSitesRelationsDao.insert(Relation(folderId = bookmarksRoot.entityId, entityId = folder.id))
 
@@ -433,7 +433,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenPruningDeletedEntityThenAllRelatedDataIsDeleted() {
+    fun `pruneDeleted - when pruning deleted entity then all related data is deleted`() {
         // given a root folder that contains a subfolder
         val subfolder = Entity(folder.id, "Folder", "", FOLDER, "", false)
         savedSitesEntitiesDao.insert(subfolder)
@@ -456,7 +456,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenGeneratingLocalChangesThenMetadataRequestIsUpdated() {
+    fun `whenGeneratingLocalChanges - metadata request is updated`() {
         val expectedContent = listOf(
             getRequestEntryFromBookmarkFolder(favoritesFolder, listOf(bookmark1).map { it.id }),
             getRequestEntryFromSavedSite(bookmark1),
@@ -475,13 +475,13 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenGeneratingLocalChangesAreEmptyThenMetadataRequestIsNotUpdated() {
+    fun `addRequestMetadata - empty local changes - metadata request not updated`() {
         repository.addRequestMetadata(emptyList())
         assertTrue(savedSitesMetadataDao.all().isEmpty())
     }
 
     @Test
-    fun whenMetadataResponseExistedAddingRequestKeepsPreviousResponse() {
+    fun `addRequestMetadata - metadata response existed - keeps previous response`() {
         val storedMetadata = SavedSitesSyncMetadataEntity(favoritesFolder.id, "previousResponse", null)
         savedSitesMetadataDao.addOrUpdate(storedMetadata)
 
@@ -501,13 +501,13 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenResponseHasNoEntitiesThenMetadataIsNotUpdated() {
+    fun `repository - response has no entities - metadata not updated`() {
         repository.addResponseMetadata(emptyList())
         assertTrue(savedSitesMetadataDao.all().isEmpty())
     }
 
     @Test
-    fun whenResponseHasNoEntitiesAfterAPatchRequestThenMetadataIsCopiedAsResponse() {
+    fun `whenResponseHasNoEntitiesAfterAPatchRequestThenMetadataIsCopiedAsResponse - metadata copied as response`() {
         givenSomeContentIn(folderId = bookmarksRootFolder.id, children = 5)
         assertTrue(savedSitesMetadataDao.get(bookmarksRootFolder.id) != null)
         assertTrue(savedSitesMetadataDao.get(bookmarksRootFolder.id)!!.childrenRequest != null)
@@ -521,7 +521,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenResponseHasEntitiesThenMetadataIsUpdated() {
+    fun `whenResponseHasEntities - metadata updated`() {
         val responseEntries = listOf(
             getResponseEntryFromSavedSite(bookmark),
             getResponseEntryFromBookmarkFolder(folder, listOf(bookmark.id)),
@@ -538,7 +538,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenDiscardRequestMetadataThenMetadataRequestIsRemoved() {
+    fun `discardRequestMetadata - metadata request removed`() {
         val requestContent = listOf(
             getRequestEntryFromSavedSite(bookmark1),
             getRequestEntryFromSavedSite(bookmark3),
@@ -555,7 +555,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenDiscardRequestMetadataAndStoreResponseMetadataThenMetadataStatusOnlyReflectsResponse() {
+    fun `discardRequestMetadata - store response metadata - only reflects response`() {
         val requestContent = listOf(
             getRequestEntryFromBookmarkFolder(favoritesFolder, listOf(bookmark1).map { it.id }),
             getRequestEntryFromSavedSite(bookmark1),
@@ -587,7 +587,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenResponseHasEntitiesAndOnlyContainsBookmarksThenMetadataIsNotUpdated() {
+    fun `addResponseMetadata - response has entities and only contains bookmarks - metadata not updated`() {
         val responseEntries = listOf(
             getResponseEntryFromSavedSite(bookmark),
         )
@@ -598,7 +598,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenResponseHasNoFoldersAfterAPatchRequestThenMetadataIsCopiedAsResponse() {
+    fun `whenResponseHasNoFoldersAfterAPatchRequest - metadata copied as response`() {
         givenSomeContentIn(folderId = bookmarksRootFolder.id, children = 5)
         assertTrue(savedSitesMetadataDao.get(bookmarksRootFolder.id) != null)
         assertTrue(savedSitesMetadataDao.get(bookmarksRootFolder.id)!!.childrenRequest != null)
@@ -616,7 +616,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenResponseHasDeletedFoldersThenMetadataIsDeleted() {
+    fun `addResponseMetadata - response has deleted folders - metadata is deleted`() {
         givenSomeContentIn(folderId = bookmarksRootFolder.id, children = 5)
         assertTrue(savedSitesMetadataDao.get(bookmarksRootFolder.id) != null)
 
@@ -627,7 +627,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenUpdatingModifiedSinceThenDatesAreProperlyUpdated() {
+    fun `updateModified - when updating modified since - dates are properly updated`() {
         val oneHourAgo = DatabaseDateFormatter.iso8601(OffsetDateTime.now(ZoneOffset.UTC).minusHours(1))
 
         givenSomeContentIn(folderId = bookmarksRootFolder.id, children = 5)
@@ -638,7 +638,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenEntitiesPresentBeforeDeduplicationThenTheirTimestampIsUpdated() {
+    fun `setLocalEntitiesForNextSync - entities present before deduplication - timestamp updated`() {
         givenSomeContentIn(bookmarksRootFolder.id, 5)
 
         val oneHourAgo = DatabaseDateFormatter.iso8601(OffsetDateTime.now(ZoneOffset.UTC).minusHours(1))
@@ -648,7 +648,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenDeduplicatingBookmarkThenRemoteBookmarkReplacesLocal() {
+    fun `replaceBookmark - deduplicates bookmark - remote replaces local`() {
         // given a local bookmark
         repository.insert(bookmark1, favouritesRoot.entityId)
 
@@ -662,7 +662,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenBookmarkIsReplacedWithDifferentIdThenDataIsUpdated() {
+    fun `replaceBookmark - data updated`() {
         val rootFolder = BookmarkFolder(id = SavedSitesNames.BOOKMARKS_ROOT, name = "root", lastModified = "timestamp", parentId = "")
         savedSitesRepository.insert(rootFolder)
 
@@ -688,7 +688,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenBookmarkIsReplacedWithSameIdThenDataIsUpdated() {
+    fun `replaceBookmark - data is updated`() {
         val rootFolder = BookmarkFolder(id = SavedSitesNames.BOOKMARKS_ROOT, name = "root", lastModified = "timestamp", parentId = "")
         savedSitesRepository.insert(rootFolder)
 
@@ -770,7 +770,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenMovingBookmarkToAnotherFolderThenBookmarkOnlyHasOnlyBelongsToOneFolder() {
+    fun `replaceBookmarkFolder - bookmark only has one folder relation`() {
         val rootFolder = BookmarkFolder(id = SavedSitesNames.BOOKMARKS_ROOT, name = "root", lastModified = "timestamp", parentId = "")
         val subFolder = BookmarkFolder(id = "folder", name = "Folder", lastModified = "timestamp", parentId = rootFolder.id)
         savedSitesRepository.insert(rootFolder)
@@ -794,7 +794,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenMovingFavouriteToAnotherFolderThenBookmarkBelongsToFavouritesAndFolder() {
+    fun `replaceBookmarkFolder - bookmark moved to another folder - belongs to new folder and favourites root`() {
         val rootFolder = BookmarkFolder(id = SavedSitesNames.BOOKMARKS_ROOT, name = "root", lastModified = "timestamp", parentId = "")
         val subFolder = BookmarkFolder(id = "folder", name = "Folder", lastModified = "timestamp", parentId = rootFolder.id)
         savedSitesRepository.insert(rootFolder)
@@ -822,7 +822,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenBookmarkModifiedAfterThresholdThenGetModifiedSinceHasBookmarks() {
+    fun `getBookmarksModifiedSince - when bookmark modified after threshold - has bookmarks`() {
         val since = OffsetDateTime.now(ZoneOffset.UTC).minusHours(1)
         val twoHoursAgo = OffsetDateTime.now(ZoneOffset.UTC).minusHours(2)
 
@@ -840,7 +840,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenBookmarkModifiedBeforeThresholdThenGetModifiedSinceIsEmpty() {
+    fun `getBookmarksModifiedSince - bookmark modified before threshold - get modified since is empty`() {
         val since = OffsetDateTime.now(ZoneOffset.UTC).minusHours(1)
         val twoHoursAgo = OffsetDateTime.now(ZoneOffset.UTC).minusHours(2)
 
@@ -855,7 +855,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenReplacingFavouritesFolderThenOnlyCurrentChildrenAreKept() {
+    fun `replaceFavouriteFolder - only current children are kept`() {
         // given a root folder that contains a subfolder
         savedSitesRelationsDao.insert(Relation(folderId = bookmarksRoot.entityId, entityId = folder.id))
 
@@ -883,7 +883,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenAddingToFavouritesFolderThenPreviousFavouritesAreKept() {
+    fun `addToFavouriteFolder - previous favourites kept - all favourites present`() {
         // given some favourites
         val firstBatch = BookmarkTestUtils.givenSomeBookmarks(10)
         savedSitesRelationsDao.insertList(BookmarkTestUtils.givenFolderWithContent(bookmarksRoot.entityId, firstBatch))
@@ -903,7 +903,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenMarkSavedSitesIdsAsInvalidThenIdsStored() = runTest {
+    fun `markSavedSitesAsInvalid - ids stored`() = runTest {
         val ids = listOf("id1", "id2", "id3")
         repository.markSavedSitesAsInvalid(ids)
         val invalidIds = store.invalidEntitiesIds
@@ -913,7 +913,7 @@ class SyncSavedSitesRepositoryTest {
     }
 
     @Test
-    fun whenGetInvalidSavedSitesThenExpectedSavedSitesReturned() = runTest {
+    fun `getInvalidSavedSites - saved sites marked as invalid - expected saved sites returned`() = runTest {
         val bookmarks = BookmarkTestUtils.givenSomeBookmarks(10)
         savedSitesEntitiesDao.insertList(bookmarks)
         val ids = bookmarks.map { it.entityId }

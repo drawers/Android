@@ -52,7 +52,7 @@ class RealBrokenSiteReportRepositoryTest {
     }
 
     @Test
-    fun whenGetLastSentDayCalledWithEmptyHostnameThenReturnNull() = runTest {
+    fun `getLastSentDay - empty hostname - returns null`() = runTest {
         val hostname = ""
 
         val result = testee.getLastSentDay(hostname)
@@ -61,7 +61,7 @@ class RealBrokenSiteReportRepositoryTest {
     }
 
     @Test
-    fun whenGetLastSentDayCalledWithNewHostnameThenReturnNull() = runTest {
+    fun `getLastSentDay - new hostname - returns null`() = runTest {
         val hostname = "www.example.com"
         val hostnameHashPrefix = "80fc0f"
         val brokenSiteReportEntity = null
@@ -73,7 +73,7 @@ class RealBrokenSiteReportRepositoryTest {
     }
 
     @Test
-    fun whenGetLastSentDayCalledWithExistingHostnameThenReturnLastSeenDay() = runTest {
+    fun `getLastSentDay - existing hostname - returns last seen day`() = runTest {
         val hostname = "www.example.com"
         val hostnameHashPrefix = "80fc0f"
         val lastSentDay = "2023-11-01T15:30:54.401Z"
@@ -86,7 +86,7 @@ class RealBrokenSiteReportRepositoryTest {
     }
 
     @Test
-    fun whenSetLastSentDayCalledWithEmptyHostnameThenUpsertBrokenSiteReportIsNeverCalled() = runTest {
+    fun `setLastSentDay - empty hostname - upsert broken site report is never called`() = runTest {
         val hostname = ""
 
         testee.setLastSentDay(hostname)
@@ -95,7 +95,7 @@ class RealBrokenSiteReportRepositoryTest {
     }
 
     @Test
-    fun whenSetLastSentDayCalledWithNonEmptyHostnameThenUpsertBrokenSiteReportIsCalled() = runTest {
+    fun `setLastSentDay - non-empty hostname - upsert broken site report is called`() = runTest {
         val hostname = "www.example.com"
 
         testee.setLastSentDay(hostname)
@@ -104,7 +104,7 @@ class RealBrokenSiteReportRepositoryTest {
     }
 
     @Test
-    fun whenCleanupOldEntriesCalledThenCleanupBrokenSiteReportIsCalled() = runTest {
+    fun `cleanupOldEntries - cleanup broken site report is called`() = runTest {
         testee.cleanupOldEntries()
 
         verify(mockDatabase.brokenSiteDao()).deleteAllExpiredReports(any())

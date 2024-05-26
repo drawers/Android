@@ -62,7 +62,7 @@ class PrivacyDashboardRendererTest {
     )
 
     @Test
-    fun whenLoadDashboardThenJSInterfaceInjected() {
+    fun `loadDashboard - js interface injected`() {
         testee.loadDashboard(spyWebView)
 
         verify(spyWebView).addJavascriptInterface(
@@ -72,14 +72,14 @@ class PrivacyDashboardRendererTest {
     }
 
     @Test
-    fun whenLoadDashboardThenLoadLocalHtml() {
+    fun `loadDashboard - load local html`() {
         testee.loadDashboard(spyWebView)
 
         verify(spyWebView).loadUrl("file:///android_asset/html/android.html")
     }
 
     @Test
-    fun whenRenderStateThenJSInterface() {
+    fun `render - state - js interface`() {
         val captor = argumentCaptor<String>()
 
         testee.render(aViewState())

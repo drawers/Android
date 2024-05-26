@@ -79,14 +79,14 @@ class RealAutofillRuntimeConfigProviderTest {
     }
 
     @Test
-    fun whenAutofillNotEnabledThenConfigurationUserPrefsCredentialsIsFalse() = runTest {
+    fun `getRuntimeConfiguration - autofill not enabled - is false`() = runTest {
         configureAutofillCapabilities(enabled = false)
         testee.getRuntimeConfiguration("", EXAMPLE_URL)
         verifyAutofillCredentialsReturnedAs(false)
     }
 
     @Test
-    fun whenAutofillEnabledThenConfigurationUserPrefsCredentialsIsTrue() = runTest {
+    fun `getRuntimeConfiguration - autofill enabled - configuration user prefs credentials is true`() = runTest {
         configureAutofillCapabilities(enabled = true)
         configureNoShareableLogins()
         testee.getRuntimeConfiguration("", EXAMPLE_URL)
@@ -94,7 +94,7 @@ class RealAutofillRuntimeConfigProviderTest {
     }
 
     @Test
-    fun whenCanAutofillThenConfigSpecifiesShowingKeyIcon() = runTest {
+    fun `getRuntimeConfiguration - can autofill - shows key icon`() = runTest {
         configureAutofillCapabilities(enabled = true)
         configureAutofillAvailableForSite(EXAMPLE_URL)
         configureNoShareableLogins()
@@ -103,7 +103,7 @@ class RealAutofillRuntimeConfigProviderTest {
     }
 
     @Test
-    fun whenNoCredentialsForUrlThenConfigurationInputTypeCredentialsIsFalse() = runTest {
+    fun `getRuntimeConfiguration - no credentials for url - available input type credentials is false`() = runTest {
         configureAutofillEnabledWithNoSavedCredentials(EXAMPLE_URL)
         testee.getRuntimeConfiguration("", EXAMPLE_URL)
 
@@ -115,7 +115,7 @@ class RealAutofillRuntimeConfigProviderTest {
     }
 
     @Test
-    fun whenWithCredentialsForUrlThenConfigurationInputTypeCredentialsIsTrue() = runTest {
+    fun `getRuntimeConfiguration - with credentials for url - input type credentials is true`() = runTest {
         configureAutofillCapabilities(enabled = true)
         whenever(autofillStore.getCredentials(EXAMPLE_URL)).thenReturn(
             listOf(
@@ -139,7 +139,7 @@ class RealAutofillRuntimeConfigProviderTest {
     }
 
     @Test
-    fun whenWithShareableCredentialsForUrlThenConfigurationInputTypeCredentialsIsTrue() = runTest {
+    fun `getRuntimeConfiguration - with shareable credentials for url - input type credentials is true`() = runTest {
         configureAutofillCapabilities(enabled = true)
         whenever(autofillStore.getCredentials(EXAMPLE_URL)).thenReturn(emptyList())
         whenever(shareableCredentials.shareableCredentials(any())).thenReturn(
@@ -163,7 +163,7 @@ class RealAutofillRuntimeConfigProviderTest {
     }
 
     @Test
-    fun whenWithUsernameOnlyForUrlThenConfigurationInputTypeCredentialsUsernameIsTrue() = runTest {
+    fun `getRuntimeConfiguration - with username only for url - configuration input type credentials username is true`() = runTest {
         val url = "example.com"
         configureAutofillCapabilities(enabled = true)
         whenever(autofillStore.getCredentials(url)).thenReturn(
@@ -188,7 +188,7 @@ class RealAutofillRuntimeConfigProviderTest {
     }
 
     @Test
-    fun whenWithEmptyUsernameOnlyForUrlThenConfigurationInputTypeCredentialsUsernameIsFalse() = runTest {
+    fun `getRuntimeConfiguration - with empty username only for url - configuration input type credentials username is false`() = runTest {
         val url = "example.com"
         configureAutofillCapabilities(enabled = true)
         whenever(autofillStore.getCredentials(url)).thenReturn(
@@ -213,7 +213,7 @@ class RealAutofillRuntimeConfigProviderTest {
     }
 
     @Test
-    fun whenWithPasswordOnlyForUrlThenConfigurationInputTypeCredentialsUsernameIsTrue() = runTest {
+    fun `getRuntimeConfiguration - with password only for url - configuration input type credentials username is true`() = runTest {
         val url = "example.com"
         configureAutofillCapabilities(enabled = true)
         whenever(autofillStore.getCredentials(url)).thenReturn(
@@ -238,7 +238,7 @@ class RealAutofillRuntimeConfigProviderTest {
     }
 
     @Test
-    fun whenWithEmptyPasswordOnlyForUrlThenConfigurationInputTypeCredentialsUsernameIsTrue() = runTest {
+    fun `getRuntimeConfiguration - with empty password only for url - configuration input type credentials username is true`() = runTest {
         val url = "example.com"
         configureAutofillCapabilities(enabled = true)
         whenever(autofillStore.getCredentials(url)).thenReturn(
@@ -263,7 +263,7 @@ class RealAutofillRuntimeConfigProviderTest {
     }
 
     @Test
-    fun whenWithCredentialsForUrlButAutofillDisabledThenConfigurationInputTypeCredentialsIsFalse() = runTest {
+    fun `getRuntimeConfiguration - with credentials for url but autofill disabled - configuration input type credentials is false`() = runTest {
         val url = "example.com"
         configureAutofillCapabilities(enabled = false)
         whenever(autofillStore.getCredentials(url)).thenReturn(
@@ -287,7 +287,7 @@ class RealAutofillRuntimeConfigProviderTest {
     }
 
     @Test
-    fun whenWithCredentialsForUrlButAutofillUnavailableThenConfigurationInputTypeCredentialsIsFalse() = runTest {
+    fun `getRuntimeConfiguration - with credentials for url but autofill unavailable - configuration input type credentials is false`() = runTest {
         val url = "example.com"
         configureAutofillCapabilities(enabled = false)
         whenever(autofillStore.getCredentials(url)).thenReturn(
@@ -311,7 +311,7 @@ class RealAutofillRuntimeConfigProviderTest {
     }
 
     @Test
-    fun whenEmailIsSignedInThenConfigurationInputTypeEmailIsTrue() = runTest {
+    fun `getRuntimeConfiguration - email signed in - configuration input type email is true`() = runTest {
         val url = "example.com"
         configureAutofillEnabledWithNoSavedCredentials(url)
         whenever(emailManager.isSignedIn()).thenReturn(true)
@@ -325,7 +325,7 @@ class RealAutofillRuntimeConfigProviderTest {
     }
 
     @Test
-    fun whenEmailIsSignedOutThenConfigurationInputTypeEmailIsFalse() = runTest {
+    fun `getRuntimeConfiguration - email signed out - configuration input type email is false`() = runTest {
         val url = "example.com"
         configureAutofillEnabledWithNoSavedCredentials(url)
         whenever(emailManager.isSignedIn()).thenReturn(false)
@@ -339,7 +339,7 @@ class RealAutofillRuntimeConfigProviderTest {
     }
 
     @Test
-    fun whenSiteNotInNeverSaveListThenCanSaveCredentials() = runTest {
+    fun `getRuntimeConfiguration - site not in never save list - can save credentials`() = runTest {
         val url = "example.com"
         configureAutofillEnabledWithNoSavedCredentials(url)
         testee.getRuntimeConfiguration("", url)
@@ -347,7 +347,7 @@ class RealAutofillRuntimeConfigProviderTest {
     }
 
     @Test
-    fun whenSiteInNeverSaveListThenStillTellJsWeCanSaveCredentials() = runTest {
+    fun `getRuntimeConfiguration - site in never save list - can save credentials`() = runTest {
         val url = "example.com"
         configureAutofillEnabledWithNoSavedCredentials(url)
         whenever(neverSavedSiteRepository.isInNeverSaveList(url)).thenReturn(true)

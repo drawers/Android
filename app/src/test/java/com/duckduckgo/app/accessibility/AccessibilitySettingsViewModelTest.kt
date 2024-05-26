@@ -45,7 +45,7 @@ class AccessibilitySettingsViewModelTest {
     private val testee = AccessibilitySettingsViewModel(accessibilitySettings, voiceSearchAvailability, voiceSearchRepository, pixel)
 
     @Test
-    fun whenViewModelCreatedThenDefaultViewStateEmitted() = runTest {
+    fun `viewState - default view state emitted`() = runTest {
         val viewState = AccessibilitySettingsViewModel.ViewState(
             overrideSystemFontSize = false,
             appFontSize = 100f,
@@ -60,7 +60,7 @@ class AccessibilitySettingsViewModelTest {
     }
 
     @Test
-    fun whenViewModelStartedThenViewStateEmitted() = runTest {
+    fun `start - view state emitted`() = runTest {
         val viewState = AccessibilitySettingsViewModel.ViewState(
             overrideSystemFontSize = true,
             appFontSize = 150f,
@@ -83,7 +83,7 @@ class AccessibilitySettingsViewModelTest {
     }
 
     @Test
-    fun whenForceZoomEnabledThenViewStateEmitted() = runTest {
+    fun `onForceZoomChanged - view state emitted`() = runTest {
         val viewState = defaultViewState()
         whenever(accessibilitySettings.forceZoom).thenReturn(true)
 
@@ -96,7 +96,7 @@ class AccessibilitySettingsViewModelTest {
     }
 
     @Test
-    fun whenForceZoomEnabledThenSettingsUpdated() = runTest {
+    fun `onForceZoomChanged - settings updated`() = runTest {
         whenever(accessibilitySettings.forceZoom).thenReturn(true)
 
         testee.onForceZoomChanged(true)
@@ -106,7 +106,7 @@ class AccessibilitySettingsViewModelTest {
     }
 
     @Test
-    fun whenOverrideSystemFontSizeEnabledThenViewStateEmitted() = runTest {
+    fun `onSystemFontSizeChanged - view state emitted`() = runTest {
         val viewState = defaultViewState()
         whenever(accessibilitySettings.overrideSystemFontSize).thenReturn(true)
 
@@ -119,7 +119,7 @@ class AccessibilitySettingsViewModelTest {
     }
 
     @Test
-    fun whenOverrideSystemFontSizeEnabledThenSettingsUpdated() = runTest {
+    fun `onSystemFontSizeChanged - settings updated`() = runTest {
         whenever(accessibilitySettings.overrideSystemFontSize).thenReturn(true)
 
         testee.onSystemFontSizeChanged(true)
@@ -129,7 +129,7 @@ class AccessibilitySettingsViewModelTest {
     }
 
     @Test
-    fun whenFontSizeChangedThenViewStateEmitted() = runTest {
+    fun `onFontSizeChanged - view state emitted`() = runTest {
         val viewState = defaultViewState()
         whenever(accessibilitySettings.appFontSize).thenReturn(150f)
 
@@ -142,7 +142,7 @@ class AccessibilitySettingsViewModelTest {
     }
 
     @Test
-    fun whenFontSizeChangedThenSettingsUpdated() = runTest {
+    fun `onFontSizeChanged - settings updated`() = runTest {
         whenever(accessibilitySettings.appFontSize).thenReturn(150f)
 
         testee.onFontSizeChanged(150f)
@@ -152,7 +152,7 @@ class AccessibilitySettingsViewModelTest {
     }
 
     @Test
-    fun whenVoiceSearchEnabledThenViewStateEmitted() = runTest {
+    fun `onVoiceSearchChanged - view state emitted`() = runTest {
         val viewState = defaultViewState()
         whenever(voiceSearchAvailability.isVoiceSearchAvailable).thenReturn(true)
 
@@ -165,7 +165,7 @@ class AccessibilitySettingsViewModelTest {
     }
 
     @Test
-    fun whenVoiceSearchEnabledThenSettingsUpdated() = runTest {
+    fun `onVoiceSearchChanged - settings updated`() = runTest {
         testee.onVoiceSearchChanged(true)
         verify(voiceSearchRepository).setVoiceSearchUserEnabled(true)
     }
@@ -177,13 +177,13 @@ class AccessibilitySettingsViewModelTest {
     }
 
     @Test
-    fun whenVoiceSearchEnabledThenFirePixel() = runTest {
+    fun `onVoiceSearchChanged - fire pixel`() = runTest {
         testee.onVoiceSearchChanged(true)
         verify(pixel).fire(VoiceSearchPixelNames.VOICE_SEARCH_ON)
     }
 
     @Test
-    fun whenVoiceSearchDisabledThenFirePixel() = runTest {
+    fun `onVoiceSearchChanged - voice search disabled - fire pixel`() = runTest {
         testee.onVoiceSearchChanged(false)
         verify(pixel).fire(VoiceSearchPixelNames.VOICE_SEARCH_OFF)
     }

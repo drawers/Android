@@ -49,7 +49,7 @@ class BackgroundSyncWorkerSchedulerTest {
     }
 
     @Test
-    fun whenOnCreateAndSyncEnabledThenWorkerEnqueued() {
+    fun `onCreate - sync enabled - worker enqueued`() {
         whenever(deviceSyncState.isUserSignedInOnDevice()).thenReturn(true)
         syncBackgroundWorkerScheduler.onCreate(mockOwner)
 
@@ -57,7 +57,7 @@ class BackgroundSyncWorkerSchedulerTest {
     }
 
     @Test
-    fun whenOnCreateAndSyncDisabledThenWorkerIsNotEnqueued() {
+    fun `onCreate - sync disabled - worker not enqueued`() {
         whenever(deviceSyncState.isUserSignedInOnDevice()).thenReturn(false)
         syncBackgroundWorkerScheduler.onCreate(mockOwner)
 

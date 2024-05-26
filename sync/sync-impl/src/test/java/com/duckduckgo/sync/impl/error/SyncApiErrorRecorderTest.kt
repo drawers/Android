@@ -36,7 +36,7 @@ internal class SyncApiErrorRecorderTest {
     private val apiErrorReporter = RealSyncApiErrorRecorder(syncPixels, syncApiErrorRepository)
 
     @Test
-    fun wheneverCountLimitErrorReportedThenRepositoryAddsError() {
+    fun `record - count limit error reported - repository adds error`() {
         val feature = SyncableType.BOOKMARKS
         val error = Error(API_CODE.COUNT_LIMIT.code, "")
 
@@ -46,7 +46,7 @@ internal class SyncApiErrorRecorderTest {
     }
 
     @Test
-    fun wheneverContentTooLargeErrorReportedThenRepositoryAddsError() {
+    fun `record - content too large error reported - repository adds error`() {
         val feature = SyncableType.BOOKMARKS
         val error = Error(API_CODE.CONTENT_TOO_LARGE.code, "")
 
@@ -56,7 +56,7 @@ internal class SyncApiErrorRecorderTest {
     }
 
     @Test
-    fun wheneverValidationErrorReportedThenRepositoryAddsError() {
+    fun `record - whenever validation error reported - repository adds error`() {
         val feature = SyncableType.BOOKMARKS
         val error = Error(API_CODE.VALIDATION_ERROR.code, "")
 
@@ -66,7 +66,7 @@ internal class SyncApiErrorRecorderTest {
     }
 
     @Test
-    fun wheneverFirstTooManyRequestsErrorReportedThenRepositoryAddsError() {
+    fun `record - first too many requests error reported - adds error to repository`() {
         val feature = SyncableType.BOOKMARKS
         val error = Error(API_CODE.TOO_MANY_REQUESTS_1.code, "")
 
@@ -76,7 +76,7 @@ internal class SyncApiErrorRecorderTest {
     }
 
     @Test
-    fun wheneverSecondTooManyRequestsErrorReportedThenRepositoryAddsError() {
+    fun `record - second too many requests error reported - adds error to repository`() {
         val feature = SyncableType.BOOKMARKS
         val error = Error(API_CODE.TOO_MANY_REQUESTS_2.code, "")
 

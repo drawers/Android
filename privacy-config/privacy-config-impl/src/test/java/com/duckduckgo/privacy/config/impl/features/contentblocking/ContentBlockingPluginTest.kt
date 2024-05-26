@@ -40,19 +40,19 @@ class ContentBlockingPluginTest {
     }
 
     @Test
-    fun whenFeatureNameDoesNotMatchContentBlockingThenReturnFalse() {
+    fun `store - feature name does not match content blocking - returns false`() {
         PrivacyFeatureName.values().filter { it != FEATURE_NAME }.forEach {
             assertFalse(testee.store(it.value, EMPTY_JSON_STRING))
         }
     }
 
     @Test
-    fun whenFeatureNameMatchesContentBlockingThenReturnTrue() {
+    fun `store - feature name matches content blocking - returns true`() {
         assertTrue(testee.store(FEATURE_NAME_VALUE, EMPTY_JSON_STRING))
     }
 
     @Test
-    fun whenFeatureNameMatchesContentBlockingAndIsEnabledThenStoreFeatureEnabled() {
+    fun `store - feature name matches content blocking and is enabled - store feature enabled`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/content_blocking.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -61,7 +61,7 @@ class ContentBlockingPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesContentBlockingAndIsNotEnabledThenStoreFeatureDisabled() {
+    fun `store - feature name matches content blocking and is not enabled - store feature disabled`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/content_blocking_disabled.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -70,7 +70,7 @@ class ContentBlockingPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesContentBlockingAndHasMinSupportedVersionThenStoreMinSupportedVersion() {
+    fun `store - feature name matches content blocking and has min supported version - stores min supported version`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/content_blocking_min_supported_version.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -79,7 +79,7 @@ class ContentBlockingPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesContentBlockingThenUpdateAllExistingExceptions() {
+    fun `store - feature name matches content blocking - update all existing exceptions`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/content_blocking.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)

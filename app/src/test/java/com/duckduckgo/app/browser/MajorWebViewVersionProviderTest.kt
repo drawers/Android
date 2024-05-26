@@ -31,70 +31,70 @@ class MajorWebViewVersionProviderTest {
     )
 
     @Test
-    fun whenWebViewVersionIsEmptyThenReturnUnknownFullVersion() {
+    fun `getFullVersion - web view version empty - unknown`() {
         whenever(webViewVersionSource.get()).thenReturn("")
 
         assertEquals("unknown", testee.getFullVersion())
     }
 
     @Test
-    fun whenWebViewVersionIsAvailableThenReturnFullVersion() {
+    fun `getFullVersion - web view version available - full version`() {
         whenever(webViewVersionSource.get()).thenReturn("91.1.12.1234.423")
 
         assertEquals("91.1.12.1234.423", testee.getFullVersion())
     }
 
     @Test
-    fun whenWebViewVersionIsBlankThenReturnFullVersion() {
+    fun `getFullVersion - web view version blank - return full version`() {
         whenever(webViewVersionSource.get()).thenReturn("    ")
 
         assertEquals("unknown", testee.getFullVersion())
     }
 
     @Test
-    fun whenWebViewVersionIsEmptyThenReturnUnknownMajorVersion() {
+    fun `getMajorVersion - web view version empty - unknown`() {
         whenever(webViewVersionSource.get()).thenReturn("")
 
         assertEquals("unknown", testee.getMajorVersion())
     }
 
     @Test
-    fun whenWebViewVersionAvailableThenReturnMajorVersionOnly() {
+    fun `getMajorVersion - web view version available - major version only`() {
         whenever(webViewVersionSource.get()).thenReturn("91.1.12.1234.423")
 
         assertEquals("91", testee.getMajorVersion())
     }
 
     @Test
-    fun whenWebViewVersionHasNonNumericValuesThenReturnMajorVersionOnly() {
+    fun `getMajorVersion - web view version non numeric values - return major version only`() {
         whenever(webViewVersionSource.get()).thenReturn("59.amazon-webview-v59-3071.3071.125.462")
 
         assertEquals("59", testee.getMajorVersion())
     }
 
     @Test
-    fun whenWebViewVersionHasNoValidDelimiterThenReturnUnknownMajorVersion() {
+    fun `getMajorVersion - web view version has no valid delimiter - return unknown major version`() {
         whenever(webViewVersionSource.get()).thenReturn("37%20%281448693564-arm%29")
 
         assertEquals("unknown", testee.getMajorVersion())
     }
 
     @Test
-    fun whenWebViewVersionHasNonNumericMajorThenReturnUnknownMajorVersion() {
+    fun `getMajorVersion - web view version non numeric major - return unknown major version`() {
         whenever(webViewVersionSource.get()).thenReturn("37%20%28eng.jenkinswh-arm64%29")
 
         assertEquals("unknown", testee.getMajorVersion())
     }
 
     @Test
-    fun whenWebViewVersionStartsWithDelimiterThenReturnUnknownMajorVersion() {
+    fun `getMajorVersion - web view version starts with delimiter - unknown major version`() {
         whenever(webViewVersionSource.get()).thenReturn(".91.1.12.1234.423")
 
         assertEquals("unknown", testee.getMajorVersion())
     }
 
     @Test
-    fun whenWebViewVersionIsBlankThenReturnUnknownMajorVersion() {
+    fun `getMajorVersion - web view version blank - unknown major version`() {
         whenever(webViewVersionSource.get()).thenReturn("    ")
 
         assertEquals("unknown", testee.getMajorVersion())

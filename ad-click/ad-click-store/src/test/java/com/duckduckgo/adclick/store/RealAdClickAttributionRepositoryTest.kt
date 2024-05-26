@@ -53,7 +53,7 @@ class RealAdClickAttributionRepositoryTest {
     }
 
     @Test
-    fun whenRepositoryIsCreatedThenAllListsAreLoadedIntoMemory() {
+    fun `whenRepositoryIsCreated - all lists loaded into memory`() {
         assertEquals(linkFormatEntity, testee.linkFormats.first())
         assertEquals(allowlistEntity, testee.allowList.first())
         assertEquals(expirationEntity, testee.expirations.first())
@@ -61,7 +61,7 @@ class RealAdClickAttributionRepositoryTest {
     }
 
     @Test
-    fun whenUpdateAllThenUpdateAllCalled() =
+    fun `updateAll - set all called`() =
         runTest {
             testee.updateAll(
                 linkFormats = listOf(),
@@ -79,7 +79,7 @@ class RealAdClickAttributionRepositoryTest {
         }
 
     @Test
-    fun whenUpdateAllThenPreviousListsAreCleared() =
+    fun `updateAll - previous lists cleared`() =
         runTest {
             assertEquals(1, testee.linkFormats.size)
             assertEquals(1, testee.allowList.size)

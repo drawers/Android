@@ -27,7 +27,7 @@ class WidgetVoiceSearchStatusListenerTest {
     private val testee = WidgetVoiceSearchStatusListener(mock(), widgetUpdater)
 
     @Test
-    fun whenVoiceSearchStatusChangedThenShouldUpdateWidgets() {
+    fun `voiceSearchStatusChanged - should update widgets`() {
         testee.voiceSearchStatusChanged()
 
         verify(widgetUpdater).updateWidgets(any())

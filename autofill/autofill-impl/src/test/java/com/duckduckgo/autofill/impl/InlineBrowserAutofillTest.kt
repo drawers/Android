@@ -82,7 +82,7 @@ class InlineBrowserAutofillTest {
     }
 
     @Test
-    fun whenRemoveJsInterfaceThenRemoveReferenceToWebview() {
+    fun `removeJsInterface - remove reference to webview`() {
         testee.addJsInterface(testWebView, testCallback, emailProtectionInContextCallback, emailProtectionInContextSignupFlowCallback, "tabId")
 
         assertNotNull(autofillJavascriptInterface.webView)
@@ -93,14 +93,14 @@ class InlineBrowserAutofillTest {
     }
 
     @Test
-    fun whenInjectCredentialsNullThenInterfaceInjectNoCredentials() {
+    fun `injectCredentials - null - no credentials injected`() {
         testee.injectCredentials(null)
 
         assertEquals(NoCredentialsInjected, autofillJavascriptInterface.lastAction)
     }
 
     @Test
-    fun whenInjectCredentialsThenInterfaceCredentialsInjected() {
+    fun `injectCredentials - interface credentials injected`() {
         val toInject = LoginCredentials(
             id = 1,
             domain = "hello.com",

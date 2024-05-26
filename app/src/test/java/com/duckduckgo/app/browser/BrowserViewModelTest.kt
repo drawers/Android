@@ -117,21 +117,21 @@ class BrowserViewModelTest {
     }
 
     @Test
-    fun whenNewTabRequestedThenTabAddedToRepository() = runTest {
+    fun `onNewTabRequested - tab added to repository`() = runTest {
         whenever(mockTabRepository.liveSelectedTab).doReturn(MutableLiveData())
         testee.onNewTabRequested()
         verify(mockTabRepository).add()
     }
 
     @Test
-    fun whenNewTabRequestedFromSourceTabThenTabAddedToRepositoryWithSourceTabId() = runTest {
+    fun `onNewTabRequested - tab added to repository with source tab id`() = runTest {
         whenever(mockTabRepository.liveSelectedTab).doReturn(MutableLiveData())
         testee.onNewTabRequested("sourceTabId")
         verify(mockTabRepository).addFromSourceTab(sourceTabId = "sourceTabId")
     }
 
     @Test
-    fun whenOpenInNewTabRequestedThenTabAddedToRepository() = runTest {
+    fun `onOpenInNewTabRequested - tab repository added`() = runTest {
         val url = "http://example.com"
         whenever(mockOmnibarEntryConverter.convertQueryToUrl(url)).thenReturn(url)
         whenever(mockTabRepository.liveSelectedTab).doReturn(MutableLiveData())
@@ -140,7 +140,7 @@ class BrowserViewModelTest {
     }
 
     @Test
-    fun whenOpenInNewTabRequestedWithSourceTabIdThenTabAddedToRepositoryWithSourceTabId() = runTest {
+    fun `onOpenInNewTabRequested - tab added to repository with source tab id`() = runTest {
         val url = "http://example.com"
         whenever(mockOmnibarEntryConverter.convertQueryToUrl(url)).thenReturn(url)
         whenever(mockTabRepository.liveSelectedTab).doReturn(MutableLiveData())
@@ -149,38 +149,38 @@ class BrowserViewModelTest {
     }
 
     @Test
-    fun whenTabsUpdatedAndNoTabsThenDefaultTabAddedToRepository() = runTest {
+    fun `onTabsUpdated - no tabs - default tab added to repository`() = runTest {
         testee.onTabsUpdated(ArrayList())
         verify(mockTabRepository).addDefaultTab()
     }
 
     @Test
-    fun whenTabsUpdatedWithTabsThenNewTabNotLaunched() = runTest {
+    fun `onTabsUpdated - tabs updated - new tab not launched`() = runTest {
         testee.onTabsUpdated(listOf(TabEntity(TAB_ID, "", "", skipHome = false, viewed = true, position = 0)))
         verify(mockCommandObserver, never()).onChanged(any())
     }
 
     @Test
-    fun whenUserSelectedToRateAppThenPlayStoreCommandTriggered() {
+    fun `onUserSelectedToRateApp - play store command triggered`() {
         testee.onUserSelectedToRateApp(PromptCount.first())
         verify(mockCommandObserver).onChanged(commandCaptor.capture())
         assertEquals(Command.LaunchPlayStore, commandCaptor.lastValue)
     }
 
     @Test
-    fun whenUserSelectedToGiveFeedbackThenFeedbackCommandTriggered() {
+    fun `onUserSelectedToGiveFeedback - feedback command triggered`() {
         testee.onUserSelectedToGiveFeedback(PromptCount.first())
         verify(mockCommandObserver).onChanged(commandCaptor.capture())
         assertEquals(Command.LaunchFeedbackView, commandCaptor.lastValue)
     }
 
     @Test
-    fun whenViewStateCreatedThenWebViewContentShouldBeHidden() {
+    fun `when ViewState Created - view state created - web content should be hidden`() {
         assertTrue(testee.viewState.value!!.hideWebContent)
     }
 
     @Test
-    fun whenOpenShortcutThenSelectByUrlOrNewTab() = runTest {
+    fun `onOpenShortcut - select by url or new tab`() = runTest {
         val url = "example.com"
         whenever(mockOmnibarEntryConverter.convertQueryToUrl(url)).thenReturn(url)
         testee.onOpenShortcut(url)
@@ -188,7 +188,7 @@ class BrowserViewModelTest {
     }
 
     @Test
-    fun whenOpenShortcutThenFirePixel() {
+    fun `onOpenShortcut - fire pixel`() {
         val url = "example.com"
         whenever(mockOmnibarEntryConverter.convertQueryToUrl(url)).thenReturn(url)
         testee.onOpenShortcut(url)
@@ -196,7 +196,7 @@ class BrowserViewModelTest {
     }
 
     @Test
-    fun whenOpenFavoriteThenSelectByUrlOrNewTab() = runTest {
+    fun `onOpenFavorite - select by url or new tab`() = runTest {
         val url = "example.com"
         whenever(mockOmnibarEntryConverter.convertQueryToUrl(url)).thenReturn(url)
         testee.onOpenFavoriteFromWidget(url)
@@ -204,7 +204,7 @@ class BrowserViewModelTest {
     }
 
     @Test
-    fun whenOpenFavoriteFromWidgetThenFirePixel() = runTest {
+    fun `onOpenFavoriteFromWidget - fire pixel`() = runTest {
         val url = "example.com"
         whenever(mockOmnibarEntryConverter.convertQueryToUrl(url)).thenReturn(url)
         testee.onOpenFavoriteFromWidget(url)
@@ -212,7 +212,7 @@ class BrowserViewModelTest {
     }
 
     @Test
-    fun whenOpenFromThirdPartyAndNotDefaultBrowserThenFirePixel() = runTest {
+    fun `launchFromThirdParty - not default browser - fire pixel`() = runTest {
         whenever(mockDefaultBrowserDetector.isDefaultBrowser()).thenReturn(false)
         testee.launchFromThirdParty()
         verify(mockPixel).fire(
@@ -222,7 +222,7 @@ class BrowserViewModelTest {
     }
 
     @Test
-    fun whenOpenFromThirdPartyAndDefaultBrowserThenFirePixel() = runTest {
+    fun `launchFromThirdParty - open from third party and default browser - fire pixel`() = runTest {
         whenever(mockDefaultBrowserDetector.isDefaultBrowser()).thenReturn(true)
         testee.launchFromThirdParty()
         verify(mockPixel).fire(
@@ -232,7 +232,7 @@ class BrowserViewModelTest {
     }
 
     @Test
-    fun whenOnLaunchedFromNotificationCalledWithPixelNameThePixelFired() {
+    fun `onLaunchedFromNotification - the pixel fired`() {
         val pixelName = "pixel_name"
         testee.onLaunchedFromNotification(pixelName)
 
@@ -240,7 +240,7 @@ class BrowserViewModelTest {
     }
 
     @Test
-    fun whenOnBookmarksActivityResultCalledThenOpenSavedSiteCommandTriggered() {
+    fun `onBookmarksActivityResult - open saved site command triggered`() {
         val bookmarkUrl = "https://www.example.com"
 
         testee.onBookmarksActivityResult(bookmarkUrl)

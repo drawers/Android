@@ -33,21 +33,21 @@ class RealCookiesFeatureToggleRepositoryTest {
     }
 
     @Test
-    fun whenDeleteAllThenDeleteAllCalled() {
+    fun `deleteAll - delete all called`() {
         testee.deleteAll()
 
         verify(mockCookiesFeatureToggleStore).deleteAll()
     }
 
     @Test
-    fun whenGetThenGetCalled() {
+    fun `get - cookies feature toggle store called`() {
         testee.get(Cookie, true)
 
         verify(mockCookiesFeatureToggleStore).get(Cookie, true)
     }
 
     @Test
-    fun whenInsertThenInsertCalled() {
+    fun `insert - cookies feature toggle store inserted`() {
         val cookieFeatureToggle = CookiesFeatureToggles(Cookie, true, null)
         testee.insert(cookieFeatureToggle)
 

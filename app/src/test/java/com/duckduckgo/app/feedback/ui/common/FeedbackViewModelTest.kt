@@ -83,12 +83,12 @@ class FeedbackViewModelTest {
     }
 
     @Test
-    fun whenInitialisedThenFragmentStateIsForFirstStep() {
+    fun `initialise - fragment state for first step`() {
         assertTrue(updateViewCommand is InitialAppEnjoymentClarifier)
     }
 
     @Test
-    fun whenCanRateAppAndUserSelectsInitialHappyFaceThenFragmentStateIsFirstStepOfHappyFlow() {
+    fun `userSelectsInitialHappyFace - fragment state first step of happy flow`() {
         configureRatingCanBeGiven()
         testee.userSelectedPositiveFeedback()
         assertTrue(updateViewCommand is FragmentState.PositiveFeedbackFirstStep)
@@ -96,7 +96,7 @@ class FeedbackViewModelTest {
     }
 
     @Test
-    fun whenCannotRateAppAndUserSelectsInitialHappyFaceThenFragmentStateSkipsStraightToSharingFeedback() {
+    fun `userSelectsInitialHappyFace - fragment state skips straight to sharing feedback`() {
         configureRatingCannotBeGiven()
         testee.userSelectedPositiveFeedback()
         assertTrue(updateViewCommand is FragmentState.PositiveShareFeedback)
@@ -104,7 +104,7 @@ class FeedbackViewModelTest {
     }
 
     @Test
-    fun whenCanRateAppAndUserNavigatesBackFromPositiveInitialFragmentThenFragmentStateIsInitialFragment() {
+    fun `canRateApp - user navigates back from positive initial fragment - fragment state is initial fragment`() {
         configureRatingCanBeGiven()
         testee.userSelectedPositiveFeedback()
         testee.onBackPressed()
@@ -114,7 +114,7 @@ class FeedbackViewModelTest {
     }
 
     @Test
-    fun whenCannotRateAppAndUserNavigatesBackFromPositiveInitialFragmentThenFragmentStateIsInitialFragment() {
+    fun `when cannot rate app and user navigates back from positive initial fragment - fragment state is initial fragment`() {
         configureRatingCannotBeGiven()
         testee.userSelectedPositiveFeedback()
         testee.onBackPressed()
@@ -123,14 +123,14 @@ class FeedbackViewModelTest {
     }
 
     @Test
-    fun whenUserChoosesNotToProvideFurtherDetailsForPositiveFeedbackThenSubmitted() = runTest {
+    fun `userGavePositiveFeedbackNoDetails - feedback submitted`() = runTest {
         testee.userGavePositiveFeedbackNoDetails()
 
         verify(feedbackSubmitter).sendPositiveFeedback(null)
     }
 
     @Test
-    fun whenUserChoosesNotToProvideFurtherDetailsForPositiveFeedbackThenExitCommandIssued() = runTest {
+    fun `userGavePositiveFeedback - exit command issued`() = runTest {
         testee.userGavePositiveFeedbackNoDetails()
 
         val command = captureCommand() as Command.Exit
@@ -138,14 +138,14 @@ class FeedbackViewModelTest {
     }
 
     @Test
-    fun whenUserProvidesFurtherDetailsForPositiveFeedbackThenFeedbackSubmitted() = runTest {
+    fun `userProvidesFurtherDetails - feedback submitted`() = runTest {
         testee.userProvidedPositiveOpenEndedFeedback("foo")
 
         verify(feedbackSubmitter).sendPositiveFeedback("foo")
     }
 
     @Test
-    fun whenUserProvidesFurtherDetailsForPositiveFeedbackThenExitCommandIssued() = runTest {
+    fun `userProvidesFurtherDetails - positive feedback - exit command issued`() = runTest {
         testee.userProvidedPositiveOpenEndedFeedback("foo")
 
         val command = captureCommand() as Command.Exit
@@ -153,39 +153,39 @@ class FeedbackViewModelTest {
     }
 
     @Test
-    fun whenUserProvidesNegativeFeedbackThenFeedbackSubmitted() = runTest {
+    fun `userProvidesNegativeFeedback - feedback submitted`() = runTest {
         testee.userProvidedNegativeOpenEndedFeedback(MISSING_BROWSING_FEATURES, TAB_MANAGEMENT, "foo")
         verify(feedbackSubmitter).sendNegativeFeedback(MISSING_BROWSING_FEATURES, TAB_MANAGEMENT, "foo")
     }
 
     @Test
-    fun whenUserProvidesNegativeFeedbackNoSubReasonThenFeedbackSubmitted() = runTest {
+    fun `userProvidesNegativeFeedback - no sub reason - feedback submitted`() = runTest {
         testee.userProvidedNegativeOpenEndedFeedback(MISSING_BROWSING_FEATURES, null, "foo")
         verify(feedbackSubmitter).sendNegativeFeedback(MISSING_BROWSING_FEATURES, null, "foo")
     }
 
     @Test
-    fun whenUserProvidesNegativeFeedbackEmptyOpenEndedFeedbackThenFeedbackSubmitted() = runTest {
+    fun `userProvidesNegativeFeedback - empty open-ended feedback - feedback submitted`() = runTest {
         testee.userProvidedNegativeOpenEndedFeedback(MISSING_BROWSING_FEATURES, null, "")
         verify(feedbackSubmitter).sendNegativeFeedback(MISSING_BROWSING_FEATURES, null, "")
     }
 
     @Test
-    fun whenUserCancelsThenExitCommandIssued() {
+    fun `userWantsToCancel - exit command issued`() {
         testee.userWantsToCancel()
         val command = captureCommand() as Command.Exit
         assertFalse(command.feedbackSubmitted)
     }
 
     @Test
-    fun whenUserSelectsInitialSadFaceThenFragmentStateIsFirstStepOfUnhappyFlow() {
+    fun `userSelectsInitialSadFace - fragment state first step unhappy flow`() {
         testee.userSelectedNegativeFeedback()
         assertTrue(updateViewCommand is NegativeFeedbackMainReason)
         verifyForwardsNavigation(updateViewCommand)
     }
 
     @Test
-    fun whenUserNavigatesBackFromNegativeMainReasonFragmentThenFragmentStateIsInitialFragment() {
+    fun `userNavigatesBack - fragment state initial - is initial fragment`() {
         testee.userSelectedNegativeFeedback()
         testee.onBackPressed()
         assertTrue(updateViewCommand is InitialAppEnjoymentClarifier)
@@ -193,35 +193,35 @@ class FeedbackViewModelTest {
     }
 
     @Test
-    fun whenUserSelectsMainNegativeReasonMissingBrowserFeaturesThenFragmentStateIsSubReasonSelection() {
+    fun `whenUserSelectsMainNegativeReasonMissingBrowserFeatures - fragment state is sub reason selection`() {
         testee.userSelectedNegativeFeedbackMainReason(MISSING_BROWSING_FEATURES)
         assertTrue(updateViewCommand is NegativeFeedbackSubReason)
         verifyForwardsNavigation(updateViewCommand)
     }
 
     @Test
-    fun whenUserSelectsMainNegativeReasonNotEnoughCustomizationsThenFragmentStateIsSubReasonSelection() {
+    fun `userSelectsMainNegativeReason - not enough customizations - fragment state is sub reason selection`() {
         testee.userSelectedNegativeFeedbackMainReason(NOT_ENOUGH_CUSTOMIZATIONS)
         assertTrue(updateViewCommand is NegativeFeedbackSubReason)
         verifyForwardsNavigation(updateViewCommand)
     }
 
     @Test
-    fun whenUserSelectsMainNegativeReasonSearchNotGoodEnoughThenFragmentStateIsSubReasonSelection() {
+    fun `userSelectsMainNegativeReason - search not good enough - fragment state sub reason selection`() {
         testee.userSelectedNegativeFeedbackMainReason(SEARCH_NOT_GOOD_ENOUGH)
         assertTrue(updateViewCommand is NegativeFeedbackSubReason)
         verifyForwardsNavigation(updateViewCommand)
     }
 
     @Test
-    fun whenUserSelectsMainNegativeReasonAppIsSlowOrBuggyThenFragmentStateIsSubReasonSelection() {
+    fun `userSelectsMainNegativeReason - fragment state is sub reason selection`() {
         testee.userSelectedNegativeFeedbackMainReason(APP_IS_SLOW_OR_BUGGY)
         assertTrue(updateViewCommand is NegativeFeedbackSubReason)
         verifyForwardsNavigation(updateViewCommand)
     }
 
     @Test
-    fun whenUserSelectsMainNegativeReasonOtherThenFragmentStateIsOpenEndedFeedback() {
+    fun `userSelectsMainNegativeReason - fragment state open ended feedback`() {
         testee.userSelectedNegativeFeedbackMainReason(OTHER)
         assertTrue(updateViewCommand is NegativeOpenEndedFeedback)
         verifyForwardsNavigation(updateViewCommand)
@@ -235,14 +235,14 @@ class FeedbackViewModelTest {
     }
 
     @Test
-    fun whenUserSelectsSubNegativeReasonThenFragmentStateIsOpenEndedFeedback() {
+    fun `userSelectsSubNegativeReason - fragment state open ended feedback`() {
         testee.userSelectedSubReasonMissingBrowserFeatures(MISSING_BROWSING_FEATURES, TAB_MANAGEMENT)
         assertTrue(updateViewCommand is NegativeOpenEndedFeedback)
         verifyForwardsNavigation(updateViewCommand)
     }
 
     @Test
-    fun whenUserNavigatesBackFromSubReasonSelectionThenFragmentStateIsMainReasonSelection() {
+    fun `onBackPressed - fragment state updated - main reason selection`() {
         testee.userSelectedNegativeFeedbackMainReason(MISSING_BROWSING_FEATURES)
         testee.onBackPressed()
         assertTrue(updateViewCommand is NegativeFeedbackMainReason)
@@ -250,7 +250,7 @@ class FeedbackViewModelTest {
     }
 
     @Test
-    fun whenUserNavigatesBackFromOpenEndedFeedbackAndSubReasonIsValidStepThenFragmentStateIsSubReasonSelection() {
+    fun `onBackPressed - fragment state is sub reason selection`() {
         testee.userSelectedNegativeFeedbackMainReason(MISSING_BROWSING_FEATURES)
         testee.userSelectedSubReasonMissingBrowserFeatures(MISSING_BROWSING_FEATURES, TAB_MANAGEMENT)
         testee.onBackPressed()
@@ -259,7 +259,7 @@ class FeedbackViewModelTest {
     }
 
     @Test
-    fun whenUserNavigatesBackFromOpenEndedFeedbackAndSubReasonNotAValidStepThenFragmentStateIsMainReasonSelection() {
+    fun `whenUserNavigatesBackFromOpenEndedFeedbackAndSubReasonNotAValidStep - fragment state is main reason selection`() {
         testee.userSelectedNegativeFeedbackMainReason(OTHER)
         testee.onBackPressed()
         assertTrue(updateViewCommand is NegativeFeedbackMainReason)

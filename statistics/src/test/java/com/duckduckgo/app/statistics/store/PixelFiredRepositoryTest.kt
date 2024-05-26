@@ -67,13 +67,13 @@ class PixelFiredRepositoryTest {
     }
 
     @Test
-    fun whenDatabaseIsEmptyThenPixelFiredIsFalse() = runTest {
+    fun `hasDailyPixelFired - database empty - false`() = runTest {
         assertFalse(subject.hasDailyPixelFiredToday("pixel_d"))
         assertFalse(subject.hasUniquePixelFired("pixel_u"))
     }
 
     @Test
-    fun whenPixelWasFiredThenPixelFiredIsTrue() = runTest {
+    fun `storeDailyPixelFired - pixel fired is true`() = runTest {
         subject.storeDailyPixelFiredToday("pixel_d")
         subject.storeUniquePixelFired("pixel_u")
 
@@ -82,7 +82,7 @@ class PixelFiredRepositoryTest {
     }
 
     @Test
-    fun whenADayHasPassedThenDailyPixelFiredIsFalse() = runTest {
+    fun `storeDailyPixelFired - daily pixel fired is false`() = runTest {
         subject.storeDailyPixelFiredToday("pixel_d")
         subject.storeUniquePixelFired("pixel_u")
 
@@ -93,7 +93,7 @@ class PixelFiredRepositoryTest {
     }
 
     @Test
-    fun whenDailyPixelWasFiredAgainThenDateIsUpdated() = runTest {
+    fun `storeDailyPixelFiredToday - date updated`() = runTest {
         subject.storeDailyPixelFiredToday("pixel_d")
         assertTrue(subject.hasDailyPixelFiredToday("pixel_d"))
         timeProvider.time += 1.days.toJavaDuration()

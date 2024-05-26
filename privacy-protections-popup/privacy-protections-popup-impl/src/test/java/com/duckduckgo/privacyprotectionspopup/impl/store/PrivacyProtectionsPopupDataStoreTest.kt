@@ -54,12 +54,12 @@ class PrivacyProtectionsPopupDataStoreTest {
     private val subject: PrivacyProtectionsPopupDataStore = PrivacyProtectionsPopupDataStoreImpl(testDataStore)
 
     @Test
-    fun whenDatabaseIsEmptyThenReturnsNullDismissTimestamp() = runTest {
+    fun `getToggleUsageTimestamp - database empty - returns null`() = runTest {
         assertNull(subject.getToggleUsageTimestamp())
     }
 
     @Test
-    fun whenDismissTimeIsStoredThenQueryReturnsCorrectValue() = runTest {
+    fun `setToggleUsageTimestamp - query returns correct value`() = runTest {
         val timestamp = Instant.parse("2023-11-29T10:15:30.000Z")
 
         subject.setToggleUsageTimestamp(timestamp)
@@ -68,7 +68,7 @@ class PrivacyProtectionsPopupDataStoreTest {
     }
 
     @Test
-    fun whenDismissTimeIsSetMultipleTimesThenReturnsMostRecentlyStoredValue() = runTest {
+    fun `setToggleUsageTimestamp - returns most recently stored value`() = runTest {
         subject.setToggleUsageTimestamp(Instant.parse("2023-11-28T10:15:30.000Z"))
         subject.setToggleUsageTimestamp(Instant.parse("2023-11-29T10:15:30.000Z"))
         subject.setToggleUsageTimestamp(Instant.parse("2023-11-10T10:15:30.000Z"))
@@ -78,12 +78,12 @@ class PrivacyProtectionsPopupDataStoreTest {
     }
 
     @Test
-    fun whenPopupTriggerCountIsNotInitializedThenReturnsZero() = runTest {
+    fun `getPopupTriggerCount - not initialized - returns zero`() = runTest {
         assertEquals(0, subject.getPopupTriggerCount())
     }
 
     @Test
-    fun whenPopupTriggerCountIsStoredThenReturnsCorrectValue() = runTest {
+    fun `setPopupTriggerCount - returns correct value`() = runTest {
         val count = 123
         subject.setPopupTriggerCount(count)
         val storedCount = subject.getPopupTriggerCount()
@@ -91,23 +91,23 @@ class PrivacyProtectionsPopupDataStoreTest {
     }
 
     @Test
-    fun whenDoNotShowAgainIsNotInitializedThenReturnsFalse() = runTest {
+    fun `getDoNotShowAgain - not initialized - returns false`() = runTest {
         assertFalse(subject.getDoNotShowAgainClicked())
     }
 
     @Test
-    fun whenDoNotShowAgainIsStoredThenReturnsCorrectValue() = runTest {
+    fun `setDoNotShowAgain - returns correct value`() = runTest {
         subject.setDoNotShowAgainClicked(clicked = true)
         assertTrue(subject.getDoNotShowAgainClicked())
     }
 
     @Test
-    fun whenExperimentVariantIsNotInitializedThenReturnsNull() = runTest {
+    fun `getExperimentVariant - not initialized - returns null`() = runTest {
         assertNull(subject.getExperimentVariant())
     }
 
     @Test
-    fun whenExperimentVariantIsStoredThenReturnsCorrectValue() = runTest {
+    fun `setExperimentVariant - returns correct value`() = runTest {
         subject.setExperimentVariant(CONTROL)
         assertEquals(CONTROL, subject.getExperimentVariant())
     }

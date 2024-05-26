@@ -21,31 +21,31 @@ class RealAuthRepositoryTest {
     private val authRepository: AuthRepository = RealAuthRepository(authStore, coroutineRule.testDispatcherProvider)
 
     @Test
-    fun whenIsAuthenticatedAndNoAccessTokenThenReturnFalse() = runTest {
+    fun `isUserAuthenticated - no access token - returns false`() = runTest {
         authStore.authToken = "authToken"
         assertFalse(authRepository.isUserAuthenticated())
     }
 
     @Test
-    fun whenIsAuthenticatedAndNoAuthTokenThenReturnFalse() = runTest {
+    fun `isUserAuthenticated - no token - false`() = runTest {
         authStore.accessToken = "accessToken"
         assertFalse(authRepository.isUserAuthenticated())
     }
 
     @Test
-    fun whenIsAuthenticatedAndNoAuthTokenAndAccessTokenThenReturnFalse() = runTest {
+    fun `isUserAuthenticated - no auth token and access token`() = runTest {
         assertFalse(authRepository.isUserAuthenticated())
     }
 
     @Test
-    fun whenIsAuthenticatedThenReturnTrue() = runTest {
+    fun `isUserAuthenticated - authenticated`() = runTest {
         authStore.authToken = "authToken"
         authStore.accessToken = "accessToken"
         assertTrue(authRepository.isUserAuthenticated())
     }
 
     @Test
-    fun whenClearAccountThenClearData() = runTest {
+    fun `clearAccount - clear data`() = runTest {
         authStore.email = "email@duck.com"
         authStore.externalId = "externalId"
         authStore.authToken = "authToken"
@@ -60,7 +60,7 @@ class RealAuthRepositoryTest {
     }
 
     @Test
-    fun whenClearSubscriptionThenClearData() = runTest {
+    fun `clearSubscription - clear data`() = runTest {
         authStore.status = "expired"
         authStore.startedAt = 1000L
         authStore.expiresOrRenewsAt = 1000L
@@ -79,7 +79,7 @@ class RealAuthRepositoryTest {
     }
 
     @Test
-    fun whenSaveAccountDataThenSetData() = runTest {
+    fun `saveAccountData - set data`() = runTest {
         assertNull(authStore.authToken)
         assertNull(authStore.externalId)
 
@@ -90,7 +90,7 @@ class RealAuthRepositoryTest {
     }
 
     @Test
-    fun whenTokensThenReturnTokens() = runTest {
+    fun `getTokens - tokens returned`() = runTest {
         assertNull(authStore.authToken)
         assertNull(authStore.accessToken)
 
@@ -102,13 +102,13 @@ class RealAuthRepositoryTest {
     }
 
     @Test
-    fun whenPurchaseToWaitingStatusThenStoreWaiting() = runTest {
+    fun `purchaseToWaitingStatus - store waiting`() = runTest {
         authRepository.purchaseToWaitingStatus()
         assertEquals(WAITING.statusName, authStore.status)
     }
 
     @Test
-    fun whenGetStatusReturnCorrectStatus() = runTest {
+    fun `getStatus - returns correct status`() = runTest {
         authStore.status = AUTO_RENEWABLE.statusName
         assertEquals(AUTO_RENEWABLE, authRepository.getStatus())
         authStore.status = NOT_AUTO_RENEWABLE.statusName
@@ -126,12 +126,12 @@ class RealAuthRepositoryTest {
     }
 
     @Test
-    fun whenCanSupportEncryptionThenReturnValue() = runTest {
+    fun `canSupportEncryption - return value`() = runTest {
         assertTrue(authRepository.canSupportEncryption())
     }
 
     @Test
-    fun whenCanSupportEncryptionItCannotThenReturnFalse() = runTest {
+    fun `canSupportEncryption - cannot support encryption - return false`() = runTest {
         val repository: AuthRepository = RealAuthRepository(
             FakeSubscriptionsDataStore(supportEncryption = false),
             coroutineRule.testDispatcherProvider,

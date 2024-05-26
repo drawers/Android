@@ -21,7 +21,7 @@ import org.junit.Test
 
 class NetworkProtectionPixelNamesTest {
     @Test
-    fun allNetworkProtectionPixelsShallBePrefixed() {
+    fun `allNetworkProtectionPixelsShallBePrefixed - all network protection pixels prefixed`() {
         NetworkProtectionPixelNames.values().map { it.pixelName }.forEach { pixel ->
             assertTrue(pixel.startsWith("m_netp") || pixel.startsWith("m_vpn"))
         }

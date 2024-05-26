@@ -40,43 +40,43 @@ class FileChooserIntentBuilderTest {
     }
 
     @Test
-    fun whenIntentBuiltThenReadUriPermissionFlagSet() {
+    fun `intent - built - read uri permission flag set`() {
         val output = testee.intent(emptyArray())
         assertTrue("Intent.FLAG_GRANT_READ_URI_PERMISSION flag not set on intent", output.hasFlagSet(Intent.FLAG_GRANT_READ_URI_PERMISSION))
     }
 
     @Test
-    fun whenIntentBuiltThenAcceptTypeSetToAll() {
+    fun `intent - built - accept type set to all`() {
         val output = testee.intent(emptyArray())
         assertEquals("*/*", output.type)
     }
 
     @Test
-    fun whenMultipleModeDisabledThenIntentExtraReturnsFalse() {
+    fun `intent - multiple mode disabled - returns false`() {
         val output = testee.intent(emptyArray(), canChooseMultiple = false)
         assertFalse(output.getBooleanExtra(Intent.EXTRA_ALLOW_MULTIPLE, false))
     }
 
     @Test
-    fun whenRequestedTypesAreMissingThenShouldNotAddMimeTypeExtra() {
+    fun `intent - requested types missing - does not add mime type extra`() {
         val output = testee.intent(emptyArray())
         assertFalse(output.hasExtra(Intent.EXTRA_MIME_TYPES))
     }
 
     @Test
-    fun whenRequestedTypesArePresentThenShouldAddMimeTypeExtra() {
+    fun `whenRequestedTypesArePresent - intent extra - has mime types`() {
         val output = testee.intent(arrayOf("image/png", "image/gif"))
         assertTrue(output.hasExtra(Intent.EXTRA_MIME_TYPES))
     }
 
     @Test
-    fun whenUpperCaseTypesGivenThenNormalisedToLowercase() {
+    fun `when UpperCaseTypes Given Then Normalized To Lowercase - normalised to lowercase`() {
         val output = testee.intent(arrayOf("ImAgE/PnG"))
         assertEquals("image/png", output.getStringArrayExtra(Intent.EXTRA_MIME_TYPES)!![0])
     }
 
     @Test
-    fun whenEmptyTypesGivenThenNotIncludedInOutput() {
+    fun `intent - empty types given - not included in output`() {
         val output = testee.intent(arrayOf("image/png", "", " ", "image/gif"))
         val mimeTypes = output.getStringArrayExtra(Intent.EXTRA_MIME_TYPES)
         assertEquals(2, mimeTypes!!.size)
@@ -85,13 +85,13 @@ class FileChooserIntentBuilderTest {
     }
 
     @Test
-    fun whenMultipleModeEnabledThenIntentExtraReturnsTrue() {
+    fun `whenMultipleModeEnabled - intent extra returns true`() {
         val output = testee.intent(emptyArray(), canChooseMultiple = true)
         assertTrue(output.getBooleanExtra(Intent.EXTRA_ALLOW_MULTIPLE, false))
     }
 
     @Test
-    fun whenExtractingSingleUriEmptyClipThenSingleUriReturned() {
+    fun `extractSelectedFileUris - single uri empty clip - single uri returned`() {
         val intent = buildIntent("a")
         val extractedUris = testee.extractSelectedFileUris(intent)
 
@@ -100,7 +100,7 @@ class FileChooserIntentBuilderTest {
     }
 
     @Test
-    fun whenExtractingSingleUriNonEmptyClipThenUriReturnedFromClip() {
+    fun `extractSelectedFileUris - non-empty clip - uri returned from clip`() {
         val intent = buildIntent("a", listOf("b"))
         val extractedUris = testee.extractSelectedFileUris(intent)
 
@@ -109,7 +109,7 @@ class FileChooserIntentBuilderTest {
     }
 
     @Test
-    fun whenExtractingMultipleClipItemsThenCorrectUrisReturnedFromClip() {
+    fun `extractSelectedFileUris - multiple clip items - correct uris returned from clip`() {
         val intent = buildIntent("a", listOf("b", "c"))
         val extractedUris = testee.extractSelectedFileUris(intent)
 
@@ -119,7 +119,7 @@ class FileChooserIntentBuilderTest {
     }
 
     @Test
-    fun whenExtractingSingleUriMissingButClipDataAvailableThenUriReturnedFromClip() {
+    fun `extractSelectedFileUris - clip data available - uri returned from clip`() {
         val intent = buildIntent(clipData = listOf("b"))
         val extractedUris = testee.extractSelectedFileUris(intent)
 
@@ -128,7 +128,7 @@ class FileChooserIntentBuilderTest {
     }
 
     @Test
-    fun whenNoDataOrClipDataThenNullUriReturned() {
+    fun `extractSelectedFileUris - no data or clip data - null uri returned`() {
         val intent = buildIntent(data = null, clipData = null)
         val extractedUris = testee.extractSelectedFileUris(intent)
 

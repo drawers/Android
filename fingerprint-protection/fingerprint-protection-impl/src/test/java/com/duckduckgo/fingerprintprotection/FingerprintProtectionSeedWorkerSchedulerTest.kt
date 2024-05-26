@@ -43,7 +43,7 @@ class FingerprintProtectionSeedWorkerSchedulerTest {
     }
 
     @Test
-    fun whenOnStopThenStoreNewSeedAndEnqueueWorkWithReplacePolicy() {
+    fun `onStop - store new seed and enqueue work with replace policy`() {
         fingerprintProtectionSeedWorkerScheduler.onStop(mockOwner)
 
         verify(mockWorkManager).enqueueUniquePeriodicWork(any(), eq(REPLACE), any())
@@ -51,7 +51,7 @@ class FingerprintProtectionSeedWorkerSchedulerTest {
     }
 
     @Test
-    fun whenOnStartThenEnqueueWorkWithKeepPolicy() {
+    fun `onStart - enqueue work with keep policy`() {
         fingerprintProtectionSeedWorkerScheduler.onStart(mockOwner)
 
         verify(mockWorkManager).enqueueUniquePeriodicWork(any(), eq(KEEP), any())

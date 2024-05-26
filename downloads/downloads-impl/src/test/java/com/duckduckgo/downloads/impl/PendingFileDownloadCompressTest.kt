@@ -55,7 +55,7 @@ class PendingFileDownloadCompressTest {
     }
 
     @Test
-    fun whenDownloadUrlIsSmallAndToInputDataCalledThenUrlNotCompressed() {
+    fun `whenDownloadUrlIsSmallAndToInputDataCalledThenUrlNotCompressed - url not compressed`() {
         val smallUrl = "https://static.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg"
 
         val data = buildPendingDownload(url = smallUrl).toInputData()
@@ -79,7 +79,7 @@ class PendingFileDownloadCompressTest {
     }
 
     @Test
-    fun whenDownloadUrlIsNotCompressedAndToPendingFileDownloadCalledThenUrlIsNotDecompressed() {
+    fun `whenDownloadUrlIsNotCompressedAndToPendingFileDownloadCalledThenUrlIsNotDecompressed - url not compressed`() {
         val smallUrl = "https://static.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg"
         val data = buildPendingDownload(url = smallUrl).toInputData()
 

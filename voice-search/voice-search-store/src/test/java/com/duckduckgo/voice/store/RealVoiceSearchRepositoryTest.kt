@@ -35,7 +35,7 @@ class RealVoiceSearchRepositoryTest {
     }
 
     @Test
-    fun whenRationalDialogIsAcceptedThenGetHasAcceptedRationaleDialogShouldBeTrue() {
+    fun `acceptRationaleDialog - has accepted rationale dialog`() {
         assertFalse(testee.getHasAcceptedRationaleDialog())
 
         testee.acceptRationaleDialog()
@@ -44,7 +44,7 @@ class RealVoiceSearchRepositoryTest {
     }
 
     @Test
-    fun whenPermissionDeclinedForeverThenGetHasPermissionDeclinedForeverShouldBeTrue() {
+    fun `declinePermissionForever - permission declined forever - has permission declined forever`() {
         assertFalse(testee.getHasPermissionDeclinedForever())
 
         testee.declinePermissionForever()
@@ -53,7 +53,7 @@ class RealVoiceSearchRepositoryTest {
     }
 
     @Test
-    fun whenAvailabilityIsLoggedThengetHasLoggedAvailabilityShouldBeTrue() {
+    fun `saveLoggedAvailability - availability logged - has logged availability`() {
         assertFalse(testee.getHasLoggedAvailability())
 
         testee.saveLoggedAvailability()
@@ -62,7 +62,7 @@ class RealVoiceSearchRepositoryTest {
     }
 
     @Test
-    fun whenSetVoiceSearchEnabledThenIsVoiceSearchEnabledShouldBeTrue() {
+    fun `setVoiceSearchEnabled - is voice search enabled should be true`() {
         assertFalse(testee.isVoiceSearchUserEnabled(false))
 
         testee.setVoiceSearchUserEnabled(true)
@@ -71,14 +71,14 @@ class RealVoiceSearchRepositoryTest {
     }
 
     @Test
-    fun whenSetVoiceSearchEnabledThenListenerShouldBeCalled() {
+    fun `setVoiceSearchEnabled - voice search status listener called`() {
         testee.setVoiceSearchUserEnabled(true)
 
         assertTrue(voiceSearchStatusListener.statusChanged)
     }
 
     @Test
-    fun whenDismissVoiceSearchThenCountVoiceSearchDismissedValueShouldIncrease() {
+    fun `dismissVoiceSearch - count voice search dismissed value should increase`() {
         assertEquals(0, testee.countVoiceSearchDismissed())
 
         testee.dismissVoiceSearch()

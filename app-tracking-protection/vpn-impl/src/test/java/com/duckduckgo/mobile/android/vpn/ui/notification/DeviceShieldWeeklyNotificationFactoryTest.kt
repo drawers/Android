@@ -65,7 +65,7 @@ class DeviceShieldWeeklyNotificationFactoryTest {
     }
 
     @Test
-    fun createsWeeklyReportNotificationWhenTrackersFoundInOneApp() = runBlocking {
+    fun `creates weekly report notification - track found in one app`() = runBlocking {
         val trackerDomain = "example.com"
         trackerFound(trackerDomain)
 
@@ -75,7 +75,7 @@ class DeviceShieldWeeklyNotificationFactoryTest {
     }
 
     @Test
-    fun createsWeeklyReportNotificationWhenTrackersFoundInTwoApps() = runBlocking {
+    fun `createsWeeklyReportNotification - trackers found in two apps`() = runBlocking {
         val trackerDomain = "example.com"
         trackerFound(trackerDomain, appContainingTracker = trackingApp1())
         trackerFound(
@@ -90,7 +90,7 @@ class DeviceShieldWeeklyNotificationFactoryTest {
     }
 
     @Test
-    fun createsWeeklyReportNotificationWhenTrackersFoundInMoreThanTwoApps() = runBlocking {
+    fun `creates weekly report notification - trackers found in more than two apps`() = runBlocking {
         val trackerDomain = "example.com"
         trackerFound(trackerDomain, appContainingTracker = trackingApp1())
         trackerFound(trackerDomain, appContainingTracker = trackingApp2())
@@ -106,7 +106,7 @@ class DeviceShieldWeeklyNotificationFactoryTest {
     }
 
     @Test
-    fun createsWeeklyReportNotificationWithCorrectSortOrder() = runBlocking {
+    fun `createsWeeklyReportNotification - correct sort order`() = runBlocking {
         val trackerDomain = "example.com"
         trackerFound(trackerDomain, appContainingTracker = trackingApp1())
         trackerFound(trackerDomain, appContainingTracker = trackingApp2())
@@ -125,13 +125,13 @@ class DeviceShieldWeeklyNotificationFactoryTest {
     }
 
     @Test
-    fun createsHiddenWeeklyReportNotificationWhenNoTrackersFound() = runBlocking {
+    fun `creates weekly report notification - no trackers found - hidden`() = runBlocking {
         val notification = factory.weeklyNotificationFactory.createWeeklyDeviceShieldNotification(0)
         assertTrue(notification.hidden)
     }
 
     @Test
-    fun createsWeeklyTopTrackerCompanyNotificationWhenTrackersFoundInOneApp() = runBlocking {
+    fun `createsWeeklyTopTrackerCompanyNotification - trackers found in one app`() = runBlocking {
         val trackerDomain = "example.com"
         trackerFound(trackerDomain)
 
@@ -141,7 +141,7 @@ class DeviceShieldWeeklyNotificationFactoryTest {
     }
 
     @Test
-    fun createsWeeklyTopTrackerCompanyNotificationWhenTrackersFoundInTwoApps() = runBlocking {
+    fun `createsWeeklyTopTrackerCompanyNotification - trackers found in two apps`() = runBlocking {
         val trackerDomain = "example.com"
 
         trackerFound("google.com", company = "Google", appContainingTracker = trackingApp1())
@@ -164,7 +164,7 @@ class DeviceShieldWeeklyNotificationFactoryTest {
     }
 
     @Test
-    fun createsHiddenWeeklyTopTrackerCompanyNotificationWhenNoTrackersFound() = runBlocking {
+    fun `createsWeeklyTopTrackerCompanyNotification - no trackers found - hidden`() = runBlocking {
         val notification = factory.weeklyNotificationFactory.createWeeklyDeviceShieldNotification(1)
         assertTrue(notification.hidden)
     }

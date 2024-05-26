@@ -14,7 +14,7 @@ import org.junit.Test
 class RetryTest {
 
     @Test
-    fun `when block returns false and config is null then does not retry`() = runTest {
+    fun `retry - block returns false and config is null - does not retry`() = runTest {
         var attemptCount = 0
 
         retry(retryPolicy = null) {
@@ -26,7 +26,7 @@ class RetryTest {
     }
 
     @Test
-    fun `when block returns true then does not retry`() = runTest {
+    fun `retry - block returns true - does not retry`() = runTest {
         val retryPolicy = RetryPolicy(
             retryCount = 10,
             initialDelay = 1.seconds,
@@ -45,7 +45,7 @@ class RetryTest {
     }
 
     @Test
-    fun `when block returns false then does retry`() = runTest {
+    fun `when block returns false then does retry - retry policy applied`() = runTest {
         val retryPolicy = RetryPolicy(
             retryCount = 10,
             initialDelay = 1.seconds,
@@ -64,7 +64,7 @@ class RetryTest {
     }
 
     @Test
-    fun `when block returns true on retry then stops retrying`() = runTest {
+    fun `retry - block returns true on retry then stops retrying`() = runTest {
         val retryPolicy = RetryPolicy(
             retryCount = 10,
             initialDelay = 1.seconds,
@@ -83,7 +83,7 @@ class RetryTest {
     }
 
     @Test
-    fun `when about to retry then delays incrementally`() = runTest {
+    fun `when about to retry then delays incrementally - state - delays incrementally`() = runTest {
         val retryPolicy = RetryPolicy(
             retryCount = 8,
             initialDelay = 1.seconds,

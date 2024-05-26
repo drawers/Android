@@ -41,21 +41,21 @@ class SuggestionMatcherTest {
     )
 
     @Test
-    fun whenUrlIsNullThenNoSuggestions() = runTest {
+    fun `getDirectSuggestions - url is null - no suggestions`() = runTest {
         configureNoShareableCredentials()
         val suggestions = testee.getDirectSuggestions(null, listOf())
         assertTrue(suggestions.isEmpty())
     }
 
     @Test
-    fun whenUrlIsNotNullAndNoCredentialsThenNoSuggestions() = runTest {
+    fun `getDirectSuggestions - url is not null and no credentials - no suggestions`() = runTest {
         configureNoShareableCredentials()
         val suggestions = testee.getDirectSuggestions("https://duckduckgo.com", listOf())
         assertTrue(suggestions.isEmpty())
     }
 
     @Test
-    fun whenCredentialsAvailableButNotAMatchThenNoSuggestions() = runTest {
+    fun `getDirectSuggestions - no match - no suggestions`() = runTest {
         configureNoShareableCredentials()
         val creds = listOf(creds("https://example.com"))
         val suggestions = testee.getDirectSuggestions("https://duckduckgo.com", creds)
@@ -63,7 +63,7 @@ class SuggestionMatcherTest {
     }
 
     @Test
-    fun whenCredentialsAvailableWithASingleMatchThenOneSuggestion() = runTest {
+    fun `getDirectSuggestions - credentials available with a single match - one suggestion`() = runTest {
         configureNoShareableCredentials()
         val creds = listOf(
             creds("https://example.com"),
@@ -75,7 +75,7 @@ class SuggestionMatcherTest {
     }
 
     @Test
-    fun whenCredentialsAvailableWithMultipleMatchesThenMultipleSuggestions() = runTest {
+    fun `getDirectSuggestions - credentials available with multiple matches - multiple suggestions`() = runTest {
         configureNoShareableCredentials()
         val creds = listOf(
             creds("https://example.com"),
@@ -88,7 +88,7 @@ class SuggestionMatcherTest {
     }
 
     @Test
-    fun whenSubdomainIncludedInSavedSiteAndVisitingRootSiteThenSuggestionOffered() = runTest {
+    fun `getDirectSuggestions - subdomain included in saved site and visiting root site - suggestion offered`() = runTest {
         configureNoShareableCredentials()
         val creds = listOf(creds("https://duckduckgo.com"))
         val suggestions = testee.getDirectSuggestions("https://test.duckduckgo.com", creds)
@@ -96,7 +96,7 @@ class SuggestionMatcherTest {
     }
 
     @Test
-    fun whenPortIncludedInSavedSiteAndNotInVisitedSiteThenNotASuggestion() = runTest {
+    fun `getDirectSuggestions - port included in saved site and not visited site - not a suggestion`() = runTest {
         configureNoShareableCredentials()
         val creds = listOf(creds("example.com:8080"))
         val suggestions = testee.getDirectSuggestions("example.com", creds)
@@ -104,7 +104,7 @@ class SuggestionMatcherTest {
     }
 
     @Test
-    fun whenPortIncludedInVisitedSiteAndNotInSavedSiteThenNotASuggestion() = runTest {
+    fun `getDirectSuggestions - port included in visited site and not in saved site - not a suggestion`() = runTest {
         configureNoShareableCredentials()
         val creds = listOf(creds("example.com"))
         val suggestions = testee.getDirectSuggestions("example.com:8080", creds)
@@ -112,7 +112,7 @@ class SuggestionMatcherTest {
     }
 
     @Test
-    fun whenPortIncludedInVisitedSiteDiffersFromPortInSavedSiteThenNotASuggestion() = runTest {
+    fun `getDirectSuggestions - port included in visited site differs from port in saved site - not a suggestion`() = runTest {
         configureNoShareableCredentials()
         val creds = listOf(creds("example.com:9000"))
         val suggestions = testee.getDirectSuggestions("example.com:8080", creds)
@@ -120,7 +120,7 @@ class SuggestionMatcherTest {
     }
 
     @Test
-    fun whenPortIncludedInVisitedSiteMatchesPortInSavedSiteThenNotASuggestion() = runTest {
+    fun `getDirectSuggestions - port included in visited site matches port in saved site - not a suggestion`() = runTest {
         configureNoShareableCredentials()
         val creds = listOf(creds("example.com:9000"))
         val suggestions = testee.getDirectSuggestions("example.com:9000", creds)

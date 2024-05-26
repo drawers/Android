@@ -37,14 +37,14 @@ class FingerprintingTemporaryStorageContentScopeConfigPluginTest {
     }
 
     @Test
-    fun whenGetConfigThenReturnCorrectlyFormattedJson() {
+    fun `getConfig - return correctly formatted json`() {
         whenever(mockFingerprintingTemporaryStorageRepository.fingerprintingTemporaryStorageEntity)
             .thenReturn(FingerprintingTemporaryStorageEntity(json = config))
         assertEquals("\"fingerprintingTemporaryStorage\":$config", testee.config())
     }
 
     @Test
-    fun whenGetPreferencesThenReturnNull() {
+    fun `getPreferences - returns null`() {
         assertNull(testee.preferences())
     }
 
