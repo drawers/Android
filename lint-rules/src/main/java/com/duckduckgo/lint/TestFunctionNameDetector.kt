@@ -145,6 +145,10 @@ class TestFunctionNameDetector : Detector(), SourceCodeScanner {
         val extractedFunctionName = response.substringBetween('`') ?: return null
         val sanitizedFunctionName = extractedFunctionName.sanitizedFunctionName() ?: return null
 
+        if (!usedNames.add(sanitizedFunctionName)) {
+            return null
+        }
+
         return LintFix.create().name("Use name suggested by language model").replace().all().with(sanitizedFunctionName).autoFix().build()
     }
 
