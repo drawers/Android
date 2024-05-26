@@ -15,6 +15,11 @@ is not affiliated in any way with DuckDuckGo.
 
 Look at the open pull requests for examples of AI-assisted refactors.
 
+The example we implemented was a refactor of test case names 
+to a more verbose style. This isn't to express a particular preference
+on test function naming but it merely represents real
+refactor requested by a client that would not be possible to automate without LMs.
+
 To run the refactors yourself you can do:
 
 ```bash
