@@ -13,6 +13,8 @@ is not affiliated in any way with DuckDuckGo.
 
 # What's to see here?
 
+## AI-assisted large scale refactors
+
 Look at the open pull requests for examples of AI-assisted refactors.
 
 The example we implemented was a refactor of test case names 
@@ -48,6 +50,16 @@ After you've generated the diff, you can run `./gradlew compileDebugUnitTestKotl
 
 Formatting is run via `./gradlew formatKotlin`
 
+## Where is the code that generates the PR?
+
+Look at the lint rule in `TestFunctionNameDetector.kt`
+
+https://github.com/drawers/Android/blob/371820168e41aea595242334ce18f671b5ea9012/lint-rules/src/main/java/com/duckduckgo/lint/TestFunctionNameDetector.kt#L139
+lint-rules/src/main/java/com/duckduckgo/lint/chatmodel/ChatModels.kt
+
+Look at the chat model setup in `ChatModel.kt`
+
+https://github.com/drawers/Android/blob/371820168e41aea595242334ce18f671b5ea9012/lint-rules/src/main/java/com/duckduckgo/lint/chatmodel/ChatModels.kt#L43
 
 ## License
 DuckDuckGo android is distributed under the Apache 2.0 [license](LICENSE).
