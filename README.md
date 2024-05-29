@@ -25,6 +25,9 @@ refactor requested by a client that would not be possible to automate without LM
 To run the refactors yourself you can do:
 
 ```bash
+# Set up ollama runnning in another terminal window if necessary e.g.,
+# ollama run llama3
+
 # Defaults to using Ollama with llama3
 ./gradlew lintFix --continue
 
