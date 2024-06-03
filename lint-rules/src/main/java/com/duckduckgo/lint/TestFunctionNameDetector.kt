@@ -173,7 +173,7 @@ class TestFunctionNameDetector : Detector(), SourceCodeScanner {
     }
 
     /**
-     * Takes a proposed function name and
+     * Takes a proposed function name, reject empty names and long names, and replace illegal chars
      */
     private fun String.sanitizedFunctionName(): String? {
         if (this.isEmpty()) return null
