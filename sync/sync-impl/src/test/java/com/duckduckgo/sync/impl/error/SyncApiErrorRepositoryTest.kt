@@ -54,7 +54,7 @@ class SyncApiErrorRepositoryTest {
     }
 
     @Test
-    fun whenApiErrorAddedAndNotPresentThenNewEntryAdded() {
+    fun `addError - api error added and not present - new entry added`() {
         val feature = SyncableType.BOOKMARKS
         val errorType = SyncApiErrorType.OBJECT_LIMIT_EXCEEDED
         val date = DatabaseDateFormatter.getUtcIsoLocalDate()
@@ -68,7 +68,7 @@ class SyncApiErrorRepositoryTest {
     }
 
     @Test
-    fun whenApiErrorAddedAndPresentThenCountUpdated() {
+    fun `addError - api error added and present - count updated`() {
         val feature = SyncableType.BOOKMARKS
         val errorType = SyncApiErrorType.OBJECT_LIMIT_EXCEEDED
         val date = DatabaseDateFormatter.getUtcIsoLocalDate()
@@ -83,7 +83,7 @@ class SyncApiErrorRepositoryTest {
     }
 
     @Test
-    fun whenNoErrorsStoredThenGettingErrorsReturnsEmpty() {
+    fun `getErrors - no errors stored - returns empty`() {
         val date = DatabaseDateFormatter.getUtcIsoLocalDate()
 
         val errors = testee.getErrorsByDate(date)
@@ -92,7 +92,7 @@ class SyncApiErrorRepositoryTest {
     }
 
     @Test
-    fun whenNoErrorsStoredFromYesterdayThenGettingErrorsFromYesterdayReturnsEmpty() {
+    fun `getErrorsByDate - no errors stored from yesterday - returns empty`() {
         val feature = SyncableType.BOOKMARKS
         val errorType = SyncApiErrorType.OBJECT_LIMIT_EXCEEDED
 
@@ -106,7 +106,7 @@ class SyncApiErrorRepositoryTest {
     }
 
     @Test
-    fun whenErrorsStoredThenGettingErrorsReturnsData() {
+    fun `addError - getting errors returns data`() {
         val feature = SyncableType.BOOKMARKS
         val errorType = SyncApiErrorType.OBJECT_LIMIT_EXCEEDED
 

@@ -32,28 +32,28 @@ class VerificationCheckBuildTypeImplTest {
     private val testee = VerificationCheckBuildTypeImpl(appBuildConfig)
 
     @Test
-    fun whenIsPlayReleaseThenIdentifiedCorrectly() {
+    fun `configure - is play release correctly`() {
         configureFlavor(PLAY)
         configureAsReleaseBuild()
         assertTrue(testee.isPlayReleaseBuild())
     }
 
     @Test
-    fun whenIsPlayAndNotReleaseThenIdentifiedCorrectly() {
+    fun `isPlay - not release build`() {
         configureFlavor(PLAY)
         configureAsDebugBuild()
         assertFalse(testee.isPlayReleaseBuild())
     }
 
     @Test
-    fun whenIsNotPlayFlavorThenIdentifiedCorrectly() {
+    fun `isNotPlayFlavor - identified correctly`() {
         configureFlavor(FDROID)
         configureAsReleaseBuild()
         assertFalse(testee.isPlayReleaseBuild())
     }
 
     @Test
-    fun whenIsNotPlayFlavorAndNotReleaseThenIdentifiedCorrectly() {
+    fun `configure - is not play flavor and not release - identified correctly`() {
         configureFlavor(FDROID)
         configureAsDebugBuild()
         assertFalse(testee.isPlayReleaseBuild())

@@ -40,7 +40,7 @@ class FirstPartyCookiesModifierWorkerTest {
     }
 
     @Test
-    fun whenDoWorkThenReturnSuccess() = runTest {
+    fun `doWork - return success`() = runTest {
         val worker = TestListenableWorkerBuilder<FirstPartyCookiesModifierWorker>(context = context).build()
 
         worker.firstPartyCookiesModifier = mockFirstPartyCookiesModifier

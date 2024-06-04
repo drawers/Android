@@ -37,13 +37,13 @@ class FingerprintingCanvasContentScopeConfigPluginTest {
     }
 
     @Test
-    fun whenGetConfigThenReturnCorrectlyFormattedJson() {
+    fun `getConfig - return correctly formatted json`() {
         whenever(mockFingerprintingCanvasRepository.fingerprintingCanvasEntity).thenReturn(FingerprintingCanvasEntity(json = config))
         assertEquals("\"fingerprintingCanvas\":$config", testee.config())
     }
 
     @Test
-    fun whenGetPreferencesThenReturnNull() {
+    fun `getPreferences - returns null`() {
         assertNull(testee.preferences())
     }
 

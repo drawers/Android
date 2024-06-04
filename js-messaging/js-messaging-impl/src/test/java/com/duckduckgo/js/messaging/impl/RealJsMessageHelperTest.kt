@@ -23,7 +23,7 @@ class RealJsMessageHelperTest {
     private val jsMessageHelper = RealJsMessageHelper(TestScope(), coroutineRule.testDispatcherProvider)
 
     @Test
-    fun whenSendSubscriptionEventThenResponseMatches() = runTest {
+    fun `sendSubscriptionEvent - response matches`() = runTest {
         val expected = """
             javascript:(function() {
                 window['callbackName']('secret', {"context":"myContext","featureName":"myFeature","params":{"test":"this is a test"},"subscriptionName":"mySubscription"});
@@ -45,7 +45,7 @@ class RealJsMessageHelperTest {
     }
 
     @Test
-    fun whenSendJsResponseAsSuccessThenResponseMatches() = runTest {
+    fun `sendJsResponse - as success - response matches`() = runTest {
         val expected = """
             javascript:(function() {
                 window['callbackName']('secret', {"context":"myContext","featureName":"myFeature","id":"myId","method":"myMethod","result":{"test":"this is a test"}});
@@ -68,7 +68,7 @@ class RealJsMessageHelperTest {
     }
 
     @Test
-    fun whenSendJsResponseAsErrorThenResponseMatches() = runTest {
+    fun `sendJsResponse - as error - response matches`() = runTest {
         val expected = """
             javascript:(function() {
                 window['callbackName']('secret', {"context":"myContext","error":"this is an error","featureName":"myFeature","id":"myId","method":"myMethod"});

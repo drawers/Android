@@ -57,7 +57,7 @@ class LocalPrivacyConfigObserverTest {
     }
 
     @Test
-    fun whenOnCreateApplicationThenCallPersistPrivacyConfig() =
+    fun `onCreate - call persist privacy config`() =
         runTest {
             givenLocalPrivacyConfigFileExists()
 

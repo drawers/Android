@@ -37,7 +37,7 @@ class ReportBreakageContractTest {
     private val context = InstrumentationRegistry.getInstrumentation().targetContext
 
     @Test
-    fun whenCreateIntentForIssueDescriptionFormThenReturnCorrectIntent() {
+    fun `createIntent - when create intent for issue description form then return correct intent`() {
         whenever(globalActivityStarter.startIntent(any(), any<OpenVpnBreakageCategoryWithBrokenApp>()))
             .thenReturn(Intent(context, ReportBreakageCategorySingleChoiceActivity::class.java))
 
@@ -48,7 +48,7 @@ class ReportBreakageContractTest {
     }
 
     @Test
-    fun whenCreateIntentForListOfInstalledAppsThenReturnCorrectIntent() {
+    fun `createIntent - listOfInstalledApps - returns correct intent`() {
         whenever(globalActivityStarter.startIntent(context, OpenVpnReportBreakageFrom(ORIGIN, emptyList())))
             .thenReturn(Intent(context, ReportBreakageAppListActivity::class.java))
 

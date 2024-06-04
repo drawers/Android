@@ -30,14 +30,14 @@ class TdsEntityJsonTest {
     private val jsonAdapter: JsonAdapter<TdsJson> = moshi.adapter(TdsJson::class.java)
 
     @Test
-    fun whenFormatIsValidThenEntitiesAreCreated() {
+    fun `formatIsValid - entities created`() {
         val json = loadText(javaClass.classLoader!!, "json/tds_entities.json")
         val entities = jsonAdapter.fromJson(json)!!.jsonToEntities()
         assertEquals(4, entities.count())
     }
 
     @Test
-    fun whenFormatIsValidThenBasicElementsAreConvertedCorrectly() {
+    fun `formatIsValid - basic elements converted correctly`() {
         val json = loadText(javaClass.classLoader!!, "json/tds_entities.json")
         val entities = jsonAdapter.fromJson(json)!!.jsonToEntities()
         val entity = entities.first()
@@ -45,7 +45,7 @@ class TdsEntityJsonTest {
     }
 
     @Test
-    fun whenEntityIsMissingPrevalenceThenPrevalenceIsSetToZero() {
+    fun `loadJson - entity is missing prevalence - prevalence set to zero`() {
         val json = loadText(javaClass.classLoader!!, "json/tds_entities.json")
         val entities = jsonAdapter.fromJson(json)!!.jsonToEntities()
         val entity = entities[1]
@@ -53,7 +53,7 @@ class TdsEntityJsonTest {
     }
 
     @Test
-    fun whenEntityIsMissingDisplayNameThenDisplayNameIsSameAsName() {
+    fun `loadJson - entity is missing display name - same as name`() {
         val json = loadText(javaClass.classLoader!!, "json/tds_entities.json")
         val entities = jsonAdapter.fromJson(json)!!.jsonToEntities()
         val entity = entities[2]
@@ -61,7 +61,7 @@ class TdsEntityJsonTest {
     }
 
     @Test
-    fun whenEntityHasBlankDisplayNameThenDisplayNameIsSameAsName() {
+    fun `loadTdsEntities - entity has blank display name - same as name`() {
         val json = loadText(javaClass.classLoader!!, "json/tds_entities.json")
         val entities = jsonAdapter.fromJson(json)!!.jsonToEntities()
         val entity = entities.last()

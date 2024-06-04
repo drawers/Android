@@ -38,7 +38,7 @@ class TestNetPInternalFeatureToggles {
     }
 
     @Test
-    fun testDefaultValues() {
+    fun `testDefaultValues - default values`() {
         assertTrue(toggles.self().isEnabled())
         assertFalse(toggles.cloudflareDnsFallback().isEnabled())
         assertFalse(toggles.excludeSystemApps().isEnabled())

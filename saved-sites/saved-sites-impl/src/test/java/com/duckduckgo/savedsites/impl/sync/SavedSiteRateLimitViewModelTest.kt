@@ -41,7 +41,7 @@ class SavedSiteRateLimitViewModelTest {
     )
 
     @Test
-    fun whenSyncPausedThenWarningVisible() = runTest {
+    fun `syncPaused - view state warning visible`() = runTest {
         savedSitesSyncStore.isSyncPaused = true
         testee.viewState().test {
             assertTrue(awaitItem().warningVisible)
@@ -50,7 +50,7 @@ class SavedSiteRateLimitViewModelTest {
     }
 
     @Test
-    fun whenUserClicksWarningActionThenNavigateToBookmarks() = runTest {
+    fun `onWarningActionClicked - navigate to bookmarks`() = runTest {
         testee.commands().test {
             testee.onWarningActionClicked()
             assertEquals(NavigateToBookmarks, awaitItem())

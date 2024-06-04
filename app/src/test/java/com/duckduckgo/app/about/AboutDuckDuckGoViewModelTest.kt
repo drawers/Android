@@ -67,7 +67,7 @@ internal class AboutDuckDuckGoViewModelTest {
     }
 
     @Test
-    fun whenInitialisedThenViewStateEmittedWithDefaultValues() = runTest {
+    fun `initialise - view state emitted with default values`() = runTest {
         testee.viewState().test {
             val value = awaitItem()
 
@@ -78,7 +78,7 @@ internal class AboutDuckDuckGoViewModelTest {
     }
 
     @Test
-    fun whenOnLearnMoreLinkClickedThenCommandLaunchBrowserWithLearnMoreUrlIsSentAndPixelFired() = runTest {
+    fun `onLearnMoreLinkClicked - command launch browser with learn more url is sent and pixel fired`() = runTest {
         testee.commands().test {
             testee.onLearnMoreLinkClicked()
 
@@ -90,7 +90,7 @@ internal class AboutDuckDuckGoViewModelTest {
     }
 
     @Test
-    fun whenOnPrivacyPolicyClickedThenCommandLaunchWebViewWithPrivacyPolicyUrlIsSentAndPixelFired() = runTest {
+    fun `onPrivacyPolicyClicked - command launch web view with privacy policy url is sent and pixel fired`() = runTest {
         testee.commands().test {
             testee.onPrivacyPolicyClicked()
 
@@ -102,7 +102,7 @@ internal class AboutDuckDuckGoViewModelTest {
     }
 
     @Test
-    fun whenVersionClickedAndNetPWaitlistStateIsOtherThanNotUnlockedThenNoCommandIsSentAndPixelNotSent() = runTest {
+    fun `onVersionClicked - netP waitlist state other than not unlocked - no command sent and pixel not sent`() = runTest {
         testee.commands().test {
             testee.onVersionClicked()
             verify(mockPixel, never()).fire(AppPixelName.SETTINGS_ABOUT_DDG_VERSION_EASTER_EGG_PRESSED)
@@ -112,7 +112,7 @@ internal class AboutDuckDuckGoViewModelTest {
     }
 
     @Test
-    fun whenVersionClickedLessThanMaxTimesAndNetPWaitlistStateIsNotUnlockedThenNoCommandIsSentAndPixelNotSent() = runTest {
+    fun `onVersionClicked - net p waitlist state not unlocked - no command sent and pixel not sent`() = runTest {
         testee.commands().test {
             testee.onVersionClicked()
             verify(mockPixel, never()).fire(AppPixelName.SETTINGS_ABOUT_DDG_VERSION_EASTER_EGG_PRESSED)
@@ -122,7 +122,7 @@ internal class AboutDuckDuckGoViewModelTest {
     }
 
     @Test
-    fun whenVersionClickedMaxTimesCounterResetAndPixelSent() = runTest {
+    fun `onVersionClicked - max times counter reset and pixel sent`() = runTest {
         testee.commands().test {
             for (i in 1..MAX_EASTER_EGG_COUNT) {
                 testee.onVersionClicked()
@@ -136,7 +136,7 @@ internal class AboutDuckDuckGoViewModelTest {
     }
 
     @Test
-    fun whenOnProvideFeedbackClickedThenCommandLaunchFeedbackIsSent() = runTest {
+    fun `onProvideFeedbackClicked - command launch feedback is sent`() = runTest {
         testee.commands().test {
             testee.onProvideFeedbackClicked()
 
@@ -148,7 +148,7 @@ internal class AboutDuckDuckGoViewModelTest {
     }
 
     @Test
-    fun whenResetNetPEasterEggCounterIsCalledThenEasterEggCounterIsZero() = runTest {
+    fun `resetEasterEggCounter - easter egg counter reset`() = runTest {
         testee.onVersionClicked()
         assertFalse(testee.hasResetEasterEggCounter())
 

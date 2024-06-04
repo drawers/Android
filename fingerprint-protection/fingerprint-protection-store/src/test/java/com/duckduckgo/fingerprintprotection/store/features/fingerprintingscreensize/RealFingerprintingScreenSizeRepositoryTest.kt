@@ -44,7 +44,7 @@ class RealFingerprintingScreenSizeRepositoryTest {
     }
 
     @Test
-    fun whenInitializedAndDoesNotHaveStoredValueThenLoadEmptyJsonToMemory() =
+    fun `load - initialized and no stored value - load empty json to memory`() =
         runTest {
             testee =
                 RealFingerprintingScreenSizeRepository(
@@ -59,7 +59,7 @@ class RealFingerprintingScreenSizeRepositoryTest {
         }
 
     @Test
-    fun whenInitializedAndHasStoredValueThenLoadStoredJsonToMemory() =
+    fun `whenInitializedAndHasStoredValue - load stored json to memory`() =
         runTest {
             whenever(mockFingerprintingScreenSizeDao.get()).thenReturn(fingerprintingScreenSizeEntity)
             testee =
@@ -75,7 +75,7 @@ class RealFingerprintingScreenSizeRepositoryTest {
         }
 
     @Test
-    fun whenUpdateAllThenUpdateAllCalled() =
+    fun `updateAll - update all called`() =
         runTest {
             testee =
                 RealFingerprintingScreenSizeRepository(

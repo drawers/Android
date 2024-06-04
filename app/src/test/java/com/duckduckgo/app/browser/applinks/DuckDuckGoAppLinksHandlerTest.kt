@@ -41,7 +41,7 @@ class DuckDuckGoAppLinksHandlerTest {
     }
 
     @Test
-    fun whenAppLinkHandledAndIsSameOrSubdomainThenReturnFalse() {
+    fun `handleAppLink - same or subdomain - returns false`() {
         assertFalse(
             testee.handleAppLink(
                 isForMainFrame = true,
@@ -54,7 +54,7 @@ class DuckDuckGoAppLinksHandlerTest {
     }
 
     @Test
-    fun whenAppLinkHandledAndIsNotSameOrSubdomainThenReturnFalseAndLaunchAppLink() {
+    fun `handleAppLink - not same or subdomain - return false and launch app link`() {
         assertFalse(
             testee.handleAppLink(
                 isForMainFrame = true,
@@ -68,7 +68,7 @@ class DuckDuckGoAppLinksHandlerTest {
     }
 
     @Test
-    fun whenAppLinkHandledAndIsNotForMainFrameThenReturnFalse() {
+    fun `handleAppLink - not for main frame - returns false`() {
         assertFalse(
             testee.handleAppLink(
                 isForMainFrame = false,
@@ -82,7 +82,7 @@ class DuckDuckGoAppLinksHandlerTest {
     }
 
     @Test
-    fun whenAppLinkHandledOnApiLessThan24ThenReturnFalse() {
+    fun `handleAppLink - api less than 24 - returns false`() {
         assertFalse(
             testee.handleAppLink(
                 isForMainFrame = false,
@@ -96,20 +96,20 @@ class DuckDuckGoAppLinksHandlerTest {
     }
 
     @Test
-    fun whenPreviousUrlUpdatedThenUpdatePreviousUrl() {
+    fun `updatePreviousUrl - previous url updated`() {
         testee.updatePreviousUrl("foo.com")
         assertEquals("foo.com", testee.previousUrl)
     }
 
     @Test
-    fun whenPreviousUrlUpdatedAndIsNullThenResetTriggerState() {
+    fun `updatePreviousUrl - is null - reset trigger state`() {
         testee.hasTriggeredForDomain = true
         testee.updatePreviousUrl(null)
         assertFalse(testee.hasTriggeredForDomain)
     }
 
     @Test
-    fun whenPreviousUrlUpdatedAndPreviousUrlIsNullThenDoNotResetTriggerState() {
+    fun `updatePreviousUrl - previous url updated and is null - do not reset trigger state`() {
         testee.previousUrl = null
         testee.hasTriggeredForDomain = true
         testee.updatePreviousUrl("example.com")
@@ -117,7 +117,7 @@ class DuckDuckGoAppLinksHandlerTest {
     }
 
     @Test
-    fun whenPreviousUrlUpdatedAndIsNotSameOrSubdomainThenResetTriggerState() {
+    fun `updatePreviousUrl - previous url updated and is not same or subdomain - reset trigger state`() {
         testee.hasTriggeredForDomain = true
         testee.previousUrl = "example.com"
         testee.updatePreviousUrl("foo.com")
@@ -125,7 +125,7 @@ class DuckDuckGoAppLinksHandlerTest {
     }
 
     @Test
-    fun whenPreviousUrlUpdatedAndIsSameOrSubdomainThenDoNotResetTriggerState() {
+    fun `updatePreviousUrl - same or subdomain - do not reset trigger state`() {
         testee.hasTriggeredForDomain = true
         testee.previousUrl = "example.com"
         testee.updatePreviousUrl("app.example.com")
@@ -133,7 +133,7 @@ class DuckDuckGoAppLinksHandlerTest {
     }
 
     @Test
-    fun whenAppLinksDisabledThenReturnFalse() {
+    fun `handleAppLink - app links disabled - returns false`() {
         assertFalse(
             testee.handleAppLink(
                 isForMainFrame = true,
@@ -146,7 +146,7 @@ class DuckDuckGoAppLinksHandlerTest {
     }
 
     @Test
-    fun whenPreviousUrlIsSameThenReturnFalse() {
+    fun `handleAppLink - previous url same - return false`() {
         testee.previousUrl = "example.com"
         assertFalse(
             testee.handleAppLink(
@@ -160,7 +160,7 @@ class DuckDuckGoAppLinksHandlerTest {
     }
 
     @Test
-    fun whenPreviousUrlIsSubdomainThenReturnFalse() {
+    fun `handleAppLink - previous url subdomain - return false`() {
         testee.previousUrl = "foo.example.com"
         assertFalse(
             testee.handleAppLink(
@@ -174,7 +174,7 @@ class DuckDuckGoAppLinksHandlerTest {
     }
 
     @Test
-    fun whenNextUrlIsSubdomainThenReturnFalse() {
+    fun `handleAppLink - next url subdomain - returns false`() {
         testee.previousUrl = "example.com"
         assertFalse(
             testee.handleAppLink(
@@ -188,7 +188,7 @@ class DuckDuckGoAppLinksHandlerTest {
     }
 
     @Test
-    fun whenAppLinkIsSameOrSubdomainAndIsUserQueryThenReturnFalseAndSetPreviousUrlAndLaunchAppLink() {
+    fun `handleAppLink - same or subdomain and is user query - return false set previous url and launch app link`() {
         testee.isAUserQuery = true
         testee.hasTriggeredForDomain = false
         testee.previousUrl = "example.com/something"
@@ -207,7 +207,7 @@ class DuckDuckGoAppLinksHandlerTest {
     }
 
     @Test
-    fun whenAppLinkIsSameOrSubdomainAndHasNotTriggeredForDomainThenReturnFalseAndSetPreviousUrlAndLaunchAppLink() {
+    fun `handleAppLink - same or subdomain and has not triggered for domain - return false and set previous url and launch app link`() {
         testee.isAUserQuery = false
         testee.hasTriggeredForDomain = false
         testee.previousUrl = "example.com/something"
@@ -226,7 +226,7 @@ class DuckDuckGoAppLinksHandlerTest {
     }
 
     @Test
-    fun whenAppLinkIsSameOrSubdomainAndIsInAlwaysTriggerListThenReturnFalseAndSetPreviousUrlAndLaunchAppLink() {
+    fun `handleAppLink - same or subdomain in always trigger list - return false and set previous url and launch app link`() {
         testee.isAUserQuery = false
         testee.hasTriggeredForDomain = true
         testee.previousUrl = "digid.nl/something"
@@ -245,7 +245,7 @@ class DuckDuckGoAppLinksHandlerTest {
     }
 
     @Test
-    fun whenAppLinkIsSameOrSubdomainAndIsNotUserQueryAndHasTriggeredForDomainAndIsNotInAlwaysTriggerListThenReturnFalse() {
+    fun `handleAppLink - same or subdomain and not user query and has triggered for domain and is not in always trigger list - returns false`() {
         testee.hasTriggeredForDomain = true
         testee.isAUserQuery = false
         testee.previousUrl = "foo.example.com"
@@ -264,7 +264,7 @@ class DuckDuckGoAppLinksHandlerTest {
     }
 
     @Test
-    fun whenShouldHaltWebNavigationThenReturnTrueAndSetPreviousUrlAndLaunchAppLink() {
+    fun `handleAppLink - should halt web navigation - return true and set previous url and launch app link`() {
         testee.previousUrl = "foo.com"
         assertTrue(
             testee.handleAppLink(
@@ -280,7 +280,7 @@ class DuckDuckGoAppLinksHandlerTest {
     }
 
     @Test
-    fun whenShouldNotHaltWebNavigationThenReturnFalseAndSetPreviousUrlAndLaunchAppLink() {
+    fun `handleAppLink - should not halt web navigation - return false and set previous url and launch app link`() {
         testee.previousUrl = "foo.com"
         assertFalse(
             testee.handleAppLink(

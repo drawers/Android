@@ -47,7 +47,7 @@ class MacOsViewModelTest {
     }
 
     @Test
-    fun whenOnShareClickedAndInviteCodeExistsThenEmitCommandShareInviteCodeWithCorrectCode() = runTest {
+    fun `onShareClicked - invite code exists - emit command share invite code with correct code`() = runTest {
         testee.commands.test {
             testee.onShareClicked()
             assertEquals(ShareLink, awaitItem())
@@ -62,7 +62,7 @@ class MacOsViewModelTest {
     }
 
     @Test
-    fun whenOnShareClickedAThenPixelFired() = runTest {
+    fun `onShareClicked - pixel fired`() = runTest {
         testee.onShareClicked()
 
         verify(mockPixel).fire(MACOS_WAITLIST_SHARE_PRESSED)

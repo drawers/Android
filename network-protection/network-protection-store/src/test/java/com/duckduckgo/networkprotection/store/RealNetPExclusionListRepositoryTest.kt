@@ -39,21 +39,21 @@ class RealNetPExclusionListRepositoryTest {
     }
 
     @Test
-    fun whenGetManualAppExclusionListThenDelegateToNetPExclusionListDao() {
+    fun `getManualAppExclusionList - delegate to net p exclusion list dao`() {
         testee.getManualAppExclusionList()
 
         verify(exclusionListDao).getManualAppExclusionList()
     }
 
     @Test
-    fun whenGetManualAppExclusionListFlowThenDelegateToNetPExclusionListDao() {
+    fun `getManualAppExclusionListFlow - delegate to net p exclusion list dao`() {
         testee.getManualAppExclusionListFlow()
 
         verify(exclusionListDao).getManualAppExclusionListFlow()
     }
 
     @Test
-    fun whenGetExcludedAppPackagesThenReturnUnprotectedAppsPackages() {
+    fun `getExcludedAppPackages - return unprotected apps packages`() {
         assertEquals(
             listOf("com.example.app2", "com.example.app3"),
             testee.getExcludedAppPackages(),
@@ -61,14 +61,14 @@ class RealNetPExclusionListRepositoryTest {
     }
 
     @Test
-    fun whenManuallyExcludeAppThenDelegateToNetPExclusionListDao() {
+    fun `manuallyExcludeApp - delegate to NetP exclusion list Dao`() {
         testee.manuallyExcludeApp("test")
 
         verify(exclusionListDao).insertIntoManualAppExclusionList(NetPManuallyExcludedApp(packageId = "test", isProtected = false))
     }
 
     @Test
-    fun whenManuallyExcludeAppsThenDelegateToNetPExclusionListDao() {
+    fun `manuallyExcludeApps - delegate to net p exclusion list dao`() {
         testee.manuallyExcludeApps(
             listOf(
                 "test1",
@@ -87,14 +87,14 @@ class RealNetPExclusionListRepositoryTest {
     }
 
     @Test
-    fun whenManuallyEnableAppThenDelegateToNetPExclusionListDao() {
+    fun `manuallyEnableApp - delegate to net p exclusion list dao`() {
         testee.manuallyEnableApp("test")
 
         verify(exclusionListDao).insertIntoManualAppExclusionList(NetPManuallyExcludedApp(packageId = "test", isProtected = true))
     }
 
     @Test
-    fun whenRestoreDefaultProtectedListThenDelegateToNetPExclusionListDao() {
+    fun `restoreDefaultProtectedList - delegate to net p exclusion list dao`() {
         testee.restoreDefaultProtectedList()
 
         verify(exclusionListDao).deleteManualAppExclusionList()

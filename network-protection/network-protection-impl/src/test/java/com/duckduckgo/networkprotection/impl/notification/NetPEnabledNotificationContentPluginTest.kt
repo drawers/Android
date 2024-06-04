@@ -66,7 +66,7 @@ class NetPEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getInitialContentNetPDisabledReturnNull() = runTest {
+    fun `getInitialContent - net p disabled - returns null`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(false)
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
         val content = plugin.getInitialContent()
@@ -75,7 +75,7 @@ class NetPEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getInitialContentNetPEnabledReturnContent() = runTest {
+    fun `getInitialContent - net p enabled - returns content`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(false)
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
         val content = plugin.getInitialContent()
@@ -85,7 +85,7 @@ class NetPEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getUpdatedContentNetPDisabledReturnNull() = runTest {
+    fun `getUpdatedContent - net p disabled - returns null`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(false)
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
         plugin.getUpdatedContent().test {
@@ -96,7 +96,7 @@ class NetPEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getUpdatedContentNetPEnabledNoServerLocationReturnInitialContent() = runTest {
+    fun `getUpdatedContent - net p enabled no server location - initial content`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(false)
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
         whenever(networkProtectionState.serverLocation()).thenReturn(null)
@@ -111,7 +111,7 @@ class NetPEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getUpdatedContentNetPEnabledReturnContent() = runTest {
+    fun `getUpdatedContent - net p enabled - return content`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(false)
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
         whenever(networkProtectionState.serverLocation()).thenReturn("Stockholm, SE")
@@ -126,26 +126,26 @@ class NetPEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getPriorityReturnsHigh() {
+    fun `getPriority - returns high`() {
         assertEquals(VpnEnabledNotificationContentPlugin.VpnEnabledNotificationPriority.HIGH, plugin.getPriority())
     }
 
     @Test
-    fun isActiveNetPDisabledReturnFalse() = runTest {
+    fun `isActive - net p disabled - returns false`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(false)
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
         assertFalse(plugin.isActive())
     }
 
     @Test
-    fun isActiveNetPEnabledReturnTrue() = runTest {
+    fun `isActiveNetP - enabled return true`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(false)
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
         assertTrue(plugin.isActive())
     }
 
     @Test
-    fun isActiveNetPEnabledAppTPEnabledReturnFalse() = runTest {
+    fun `isActive - net p enabled app t p enabled - return false`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(true)
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
         assertFalse(plugin.isActive())

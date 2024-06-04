@@ -107,7 +107,7 @@ class SavedSitesExporterTest {
     }
 
     @Test
-    fun whenSomeBookmarksExistThenExportingSucceeds() = runTest {
+    fun `export - some bookmarks exist - succeeds`() = runTest {
         val root = BookmarkFolder(SavedSitesNames.BOOKMARKS_ROOT, "DuckDuckGo Bookmarks", "", 0, 0, "timestamp")
         val parentFolder = BookmarkFolder("folder1", "Folder One", SavedSitesNames.BOOKMARKS_ROOT, 0, 0, "timestamp")
         val childFolder = BookmarkFolder("folder2", "Folder Two", "folder1", 0, 0, "timestamp")
@@ -128,7 +128,7 @@ class SavedSitesExporterTest {
     }
 
     @Test
-    fun whenFileDoesNotExistThenExportingFails() = runTest {
+    fun `export - file does not exist - exporting fails`() = runTest {
         savedSitesRepository.insertBookmark("www.example.com", "example")
 
         val localUri = Uri.parse("uridoesnotexist")
@@ -139,14 +139,14 @@ class SavedSitesExporterTest {
     }
 
     @Test
-    fun whenNoSavedSitesExistThenNothingIsExported() = runTest {
+    fun `export - no saved sites exist - nothing exported`() = runTest {
         val localUri = Uri.parse("whatever")
         val result = exporter.export(localUri)
         assertTrue(result is ExportSavedSitesResult.NoSavedSitesExported)
     }
 
     @Test
-    fun whenSomeFavoritesExistThenExportingSucceeds() = runTest {
+    fun `export - some favorites exist - succeeds`() = runTest {
         val favorite = SavedSite.Favorite(id = "favorite1", title = "example", url = "www.example.com", position = 0, lastModified = "timestamp")
         savedSitesRepository.insert(favorite)
 
@@ -160,7 +160,7 @@ class SavedSitesExporterTest {
     }
 
     @Test
-    fun whenGetTreeStructureThenReturnTraversableTree() = runTest {
+    fun `getTreeFolderStructure - returns traversable tree`() = runTest {
         val root = BookmarkFolder(SavedSitesNames.BOOKMARKS_ROOT, "DuckDuckGo Bookmarks", "", 0, 0, "timestamp")
         val parentFolder = BookmarkFolder("folder1", "Folder One", SavedSitesNames.BOOKMARKS_ROOT, 0, 0, "timestamp")
         val childFolder = BookmarkFolder("folder2", "Folder Two", "folder1", 0, 0, "timestamp")

@@ -37,7 +37,7 @@ class VpnDatabaseTest {
         MigrationTestHelper(InstrumentationRegistry.getInstrumentation(), VpnDatabase::class.qualifiedName!!, FrameworkSQLiteOpenHelperFactory())
 
     @Test
-    fun whenTestingAllMigrationsThenSucceeds() {
+    fun `whenTestingAllMigrations - succeeds`() {
         createDatabase(18)
 
         Room.databaseBuilder(

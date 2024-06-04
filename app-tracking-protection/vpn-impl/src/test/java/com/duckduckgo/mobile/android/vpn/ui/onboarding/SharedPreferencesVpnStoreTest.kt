@@ -47,7 +47,7 @@ class SharedPreferencesVpnStoreTest {
     }
 
     @Test
-    fun whenOnboardingDidShowThenSetPreferenceValueToTrue() {
+    fun `onboardingDidShow - set preference value to true`() {
         assertFalse(sharedPreferencesVpnStore.didShowOnboarding())
 
         sharedPreferencesVpnStore.onboardingDidShow()
@@ -56,7 +56,7 @@ class SharedPreferencesVpnStoreTest {
     }
 
     @Test
-    fun whenOnboardingDidNotShowThenSetPreferenceValueToFalse() {
+    fun `onboardingDidNotShow - set preference value to false`() {
         sharedPreferencesVpnStore.onboardingDidShow()
 
         assertTrue(sharedPreferencesVpnStore.didShowOnboarding())
@@ -67,7 +67,7 @@ class SharedPreferencesVpnStoreTest {
     }
 
     @Test
-    fun whenAppTpEnabledCtaDidShowThenSetPreferenceValueToTrue() {
+    fun `appTpEnabledCta - did show - set preference value to true`() {
         assertFalse(sharedPreferencesVpnStore.didShowAppTpEnabledCta())
 
         sharedPreferencesVpnStore.appTpEnabledCtaDidShow()
@@ -76,7 +76,7 @@ class SharedPreferencesVpnStoreTest {
     }
 
     @Test
-    fun whenIsOnboardingSessionCalledWithoutBeingSetThenReturnFalse() {
+    fun `getAndSetOnboardingSession - not set - returns false`() {
         assertTrue(sharedPreferencesVpnStore.getAndSetOnboardingSession())
         assertNotEquals(-1, preferences.getLong("KEY_APP_TP_ONBOARDING_BANNER_EXPIRY_TIMESTAMP", -1))
         assertTrue(sharedPreferencesVpnStore.getAndSetOnboardingSession())
