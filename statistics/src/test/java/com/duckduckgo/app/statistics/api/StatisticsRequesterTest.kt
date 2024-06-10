@@ -76,7 +76,7 @@ class StatisticsRequesterTest {
     }
 
     @Test
-    fun whenUpdateVersionPresentDuringRefreshSearchRetentionThenPreviousAtbIsReplacedWithUpdateVersion() {
+    fun `refreshSearchRetentionAtb - update version present during refresh search retention - previous atb replaced with update version`() {
         configureStoredStatistics()
         whenever(mockService.updateSearchAtb(any(), any(), any(), eq(0))).thenReturn(Observable.just(UPDATE_ATB))
         testee.refreshSearchRetentionAtb()
@@ -84,7 +84,7 @@ class StatisticsRequesterTest {
     }
 
     @Test
-    fun whenUpdateVersionPresentDuringRefreshSearchRetentionThenPreviousVariantIsReplacedWithDefaultVariant() {
+    fun `refreshSearchRetention - update version present during refresh search retention - previous variant replaced with default variant`() {
         configureStoredStatistics()
         whenever(mockService.updateSearchAtb(any(), any(), any(), eq(0))).thenReturn(Observable.just(UPDATE_ATB))
         testee.refreshSearchRetentionAtb()
@@ -92,7 +92,7 @@ class StatisticsRequesterTest {
     }
 
     @Test
-    fun whenUpdateVersionPresentDuringRefreshAppRetentionThenPreviousAtbIsReplacedWithUpdateVersion() {
+    fun `refreshAppRetention - update version present during refresh app retention - previous atb replaced with update version`() {
         configureStoredStatistics()
         whenever(mockService.updateAppAtb(any(), any(), any(), eq(0))).thenReturn(Observable.just(UPDATE_ATB))
         testee.refreshAppRetentionAtb()
@@ -100,7 +100,7 @@ class StatisticsRequesterTest {
     }
 
     @Test
-    fun whenUpdateVersionPresentDuringRefreshAppRetentionThenPreviousVariantIsReplacedWithDefaultVariant() {
+    fun `refreshAppRetention - update version present during refresh app retention - previous variant replaced with default variant`() {
         configureStoredStatistics()
         whenever(mockService.updateAppAtb(any(), any(), any(), eq(0))).thenReturn(Observable.just(UPDATE_ATB))
         testee.refreshAppRetentionAtb()
@@ -108,7 +108,7 @@ class StatisticsRequesterTest {
     }
 
     @Test
-    fun whenNoStatisticsStoredThenInitializeAtbInvokesExti() {
+    fun `initializeAtb - no statistics stored - invokes exti`() {
         configureNoStoredStatistics()
         testee.initializeAtb()
         verify(mockService).atb(any(), eq(0))
@@ -117,7 +117,7 @@ class StatisticsRequesterTest {
     }
 
     @Test
-    fun whenStatisticsStoredThenInitializeAtbDoesNothing() {
+    fun `initializeAtb - statistics stored - does nothing`() {
         configureStoredStatistics()
         testee.initializeAtb()
         verify(mockService, never()).atb(any(), any())
@@ -125,7 +125,7 @@ class StatisticsRequesterTest {
     }
 
     @Test
-    fun whenNoStatisticsStoredThenRefreshSearchRetentionRetrievesAtbAndInvokesExti() {
+    fun `refreshSearchRetention - no statistics stored - retrieves atb and invokes exti`() {
         configureNoStoredStatistics()
         testee.refreshSearchRetentionAtb()
         verify(mockService).atb(any(), any())
@@ -134,7 +134,7 @@ class StatisticsRequesterTest {
     }
 
     @Test
-    fun whenNoStatisticsStoredThenRefreshAppRetentionRetrievesAtbAndInvokesExti() {
+    fun `refreshAppRetention - no statistics stored - retrieves atb and invokes exti`() {
         configureNoStoredStatistics()
         testee.refreshAppRetentionAtb()
         verify(mockService).atb(any(), any())
@@ -143,7 +143,7 @@ class StatisticsRequesterTest {
     }
 
     @Test
-    fun whenExtiFailsThenAtbCleared() {
+    fun `initializeAtb - exti fails - atb cleared`() {
         whenever(mockService.exti(any(), any())).thenReturn(Observable.error(Throwable()))
         configureNoStoredStatistics()
         testee.initializeAtb()
@@ -152,7 +152,7 @@ class StatisticsRequesterTest {
     }
 
     @Test
-    fun whenStatisticsStoredThenRefreshIncludesRefreshedAtb() {
+    fun `refreshSearchRetentionAtb - statistics stored - refresh includes refreshed atb`() {
         configureStoredStatistics()
         val retentionAtb = "foo"
         whenever(mockStatisticsStore.searchRetentionAtb).thenReturn(retentionAtb)
@@ -161,7 +161,7 @@ class StatisticsRequesterTest {
     }
 
     @Test
-    fun whenStatisticsStoredThenRefreshUpdatesAtb() {
+    fun `refresh - statistics stored - updates atb`() {
         configureStoredStatistics()
         testee.refreshSearchRetentionAtb()
         verify(mockService).updateSearchAtb(eq(ATB_WITH_VARIANT), eq(ATB.version), any(), any())
@@ -169,7 +169,7 @@ class StatisticsRequesterTest {
     }
 
     @Test
-    fun whenAlreadyInitializedWithLegacyAtbThenInitializationRemovesLegacyVariant() {
+    fun `initializeAtb - already initialized with legacy atb - removes legacy variant`() {
         configureStoredStatistics()
         whenever(mockVariantManager.defaultVariantKey()).thenReturn("")
         whenever(mockStatisticsStore.atb).thenReturn(Atb("v123ma"))
@@ -179,7 +179,7 @@ class StatisticsRequesterTest {
     }
 
     @Test
-    fun whenInitializeAtbAndEmailEnabledThenEmailSignalToTrue() {
+    fun `initializeAtb - email enabled - signal to true`() {
         whenever(mockEmailManager.isSignedIn()).thenReturn(true)
         configureNoStoredStatistics()
 
@@ -189,7 +189,7 @@ class StatisticsRequesterTest {
     }
 
     @Test
-    fun whenRefreshSearchAtbAndEmailEnabledThenEmailSignalToTrue() {
+    fun `refreshSearchAtb - email enabled - email signal to true`() {
         whenever(mockEmailManager.isSignedIn()).thenReturn(true)
         configureStoredStatistics()
         whenever(mockService.updateSearchAtb(any(), any(), any(), eq(1))).thenReturn(Observable.just(UPDATE_ATB))
@@ -200,7 +200,7 @@ class StatisticsRequesterTest {
     }
 
     @Test
-    fun whenRefreshAppRetentionAndEmailEnabledThenEmailSignalToTrue() {
+    fun `refreshAppRetention - email enabled - signal to true`() {
         whenever(mockEmailManager.isSignedIn()).thenReturn(true)
         configureStoredStatistics()
         whenever(mockService.updateAppAtb(any(), any(), any(), eq(1))).thenReturn(Observable.just(UPDATE_ATB))

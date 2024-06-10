@@ -38,21 +38,21 @@ class RealUnprotectedTemporaryTest {
     }
 
     @Test
-    fun whenIsAnExceptionAndDomainIsListedInTheExceptionsListThenReturnTrue() {
+    fun `isAnException - domain listed in exceptions list - returns true`() {
         givenThereAreExceptions()
 
         assertTrue(testee.isAnException("http://www.example.com"))
     }
 
     @Test
-    fun whenIsAnExceptionWithSubdomainAndDomainIsListedInTheExceptionsListThenReturnTrue() {
+    fun `isAnException - exceptions list contains subdomain and domain - returns true`() {
         givenThereAreExceptions()
 
         assertTrue(testee.isAnException("http://test.example.com"))
     }
 
     @Test
-    fun whenIsAnExceptionAndDomainIsNotListedInTheExceptionsListThenReturnFalse() {
+    fun `isAnException - domain not listed in exceptions list - returns false`() {
         val exceptions = CopyOnWriteArrayList<FeatureException>()
         whenever(mockUnprotectedTemporaryRepository.exceptions).thenReturn(exceptions)
 

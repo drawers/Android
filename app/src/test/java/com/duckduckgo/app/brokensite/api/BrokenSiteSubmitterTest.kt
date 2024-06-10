@@ -114,7 +114,7 @@ class BrokenSiteSubmitterTest {
     }
 
     @Test
-    fun whenVpnDisabledReportFalse() = runTest {
+    fun `submitBrokenSiteFeedback - vpn disabled - report false`() = runTest {
         whenever(networkProtectionState.isRunning()).thenReturn(false)
         val brokenSite = getBrokenSite()
 
@@ -129,7 +129,7 @@ class BrokenSiteSubmitterTest {
     }
 
     @Test
-    fun whenVpnEnabledReportTrue() = runTest {
+    fun `whenVpnEnabledReport - report true`() = runTest {
         whenever(networkProtectionState.isRunning()).thenReturn(true)
         val brokenSite = getBrokenSite()
 
@@ -144,7 +144,7 @@ class BrokenSiteSubmitterTest {
     }
 
     @Test
-    fun whenSiteInUnprotectedTemporaryThenProtectionsAreOff() {
+    fun `submitBrokenSiteFeedback - site in unprotected temporary - protections are off`() {
         whenever(mockContentBlocking.isAnException(any())).thenReturn(false)
         whenever(mockUserAllowListRepository.isDomainInUserAllowList(any())).thenReturn(false)
         whenever(mockUnprotectedTemporary.isAnException(any())).thenReturn(true)
@@ -161,7 +161,7 @@ class BrokenSiteSubmitterTest {
     }
 
     @Test
-    fun whenSiteInUserAllowListThenProtectionsAreOff() {
+    fun `submitBrokenSiteFeedback - site in user allow list - protections off`() {
         whenever(mockContentBlocking.isAnException(any())).thenReturn(false)
         whenever(mockUserAllowListRepository.isDomainInUserAllowList(any())).thenReturn(true)
         whenever(mockUnprotectedTemporary.isAnException(any())).thenReturn(false)
@@ -178,7 +178,7 @@ class BrokenSiteSubmitterTest {
     }
 
     @Test
-    fun whenSiteInContentBlockingThenProtectionsAreOff() {
+    fun `whenSiteInContentBlockingThenProtectionsAreOff - site in content blocking - protections are off`() {
         whenever(mockContentBlocking.isAnException(any())).thenReturn(true)
         whenever(mockUserAllowListRepository.isDomainInUserAllowList(any())).thenReturn(false)
         whenever(mockUnprotectedTemporary.isAnException(any())).thenReturn(false)
@@ -195,7 +195,7 @@ class BrokenSiteSubmitterTest {
     }
 
     @Test
-    fun whenSiteInContentBlockingDisabledThenProtectionsAreOff() {
+    fun `submitBrokenSiteFeedback - site in content blocking disabled - protections are off`() {
         whenever(mockFeatureToggle.isFeatureEnabled(PrivacyFeatureName.ContentBlockingFeatureName.value, true)).thenReturn(false)
 
         whenever(mockContentBlocking.isAnException(any())).thenReturn(true)
@@ -214,7 +214,7 @@ class BrokenSiteSubmitterTest {
     }
 
     @Test
-    fun whenSiteAllowedThenProtectionsAreOn() {
+    fun `whenSiteAllowedThenProtectionsAreOn - site allowed - protections on`() {
         whenever(mockContentBlocking.isAnException(any())).thenReturn(false)
         whenever(mockUserAllowListRepository.isDomainInUserAllowList(any())).thenReturn(false)
         whenever(mockUnprotectedTemporary.isAnException(any())).thenReturn(false)
@@ -231,7 +231,7 @@ class BrokenSiteSubmitterTest {
     }
 
     @Test
-    fun whenBrokenSiteFeedbackIsSuccessfullySubmittedThenParamSentAndSetLastSentDayIsCalledForThatDomain() = runTest {
+    fun `submitBrokenSiteFeedback - when successfully submitted - set last sent day for that domain`() = runTest {
         val lastSentDay = "2023-11-01"
         whenever(mockBrokenSiteLastSentReport.getLastSentDay(any())).thenReturn(lastSentDay)
         val brokenSite = getBrokenSite()
@@ -248,7 +248,7 @@ class BrokenSiteSubmitterTest {
     }
 
     @Test
-    fun whenDeviceIsEnglishThenIncludeLoginSite() {
+    fun `whenDeviceIsEnglish - include login site - empty login site`() {
         whenever(mockAppBuildConfig.deviceLocale).thenReturn(Locale.ENGLISH)
         whenever(mockContentBlocking.isAnException(any())).thenReturn(false)
         whenever(mockUserAllowListRepository.isDomainInUserAllowList(any())).thenReturn(false)
@@ -266,7 +266,7 @@ class BrokenSiteSubmitterTest {
     }
 
     @Test
-    fun whenDeviceIsNotEnglishThenDoNotIncludeLoginSite() {
+    fun `whenDeviceIsNotEnglish - do not include login site`() {
         whenever(mockAppBuildConfig.deviceLocale).thenReturn(Locale.FRANCE)
         whenever(mockContentBlocking.isAnException(any())).thenReturn(false)
         whenever(mockUserAllowListRepository.isDomainInUserAllowList(any())).thenReturn(false)
@@ -284,7 +284,7 @@ class BrokenSiteSubmitterTest {
     }
 
     @Test
-    fun whenReportFlowIsMenuThenIncludeParam() {
+    fun `submitBrokenSiteFeedback - report flow is menu - include param`() {
         val brokenSite = getBrokenSite()
             .copy(reportFlow = MENU)
 
@@ -298,7 +298,7 @@ class BrokenSiteSubmitterTest {
     }
 
     @Test
-    fun whenReportFlowIsDashboardThenIncludeParam() {
+    fun `submitBrokenSiteFeedback - report flow is dashboard - include param`() {
         val brokenSite = getBrokenSite()
             .copy(reportFlow = DASHBOARD)
 
@@ -312,7 +312,7 @@ class BrokenSiteSubmitterTest {
     }
 
     @Test
-    fun whenReportFlowIsNullThenDoNotIncludeParam() {
+    fun `submitBrokenSiteFeedback - report flow null - do not include param`() {
         val brokenSite = getBrokenSite()
             .copy(reportFlow = null)
 
@@ -326,7 +326,7 @@ class BrokenSiteSubmitterTest {
     }
 
     @Test
-    fun whenPrivacyProtectionsPopupExperimentParamsArePresentThenTheyAreIncludedInPixel() = runTest {
+    fun `submitBrokenSiteFeedback - privacy protections popup experiment params present - includes in pixel`() = runTest {
         val params = mapOf("test_key" to "test_value")
         whenever(privacyProtectionsPopupExperimentExternalPixels.getPixelParams()).thenReturn(params)
 

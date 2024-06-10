@@ -44,7 +44,7 @@ class RealFingerprintingCanvasRepositoryTest {
     }
 
     @Test
-    fun whenInitializedAndDoesNotHaveStoredValueThenLoadEmptyJsonToMemory() =
+    fun `loadFingerprintingCanvas - initialized and no stored value - load empty json to memory`() =
         runTest {
             testee =
                 RealFingerprintingCanvasRepository(
@@ -59,7 +59,7 @@ class RealFingerprintingCanvasRepositoryTest {
         }
 
     @Test
-    fun whenInitializedAndHasStoredValueThenLoadStoredJsonToMemory() =
+    fun `whenInitializedAndHasStoredValue - load stored json to memory`() =
         runTest {
             whenever(mockFingerprintingCanvasDao.get()).thenReturn(fingerprintingCanvasEntity)
             testee =
@@ -75,7 +75,7 @@ class RealFingerprintingCanvasRepositoryTest {
         }
 
     @Test
-    fun whenUpdateAllThenUpdateAllCalled() =
+    fun `updateAll - update all called`() =
         runTest {
             testee =
                 RealFingerprintingCanvasRepository(

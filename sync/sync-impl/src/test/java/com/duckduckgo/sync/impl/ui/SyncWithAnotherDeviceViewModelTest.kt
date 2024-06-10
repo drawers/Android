@@ -63,7 +63,7 @@ class SyncWithAnotherDeviceViewModelTest {
     )
 
     @Test
-    fun whenScreenStartedThenShowQRCode() = runTest {
+    fun `whenScreenStarted - show qr code`() = runTest {
         val bitmap = TestSyncFixtures.qrBitmap()
         whenever(syncRepository.getRecoveryCode()).thenReturn(Result.Success(jsonRecoveryKeyEncoded))
         whenever(qrEncoder.encodeAsBitmap(eq(jsonRecoveryKeyEncoded), any(), any())).thenReturn(bitmap)
@@ -75,7 +75,7 @@ class SyncWithAnotherDeviceViewModelTest {
     }
 
     @Test
-    fun whenGenerateRecoveryQRFailsThenFinishWithError() = runTest {
+    fun `generateRecoveryQR - fails - finish with error`() = runTest {
         whenever(syncRepository.getRecoveryCode()).thenReturn(Result.Error(reason = "error"))
         testee.viewState().test {
             awaitItem()
@@ -90,7 +90,7 @@ class SyncWithAnotherDeviceViewModelTest {
     }
 
     @Test
-    fun whenOnCopyCodeClickedThenShowMessage() = runTest {
+    fun `onCopyCodeClicked - show message`() = runTest {
         whenever(syncRepository.getRecoveryCode()).thenReturn(Result.Success(jsonRecoveryKeyEncoded))
 
         testee.onCopyCodeClicked()
@@ -103,7 +103,7 @@ class SyncWithAnotherDeviceViewModelTest {
     }
 
     @Test
-    fun whenOnCopyCodeClickedThenCopyCodeToClipboard() = runTest {
+    fun `onCopyCodeClicked - copy code to clipboard`() = runTest {
         whenever(syncRepository.getRecoveryCode()).thenReturn(Result.Success(jsonRecoveryKeyEncoded))
 
         testee.onCopyCodeClicked()
@@ -112,7 +112,7 @@ class SyncWithAnotherDeviceViewModelTest {
     }
 
     @Test
-    fun whenUserClicksOnReadTextCodeThenCommandIsReadTextCode() = runTest {
+    fun `onReadTextCodeClicked - command read text code`() = runTest {
         testee.commands().test {
             testee.onReadTextCodeClicked()
             val command = awaitItem()
@@ -122,7 +122,7 @@ class SyncWithAnotherDeviceViewModelTest {
     }
 
     @Test
-    fun whenUserScansRecoveryCodeButSignedInThenCommandIsError() = runTest {
+    fun `onQRCodeScanned - signed in - error`() = runTest {
         whenever(syncRepository.processCode(jsonRecoveryKeyEncoded)).thenReturn(Result.Error(code = ALREADY_SIGNED_IN.code))
         testee.commands().test {
             testee.onQRCodeScanned(jsonRecoveryKeyEncoded)
@@ -134,7 +134,7 @@ class SyncWithAnotherDeviceViewModelTest {
     }
 
     @Test
-    fun whenUserScansRecoveryQRCodeAndConnectDeviceFailsThenCommandIsError() = runTest {
+    fun `onQRCodeScanned - connect device fails - error command`() = runTest {
         whenever(syncRepository.processCode(jsonRecoveryKeyEncoded)).thenReturn(Result.Error(code = LOGIN_FAILED.code))
         testee.commands().test {
             testee.onQRCodeScanned(jsonRecoveryKeyEncoded)
@@ -146,7 +146,7 @@ class SyncWithAnotherDeviceViewModelTest {
     }
 
     @Test
-    fun whenLoginSucceedsThenCommandIsLoginSuccess() = runTest {
+    fun `onLoginSuccess - command login success`() = runTest {
         testee.commands().test {
             testee.onLoginSuccess()
             val command = awaitItem()

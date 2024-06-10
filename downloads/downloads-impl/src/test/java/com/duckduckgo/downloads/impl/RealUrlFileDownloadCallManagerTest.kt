@@ -29,14 +29,14 @@ class RealUrlFileDownloadCallManagerTest {
     private val call: Call<ResponseBody> = mock()
 
     @Test
-    fun whenRemovingNotAddedDownloadIdThenNoop() {
+    fun `remove - no-op`() {
         RealUrlFileDownloadCallManager().remove(0L)
 
         verifyNoInteractions(call)
     }
 
     @Test
-    fun whenRemovingAddedDownloadIdThenCancelDownloadAndRemove() {
+    fun `remove - added download id - cancel and remove`() {
         val downloadManager = RealUrlFileDownloadCallManager()
         downloadManager.add(0L, call)
 
@@ -49,7 +49,7 @@ class RealUrlFileDownloadCallManagerTest {
     }
 
     @Test
-    fun whenAddingDownloadIdTwiceThenOnlyLatestCallIsReplaced() {
+    fun `add - adding download id twice - only latest call is replaced`() {
         val secondCall: Call<ResponseBody> = mock()
 
         val downloadManager = RealUrlFileDownloadCallManager()

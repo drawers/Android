@@ -45,7 +45,7 @@ class RealCookieRepositoryTest {
     }
 
     @Test
-    fun whenRepositoryIsCreatedThenValuesLoadedIntoMemory() {
+    fun `whenRepositoryIsCreated - values loaded into memory`() {
         givenCookiesDaoHasContent()
 
         testee = RealCookieRepository(
@@ -61,7 +61,7 @@ class RealCookieRepositoryTest {
     }
 
     @Test
-    fun whenLoadToMemoryAndNoPolicyThenSetDefaultValues() {
+    fun `loadToMemory - no policy - set default values`() {
         whenever(mockCookiesDao.getFirstPartyCookiePolicy()).thenReturn(null)
 
         testee = RealCookieRepository(
@@ -76,7 +76,7 @@ class RealCookieRepositoryTest {
     }
 
     @Test
-    fun whenUpdateAllThenUpdateAllCalled() {
+    fun `updateAll - update all called`() {
         val policy = FirstPartyCookiePolicyEntity(5, 6, 7)
 
         testee = RealCookieRepository(
@@ -92,7 +92,7 @@ class RealCookieRepositoryTest {
     }
 
     @Test
-    fun whenUpdateAllThenPreviousValuesAreCleared() {
+    fun `updateAll - previous values cleared`() {
         givenCookiesDaoHasContent()
 
         testee = RealCookieRepository(

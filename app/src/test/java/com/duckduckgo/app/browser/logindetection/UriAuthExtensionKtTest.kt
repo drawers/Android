@@ -29,7 +29,7 @@ import org.junit.runner.RunWith
 class UriAuthExtensionKtTest {
 
     @Test
-    fun whenAuthUrlThenReturnTrue() {
+    fun `whenAuthUrlThenReturnTrue - return true`() {
         assertTrue(getValidUrl("https://accounts.google.com/o/oauth2/v2/auth?client_id=283002&scope=openid").isOAuthUrl())
         assertTrue(getValidUrl("https://appleid.apple.com/auth/authorize?client_id=com.spotify.accounts").isOAuthUrl())
         assertTrue(getValidUrl("https://www.amazon.com/ap/oa?client_id=amzn1.application-oa2-client&scope=profile").isOAuthUrl())
@@ -44,14 +44,14 @@ class UriAuthExtensionKtTest {
     }
 
     @Test
-    fun when2FAUrlThenReturnTrue() {
+    fun `getValidUrl - 2fa url`() {
         assertTrue(getValidUrl("https://accounts.google.com/signin/v2/challenge/az?client_id").is2FAUrl())
         assertTrue(getValidUrl(" https://sso.duckduckgo.com/module.php/duosecurity/getduo.php").is2FAUrl())
         assertTrue(getValidUrl(" https://www.amazon.com/ap/cvf/approval").is2FAUrl())
     }
 
     @Test
-    fun whenSSOUrlThenReturnTrue() {
+    fun `getValidUrl - sso url - returns true`() {
         assertTrue(getValidUrl("https://sso.host.com/saml2/idp/SSOService.php").isSSOUrl())
     }
 

@@ -43,7 +43,7 @@ class FingerprintProtectionSeedWorkerTest {
     }
 
     @Test
-    fun whenDoWorkThenReturnSuccess() = runTest {
+    fun `doWork - return success - store new seed`() = runTest {
         val worker = TestListenableWorkerBuilder<FingerprintProtectionSeedWorker>(context = context).build()
 
         worker.fingerprintProtectionSeedRepository = mockFingerprintProtectionSeedRepository

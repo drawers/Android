@@ -104,7 +104,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     )
 
     @Test
-    fun whenRefreshIsTriggeredThenEmitsUpdateToShowPopup() = runTest {
+    fun `onPageRefreshTriggeredByUser - emits update to show popup`() = runTest {
         val toggleUsedAt = timeProvider.time - Duration.ofDays(32)
         dataStore.setToggleUsageTimestamp(toggleUsedAt)
 
@@ -119,7 +119,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenRefreshIsTriggeredThenPopupIsShown() = runTest {
+    fun `onPageRefreshTriggeredByUser - popup shown`() = runTest {
         subject.viewState.test {
             subject.onPageLoaded(url = "https://www.example.com", httpErrorCodes = emptyList(), hasBrowserError = false)
             subject.onPageRefreshTriggeredByUser()
@@ -129,7 +129,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenUrlIsDuckDuckGoThenPopupIsNotShown() = runTest {
+    fun `onPageLoaded - popup not shown`() = runTest {
         subject.viewState.test {
             subject.onPageLoaded(url = "https://duckduckgo.com", httpErrorCodes = emptyList(), hasBrowserError = false)
             subject.onPageRefreshTriggeredByUser()
@@ -139,7 +139,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenFeatureIsDisabledThenPopupIsNotShown() = runTest {
+    fun `onPageRefresh - feature disabled - popup not shown`() = runTest {
         featureFlag.enabled = false
         subject.viewState.test {
             subject.onPageLoaded(url = "https://www.example.com", httpErrorCodes = emptyList(), hasBrowserError = false)
@@ -150,7 +150,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenProtectionsAreDisabledThenPopupIsNotShown() = runTest {
+    fun `onPageRefresh - protections disabled - popup not shown`() = runTest {
         protectionsStateProvider.protectionsEnabled = false
 
         subject.viewState.test {
@@ -162,7 +162,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenUrlIsMissingThenPopupIsNotShown() = runTest {
+    fun `onPageLoaded - url is missing - popup not shown`() = runTest {
         subject.viewState.test {
             subject.onPageLoaded(url = "", httpErrorCodes = emptyList(), hasBrowserError = false)
             subject.onPageRefreshTriggeredByUser()
@@ -172,7 +172,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenPageLoadedWithHttpErrorThenPopupIsNotShown() = runTest {
+    fun `onPageLoaded - page loaded with http error - popup not shown`() = runTest {
         subject.viewState.test {
             subject.onPageLoaded(url = "https://www.example.com", httpErrorCodes = listOf(500), hasBrowserError = false)
             subject.onPageRefreshTriggeredByUser()
@@ -182,7 +182,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenPageLoadedWithBrowserErrorThenPopupIsNotShown() = runTest {
+    fun `onPageLoaded - page loaded with browser error - popup not shown`() = runTest {
         subject.viewState.test {
             subject.onPageLoaded(url = "https://www.example.com", httpErrorCodes = emptyList(), hasBrowserError = true)
             subject.onPageRefreshTriggeredByUser()
@@ -192,7 +192,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenPageIsChangedThenPopupIsNotDismissed() = runTest {
+    fun `onPageChanged - popup not dismissed`() = runTest {
         subject.viewState.test {
             subject.onPageLoaded(url = "https://www.example.com", httpErrorCodes = emptyList(), hasBrowserError = false)
             subject.onPageRefreshTriggeredByUser()
@@ -206,7 +206,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenDismissEventIsHandledThenViewStateIsUpdated() = runTest {
+    fun `onUiEvent - view state updated - popup dismissed`() = runTest {
         subject.viewState.test {
             subject.onPageLoaded(url = "https://www.example.com", httpErrorCodes = emptyList(), hasBrowserError = false)
             subject.onPageRefreshTriggeredByUser()
@@ -220,7 +220,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenDismissButtonClickedEventIsHandledThenPopupIsDismissed() = runTest {
+    fun `onUiEvent - dismiss button clicked event handled - popup dismissed`() = runTest {
         subject.viewState.test {
             subject.onPageLoaded(url = "https://www.example.com", httpErrorCodes = emptyList(), hasBrowserError = false)
             subject.onPageRefreshTriggeredByUser()
@@ -235,7 +235,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenDisableProtectionsClickedEventIsHandledThenPopupIsDismissed() = runTest {
+    fun `onDisableProtectionsClicked - popup dismissed`() = runTest {
         subject.viewState.test {
             assertEquals(PrivacyProtectionsPopupViewState.Gone, awaitItem())
             subject.onPageLoaded(url = "https://www.example.com", httpErrorCodes = emptyList(), hasBrowserError = false)
@@ -251,7 +251,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenDisableProtectionsClickedEventIsHandledThenDomainIsAddedToUserAllowlist() = runTest {
+    fun `onDisableProtectionsClicked - domain is added to user allowlist`() = runTest {
         subject.viewState.test {
             subject.onPageLoaded(url = "https://www.example.com", httpErrorCodes = emptyList(), hasBrowserError = false)
             subject.onPageRefreshTriggeredByUser()
@@ -266,7 +266,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenPopupWasDismissedRecentlyForTheSameDomainThenItWontBeShownOnRefresh() = runTest {
+    fun `onPageRefresh - popup dismissed recently for same domain - not shown on refresh`() = runTest {
         subject.viewState.test {
             subject.onPageLoaded(url = "https://www.example.com", httpErrorCodes = emptyList(), hasBrowserError = false)
             subject.onPageRefreshTriggeredByUser()
@@ -281,7 +281,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenPopupWasDismissedMoreThan24HoursAgoForTheSameDomainThenItIsShownAgainOnRefresh() = runTest {
+    fun `onPageRefresh - popup dismissed more than 24 hours ago for same domain - shown again`() = runTest {
         subject.viewState.test {
             timeProvider.time = Instant.parse("2023-11-29T10:15:30.000Z")
             subject.onPageLoaded(url = "https://www.example.com", httpErrorCodes = emptyList(), hasBrowserError = false)
@@ -297,7 +297,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenPopupWasDismissedRecentlyThenItWontBeShownOnForTheSameDomainButWillBeForOtherDomains() = runTest {
+    fun `onPageLoaded - popup dismissed recently - won't be shown for same domain but will be for other domains`() = runTest {
         subject.viewState.test {
             subject.onPageLoaded(url = "https://www.example.com", httpErrorCodes = emptyList(), hasBrowserError = false)
             subject.onPageRefreshTriggeredByUser()
@@ -321,7 +321,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenRefreshIsTriggeredBeforeDataIsLoadedThenPopupIsNotShown() = runTest {
+    fun `onPageRefreshTriggeredByUser - view state not showing popup`() = runTest {
         val protectionsEnabledFlow = MutableSharedFlow<Boolean>()
         protectionsStateProvider.overrideProtectionsEnabledFlow(protectionsEnabledFlow)
 
@@ -335,7 +335,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenRefreshIsTriggeredThenPopupIsNotShownEvenIfOtherConditionsAreMetAfterAFewSeconds() = runTest {
+    fun `onPageRefreshTriggeredByUser - popup not shown even if other conditions are met after a few seconds`() = runTest {
         val protectionsEnabledFlow = MutableSharedFlow<Boolean>()
         protectionsStateProvider.overrideProtectionsEnabledFlow(protectionsEnabledFlow)
 
@@ -349,7 +349,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenToggleWasUsedInLast2WeeksThenPopupIsNotShownOnRefresh() = runTest {
+    fun `onPageRefresh - toggle used in last 2 weeks - popup not shown`() = runTest {
         val toggleUsedAt = timeProvider.time - Duration.ofDays(10)
         dataStore.setToggleUsageTimestamp(toggleUsedAt)
 
@@ -362,7 +362,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenToggleWasNotUsedInLast2WeeksThenPopupIsShownOnRefresh() = runTest {
+    fun `onPageRefresh - toggle not used in last 2 weeks - popup is shown`() = runTest {
         val toggleUsedAt = timeProvider.time - Duration.ofDays(32)
         dataStore.setToggleUsageTimestamp(toggleUsedAt)
 
@@ -375,7 +375,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenPageReloadsOnRefreshWithHttpErrorThenPopupIsNotDismissed() = runTest {
+    fun `onPageReloadsOnRefreshWithHttpError - popup not dismissed`() = runTest {
         subject.viewState.test {
             subject.onPageLoaded(url = "https://www.example.com", httpErrorCodes = emptyList(), hasBrowserError = false)
             subject.onPageRefreshTriggeredByUser()
@@ -390,7 +390,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenPopupIsShownThenTriggerCountIsIncremented() = runTest {
+    fun `onPageLoaded - popup is shown - trigger count incremented`() = runTest {
         subject.viewState.test {
             subject.onPageLoaded(url = "https://www.example.com", httpErrorCodes = emptyList(), hasBrowserError = false)
             subject.onPageRefreshTriggeredByUser()
@@ -411,7 +411,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenPopupTriggerCountIsZeroThenDoNotShowAgainOptionIsNotAvailable() = runTest {
+    fun `onPageLoaded - popup trigger count zero - do not show again option not available`() = runTest {
         dataStore.setPopupTriggerCount(0)
 
         subject.viewState.test {
@@ -423,7 +423,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenPopupTriggerCountIsGreaterThanZeroThenDoNotShowAgainOptionIsAvailable() = runTest {
+    fun `onPageRefresh - popup trigger count greater than zero - do not show again option available`() = runTest {
         dataStore.setPopupTriggerCount(1)
 
         subject.viewState.test {
@@ -435,7 +435,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenDoNotShowAgainIsClickedThenPopupIsNotShownAgain() = runTest {
+    fun `onUiEvent - do not show again clicked - popup is not shown again`() = runTest {
         dataStore.setPopupTriggerCount(1)
 
         subject.viewState.test {
@@ -457,7 +457,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenPopupConditionsAreMetAndExperimentVariantIsControlThenPopupIsNotShown() = runTest {
+    fun `onPageLoaded - popup conditions met and experiment variant is control - popup not shown`() = runTest {
         dataStore.setExperimentVariant(CONTROL)
         subject.viewState.test {
             subject.onPageLoaded(url = "https://www.example.com", httpErrorCodes = emptyList(), hasBrowserError = false)
@@ -468,7 +468,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenPopupConditionsAreMetAndExperimentVariantIsNullThenInitializesVariantWithRandomValue() = runTest {
+    fun `onPageLoaded - popup conditions met - initializes variant with random value`() = runTest {
         variantRandomizer.variant = CONTROL
         assertNull(dataStore.getExperimentVariant())
 
@@ -482,7 +482,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenExperimentVariantIsAssignedThenPixelIsSent() = runTest {
+    fun `onPageLoaded - experiment variant assigned - pixel sent`() = runTest {
         variantRandomizer.variant = CONTROL
         assertNull(dataStore.getExperimentVariant())
         var variantIncludedInPixel: PrivacyProtectionsPopupExperimentVariant? = null
@@ -501,7 +501,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenVariantIsAlreadyAssignedThenPixelIsNotSent() = runTest {
+    fun `onPageLoaded - variant already assigned - pixel not sent`() = runTest {
         dataStore.setExperimentVariant(TEST)
         subject.viewState.test {
             subject.onPageLoaded(url = "https://www.example.com", httpErrorCodes = emptyList(), hasBrowserError = false)
@@ -514,7 +514,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenPopupIsTriggeredThenPixelIsSent() = runTest {
+    fun `onPageRefreshTriggeredByUser - popup triggered - pixel sent`() = runTest {
         subject.viewState.test {
             subject.onPageLoaded(url = "https://www.example.com", httpErrorCodes = emptyList(), hasBrowserError = false)
             subject.onPageRefreshTriggeredByUser()
@@ -525,7 +525,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenPrivacyProtectionsDisableButtonIsClickedThenPixelIsSent() = runTest {
+    fun `onDisableProtectionsClicked - pixel sent`() = runTest {
         subject.viewState.test {
             subject.onPageLoaded(url = "https://www.example.com", httpErrorCodes = emptyList(), hasBrowserError = false)
             subject.onPageRefreshTriggeredByUser()
@@ -539,7 +539,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenDismissButtonIsClickedThenPixelIsSent() = runTest {
+    fun `onUiEvent - dismiss button clicked - pixel sent`() = runTest {
         subject.viewState.test {
             subject.onPageLoaded(url = "https://www.example.com", httpErrorCodes = emptyList(), hasBrowserError = false)
             subject.onPageRefreshTriggeredByUser()
@@ -553,7 +553,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenPopupIsDismissedViaClickOutsideThenPixelIsSent() = runTest {
+    fun `onUiEvent - popup dismissed via click outside - pixel sent`() = runTest {
         subject.viewState.test {
             subject.onPageLoaded(url = "https://www.example.com", httpErrorCodes = emptyList(), hasBrowserError = false)
             subject.onPageRefreshTriggeredByUser()
@@ -567,7 +567,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenDoNotShowAgainButtonIsClickedThenPixelIsSent() = runTest {
+    fun `onUiEvent - do not show again button clicked - pixel sent`() = runTest {
         subject.viewState.test {
             subject.onPageLoaded(url = "https://www.example.com", httpErrorCodes = emptyList(), hasBrowserError = false)
             subject.onPageRefreshTriggeredByUser()
@@ -581,7 +581,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenPrivacyDashboardIsOpenedThenPixelIsSent() = runTest {
+    fun `onUiEvent - privacy dashboard opened - pixel sent`() = runTest {
         subject.viewState.test {
             subject.onPageLoaded(url = "https://www.example.com", httpErrorCodes = emptyList(), hasBrowserError = false)
             subject.onPageRefreshTriggeredByUser()
@@ -595,7 +595,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenPageIsRefreshedAndConditionsAreMetThenPixelIsSent() = runTest {
+    fun `onPageRefresh - page refreshed and conditions met - pixel sent`() = runTest {
         subject.viewState.test {
             subject.onPageLoaded(url = "https://www.example.com", httpErrorCodes = emptyList(), hasBrowserError = false)
             subject.onPageRefreshTriggeredByUser()
@@ -606,7 +606,7 @@ class PrivacyProtectionsPopupManagerImplTest {
     }
 
     @Test
-    fun whenPageIsRefreshedAndFeatureIsDisabledAndThereIsNoExperimentVariantThenPixelIsNotSent() = runTest {
+    fun `onPageRefresh - feature disabled - no experiment variant - pixel not sent`() = runTest {
         featureFlag.enabled = false
         subject.viewState.test {
             subject.onPageLoaded(url = "https://www.example.com", httpErrorCodes = emptyList(), hasBrowserError = false)

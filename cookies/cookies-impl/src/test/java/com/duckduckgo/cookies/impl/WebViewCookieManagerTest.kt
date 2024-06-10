@@ -58,7 +58,7 @@ class WebViewCookieManagerTest {
     }
 
     @Test
-    fun whenCookiesRemovedThenInternalCookiesRecreated() = runTest {
+    fun `removeExternalCookies - internal cookies recreated`() = runTest {
         givenCookieManagerWithCookies(ddgCookie, externalHostCookie)
 
         withContext(coroutineRule.testDispatcherProvider.main()) {
@@ -69,7 +69,7 @@ class WebViewCookieManagerTest {
     }
 
     @Test
-    fun whenCookiesStoredThenRemoveCookiesExecuted() = runTest {
+    fun `removeExternalCookies - cookies stored - remove cookies executed`() = runTest {
         givenCookieManagerWithCookies(ddgCookie, externalHostCookie)
 
         withContext(coroutineRule.testDispatcherProvider.main()) {
@@ -80,7 +80,7 @@ class WebViewCookieManagerTest {
     }
 
     @Test
-    fun whenCookiesStoredThenFlushBeforeAndAfterInteractingWithCookieManager() = runTest {
+    fun `removeExternalCookies - flush before and after interacting with cookie manager`() = runTest {
         givenCookieManagerWithCookies(ddgCookie, externalHostCookie)
 
         withContext(coroutineRule.testDispatcherProvider.main()) {
@@ -97,7 +97,7 @@ class WebViewCookieManagerTest {
     }
 
     @Test
-    fun whenNoCookiesThenRemoveProcessNotExecuted() = runTest {
+    fun `removeExternalCookies - no cookies - remove process not executed`() = runTest {
         givenCookieManagerWithCookies()
 
         withContext(coroutineRule.testDispatcherProvider.main()) {

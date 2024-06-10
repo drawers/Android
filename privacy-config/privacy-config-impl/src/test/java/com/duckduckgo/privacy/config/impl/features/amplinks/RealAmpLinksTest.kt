@@ -42,38 +42,38 @@ class RealAmpLinksTest {
     }
 
     @Test
-    fun whenIsExceptionCalledAndDomainIsInUserAllowListThenReturnTrue() {
+    fun `isAnException - is domain in user allow list - returns true`() {
         whenever(mockUserAllowListRepository.isUrlInUserAllowList(anyString())).thenReturn(true)
         assertTrue(testee.isAnException("test.com"))
     }
 
     @Test
-    fun whenProcessDestinationUrlAndExtractedUrlIsNullThenReturnInitialUrl() {
+    fun `processDestinationUrl - extracted url is null - return initial url`() {
         val destinationUrl = testee.processDestinationUrl("https://example.com", null)
         assertEquals("https://example.com", destinationUrl)
     }
 
     @Test
-    fun whenProcessDestinationUrlAndExtractedUrlIsAnExceptionThenReturnInitialUrl() {
+    fun `processDestinationUrl - extracted url is an exception - return initial url`() {
         whenever(mockUserAllowListRepository.isUrlInUserAllowList(anyString())).thenReturn(true)
         val destinationUrl = testee.processDestinationUrl("https://example.com", "https://foo.com")
         assertEquals("https://example.com", destinationUrl)
     }
 
     @Test
-    fun whenProcessDestinationUrlAndExtractedUrlDoesNotStartWithHttpOrHttpsThenReturnInitialUrl() {
+    fun `processDestinationUrl - does not start with http or https - return initial url`() {
         val destinationUrl = testee.processDestinationUrl("https://example.com", "foo.com")
         assertEquals("https://example.com", destinationUrl)
     }
 
     @Test
-    fun whenProcessDestinationUrlAndExtractedUrlStartsWithHttpThenReturnExtractedUrl() {
+    fun `processDestinationUrl - extracted url starts with http - return extracted url`() {
         val destinationUrl = testee.processDestinationUrl("https://example.com", "http://foo.com")
         assertEquals("http://foo.com", destinationUrl)
     }
 
     @Test
-    fun whenProcessDestinationUrlAndExtractedUrlStartsWithHttpsThenReturnExtractedUrl() {
+    fun `processDestinationUrl - extracted url starts with https - returns extracted url`() {
         val destinationUrl = testee.processDestinationUrl("https://example.com", "https://foo.com")
         assertEquals("https://foo.com", destinationUrl)
     }

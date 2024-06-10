@@ -36,7 +36,7 @@ class AutoconsentSettingsViewModelTest {
     private val viewModel = AutoconsentSettingsViewModel(autoconsent)
 
     @Test
-    fun whenViewModelCreatedThenEmitViewState() = runTest {
+    fun `whenViewModelCreated - view state emitted - auto consent disabled`() = runTest {
         viewModel.viewState.test {
             assertFalse(awaitItem().autoconsentEnabled)
             cancelAndIgnoreRemainingEvents()
@@ -44,7 +44,7 @@ class AutoconsentSettingsViewModelTest {
     }
 
     @Test
-    fun whenOnLearnMoreSelectedCalledThenLaunchLearnMoreWebPageCommandIsSent() = runTest {
+    fun `onLearnMoreSelected - launch learn more webpage command sent`() = runTest {
         viewModel.commands().test {
             viewModel.onLearnMoreSelected()
             assertEquals(AutoconsentSettingsViewModel.Command.LaunchLearnMoreWebPage(), awaitItem())
@@ -53,7 +53,7 @@ class AutoconsentSettingsViewModelTest {
     }
 
     @Test
-    fun whenOnUserToggleAutoconsentToTrueThenAutoconsentEnabledIsTrue() = runTest {
+    fun `onUserToggleAutoconsent - viewState updated - autoconsent enabled is true`() = runTest {
         viewModel.viewState.test {
             assertFalse(awaitItem().autoconsentEnabled)
             viewModel.onUserToggleAutoconsent(true)
@@ -64,7 +64,7 @@ class AutoconsentSettingsViewModelTest {
     }
 
     @Test
-    fun whenOnUserToggleAutoconsentToFalseThenAutoconsentEnabledIsFalse() = runTest {
+    fun `onUserToggleAutoconsent - view state updated - auto consent enabled is false`() = runTest {
         viewModel.viewState.test {
             viewModel.onUserToggleAutoconsent(false)
             assertFalse(awaitItem().autoconsentEnabled)

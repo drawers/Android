@@ -71,7 +71,7 @@ class NetPDisabledNotificationSchedulerTest {
     }
 
     @Test
-    fun whenVpnManuallyStoppedThenDoNotShowSnooze() = runTest {
+    fun `onVpnStopped - do not show snooze - vpn manually stopped`() = runTest {
         netPSettingsLocalConfig.vpnNotificationAlerts().setEnabled(State(enable = true))
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
         whenever(networkProtectionState.isOnboarded()).thenReturn(true)
@@ -82,7 +82,7 @@ class NetPDisabledNotificationSchedulerTest {
     }
 
     @Test
-    fun whenVpnManuallyStoppedWithSnoozeButNoTriggerTimeThenDoNotShowSnooze() = runTest {
+    fun `onVpnStopped - vpn manually stopped with snooze but no trigger time - do not show snooze`() = runTest {
         netPSettingsLocalConfig.vpnNotificationAlerts().setEnabled(State(enable = true))
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
         whenever(networkProtectionState.isOnboarded()).thenReturn(true)
@@ -94,7 +94,7 @@ class NetPDisabledNotificationSchedulerTest {
     }
 
     @Test
-    fun whenVpnSnoozedThenShowSnoozeNotification() = runTest {
+    fun `onVpnSnoozed - show snooze notification`() = runTest {
         netPSettingsLocalConfig.vpnNotificationAlerts().setEnabled(State(enable = true))
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
         whenever(networkProtectionState.isOnboarded()).thenReturn(true)

@@ -110,7 +110,7 @@ class NetpAppExclusionListViewModelTest {
     }
 
     @Test
-    fun whenFilterIsAllAndGetAppsThenReturnCorrectViewState() = runTest {
+    fun `getApps - all apps - correct view state`() = runTest {
         whenever(systemAppsExclusionRepository.getAvailableCategories()).thenReturn(emptySet())
         testee.getApps().test {
             assertEquals(
@@ -134,7 +134,7 @@ class NetpAppExclusionListViewModelTest {
     }
 
     @Test
-    fun whenFilterIsProtectedOnlyAndGetAppsThenReturnCorrectViewState() = runTest {
+    fun `applyAppsFilter - get apps view state`() = runTest {
         whenever(systemAppsExclusionRepository.getAvailableCategories()).thenReturn(emptySet())
         testee.applyAppsFilter(AppsFilter.PROTECTED_ONLY)
 
@@ -156,7 +156,7 @@ class NetpAppExclusionListViewModelTest {
     }
 
     @Test
-    fun whenFilterIsUnprotectedOnlyAndGetAppsThenReturnCorrectViewState() = runTest {
+    fun `applyAppsFilter - get apps - correct view state`() = runTest {
         whenever(systemAppsExclusionRepository.getAvailableCategories()).thenReturn(emptySet())
         testee.applyAppsFilter(AppsFilter.UNPROTECTED_ONLY)
 
@@ -177,7 +177,7 @@ class NetpAppExclusionListViewModelTest {
     }
 
     @Test
-    fun whenGetAppsAndSystemAppIsInOverrideThenReturnCorrectViewState() = runTest {
+    fun `getApps - system app override - correct view state`() = runTest {
         whenever(systemAppsExclusionRepository.getAvailableCategories()).thenReturn(emptySet())
         whenever(systemAppOverridesProvider.getSystemAppOverridesList()).thenReturn(listOf("com.example.system"))
 
@@ -202,7 +202,7 @@ class NetpAppExclusionListViewModelTest {
     }
 
     @Test
-    fun whenSystemAppCategoriesAvailableThenReturnCorrectViewState() = runTest {
+    fun `getApps - system app categories available - correct view state`() = runTest {
         whenever(systemAppOverridesProvider.getSystemAppOverridesList()).thenReturn(listOf("com.example.system"))
         whenever(systemAppsExclusionRepository.getAvailableCategories()).thenReturn(
             setOf(
@@ -241,7 +241,7 @@ class NetpAppExclusionListViewModelTest {
     }
 
     @Test
-    fun whenOnAppProtectionChangedToProtectedThenManuallyEnableApp() {
+    fun `onAppProtectionChanged - manually enable app`() {
         testee.onAppProtectionChanged(
             NetpExclusionListApp("com.example.app2", "App Name", false),
             true,
@@ -250,7 +250,7 @@ class NetpAppExclusionListViewModelTest {
     }
 
     @Test
-    fun whenOnAppProtectionChangedToUnProtectedThenShowDisabledDialog() = runTest {
+    fun `onAppProtectionChanged - show disabled dialog`() = runTest {
         val app = NetpExclusionListApp("com.example.app1", "App Name", true)
         testee.onAppProtectionChanged(app, false)
 
@@ -264,7 +264,7 @@ class NetpAppExclusionListViewModelTest {
     }
 
     @Test
-    fun whenOnAppProtectionDisabledWithNoReportThenOnlyManuallyExcludeApp() = runTest {
+    fun `onAppProtectionDisabled - no report - manually exclude app`() = runTest {
         testee.onAppProtectionDisabled("App Name", "com.example.app1", false)
 
         verify(netPExclusionListRepository).manuallyExcludeApp("com.example.app1")
@@ -273,7 +273,7 @@ class NetpAppExclusionListViewModelTest {
     }
 
     @Test
-    fun whenOnAppProtectionDisabledAndReportThenManuallyExcludeAndShowIssueReporting() = runTest {
+    fun `onAppProtectionDisabled - report manually exclude and show issue reporting`() = runTest {
         testee.onAppProtectionDisabled("App Name", "com.example.app1", true)
 
         verify(netPExclusionListRepository).manuallyExcludeApp("com.example.app1")
@@ -296,7 +296,7 @@ class NetpAppExclusionListViewModelTest {
     }
 
     @Test
-    fun whenLaunchFeedbackThenShowIssueReporting() = runTest {
+    fun `launchFeedback - show issue reporting`() = runTest {
         testee.launchFeedback()
 
         verify(networkProtectionPixels).reportExclusionListLaunchBreakageReport()
@@ -317,7 +317,7 @@ class NetpAppExclusionListViewModelTest {
     }
 
     @Test
-    fun whenRestoreProtectedAppsTheResetRepositoryAndRestartVpn() = runTest {
+    fun `restoreProtectedApps - reset repository and restart VPN`() = runTest {
         testee.restoreProtectedApps()
 
         verify(netPExclusionListRepository).restoreDefaultProtectedList()
@@ -330,7 +330,7 @@ class NetpAppExclusionListViewModelTest {
     }
 
     @Test
-    fun whenUserMadeChangesToExclusionListThenOnPauseRestartVpn() = runTest {
+    fun `onPause - user made changes to exclusion list - on pause restart vpn`() = runTest {
         testee.onResume(mock())
         exclusionListFlow.emit(
             listOf(
@@ -349,7 +349,7 @@ class NetpAppExclusionListViewModelTest {
     }
 
     @Test
-    fun whenUserMadeNoChangesToExclusionListThenOnPauseDoNothing() = runTest {
+    fun `onResume - on pause do nothing - no changes to exclusion list`() = runTest {
         testee.onResume(mock())
         testee.onPause(mock())
 
@@ -359,7 +359,7 @@ class NetpAppExclusionListViewModelTest {
     }
 
     @Test
-    fun whenExclusionListResetToOriginalThenOnPauseDoNothing() = runTest {
+    fun `onPause - reset to original - do nothing`() = runTest {
         testee.onResume(mock())
         exclusionListFlow.emit(
             listOf(
@@ -378,7 +378,7 @@ class NetpAppExclusionListViewModelTest {
     }
 
     @Test
-    fun whenWarningNotYetShownOnSystemAppCategoryStateChangedThenShowWarning() = runTest {
+    fun `onSystemAppCategoryStateChanged - warning not yet shown - show warning`() = runTest {
         whenever(systemAppsExclusionRepository.hasShownWarning()).thenReturn(false)
 
         val category = NetpExclusionListSystemAppCategory(
@@ -401,7 +401,7 @@ class NetpAppExclusionListViewModelTest {
     }
 
     @Test
-    fun whenWarningShownAndCategorySetToDisabledOnSystemAppCategoryStateChangedThenExcludeCategory() = runTest {
+    fun `whenWarningShownAndCategorySetToDisabled - category state changed - exclude category`() = runTest {
         whenever(systemAppsExclusionRepository.hasShownWarning()).thenReturn(true)
 
         val category = NetpExclusionListSystemAppCategory(
@@ -422,7 +422,7 @@ class NetpAppExclusionListViewModelTest {
     }
 
     @Test
-    fun whenWarningShownAndCategorySetToEnabledOnSystemAppCategoryStateChangedThenIncludeCategory() = runTest {
+    fun `whenWarningShownAndCategorySetToEnabledOnSystemAppCategoryStateChanged - include category`() = runTest {
         whenever(systemAppsExclusionRepository.hasShownWarning()).thenReturn(true)
 
         val category = NetpExclusionListSystemAppCategory(

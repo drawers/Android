@@ -65,7 +65,7 @@ class ResultHandlerCredentialSelectionTest {
     }
 
     @Test
-    fun whenUserRejectedToUseCredentialThenCorrectCallbackInvoked() = runTest {
+    fun `processResult - user rejected to use credential - correct callback invoked`() = runTest {
         configureSuccessfulAuth()
         val bundle = bundleForUserCancelling("example.com")
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
@@ -73,7 +73,7 @@ class ResultHandlerCredentialSelectionTest {
     }
 
     @Test
-    fun whenUserAcceptedToUseCredentialsAndSuccessfullyAuthenticatedThenCorrectCallbackInvoked() = runTest {
+    fun `processResult - user accepted to use credentials and successfully authenticated - correct callback invoked`() = runTest {
         configureSuccessfulAuth()
         val bundle = bundleForUserAcceptingToAutofill("example.com")
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
@@ -81,7 +81,7 @@ class ResultHandlerCredentialSelectionTest {
     }
 
     @Test
-    fun whenUserAcceptedToUseCredentialsAndCancelsAuthenticationThenCorrectCallbackInvoked() = runTest {
+    fun `processResult - user accepted to use credentials and cancels authentication - correct callback invoked`() = runTest {
         configureCancelledAuth()
         val bundle = bundleForUserAcceptingToAutofill("example.com")
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
@@ -89,7 +89,7 @@ class ResultHandlerCredentialSelectionTest {
     }
 
     @Test
-    fun whenUserAcceptedToUseCredentialsAndAuthenticationFailsThenCorrectCallbackInvoked() = runTest {
+    fun `processResult - user accepted to use credentials and authentication fails - correct callback invoked`() = runTest {
         configureFailedAuth()
         val bundle = bundleForUserAcceptingToAutofill("example.com")
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
@@ -97,7 +97,7 @@ class ResultHandlerCredentialSelectionTest {
     }
 
     @Test
-    fun whenUserAcceptedToUseCredentialsButMissingInBundleThenNoCallbackInvoked() = runTest {
+    fun `processResult - user accepted to use credentials but missing in bundle - no callback invoked`() = runTest {
         configureSuccessfulAuth()
         val bundle = bundleMissingCredentials("example.com")
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
@@ -105,7 +105,7 @@ class ResultHandlerCredentialSelectionTest {
     }
 
     @Test
-    fun whenMissingUrlThenNoCallbackInvoked() = runTest {
+    fun `processResult - missing url - no callback invoked`() = runTest {
         configureSuccessfulAuth()
         val bundle = bundleMissingUrl()
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)

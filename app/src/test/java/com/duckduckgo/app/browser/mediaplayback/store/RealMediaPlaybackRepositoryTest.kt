@@ -29,7 +29,7 @@ class RealMediaPlaybackRepositoryTest {
     }
 
     @Test
-    fun whenRepositoryIsCreatedThenValuesLoadedIntoMemory() {
+    fun `initRepository - repository created - values loaded into memory`() {
         givenMediaPlaybackDaoContainsEntities()
 
         initRepository()
@@ -38,7 +38,7 @@ class RealMediaPlaybackRepositoryTest {
     }
 
     @Test
-    fun whenUpdateAllThenUpdateAllCalled() = runTest {
+    fun `updateAll - update all called`() = runTest {
         initRepository()
 
         testee.updateAll(listOf())
@@ -47,7 +47,7 @@ class RealMediaPlaybackRepositoryTest {
     }
 
     @Test
-    fun whenUpdateAllThenPreviousValuesAreClearedAndNewValuesUpdated() = runTest {
+    fun `updateAll - previous values cleared and new values updated`() = runTest {
         givenMediaPlaybackDaoContainsEntities()
 
         initRepository()

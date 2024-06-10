@@ -37,14 +37,14 @@ class PopUpFoundMessageHandlerPluginTest {
     private val popupFoundHandler = PopUpFoundMessageHandlerPlugin(repository)
 
     @Test
-    fun whenProcessIfMessageTypeIsNotPopUpFoundThenDoNothing() {
+    fun `process - if message type is not pop up found - do nothing`() {
         popupFoundHandler.process("noMatching", "", webView, mockCallback)
 
         verify(mockCallback, never()).onFirstPopUpHandled()
     }
 
     @Test
-    fun whenProcessIfSettingEnabledThenDoNothing() {
+    fun `process - setting enabled - do nothing`() {
         repository.userSetting = true
 
         popupFoundHandler.process(popupFoundHandler.supportedTypes.first(), "", webView, mockCallback)
@@ -53,7 +53,7 @@ class PopUpFoundMessageHandlerPluginTest {
     }
 
     @Test
-    fun whenProcessIfSettingDisabledAndCmpIsNotTopThenCallCallback() {
+    fun `processIfSettingDisabledAndCmpIsNotTop - callback on first pop up handled`() {
         repository.userSetting = false
 
         popupFoundHandler.process(popupFoundHandler.supportedTypes.first(), message("test"), webView, mockCallback)
@@ -62,7 +62,7 @@ class PopUpFoundMessageHandlerPluginTest {
     }
 
     @Test
-    fun whenProcessIfSettingDisabledAndCmpIsTopThenDoNothing() {
+    fun `process - setting disabled and cmp is top - do nothing`() {
         repository.userSetting = false
 
         popupFoundHandler.process(popupFoundHandler.supportedTypes.first(), message("test-top"), webView, mockCallback)

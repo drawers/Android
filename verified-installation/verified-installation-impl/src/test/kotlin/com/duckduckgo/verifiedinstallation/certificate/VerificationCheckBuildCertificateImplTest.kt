@@ -29,19 +29,19 @@ class VerificationCheckBuildCertificateImplTest {
     private val testee = VerificationCheckBuildCertificateImpl(certHashExtractor)
 
     @Test
-    fun whenExtractedHashIsNullThenNotAMatch() {
+    fun `extractHash - null - not a match`() {
         whenever(certHashExtractor.sha256Hash()).thenReturn(null)
         assertFalse(testee.builtWithVerifiedCertificate())
     }
 
     @Test
-    fun whenExtractedHashIsNotProductionHashThenNotAMatch() {
+    fun `extractNonProductionHash - not a match`() {
         whenever(certHashExtractor.sha256Hash()).thenReturn("ABC-123")
         assertFalse(testee.builtWithVerifiedCertificate())
     }
 
     @Test
-    fun whenExtractedHashIsProductionHashThenIsAMatch() {
+    fun `extractCertHash - production hash - is a match`() {
         whenever(certHashExtractor.sha256Hash()).thenReturn(PRODUCTION_SHA_256_HASH)
         assertTrue(testee.builtWithVerifiedCertificate())
     }

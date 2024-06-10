@@ -43,7 +43,7 @@ class CleanupBrokenSiteLastSentReportWorkerTest {
     }
 
     @Test
-    fun whenDoWorkThenCallCleanupOldEntriesAndReturnSuccess() =
+    fun `doWork - cleanup old entries and return success`() =
         runTest {
             val worker = TestListenableWorkerBuilder<CleanupBrokenSiteLastSentReportWorker>(context = context).build()
             worker.brokenSiteReportRepository = mockBrokenSiteReportRepository
