@@ -39,19 +39,19 @@ class FingerprintingScreenSizeFeaturePluginTest {
     }
 
     @Test
-    fun whenFeatureNameDoesNotMatchFingerprintingScreenSizeThenReturnFalse() {
+    fun `store - feature name does not match fingerprinting screen size - return false`() {
         FingerprintProtectionFeatureName.values().filter { it != FEATURE_NAME }.forEach {
             assertFalse(testee.store(it.value, JSON_STRING))
         }
     }
 
     @Test
-    fun whenFeatureNameMatchesFingerprintingScreenSizeThenReturnTrue() {
+    fun `store - feature name matches fingerprinting screen size - return true`() {
         assertTrue(testee.store(FEATURE_NAME_VALUE, JSON_STRING))
     }
 
     @Test
-    fun whenFeatureNameMatchesFingerprintingScreenSizeThenUpdateAll() {
+    fun `store - feature name matches fingerprinting screen size - update all`() {
         testee.store(FEATURE_NAME_VALUE, JSON_STRING)
         val captor = argumentCaptor<FingerprintingScreenSizeEntity>()
         verify(mockFingerprintingScreenSizeRepository).updateAll(captor.capture())

@@ -62,7 +62,7 @@ class SyncOperationErrorRepositoryTest {
     }
 
     @Test
-    fun whenOperationErrorAddedAndNotPresentThenNewEntryAdded() {
+    fun `addError - error not present - new entry added`() {
         val errorType = SyncOperationErrorType.DATA_ENCRYPT
         val date = DatabaseDateFormatter.getUtcIsoLocalDate()
 
@@ -89,7 +89,7 @@ class SyncOperationErrorRepositoryTest {
     }
 
     @Test
-    fun whenOperationErrorAddedAndPresentThenCountUpdated() {
+    fun `addError - error present - count updated`() {
         val errorType = SyncOperationErrorType.DATA_ENCRYPT
         val date = DatabaseDateFormatter.getUtcIsoLocalDate()
 
@@ -103,7 +103,7 @@ class SyncOperationErrorRepositoryTest {
     }
 
     @Test
-    fun whenNoErrorsStoredThenGettingErrorsReturnsEmpty() {
+    fun `getErrorsByDate - no errors stored - returns empty`() {
         val date = DatabaseDateFormatter.getUtcIsoLocalDate()
 
         val errors = testee.getErrorsByDate(date)
@@ -112,7 +112,7 @@ class SyncOperationErrorRepositoryTest {
     }
 
     @Test
-    fun whenNoErrorsStoredFromYesterdayThenGettingErrorsFromYesterdayReturnsEmpty() {
+    fun `getErrorsByDate - no errors stored from yesterday - returns empty`() {
         val errorType = SyncOperationErrorType.DATA_ENCRYPT
         val yesterday = LocalDate.now().minusDays(1).format(DateTimeFormatter.ISO_LOCAL_DATE)
 
@@ -124,7 +124,7 @@ class SyncOperationErrorRepositoryTest {
     }
 
     @Test
-    fun whenErrorsStoredThenGettingErrorsReturnsData() {
+    fun `getErrorsByDate - errors stored - returns data`() {
         val errorType = SyncOperationErrorType.DATA_ENCRYPT
         val today = DatabaseDateFormatter.getUtcIsoLocalDate()
 
@@ -139,7 +139,7 @@ class SyncOperationErrorRepositoryTest {
     }
 
     @Test
-    fun whenFeatureErrorsStoredThenGettingErrorsReturnsData() {
+    fun `getErrorsByDate - feature errors stored - returns data`() {
         val feature = SyncableType.BOOKMARKS
         val errorType = SyncOperationErrorType.DATA_PERSISTER_ERROR
         val today = DatabaseDateFormatter.getUtcIsoLocalDate()
@@ -156,7 +156,7 @@ class SyncOperationErrorRepositoryTest {
     }
 
     @Test
-    fun whenProviderErrorsStoredThenGettingErrorsReturnsData() {
+    fun `getErrorsByDate - provider errors stored - returns data`() {
         val feature = SyncableType.BOOKMARKS
         val errorType = SyncOperationErrorType.DATA_PROVIDER_ERROR
         val today = DatabaseDateFormatter.getUtcIsoLocalDate()
@@ -173,7 +173,7 @@ class SyncOperationErrorRepositoryTest {
     }
 
     @Test
-    fun whenTimestampErrorsStoredThenGettingErrorsReturnsData() {
+    fun `getErrorsByDate - timestamp errors stored - returns data`() {
         val feature = SyncableType.BOOKMARKS
         val errorType = SyncOperationErrorType.TIMESTAMP_CONFLICT
         val today = DatabaseDateFormatter.getUtcIsoLocalDate()
@@ -190,7 +190,7 @@ class SyncOperationErrorRepositoryTest {
     }
 
     @Test
-    fun whenOrphansErrorsStoredThenGettingErrorsReturnsData() {
+    fun `getErrorsByDate - orphans errors stored - returns data`() {
         val feature = SyncableType.BOOKMARKS
         val errorType = SyncOperationErrorType.ORPHANS_PRESENT
         val today = DatabaseDateFormatter.getUtcIsoLocalDate()

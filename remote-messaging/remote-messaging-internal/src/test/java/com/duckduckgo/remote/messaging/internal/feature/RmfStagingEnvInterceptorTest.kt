@@ -13,7 +13,7 @@ class RmfStagingEnvInterceptorTest {
     private val interceptor = RmfStagingEnvInterceptor(rmfInternalSettings)
 
     @Test
-    fun interceptEndpointWhenEnabled() {
+    fun `intercept - endpoint enabled - uses staging URL`() {
         rmfInternalSettings.useStatingEndpoint().setEnabled(State(enable = true))
 
         val chain = FakeChain(RMF_URL_V1)
@@ -28,7 +28,7 @@ class RmfStagingEnvInterceptorTest {
     }
 
     @Test
-    fun interceptNoopWhenDisabled() {
+    fun `intercept - disabled - noop`() {
         rmfInternalSettings.useStatingEndpoint().setEnabled(State(enable = false))
 
         val chain = FakeChain(RMF_URL_V1)
@@ -43,7 +43,7 @@ class RmfStagingEnvInterceptorTest {
     }
 
     @Test
-    fun interceptIgnoreUnknownEndpointWhenEnabled() {
+    fun `intercept - unknown endpoint enabled - ignored`() {
         rmfInternalSettings.useStatingEndpoint().setEnabled(State(enable = true))
 
         val chain = FakeChain(UNKNOWN_URL)
@@ -53,7 +53,7 @@ class RmfStagingEnvInterceptorTest {
     }
 
     @Test
-    fun interceptIgnoreUnknownEndpointWhenDisabled() {
+    fun `intercept - unknown endpoint disabled - ignored`() {
         rmfInternalSettings.useStatingEndpoint().setEnabled(State(enable = false))
 
         val chain = FakeChain(UNKNOWN_URL)

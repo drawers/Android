@@ -57,30 +57,30 @@ class ReportBreakageCategorySingleChoiceViewModelTest {
     }
 
     @Test
-    fun whenInitializedThenCannotSubmit() {
+    fun `initialized - cannot submit`() {
         assertFalse(viewState.submitAllowed)
     }
 
     @Test
-    fun whenCategorySelectedThenCanSubmit() {
+    fun `selectAndAcceptCategory - can submit`() {
         selectAndAcceptCategory()
         assertTrue(viewState.submitAllowed)
     }
 
     @Test
-    fun whenCategoryChangedButNotSelectedThenCannotSubmit() {
+    fun `onCategoryIndexChanged - category changed but not selected - cannot submit`() {
         viewModel.onCategoryIndexChanged(0)
         assertFalse(viewState.submitAllowed)
     }
 
     @Test
-    fun whenNoCategorySelectedThenCannotSubmit() {
+    fun `cannotSubmit - no category selected`() {
         selectAndAcceptCategory(-1)
         assertFalse(viewState.submitAllowed)
     }
 
     @Test
-    fun whenCategorySelectedButNotChangedThenReturnOldCategory() {
+    fun `onCategoryAccepted - category selected but not changed - return old category`() {
         viewModel.onCategoryIndexChanged(0)
         viewModel.onCategoryAccepted()
         viewModel.onCategoryIndexChanged(1)
@@ -88,13 +88,13 @@ class ReportBreakageCategorySingleChoiceViewModelTest {
     }
 
     @Test
-    fun whenCategoryAcceptedAndIncorrectIndexThenReturnNullCategory() {
+    fun `selectAndAcceptCategory - incorrect index - return null category`() {
         selectAndAcceptCategory(-1)
         assertNull(viewState.categorySelected)
     }
 
     @Test
-    fun whenCategoryAcceptedAndCorrectIndexThenReturnCategory() {
+    fun `selectAndAcceptCategory - correct index - return category`() {
         val indexSelected = 0
         selectAndAcceptCategory(indexSelected)
 
@@ -102,7 +102,7 @@ class ReportBreakageCategorySingleChoiceViewModelTest {
     }
 
     @Test
-    fun whenCancelSelectionThenAssignOldIndexValue() {
+    fun `onCategorySelectionCancelled - assign old index value`() {
         selectAndAcceptCategory(0)
         viewModel.onCategoryIndexChanged(1)
         viewModel.onCategorySelectionCancelled()
@@ -111,7 +111,7 @@ class ReportBreakageCategorySingleChoiceViewModelTest {
     }
 
     @Test
-    fun whenCancelSelectionAndNoPreviousValueThenAssignMinusOne() {
+    fun `onCategorySelectionCancelled - no previous value - assign minus one`() {
         viewModel.onCategoryIndexChanged(1)
         viewModel.onCategorySelectionCancelled()
 
@@ -119,7 +119,7 @@ class ReportBreakageCategorySingleChoiceViewModelTest {
     }
 
     @Test
-    fun whenOnSubmitPressedAndCategorySelectedThenEmitConfirmAndFinishCommand() = runTest {
+    fun `onSubmitPressed - category selected - emit confirm and finish command`() = runTest {
         selectAndAcceptCategory()
 
         viewModel.commands().test {

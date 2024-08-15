@@ -7,7 +7,7 @@ import org.junit.Test
 class LocaleExtensionsTest {
 
     @Test
-    fun whenHasUnicodeLocaleExtensionThenRemoveUnicodeLocaleExtension() {
+    fun `toSanitizedLanguageTag - has unicode locale extension - removes unicode locale extension`() {
         val locale = Locale.Builder()
             .setLanguage("en")
             .setRegion("US")
@@ -19,7 +19,7 @@ class LocaleExtensionsTest {
     }
 
     @Test
-    fun whenDoesNotHaveUnicodeLocaleExtensionThenLanguageTagIsUnchanged() {
+    fun `toSanitizedLanguageTag - does not have unicode locale extension - unchanged`() {
         val locale = Locale.Builder()
             .setLanguage("en")
             .setRegion("US")

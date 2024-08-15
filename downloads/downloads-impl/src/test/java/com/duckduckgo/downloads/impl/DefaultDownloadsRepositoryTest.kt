@@ -49,7 +49,7 @@ class DefaultDownloadsRepositoryTest {
     }
 
     @Test
-    fun whenInsertDownloadItemThenInsertCalled() = runTest {
+    fun `insert - download item - insert called`() = runTest {
         val item = oneItem()
         val entity = oneEntity()
 
@@ -60,7 +60,7 @@ class DefaultDownloadsRepositoryTest {
     }
 
     @Test
-    fun whenInsertAllDownloadItemsThenInsertAllCalled() = runTest {
+    fun `insertAll - download items - insertAll called`() = runTest {
         val firstItem = oneItem()
         val secondItem = otherItem()
         val firstEntity = oneEntity()
@@ -73,7 +73,7 @@ class DefaultDownloadsRepositoryTest {
     }
 
     @Test
-    fun whenUpdateDownloadItemByIdWithDownloadStatusFinishedAndContentLengthThenUpdateCalledWithSameParams() =
+    fun `update - download status finished and content length - update called with same params`() =
         runTest {
             val item = oneItem()
             val updatedStatus = FINISHED
@@ -95,7 +95,7 @@ class DefaultDownloadsRepositoryTest {
         }
 
     @Test
-    fun whenUpdateDownloadItemByIdWithDownloadStatusStartedAndContentLengthThenUpdateCalledWithSameParams() =
+    fun `update - download item by id with status started and content length - update called with same params`() =
         runTest {
             val item = oneItem()
             val updatedStatus = STARTED
@@ -117,7 +117,7 @@ class DefaultDownloadsRepositoryTest {
         }
 
     @Test
-    fun whenUpdateDownloadItemByFileNameWithDownloadStatusFinishedAndContentLengthThenUpdateCalledWithSameParams() =
+    fun `update - download item by file name with finished status and content length - update called with same params`() =
         runTest {
             val item = oneItem().copy(downloadId = 0L)
             val updatedStatus = FINISHED
@@ -139,7 +139,7 @@ class DefaultDownloadsRepositoryTest {
         }
 
     @Test
-    fun whenUpdateDownloadItemByFileNameWithDownloadStatusStartedAndContentLengthThenUpdateCalledWithSameParams() =
+    fun `update - download item by file name with status started and content length - update called with same params`() =
         runTest {
             val item = oneItem().copy(downloadId = 0L)
             val updatedStatus = FINISHED
@@ -161,7 +161,7 @@ class DefaultDownloadsRepositoryTest {
         }
 
     @Test
-    fun whenDeleteDownloadItemThenDeleteCalled() = runTest {
+    fun `delete - download item - delete called`() = runTest {
         val item = oneItem()
 
         repository.delete(item.downloadId)
@@ -171,7 +171,7 @@ class DefaultDownloadsRepositoryTest {
     }
 
     @Test
-    fun whenDeleteListOfDownloadItemsThenDeleteCalled() = runTest {
+    fun `delete - list of download items - delete called`() = runTest {
         val firstItem = oneItem()
         val secondItem = otherItem()
 
@@ -182,7 +182,7 @@ class DefaultDownloadsRepositoryTest {
     }
 
     @Test
-    fun whenDeleteAllDownloadItemsThenDeleteWithNoParamsCalled() = runTest {
+    fun `deleteAll - delete with no params called`() = runTest {
         val entity = oneEntity()
         whenever(mockDb.downloadsDao().getDownloads()).thenReturn(listOf(entity))
 
@@ -193,7 +193,7 @@ class DefaultDownloadsRepositoryTest {
     }
 
     @Test
-    fun whenGetDownloadItemCalledThenGetDownloadItemCalled() = runTest {
+    fun `getDownloadItem - calls getDownloadItem`() = runTest {
         val item = oneItem()
         val entity = oneEntity()
         whenever(mockDb.downloadsDao().getDownloadItem(item.downloadId)).thenReturn(entity)
@@ -204,7 +204,7 @@ class DefaultDownloadsRepositoryTest {
     }
 
     @Test
-    fun whenGetDownloadItemsCalledThenGetDownloadsCalled() = runTest {
+    fun `getDownloads - getDownloadItems called - getDownloads called`() = runTest {
         whenever(mockDb.downloadsDao().getDownloads()).thenReturn(listOf(oneEntity()))
 
         repository.getDownloads()

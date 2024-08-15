@@ -27,20 +27,20 @@ class AppInstallStoreTest {
     var testee: AppInstallStore = mock()
 
     @Test
-    fun whenInstallationTodayThenDayInstalledIsZero() {
+    fun `daysInstalled - installation today - day installed is zero`() {
         whenever(testee.installTimestamp).thenReturn(System.currentTimeMillis())
         assertEquals(0, testee.daysInstalled())
     }
 
     @Test
-    fun whenDayAfterInstallationThenDayInstalledIsOne() {
+    fun `daysInstalled - day after installation - day installed is one`() {
         val timeSinceInstallation = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1)
         whenever(testee.installTimestamp).thenReturn(timeSinceInstallation)
         assertEquals(1, testee.daysInstalled())
     }
 
     @Test
-    fun whenAWeekAfterInstallationThenDayInstalledIsSeven() {
+    fun `daysInstalled - a week after installation - day installed is seven`() {
         val timeSinceInstallation = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(7)
         whenever(testee.installTimestamp).thenReturn(timeSinceInstallation)
         assertEquals(7, testee.daysInstalled())

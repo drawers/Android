@@ -56,7 +56,7 @@ class SyncDisabledViewModelTest {
     )
 
     @Test
-    fun whenUnauthenticatedUserDataSyncingDisabledThenMessageIsDisplayed() = runTest {
+    fun `onResume - unauthenticated user data syncing disabled - message displayed`() = runTest {
         givenAllowDataSyncing(enabled = false)
         syncStateFlow.emit(OFF)
         testee.onResume(mock())
@@ -69,7 +69,7 @@ class SyncDisabledViewModelTest {
     }
 
     @Test
-    fun whenUnauthenticatedUserDataSyncingEnabledOnNewerVersionThenMessageIsDisplayed() = runTest {
+    fun `onResume - unauthenticated user data syncing enabled on newer version - message displayed`() = runTest {
         givenAllowDataSyncing(enabledOnNewerVersion = true)
         syncStateFlow.emit(OFF)
         testee.onResume(mock())
@@ -82,7 +82,7 @@ class SyncDisabledViewModelTest {
     }
 
     @Test
-    fun whenAuthenticatedUserDataSyncingDisabledThenMessageIsDisplayed() = runTest {
+    fun `onResume - data syncing disabled - message displayed`() = runTest {
         givenAllowDataSyncing(enabled = false)
         syncStateFlow.emit(READY)
         testee.onResume(mock())
@@ -95,7 +95,7 @@ class SyncDisabledViewModelTest {
     }
 
     @Test
-    fun whenAuthenticatedUserDataSyncingEnabledOnNewerVersionThenMessageIsDisplayed() = runTest {
+    fun `onResume - authenticated user data syncing enabled on newer version - message displayed`() = runTest {
         givenAllowDataSyncing(enabledOnNewerVersion = true)
         syncStateFlow.emit(READY)
         testee.onResume(mock())
@@ -108,7 +108,7 @@ class SyncDisabledViewModelTest {
     }
 
     @Test
-    fun whenUnauthenticatedSetupFlowsDisabledThenMessageIsDisplayed() = runTest {
+    fun `onResume - unauthenticated setup flows disabled - message displayed`() = runTest {
         givenAllowSetupFlows(enabled = false)
         syncStateFlow.emit(OFF)
         testee.onResume(mock())
@@ -121,7 +121,7 @@ class SyncDisabledViewModelTest {
     }
 
     @Test
-    fun whenUnauthenticatedSetupFlowsEnabledOnNewerVersionThenMessageIsDisplayed() = runTest {
+    fun `onResume - unauthenticated setup flows enabled on newer version - message displayed`() = runTest {
         givenAllowSetupFlows(enabledOnNewerVersion = true)
         syncStateFlow.emit(OFF)
         testee.onResume(mock())
@@ -134,7 +134,7 @@ class SyncDisabledViewModelTest {
     }
 
     @Test
-    fun whenAuthenticatedSetupFlowsDisabledThenMessageIsDisplayed() = runTest {
+    fun `onResume - authenticated setup flows disabled - message is displayed`() = runTest {
         givenAllowSetupFlows(enabled = false)
         syncStateFlow.emit(READY)
         testee.onResume(mock())
@@ -147,7 +147,7 @@ class SyncDisabledViewModelTest {
     }
 
     @Test
-    fun whenAuthenticatedSetupFlowsEnabledOnNewerVersionThenMessageIsDisplayed() = runTest {
+    fun `onResume - authenticated setup flows enabled on newer version - message displayed`() = runTest {
         givenAllowSetupFlows(enabledOnNewerVersion = true)
         syncStateFlow.emit(READY)
         testee.onResume(mock())
@@ -160,7 +160,7 @@ class SyncDisabledViewModelTest {
     }
 
     @Test
-    fun whenUnauthenticatedCreateAccountDisabledThenMessageIsDisplayed() = runTest {
+    fun `onResume - create account disabled - message displayed`() = runTest {
         givenCreateAccountFlows(enabled = false)
         syncStateFlow.emit(OFF)
         testee.onResume(mock())
@@ -173,7 +173,7 @@ class SyncDisabledViewModelTest {
     }
 
     @Test
-    fun whenUnauthenticatedCreateAccountEnabledOnNewerVersionThenMessageIsDisplayed() = runTest {
+    fun `onResume - unauthenticated create account enabled on newer version - message displayed`() = runTest {
         givenCreateAccountFlows(enabledOnNewerVersion = true)
         syncStateFlow.emit(OFF)
         testee.onResume(mock())
@@ -186,7 +186,7 @@ class SyncDisabledViewModelTest {
     }
 
     @Test
-    fun whenAuthenticatedCreateAccountDisabledThenMessageIsDisplayed() = runTest {
+    fun `onResume - create account disabled - message is displayed`() = runTest {
         givenCreateAccountFlows(enabled = false)
         syncStateFlow.emit(READY)
         testee.onResume(mock())
@@ -199,7 +199,7 @@ class SyncDisabledViewModelTest {
     }
 
     @Test
-    fun whenAuthenticatedCreateAccountEnabledOnNewerVersionThenMessageIsDisplayed() = runTest {
+    fun `onResume - authenticated and create account enabled on newer version - message is displayed`() = runTest {
         givenCreateAccountFlows(enabledOnNewerVersion = true)
         syncStateFlow.emit(READY)
         testee.onResume(mock())

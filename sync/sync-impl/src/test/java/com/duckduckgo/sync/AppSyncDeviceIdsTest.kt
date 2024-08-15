@@ -36,28 +36,28 @@ class AppSyncDeviceIdsTest {
     private var deviceInfo: DeviceInfo = mock()
 
     @Test
-    fun whenUserIdExistsInStoreThenReturnsStoredValue() {
+    fun `userId - userId exists in store - returns stored value`() {
         val syncStore = getFakeSyncStore()
         val appSyncDeviceIds = AppSyncDeviceIds(syncStore, deviceInfo)
         assertEquals(syncStore.userId, appSyncDeviceIds.userId())
     }
 
     @Test
-    fun whenDeviceIdExistsInStoreThenReturnsStoredValue() {
+    fun `deviceId - device id exists in store - returns stored value`() {
         val syncStore = getFakeSyncStore()
         val appSyncDeviceIds = AppSyncDeviceIds(syncStore, deviceInfo)
         assertEquals(syncStore.deviceId, appSyncDeviceIds.deviceId())
     }
 
     @Test
-    fun whenDeviceNameExistsInStoreThenReturnsStoredValue() {
+    fun `deviceName - device name exists in store - returns stored value`() {
         val syncStore = getFakeSyncStore()
         val appSyncDeviceIds = AppSyncDeviceIds(syncStore, deviceInfo)
         assertEquals(syncStore.deviceName, appSyncDeviceIds.deviceName())
     }
 
     @Test
-    fun whenUserIdDoesNotExistInStoreThenNewIdIsReturned() {
+    fun `userId - user id does not exist in store - new id returned`() {
         val emptySyncStore = getFakeEmptySyncStore()
         assertNull(emptySyncStore.userId)
 
@@ -68,7 +68,7 @@ class AppSyncDeviceIdsTest {
     }
 
     @Test
-    fun whenDeviceIdDoesNotExistInStoreThenNewIdIsReturned() {
+    fun `deviceId - device id does not exist in store - new id returned`() {
         val emptySyncStore = getFakeEmptySyncStore()
         assertNull(emptySyncStore.deviceId)
 
@@ -79,7 +79,7 @@ class AppSyncDeviceIdsTest {
     }
 
     @Test
-    fun whenDeviceNameDoesNotExistInStoreThenNewIdIsReturned() {
+    fun `deviceName - device name does not exist in store - new id returned`() {
         val emptySyncStore = getFakeEmptySyncStore()
         assertNull(emptySyncStore.deviceName)
         val appSyncDeviceIds = AppSyncDeviceIds(emptySyncStore, deviceInfo)
@@ -89,7 +89,7 @@ class AppSyncDeviceIdsTest {
     }
 
     @Test
-    fun whenPlatformTypeIsAndroidPhoneThenDeviceTypeMobile() {
+    fun `deviceType - platform type is android phone - device type mobile`() {
         val emptySyncStore = getFakeEmptySyncStore()
         whenever(deviceInfo.formFactor()).thenReturn(DeviceInfo.FormFactor.PHONE)
         val appSyncDeviceIds = AppSyncDeviceIds(emptySyncStore, deviceInfo)

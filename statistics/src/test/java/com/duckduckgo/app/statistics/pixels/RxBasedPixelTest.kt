@@ -42,7 +42,7 @@ class RxBasedPixelTest {
     val mockPixelSender = mock<PixelSender>()
 
     @Test
-    fun whenPixelWithoutQueryParamsFiredThenPixelSentWithDefaultParams() {
+    fun `fire - pixel without query params - sent with default params`() {
         givenSendPixelSucceeds()
 
         val pixel = RxBasedPixel(mockPixelSender)
@@ -52,7 +52,7 @@ class RxBasedPixelTest {
     }
 
     @Test
-    fun whenPixelWithoutQueryParamsFiredFailsThenErrorHandled() {
+    fun `fire - pixel without query params fails - error handled`() {
         givenSendPixelFails()
 
         val pixel = RxBasedPixel(mockPixelSender)
@@ -62,7 +62,7 @@ class RxBasedPixelTest {
     }
 
     @Test
-    fun whenPixelWithQueryParamsFiredThenPixelSentWithParams() {
+    fun `fire - pixel with query params - pixel sent with params`() {
         givenSendPixelSucceeds()
 
         val pixel = RxBasedPixel(mockPixelSender)
@@ -73,7 +73,7 @@ class RxBasedPixelTest {
     }
 
     @Test
-    fun whenPixelWithoutQueryParamsEnqueuedThenPixelEnqueuedWithDefaultParams() {
+    fun `enqueueFire - pixel without query params - enqueued with default params`() {
         givenEnqueuePixelSucceeds()
 
         val pixel = RxBasedPixel(mockPixelSender)
@@ -83,7 +83,7 @@ class RxBasedPixelTest {
     }
 
     @Test
-    fun whenPixelWithoutQueryParamsEnqueuedThenErrorHandled() {
+    fun `enqueueFire - pixel without query params - error handled`() {
         givenEnqueuePixelFails()
 
         val pixel = RxBasedPixel(mockPixelSender)
@@ -93,7 +93,7 @@ class RxBasedPixelTest {
     }
 
     @Test
-    fun whenPixelWithQueryParamsEnqueuedThenPixelEnqueuedWithParams() {
+    fun `enqueueFire - pixel with query params - enqueued with params`() {
         givenEnqueuePixelSucceeds()
 
         val pixel = RxBasedPixel(mockPixelSender)

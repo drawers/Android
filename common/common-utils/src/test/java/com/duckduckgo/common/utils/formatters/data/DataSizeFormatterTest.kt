@@ -32,32 +32,32 @@ class DataSizeFormatterTest {
     }
 
     @Test
-    fun whenNoDataThen0BytesReturned() {
+    fun `format - no data - 0 bytes returned`() {
         assertEquals("0 bytes", testee.format(0))
     }
 
     @Test
-    fun whenLessThat1KbThenBytesReturned() {
+    fun `format - less than 1Kb - bytes returned`() {
         assertEquals("100 bytes", testee.format(100))
     }
 
     @Test
-    fun whenExactlyOn1KbThenKbReturned() {
+    fun `format - exactly on 1 KB - KB returned`() {
         assertEquals("1 KB", testee.format(1000))
     }
 
     @Test
-    fun whenNotAWholeNumberOfKilobytesThenKbReturned() {
+    fun `format - not a whole number of kilobytes - kb returned`() {
         assertEquals("1.5 KB", testee.format(1501))
     }
 
     @Test
-    fun whenExactly1MegabyteThenMbReturned() {
+    fun `format - exactly 1 megabyte - MB returned`() {
         assertEquals("1 MB", testee.format(1_000_000))
     }
 
     @Test
-    fun whenExactly1GigabyteThenGbReturned() {
+    fun `format - exactly 1 gigabyte - GB returned`() {
         assertEquals("1 GB", testee.format(1_000_000_000))
     }
 }

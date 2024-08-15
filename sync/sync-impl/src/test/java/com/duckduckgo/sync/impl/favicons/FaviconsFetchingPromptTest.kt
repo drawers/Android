@@ -44,7 +44,7 @@ class FaviconsFetchingPromptTest {
     }
 
     @Test
-    fun whenPromptAlreadyShownThenShouldNotShowAgain() {
+    fun `shouldShow - prompt already shown - should not show again`() {
         whenever(faviconsFetchingStore.promptShown).thenReturn(true)
 
         val shouldShow = faviconsFetchingPrompt.shouldShow()
@@ -53,7 +53,7 @@ class FaviconsFetchingPromptTest {
     }
 
     @Test
-    fun whenFaviconsFetchingEnabledThenShouldNotShow() {
+    fun `shouldShow - favicons fetching enabled - should not show`() {
         whenever(faviconsFetchingStore.promptShown).thenReturn(false)
         whenever(faviconsFetchingStore.isFaviconsFetchingEnabled).thenReturn(true)
 
@@ -63,7 +63,7 @@ class FaviconsFetchingPromptTest {
     }
 
     @Test
-    fun whenSyncNotEnabledThenShouldNotShow() {
+    fun `shouldShow - sync not enabled - should not show`() {
         whenever(faviconsFetchingStore.promptShown).thenReturn(false)
         whenever(faviconsFetchingStore.isFaviconsFetchingEnabled).thenReturn(false)
         whenever(syncAccountRepository.isSignedIn()).thenReturn(false)
@@ -74,7 +74,7 @@ class FaviconsFetchingPromptTest {
     }
 
     @Test
-    fun whenSyncOnlyHasOnceDeviceConnectedThenShouldNotShow() {
+    fun `shouldShow - only one device connected - should not show`() {
         whenever(faviconsFetchingStore.promptShown).thenReturn(false)
         whenever(faviconsFetchingStore.isFaviconsFetchingEnabled).thenReturn(false)
         whenever(syncAccountRepository.isSignedIn()).thenReturn(true)
@@ -87,7 +87,7 @@ class FaviconsFetchingPromptTest {
     }
 
     @Test
-    fun whenSyncHasMoreThenOnceDevicesConnectedThenShouldShow() {
+    fun `shouldShow - more than one device connected - should show`() {
         whenever(faviconsFetchingStore.promptShown).thenReturn(false)
         whenever(faviconsFetchingStore.isFaviconsFetchingEnabled).thenReturn(false)
         whenever(syncAccountRepository.isSignedIn()).thenReturn(true)
@@ -100,7 +100,7 @@ class FaviconsFetchingPromptTest {
     }
 
     @Test
-    fun whenPromptNotShownThenShouldShow() {
+    fun `shouldShow - prompt not shown - should show`() {
         whenever(faviconsFetchingStore.promptShown).thenReturn(false)
 
         val shouldShow = faviconsFetchingPrompt.shouldShow()

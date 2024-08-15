@@ -53,13 +53,13 @@ class InstallSourceLifecycleObserverTest {
     )
 
     @Test
-    fun whenNotPreviouslyProcessedThenPixelSent() = runTest {
+    fun `onCreate - not previously processed - pixel sent`() = runTest {
         testee.onCreate(mockLifecycleOwner)
         verify(mockPixel).fire(eq(APP_INSTALLER_PACKAGE_NAME), any(), any(), eq(COUNT))
     }
 
     @Test
-    fun whenPreviouslyProcessedThenPixelNotSent() = runTest {
+    fun `onCreate - previously processed - pixel not sent`() = runTest {
         testee.recordInstallSourceProcessed()
         testee.onCreate(mockLifecycleOwner)
         verify(mockPixel, never()).fire(eq(APP_INSTALLER_PACKAGE_NAME), any(), any(), eq(COUNT))

@@ -97,7 +97,7 @@ class AppTpEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getInitialContentThenReturnsCorrectNotificationContent() = runTest {
+    fun `getInitialContent - returns correct notification content`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(true)
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
 
@@ -108,13 +108,13 @@ class AppTpEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getInitialContentAppTpNotEnabledThenReturnsCorrectNotificationContent() = runTest {
+    fun `getInitialContent - app tracking protection not enabled - returns correct notification content`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(false)
         assertNull(plugin.getInitialContent())
     }
 
     @Test
-    fun getUpdateContentThenReturnsCorrectInitialUpdatedNotificationContent() = runTest {
+    fun `getUpdatedContent - returns correct initial updated notification content`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(true)
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
 
@@ -130,7 +130,7 @@ class AppTpEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getUpdateContentAppTpNotEnabledThenReturnsCorrectInitialUpdatedNotificationContent() = runTest {
+    fun `getUpdatedContent - app tracking protection not enabled - returns correct initial updated notification content`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(false)
 
         plugin.getUpdatedContent().test {
@@ -143,7 +143,7 @@ class AppTpEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getUpdateContentOneCompanyThenReturnsCorrectUpdatedNotificationContent() = runTest {
+    fun `getUpdatedContent - one company - returns correct updated notification content`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(true)
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
 
@@ -162,7 +162,7 @@ class AppTpEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getUpdateContentOneCompanyAppTpNotEnabledThenReturnsCorrectUpdatedNotificationContent() = runTest {
+    fun `getUpdatedContent - app tracking protection not enabled - returns correct updated notification content`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(false)
 
         plugin.getUpdatedContent().test {
@@ -180,7 +180,7 @@ class AppTpEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getUpdateContentMultipleDifferentAppsThenReturnsCorrectUpdatedNotificationContent() = runTest {
+    fun `getUpdatedContent - multiple different apps - returns correct updated notification content`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(true)
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
 
@@ -205,7 +205,7 @@ class AppTpEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getUpdateContentMultipleDifferentAppsAppTpNotEnabledThenReturnsCorrectUpdatedNotificationContent() = runTest {
+    fun `getUpdatedContent - multiple different apps and app tracking protection not enabled - returns correct updated notification content`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(false)
 
         plugin.getUpdatedContent().test {
@@ -230,7 +230,7 @@ class AppTpEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getUpdateContentTrackersWithoutEntityThenReturnsCorrectUpdatedNotificationContent() = runTest {
+    fun `getUpdatedContent - trackers without entity - returns correct updated notification content`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(true)
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
 
@@ -246,7 +246,7 @@ class AppTpEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getUpdateContentMultipleSameThenReturnsCorrectUpdatedNotificationContent() = runTest {
+    fun `getUpdatedContent - multiple same updates - returns correct updated notification content`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(true)
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
 
@@ -265,7 +265,7 @@ class AppTpEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun getUpdateContentMultipleSameAppTpNotEnabledThenReturnsCorrectUpdatedNotificationContent() = runTest {
+    fun `getUpdatedContent - multiple same app TP not enabled - returns correct updated notification content`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(false)
         plugin.getUpdatedContent().test {
             appTrackerBlockingStatsRepository.insert(listOf(aTrackerAndCompany(), aTrackerAndCompany()))
@@ -279,14 +279,14 @@ class AppTpEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun isActiveWhenAppTpEnabledThenReturnsTrue() = runTest {
+    fun `isActive - app tracking protection enabled - returns true`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(true)
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
         assertTrue(plugin.isActive())
     }
 
     @Test
-    fun isActiveWhenAppTpNotEnabledThenReturnsFalse() = runTest {
+    fun `isActive - app tracking protection not enabled - returns false`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(false)
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
 
@@ -294,7 +294,7 @@ class AppTpEnabledNotificationContentPluginTest {
     }
 
     @Test
-    fun isActiveWhenAppTpAndNetPEnabledThenReturnsFalse() = runTest {
+    fun `isActive - appTp and netP enabled - returns false`() = runTest {
         whenever(appTrackingProtection.isEnabled()).thenReturn(true)
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
 

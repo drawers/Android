@@ -49,7 +49,7 @@ class SyncLoginViewModelTest {
     )
 
     @Test
-    fun whenReadTextCodeClickedThenCommandIsReadTextCode() = runTest {
+    fun `onReadTextCodeClicked - command is ReadTextCode`() = runTest {
         testee.commands().test {
             testee.onReadTextCodeClicked()
             val command = awaitItem()
@@ -59,7 +59,7 @@ class SyncLoginViewModelTest {
     }
 
     @Test
-    fun whenProcessRecoveryCodeThenPerformLoginAndEmitResult() = runTest {
+    fun `onQRCodeScanned - process recovery code - perform login and emit result`() = runTest {
         whenever(syncRepostitory.processCode(jsonRecoveryKeyEncoded)).thenReturn(Success(true))
 
         testee.commands().test {
@@ -72,7 +72,7 @@ class SyncLoginViewModelTest {
     }
 
     @Test
-    fun whenOnLoginSuccessThenCommandIsLoginSuccess() = runTest {
+    fun `onLoginSuccess - command is login success`() = runTest {
         testee.commands().test {
             testee.onLoginSuccess()
             val command = awaitItem()

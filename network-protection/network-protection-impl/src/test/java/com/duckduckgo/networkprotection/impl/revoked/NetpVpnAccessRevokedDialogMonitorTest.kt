@@ -67,7 +67,7 @@ class NetpVpnAccessRevokedDialogMonitorTest {
     }
 
     @Test
-    fun whenVPNStateIsInactiveThenDontShowDialogs() {
+    fun `onActivityResumed - VPN state is inactive - don't show dialogs`() {
         coroutineTestRule.testScope.launch {
             whenever(netpSubscriptionManager.getVpnStatus()).thenReturn(INACTIVE)
 
@@ -79,7 +79,7 @@ class NetpVpnAccessRevokedDialogMonitorTest {
     }
 
     @Test
-    fun whenVPNStateIsActiveThenDontShowDialogs() {
+    fun `onActivityResumed - VPN state is active - don't show dialogs`() {
         coroutineTestRule.testScope.launch {
             whenever(netpSubscriptionManager.getVpnStatus()).thenReturn(ACTIVE)
 
@@ -91,7 +91,7 @@ class NetpVpnAccessRevokedDialogMonitorTest {
     }
 
     @Test
-    fun whenVPNEnabledAndStateIsActiveThenDontShowDialogs() {
+    fun `onActivityResumed - VPN enabled and state is active - don't show dialogs`() {
         coroutineTestRule.testScope.launch {
             whenever(networkProtectionState.isEnabled()).thenReturn(true)
             whenever(netpSubscriptionManager.getVpnStatus()).thenReturn(ACTIVE)
@@ -104,7 +104,7 @@ class NetpVpnAccessRevokedDialogMonitorTest {
     }
 
     @Test
-    fun whenVPNEnabledAndStateIsInactiveThenDontShowDialogs() {
+    fun `onActivityResumed - VPN enabled and state is inactive - don't show dialogs`() {
         coroutineTestRule.testScope.launch {
             whenever(networkProtectionState.isEnabled()).thenReturn(true)
             whenever(netpSubscriptionManager.getVpnStatus()).thenReturn(INACTIVE)
@@ -117,7 +117,7 @@ class NetpVpnAccessRevokedDialogMonitorTest {
     }
 
     @Test
-    fun whenVPNStateIsSignedOutThenDontShowDialogs() {
+    fun `onActivityResumed - VPN state is signed out - don't show dialogs`() {
         coroutineTestRule.testScope.launch {
             whenever(netpSubscriptionManager.getVpnStatus()).thenReturn(SIGNED_OUT)
 
@@ -129,7 +129,7 @@ class NetpVpnAccessRevokedDialogMonitorTest {
     }
 
     @Test
-    fun whenVPNEnabledAndStateIsSignedOutThenDontShowDialogs() {
+    fun `onActivityResumed - VPN enabled and signed out - don't show dialogs`() {
         coroutineTestRule.testScope.launch {
             whenever(networkProtectionState.isEnabled()).thenReturn(true)
             whenever(netpSubscriptionManager.getVpnStatus()).thenReturn(SIGNED_OUT)
@@ -142,7 +142,7 @@ class NetpVpnAccessRevokedDialogMonitorTest {
     }
 
     @Test
-    fun whenVPNStateIsExpiredThenShowAccessRevokedDialog() {
+    fun `onActivityResumed - VPN state expired - show access revoked dialog`() {
         coroutineTestRule.testScope.launch {
             whenever(netpSubscriptionManager.getVpnStatus()).thenReturn(EXPIRED)
 
@@ -154,7 +154,7 @@ class NetpVpnAccessRevokedDialogMonitorTest {
     }
 
     @Test
-    fun whenVPNEnabledStateIsExpiredThenShowAccessRevokedDialog() {
+    fun `onActivityResumed - VPN enabled state expired - show access revoked dialog`() {
         coroutineTestRule.testScope.launch {
             whenever(networkProtectionState.isEnabled()).thenReturn(true)
             whenever(netpSubscriptionManager.getVpnStatus()).thenReturn(EXPIRED)
@@ -167,7 +167,7 @@ class NetpVpnAccessRevokedDialogMonitorTest {
     }
 
     @Test
-    fun whenVPNNotOnboardedAndStateIsExpiredThenDontShowDialogs() {
+    fun `onActivityResumed - VPN not onboarded and state is expired - don't show dialogs`() {
         coroutineTestRule.testScope.launch {
             whenever(networkProtectionState.isOnboarded()).thenReturn(false)
             whenever(netpSubscriptionManager.getVpnStatus()).thenReturn(EXPIRED)
@@ -181,7 +181,7 @@ class NetpVpnAccessRevokedDialogMonitorTest {
     }
 
     @Test
-    fun whenVPNEnabledNotOnboardedAndStateIsExpiredThenDontShowDialogs() {
+    fun `onActivityResumed - VPN enabled not onboarded and state is expired - don't show dialogs`() {
         coroutineTestRule.testScope.launch {
             whenever(networkProtectionState.isOnboarded()).thenReturn(false)
             whenever(networkProtectionState.isEnabled()).thenReturn(true)

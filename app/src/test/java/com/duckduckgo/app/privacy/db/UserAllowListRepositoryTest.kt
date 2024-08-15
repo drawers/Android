@@ -66,7 +66,7 @@ class UserAllowListRepositoryTest {
     }
 
     @Test
-    fun whenDbContainsUserAllowListedDomainsThenUpdateUserAllowList() {
+    fun `updateUserAllowList - db contains user allow listed domains - user allow list updated`() {
         assertEquals(0, repository.domainsInUserAllowList().size)
         dao.insert("example.com")
         assertEquals(1, repository.domainsInUserAllowList().size)
@@ -74,26 +74,26 @@ class UserAllowListRepositoryTest {
     }
 
     @Test
-    fun whenDbContainsUserAllowListedDomainThenIsUrlInAllowListReturnsTrue() {
+    fun `isUrlInUserAllowList - db contains user allow listed domain - returns true`() {
         dao.insert("example.com")
         assertTrue(repository.isUrlInUserAllowList("https://example.com"))
     }
 
     @Test
-    fun whenDbDoesNotContainUserAllowListedDomainThenIsUrlInAllowListReturnsFalse() {
+    fun `isUrlInUserAllowList - db does not contain user allow listed domain - returns false`() {
         dao.insert("example.com")
         assertFalse(repository.isUrlInUserAllowList("https://foo.com"))
     }
 
     @Test
-    fun whenDomainIsAddedToUserAllowListThenItGetsInsertedIntoDb() = runTest {
+    fun `addDomainToUserAllowList - domain added - inserted into db`() = runTest {
         assertFalse(dao.contains("example.com"))
         repository.addDomainToUserAllowList("example.com")
         assertTrue(dao.contains("example.com"))
     }
 
     @Test
-    fun whenDomainIsRemovedFromUserAllowListThenItGetsDeletedFromDb() = runTest {
+    fun `removeDomainFromUserAllowList - domain removed - deleted from db`() = runTest {
         dao.insert("example.com")
         assertTrue(dao.contains("example.com"))
         repository.removeDomainFromUserAllowList("example.com")
@@ -101,7 +101,7 @@ class UserAllowListRepositoryTest {
     }
 
     @Test
-    fun whenAllowlistIsModifiedThenFlowEmitsEvent() = runTest {
+    fun `domainsInUserAllowListFlow - allowlist modified - emits event`() = runTest {
         repository.domainsInUserAllowListFlow()
             .test {
                 assertEquals(emptyList<String>(), awaitItem())

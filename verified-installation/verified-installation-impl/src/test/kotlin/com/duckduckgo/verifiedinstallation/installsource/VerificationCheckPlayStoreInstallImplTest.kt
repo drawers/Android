@@ -31,13 +31,13 @@ class VerificationCheckPlayStoreInstallImplTest {
     private val testee = VerificationCheckPlayStoreInstallImpl(installSourceExtractor)
 
     @Test
-    fun whenInstallSourceMatchesPlayStorePackageThenIdentifiedAsInstalledFromPlayStore() {
+    fun `installedFromPlayStore - install source matches Play Store package - identified as installed from Play Store`() {
         whenever(installSourceExtractor.extract()).thenReturn("com.android.vending")
         assertTrue(testee.installedFromPlayStore())
     }
 
     @Test
-    fun whenInstallSourceDoesNotMatchPlayStorePackageThenNotIdentifiedAsInstalledFromPlayStore() {
+    fun `installedFromPlayStore - install source does not match Play Store package - not identified as installed from Play Store`() {
         whenever(installSourceExtractor.extract()).thenReturn("com.random.app")
         assertFalse(testee.installedFromPlayStore())
     }

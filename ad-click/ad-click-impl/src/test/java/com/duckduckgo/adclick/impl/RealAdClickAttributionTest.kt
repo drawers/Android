@@ -39,7 +39,7 @@ class RealAdClickAttributionTest {
     private lateinit var testee: RealAdClickAttribution
 
     @Test
-    fun whenFeatureIsNotEnabledThenIsAllowedReturnsFalse() {
+    fun `isAllowed - feature not enabled - returns false`() {
         givenFeatureNotEnabled()
         testee = RealAdClickAttribution(
             mockAdClickAttributionRepository,
@@ -52,7 +52,7 @@ class RealAdClickAttributionTest {
     }
 
     @Test
-    fun whenFeatureEnabledAndBothDetectionsDisabledThenIsAllowedReturnsFalse() {
+    fun `isAllowed - feature enabled and both detections disabled - returns false`() {
         givenFeatureNotEnabled()
         givenDetectionsEnabled(domainEnabled = false, heuristicEnabled = false)
         testee = RealAdClickAttribution(
@@ -66,7 +66,7 @@ class RealAdClickAttributionTest {
     }
 
     @Test
-    fun whenFeatureEnabledAndNullHostThenIsAllowedReturnsFalse() {
+    fun `isAllowed - feature enabled and null host - returns false`() {
         givenFeatureEnabled()
         givenDetectionsEnabled(domainEnabled = true, heuristicEnabled = true)
         testee = RealAdClickAttribution(
@@ -80,7 +80,7 @@ class RealAdClickAttributionTest {
     }
 
     @Test
-    fun whenFeatureEnabledAndHostNotInAllowlistHostThenIsAllowedReturnsFalse() {
+    fun `isAllowed - feature enabled and host not in allowlist - returns false`() {
         givenFeatureEnabled()
         givenDetectionsEnabled(domainEnabled = true, heuristicEnabled = true)
         whenever(mockAdClickAttributionRepository.allowList).thenReturn(
@@ -102,7 +102,7 @@ class RealAdClickAttributionTest {
     }
 
     @Test
-    fun whenFeatureEnabledAndHostInAllowlistHostThenIsAllowedReturnsTrue() {
+    fun `isAllowed - feature enabled and host in allowlist - returns true`() {
         givenFeatureEnabled()
         givenDetectionsEnabled(domainEnabled = true, heuristicEnabled = true)
         whenever(mockAdClickAttributionRepository.allowList).thenReturn(
@@ -124,7 +124,7 @@ class RealAdClickAttributionTest {
     }
 
     @Test
-    fun whenFeatureIsNotEnabledThenIsAdClickReturnsFalse() {
+    fun `isAdClick - feature not enabled - returns false`() {
         givenFeatureNotEnabled()
         testee = RealAdClickAttribution(
             mockAdClickAttributionRepository,
@@ -137,7 +137,7 @@ class RealAdClickAttributionTest {
     }
 
     @Test
-    fun whenFeatureEnabledAndBothDetectionsDisabledThenIsAdClickReturnsFalse() {
+    fun `isAdClick - feature enabled and both detections disabled - returns false`() {
         givenFeatureNotEnabled()
         givenDetectionsEnabled(domainEnabled = false, heuristicEnabled = false)
         testee = RealAdClickAttribution(
@@ -151,7 +151,7 @@ class RealAdClickAttributionTest {
     }
 
     @Test
-    fun whenFeatureEnabledAndUrlDoesntMatchLinkFormatThenIsAdClickReturnsFalse() {
+    fun `isAdClick - feature enabled and url doesn't match link format - returns false`() {
         givenFeatureEnabled()
         givenDetectionsEnabled(domainEnabled = true, heuristicEnabled = true)
         whenever(mockAdClickAttributionRepository.linkFormats).thenReturn(
@@ -173,7 +173,7 @@ class RealAdClickAttributionTest {
     }
 
     @Test
-    fun whenFeatureEnabledAndUrlMatchesLinkFormatThenIsAdClickReturnsTrue() {
+    fun `isAdClick - feature enabled and url matches link format - returns true`() {
         givenFeatureEnabled()
         givenDetectionsEnabled(domainEnabled = true, heuristicEnabled = true)
         whenever(mockAdClickAttributionRepository.linkFormats).thenReturn(
@@ -195,7 +195,7 @@ class RealAdClickAttributionTest {
     }
 
     @Test
-    fun whenFeatureEnabledAndUrlMatchesLinkFormatAndAdDomainParameterNameThenIsAdClickReturnsTrueAndAdDomain() {
+    fun `isAdClick - feature enabled and url matches link format and ad domain parameter name - returns true and ad domain`() {
         givenFeatureEnabled()
         givenDetectionsEnabled(domainEnabled = true, heuristicEnabled = true)
         whenever(mockAdClickAttributionRepository.linkFormats).thenReturn(
@@ -218,7 +218,7 @@ class RealAdClickAttributionTest {
     }
 
     @Test
-    fun whenFeatureEnabledAndOnlyDomainDetectionEnabledAndUrlMatchesLinkFormatThenAdClickReturnsTrue() {
+    fun `isAdClick - feature enabled and only domain detection enabled and url matches link format - returns true`() {
         givenFeatureEnabled()
         givenDetectionsEnabled(domainEnabled = true, heuristicEnabled = false)
         whenever(mockAdClickAttributionRepository.linkFormats).thenReturn(
@@ -240,7 +240,7 @@ class RealAdClickAttributionTest {
     }
 
     @Test
-    fun whenFeatureEnabledAndOnlyHeuristicDetectionEnabledAndUrlMatchesLinkFormatThenAdClickReturnsTrue() {
+    fun `isAdClick - heuristic detection enabled and url matches link format - returns true`() {
         givenFeatureEnabled()
         givenDetectionsEnabled(domainEnabled = false, heuristicEnabled = true)
         whenever(mockAdClickAttributionRepository.linkFormats).thenReturn(

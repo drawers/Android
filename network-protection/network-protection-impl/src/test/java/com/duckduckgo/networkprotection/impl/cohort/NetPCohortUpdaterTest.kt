@@ -53,7 +53,7 @@ class NetPCohortUpdaterTest {
     }
 
     @Test
-    fun whenNetPIsNotRegisteredThenDoNothingWithCohort() = runTest {
+    fun `onVpnStarted - NetP not registered - do nothing with cohort`() = runTest {
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
 
         testee.onVpnStarted(coroutineRule.testScope)
@@ -63,7 +63,7 @@ class NetPCohortUpdaterTest {
     }
 
     @Test
-    fun whenNetPIsRegisteredAndCohortNotSetThenUpdateCohort() = runTest {
+    fun `onVpnStarted - NetP registered and cohort not set - update cohort`() = runTest {
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
         whenever(cohortStore.cohortLocalDate).thenReturn(null)
 
@@ -74,7 +74,7 @@ class NetPCohortUpdaterTest {
     }
 
     @Test
-    fun whenNetPIsRegisteredAndCohortSetThenDoNothingWithCohort() = runTest {
+    fun `onVpnStarted - NetP registered and cohort set - do nothing with cohort`() = runTest {
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
         whenever(cohortStore.cohortLocalDate).thenReturn(LocalDate.of(2023, 1, 1))
 
@@ -86,7 +86,7 @@ class NetPCohortUpdaterTest {
     }
 
     @Test
-    fun whenNetPIsEnabledOnReconfigureAndCohortNotYetSetThenUpdateCohort() = runTest {
+    fun `onVpnReconfigured - NetP enabled and cohort not set - update cohort`() = runTest {
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
         whenever(cohortStore.cohortLocalDate).thenReturn(null)
         testee.onVpnStarted(coroutineRule.testScope)
@@ -100,7 +100,7 @@ class NetPCohortUpdaterTest {
     }
 
     @Test
-    fun whenNetPIsEnabledOnReconfigureAndCohortSetThenDoNothingWithCohort() = runTest {
+    fun `onVpnReconfigured - NetP enabled and cohort set - do nothing with cohort`() = runTest {
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
         whenever(cohortStore.cohortLocalDate).thenReturn(LocalDate.of(2023, 1, 1))
 

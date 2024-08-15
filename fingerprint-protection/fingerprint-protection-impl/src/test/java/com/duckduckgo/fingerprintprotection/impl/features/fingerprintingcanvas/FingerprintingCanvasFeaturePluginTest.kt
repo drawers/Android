@@ -39,19 +39,19 @@ class FingerprintingCanvasFeaturePluginTest {
     }
 
     @Test
-    fun whenFeatureNameDoesNotMatchFingerprintingCanvasThenReturnFalse() {
+    fun `store - feature name does not match fingerprinting canvas - return false`() {
         FingerprintProtectionFeatureName.values().filter { it != FEATURE_NAME }.forEach {
             assertFalse(testee.store(it.value, JSON_STRING))
         }
     }
 
     @Test
-    fun whenFeatureNameMatchesFingerprintingCanvasThenReturnTrue() {
+    fun `store - feature name matches fingerprinting canvas - return true`() {
         assertTrue(testee.store(FEATURE_NAME_VALUE, JSON_STRING))
     }
 
     @Test
-    fun whenFeatureNameMatchesFingerprintingCanvasThenUpdateAll() {
+    fun `store - feature name matches fingerprinting canvas - update all`() {
         testee.store(FEATURE_NAME_VALUE, JSON_STRING)
         val captor = argumentCaptor<FingerprintingCanvasEntity>()
         verify(mockFingerprintingCanvasRepository).updateAll(captor.capture())

@@ -30,12 +30,12 @@ class RealFingerprintProtectionSeedRepositoryTest {
     }
 
     @Test
-    fun whenInitializedRandomSeedIsSet() {
+    fun `init - random seed is set`() {
         assertFalse(testee.seed.isBlank())
     }
 
     @Test
-    fun whenStoredNewSeedThenSeedIsRefreshed() {
+    fun `storeNewSeed - seed is refreshed`() {
         val oldSeed = testee.seed
         testee.storeNewSeed()
         assertNotEquals(oldSeed, testee.seed)

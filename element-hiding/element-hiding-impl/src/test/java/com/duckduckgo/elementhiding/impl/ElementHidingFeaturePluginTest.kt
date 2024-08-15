@@ -36,19 +36,19 @@ class ElementHidingFeaturePluginTest {
     }
 
     @Test
-    fun whenFeatureNameDoesNotMatchElementHidingThenReturnFalse() {
+    fun `store - feature name does not match element hiding - return false`() {
         ElementHidingFeatureName.values().filter { it != FEATURE_NAME }.forEach {
             assertFalse(testee.store(it.value, JSON_STRING))
         }
     }
 
     @Test
-    fun whenFeatureNameMatchesElementHidingThenReturnTrue() {
+    fun `store - feature name matches element hiding - return true`() {
         assertTrue(testee.store(FEATURE_NAME_VALUE, JSON_STRING))
     }
 
     @Test
-    fun whenFeatureNameMatchesElementHidingThenUpdateAll() {
+    fun `store - feature name matches element hiding - update all`() {
         testee.store(FEATURE_NAME_VALUE, JSON_STRING)
         val captor = argumentCaptor<ElementHidingEntity>()
         verify(mockElementHidingRepository).updateAll(captor.capture())

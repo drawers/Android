@@ -33,7 +33,7 @@ class SetupAccountViewModelTest {
     private val testee = SetupAccountViewModel(coroutineTestRule.testDispatcherProvider)
 
     @Test
-    fun whenFlowStartedFromSyncSetupScreenViewModeThenCreateAccountCommandSent() = runTest {
+    fun `viewState - sync setup screen - create account command sent`() = runTest {
         testee.viewState(Screen.SYNC_SETUP).test {
             val viewState = awaitItem()
             assertTrue(viewState.viewMode is ViewMode.CreateAccount)
@@ -41,7 +41,7 @@ class SetupAccountViewModelTest {
     }
 
     @Test
-    fun whenFlowStartedFromSyncIntroViewModeThenIntroCreateAccountCommandSent() = runTest {
+    fun `viewState - sync intro view mode - intro create account command sent`() = runTest {
         testee.viewState(Screen.SYNC_INTRO).test {
             val viewState = awaitItem()
             assertTrue(viewState.viewMode is ViewMode.IntroCreateAccount)
@@ -49,7 +49,7 @@ class SetupAccountViewModelTest {
     }
 
     @Test
-    fun whenFlowStartedFromRecoveryIntroViewModeThenIntroRecoveryCodeCommandSent() = runTest {
+    fun `viewState - recovery intro view mode - intro recovery code command sent`() = runTest {
         testee.viewState(Screen.RECOVERY_INTRO).test {
             val viewState = awaitItem()
             assertTrue(viewState.viewMode is ViewMode.IntroRecoveryCode)
@@ -57,7 +57,7 @@ class SetupAccountViewModelTest {
     }
 
     @Test
-    fun whenFlowStartedFromSetupScreenViewModeDeviceConnected() = runTest {
+    fun `viewState - setup screen - device connected`() = runTest {
         testee.viewState(Screen.SETUP_COMPLETE).test {
             val viewState = awaitItem()
             assertTrue(viewState.viewMode is ViewMode.SyncSetupCompleted)
@@ -65,7 +65,7 @@ class SetupAccountViewModelTest {
     }
 
     @Test
-    fun whenOnBackPressedAndViewModeDeviceConnectedThenClose() = runTest {
+    fun `onBackPressed - viewMode device connected - close`() = runTest {
         testee.viewState(Screen.SETUP_COMPLETE).test {
             val viewState = awaitItem()
             assertTrue(viewState.viewMode is ViewMode.SyncSetupCompleted)
@@ -79,7 +79,7 @@ class SetupAccountViewModelTest {
     }
 
     @Test
-    fun whenFlowStartedFromConnectionScreenViewThenRecoveryCodeMode() = runTest {
+    fun `viewState - started from connection screen - recovery code mode`() = runTest {
         testee.viewState(Screen.RECOVERY_CODE).test {
             val viewState = awaitItem()
             assertTrue(viewState.viewMode is ViewMode.AskSaveRecoveryCode)
@@ -87,7 +87,7 @@ class SetupAccountViewModelTest {
     }
 
     @Test
-    fun whenOnBackPressedAndViewModeRecoveryCodeThenClose() = runTest {
+    fun `onBackPressed - view mode recovery code - close`() = runTest {
         testee.viewState(Screen.RECOVERY_CODE).test {
             val viewState = awaitItem()
             assertTrue(viewState.viewMode is ViewMode.AskSaveRecoveryCode)
@@ -101,7 +101,7 @@ class SetupAccountViewModelTest {
     }
 
     @Test
-    fun whenSetupStartedAndAccountCreatedThenCreateAccountCommandSent() = runTest {
+    fun `onCreateAccount - setup started and account created - create account command sent`() = runTest {
         testee.viewState(Screen.SYNC_SETUP).test {
             testee.onCreateAccount()
             val viewState = expectMostRecentItem()
@@ -110,7 +110,7 @@ class SetupAccountViewModelTest {
     }
 
     @Test
-    fun whenSetupStartedAndDeviceConnectedSyncSetupCompletedCommandSent() = runTest {
+    fun `onDeviceConnected - setup started and device connected - sync setup completed command sent`() = runTest {
         testee.viewState(Screen.SYNC_SETUP).test {
             testee.onDeviceConnected()
             val viewState = expectMostRecentItem()
@@ -119,7 +119,7 @@ class SetupAccountViewModelTest {
     }
 
     @Test
-    fun whenSetupStartedAndRecoveryCodeProDeviceConnectedThenAskSaveRecoveryCodeCommandSent() = runTest {
+    fun `onRecoveryCodePrompt - recovery code pro device connected - ask save recovery code command sent`() = runTest {
         testee.viewState(Screen.SYNC_SETUP).test {
             testee.onRecoveryCodePrompt()
             val viewState = expectMostRecentItem()

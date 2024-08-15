@@ -66,7 +66,7 @@ class ProSettingNetPViewModelTest {
     }
 
     @Test
-    fun whenNetPSettingClickedThenReturnScreenForCurrentState() = runTest {
+    fun `onNetPSettingClicked - return screen for current state`() = runTest {
         val testScreen = object : ActivityParams {}
         whenever(networkProtectionAccessState.getScreenForCurrentState()).thenReturn(testScreen)
 
@@ -81,7 +81,7 @@ class ProSettingNetPViewModelTest {
     }
 
     @Test
-    fun whenNetPIsNotUnlockedThenNetPEntryStateShouldShowHidden() = runTest {
+    fun `onStart - NetP is not unlocked - network protection entry state shows hidden`() = runTest {
         whenever(networkProtectionState.getConnectionStateFlow()).thenReturn(flowOf(DISCONNECTED))
         whenever(networkProtectionAccessState.getStateFlow()).thenReturn(flowOf(Locked))
 
@@ -96,7 +96,7 @@ class ProSettingNetPViewModelTest {
     }
 
     @Test
-    fun whenNetPStateIsInBetaButNotAcceptedTermsThenNetPEntryStateShouldShowPending() = runTest {
+    fun `onStart - NetP in beta but terms not accepted - entry state pending`() = runTest {
         whenever(networkProtectionState.getConnectionStateFlow()).thenReturn(flowOf(DISCONNECTED))
         whenever(networkProtectionAccessState.getStateFlow()).thenReturn(flowOf(UnLocked))
         whenever(networkProtectionState.isOnboarded()).thenReturn(false)
@@ -112,7 +112,7 @@ class ProSettingNetPViewModelTest {
     }
 
     @Test
-    fun whenNetPStateIsInBetaAndOnboardedAndEnabledThenNetPEntryStateShouldCorrectShowState() = runTest {
+    fun `onStart - NetP in beta, onboarded, and enabled - correct show state`() = runTest {
         whenever(networkProtectionState.getConnectionStateFlow()).thenReturn(flowOf(CONNECTED))
         whenever(networkProtectionAccessState.getStateFlow()).thenReturn(flowOf(UnLocked))
         whenever(networkProtectionState.isOnboarded()).thenReturn(true)
@@ -131,7 +131,7 @@ class ProSettingNetPViewModelTest {
     }
 
     @Test
-    fun whenNetPStateIsInBetaAndNotOnboardedAndEnabledThenNetPEntryStateShouldCorrectShowState() = runTest {
+    fun `onStart - NetP in beta, not onboarded, enabled - correct entry state`() = runTest {
         whenever(networkProtectionState.getConnectionStateFlow()).thenReturn(flowOf(CONNECTED))
         whenever(networkProtectionAccessState.getStateFlow()).thenReturn(flowOf(UnLocked))
         whenever(networkProtectionState.isOnboarded()).thenReturn(false)
@@ -147,7 +147,7 @@ class ProSettingNetPViewModelTest {
     }
 
     @Test
-    fun whenNetPStateIsInBetaOnboardedAndEnabledThenNetPEntryStateShouldCorrectShowState() = runTest {
+    fun `onStart - NetP in beta onboarded and enabled - correct show state`() = runTest {
         whenever(networkProtectionState.getConnectionStateFlow()).thenReturn(flowOf(CONNECTED))
         whenever(networkProtectionAccessState.getStateFlow()).thenReturn(flowOf(UnLocked))
         whenever(networkProtectionState.isOnboarded()).thenReturn(true)
@@ -166,7 +166,7 @@ class ProSettingNetPViewModelTest {
     }
 
     @Test
-    fun whenNetPStateIsInBetaAndConnectingThenNetPEntryStateShouldCorrectShowState() = runTest {
+    fun `onStart - NetP state in beta and connecting - correct show state`() = runTest {
         whenever(networkProtectionState.getConnectionStateFlow()).thenReturn(flowOf(CONNECTING))
         whenever(networkProtectionAccessState.getStateFlow()).thenReturn(flowOf(UnLocked))
         whenever(networkProtectionState.isOnboarded()).thenReturn(true)
@@ -185,7 +185,7 @@ class ProSettingNetPViewModelTest {
     }
 
     @Test
-    fun whenNetPStateIsInBetaAndDisabledThenNetPEntryStateShouldCorrectShowState() = runTest {
+    fun `onStart - NetP in beta and disabled - correct show state`() = runTest {
         whenever(networkProtectionState.getConnectionStateFlow()).thenReturn(flowOf(DISCONNECTED))
         whenever(networkProtectionAccessState.getStateFlow()).thenReturn(flowOf(UnLocked))
         whenever(networkProtectionState.isOnboarded()).thenReturn(true)

@@ -60,7 +60,7 @@ class RealSyncStateMonitorTest {
     }
 
     @Test
-    fun whenSyncDisabledThenStateIsOff() = runTest {
+    fun `syncState - sync disabled - state is off`() = runTest {
         testee.syncState().test {
             val state = awaitItem()
             Assert.assertTrue(state == OFF)
@@ -68,7 +68,7 @@ class RealSyncStateMonitorTest {
     }
 
     @Test
-    fun whenSyncEnabledThenStateIsREADY() = runTest {
+    fun `syncState - sync enabled - state is READY`() = runTest {
         testee.syncState().test {
             signedInFlow.emit(true)
             val state = expectMostRecentItem()
@@ -77,7 +77,7 @@ class RealSyncStateMonitorTest {
     }
 
     @Test
-    fun whenSyncEnabledAndAttemptSuccessThenStateIsReady() = runTest {
+    fun `syncState - sync enabled and attempt success - state is ready`() = runTest {
         testee.syncState().test {
             signedInFlow.emit(true)
             stateFlow.emit(SyncAttempt(state = SyncAttemptState.SUCCESS))
@@ -87,7 +87,7 @@ class RealSyncStateMonitorTest {
     }
 
     @Test
-    fun whenSyncEnabledAndAttemptFailThenStateIsFailed() = runTest {
+    fun `syncState - sync enabled and attempt fail - state is failed`() = runTest {
         testee.syncState().test {
             signedInFlow.emit(true)
             stateFlow.emit(SyncAttempt(state = SyncAttemptState.FAIL))
@@ -97,7 +97,7 @@ class RealSyncStateMonitorTest {
     }
 
     @Test
-    fun whenSyncEnabledAndAttemptInProgressThenStateIsInProgress() = runTest {
+    fun `syncState - sync enabled and attempt in progress - state is in progress`() = runTest {
         testee.syncState().test {
             signedInFlow.emit(true)
             stateFlow.emit(SyncAttempt(state = SyncAttemptState.IN_PROGRESS))

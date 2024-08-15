@@ -9,7 +9,7 @@ class LastUsedCredentialSorterTest {
     private val testee = LastUsedCredentialSorter()
 
     @Test
-    fun whenTimestampsAreEqualThen0Returned() {
+    fun `compare - timestamps are equal - 0 returned`() {
         val login1 = aLogin(lastUsedTimestamp = 1)
         val login2 = aLogin(lastUsedTimestamp = 1)
         val result = testee.compare(login1, login2)
@@ -17,7 +17,7 @@ class LastUsedCredentialSorterTest {
     }
 
     @Test
-    fun whenTimestampsAreBothNullThen0Returned() {
+    fun `compare - timestamps both null - 0 returned`() {
         val login1 = aLogin(lastUsedTimestamp = null)
         val login2 = aLogin(lastUsedTimestamp = null)
         val result = testee.compare(login1, login2)
@@ -25,7 +25,7 @@ class LastUsedCredentialSorterTest {
     }
 
     @Test
-    fun whenLogin1TimestampIsLowerThenSortedBeforeOtherLogin() {
+    fun `compare - login1 timestamp lower - sorted before other login`() {
         val login1 = aLogin(lastUsedTimestamp = 1)
         val login2 = aLogin(lastUsedTimestamp = 2)
         val result = testee.compare(login1, login2)
@@ -33,7 +33,7 @@ class LastUsedCredentialSorterTest {
     }
 
     @Test
-    fun whenLogin1IsMissingATimestampThenSortedBeforeOtherLogin() {
+    fun `compare - login1 missing timestamp - sorted before other login`() {
         val login1 = aLogin(lastUsedTimestamp = null)
         val login2 = aLogin(lastUsedTimestamp = 1)
         val result = testee.compare(login1, login2)
@@ -41,7 +41,7 @@ class LastUsedCredentialSorterTest {
     }
 
     @Test
-    fun whenLogin2TimestampIsLowerThenSortedBeforeOtherLogin() {
+    fun `compare - login2 timestamp is lower - sorted before other login`() {
         val login1 = aLogin(lastUsedTimestamp = 2)
         val login2 = aLogin(lastUsedTimestamp = 1)
         val result = testee.compare(login1, login2)
@@ -49,7 +49,7 @@ class LastUsedCredentialSorterTest {
     }
 
     @Test
-    fun whenLogin2IsMissingATimestampThenSortedBeforeOtherLogin() {
+    fun `compare - login missing timestamp - sorted before other login`() {
         val login1 = aLogin(lastUsedTimestamp = 1)
         val login2 = aLogin(lastUsedTimestamp = null)
         val result = testee.compare(login1, login2)
@@ -57,21 +57,21 @@ class LastUsedCredentialSorterTest {
     }
 
     @Test
-    fun whenLogin1IsNullThenSortedBeforeOtherLogin() {
+    fun `compare - login1 is null - sorted before other login`() {
         val login2 = aLogin(lastUsedTimestamp = null)
         val result = testee.compare(null, login2)
         assertEquals(-1, result)
     }
 
     @Test
-    fun whenLogin2IsNullThenSortedBeforeOtherLogin() {
+    fun `compare - login2 is null - sorted before other login`() {
         val login1 = aLogin(lastUsedTimestamp = null)
         val result = testee.compare(login1, null)
         assertEquals(1, result)
     }
 
     @Test
-    fun whenBothLoginsAreNullThenTreatedAsEquals() {
+    fun `compare - both logins are null - treated as equals`() {
         assertEquals(0, testee.compare(null, null))
     }
 

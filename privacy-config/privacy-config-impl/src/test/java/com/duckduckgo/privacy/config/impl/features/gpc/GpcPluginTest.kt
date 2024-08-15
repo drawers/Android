@@ -41,19 +41,19 @@ class GpcPluginTest {
     }
 
     @Test
-    fun whenFeatureNameDoesNotMatchGpcThenReturnFalse() {
+    fun `store - feature name does not match GPC - return false`() {
         PrivacyFeatureName.values().filter { it != FEATURE_NAME }.forEach {
             assertFalse(testee.store(it.value, EMPTY_JSON_STRING))
         }
     }
 
     @Test
-    fun whenFeatureNameMatchesGpcThenReturnTrue() {
+    fun `store - feature name matches Gpc - return true`() {
         assertTrue(testee.store(FEATURE_NAME_VALUE, EMPTY_JSON_STRING))
     }
 
     @Test
-    fun whenFeatureNameMatchesGpcAndIsEnabledThenStoreFeatureEnabled() {
+    fun `store - feature name matches Gpc and is enabled - store feature enabled`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/gpc.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -62,7 +62,7 @@ class GpcPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesGpcAndIsNotEnabledThenStoreFeatureDisabled() {
+    fun `store - feature name matches Gpc and is not enabled - store feature disabled`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/gpc_disabled.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -71,7 +71,7 @@ class GpcPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesGpcAndHasMinSupportedVersionThenStoreMinSupportedVersion() {
+    fun `store - feature name matches GPC and has min supported version - store min supported version`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/gpc_min_supported_version.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
@@ -80,7 +80,7 @@ class GpcPluginTest {
     }
 
     @Test
-    fun whenFeatureNameMatchesGpcThenUpdateAllExistingExceptionsAndHeadersAndConfig() {
+    fun `store - feature name matches Gpc - update all existing exceptions and headers and config`() {
         val jsonString = FileUtilities.loadText(javaClass.classLoader!!, "json/gpc.json")
 
         testee.store(FEATURE_NAME_VALUE, jsonString)

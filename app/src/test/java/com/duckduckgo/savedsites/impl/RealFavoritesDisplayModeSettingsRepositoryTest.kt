@@ -80,14 +80,14 @@ class RealFavoritesDisplayModeSettingsRepositoryTest {
     }
 
     @Test
-    fun whenObserverAddedThenCurrentViewStateEmitted() = runTest {
+    fun `favoritesDisplayModeFlow - observer added - current viewState emitted`() = runTest {
         testee.favoritesDisplayModeFlow().test {
             assertEquals(NATIVE, awaitItem())
         }
     }
 
     @Test
-    fun whenDisplayModeChangedThenViewStateIsUpdated() = runTest {
+    fun `favoritesDisplayModeFlow - display mode changed - viewState updated`() = runTest {
         testee.favoritesDisplayModeFlow().test {
             awaitItem()
             testee.favoritesDisplayMode = UNIFIED
@@ -96,20 +96,20 @@ class RealFavoritesDisplayModeSettingsRepositoryTest {
     }
 
     @Test
-    fun whenDisplayModeChangedThenNotifySyncableSetting() = runTest {
+    fun `favoritesDisplayMode - changed - notify syncable setting`() = runTest {
         testee.favoritesDisplayMode = UNIFIED
 
         verify(syncSettingsListener).onSettingChanged(syncableSetting.key)
     }
 
     @Test
-    fun whenSyncDisabledThenQueryFolderIsFavoritesRoot() = runTest {
+    fun `getQueryFolder - sync disabled - is favorites root`() = runTest {
         syncStateFlow.value = SyncState.OFF
         assertEquals(SavedSitesNames.FAVORITES_ROOT, testee.getQueryFolder())
     }
 
     @Test
-    fun whenUserEnabledSyncThenEmitNewQueryFolder() = runTest {
+    fun `getFavoriteFolderFlow - user enabled sync - emit new query folder`() = runTest {
         syncStateFlow.value = SyncState.OFF
         testee.getFavoriteFolderFlow().test {
             assertEquals(SavedSitesNames.FAVORITES_ROOT, awaitItem())
@@ -121,27 +121,27 @@ class RealFavoritesDisplayModeSettingsRepositoryTest {
     }
 
     @Test
-    fun whenSyncEnabledAndNativeModeThenQueryFolderIsMobileRoot() = runTest {
+    fun `getQueryFolder - sync enabled and native mode - is mobile root`() = runTest {
         syncStateFlow.value = SyncState.READY
         savedSitesSettingsStore.favoritesDisplayMode = NATIVE
         assertEquals(SavedSitesNames.FAVORITES_MOBILE_ROOT, testee.getQueryFolder())
     }
 
     @Test
-    fun whenSyncEnabledAndUnifiedModeThenQueryFolderIsMobileRoot() = runTest {
+    fun `getQueryFolder - sync enabled and unified mode - is mobile root`() = runTest {
         syncStateFlow.value = SyncState.READY
         savedSitesSettingsStore.favoritesDisplayMode = UNIFIED
         assertEquals(SavedSitesNames.FAVORITES_ROOT, testee.getQueryFolder())
     }
 
     @Test
-    fun whenSyncDisabledThenInsertFolderIsFavoritesRoot() = runTest {
+    fun `getInsertFolder - sync disabled - is favorites root`() = runTest {
         syncStateFlow.value = SyncState.OFF
         assertEquals(listOf(SavedSitesNames.FAVORITES_ROOT), testee.getInsertFolder())
     }
 
     @Test
-    fun whenSyncEnabledAndNativeModeThenInsertFolderIsMobileAndFavoritesRoot() = runTest {
+    fun `getInsertFolder - sync enabled and native mode - is mobile and favorites root`() = runTest {
         syncStateFlow.value = SyncState.READY
         savedSitesSettingsStore.favoritesDisplayMode = NATIVE
         assertTrue(testee.getInsertFolder().size == 2)
@@ -150,7 +150,7 @@ class RealFavoritesDisplayModeSettingsRepositoryTest {
     }
 
     @Test
-    fun whenSyncEnabledAndUnifiedModeThenInsertFolderIsMobileAndFavoritesRoot() = runTest {
+    fun `getInsertFolder - sync enabled and unified mode - folder is mobile and favorites root`() = runTest {
         syncStateFlow.value = SyncState.READY
         savedSitesSettingsStore.favoritesDisplayMode = UNIFIED
         assertTrue(testee.getInsertFolder().size == 2)
@@ -159,13 +159,13 @@ class RealFavoritesDisplayModeSettingsRepositoryTest {
     }
 
     @Test
-    fun whenSyncDisabledThenDeleteFolderIsFavoritesRoot() = runTest {
+    fun `getDeleteFolder - sync disabled - is favorites root`() = runTest {
         syncStateFlow.value = SyncState.OFF
         assertEquals(listOf(SavedSitesNames.FAVORITES_ROOT), testee.getDeleteFolder("entityId"))
     }
 
     @Test
-    fun whenSyncEnabledAndNativeModeThenDeleteFolderIsMobileAndFavoritesRoot() = runTest {
+    fun `getDeleteFolder - sync enabled and native mode - is mobile and favorites root`() = runTest {
         syncStateFlow.value = SyncState.READY
         savedSitesSettingsStore.favoritesDisplayMode = NATIVE
         assertTrue(testee.getDeleteFolder("entityId").size == 2)
@@ -174,7 +174,7 @@ class RealFavoritesDisplayModeSettingsRepositoryTest {
     }
 
     @Test
-    fun whenSyncEnabledAndNativeModeAndFavoriteIsDesktopThenDeleteFolderIsMobile() = runTest {
+    fun `getDeleteFolder - sync enabled, native mode, favorite is desktop - delete folder is mobile`() = runTest {
         savedSitesRelationsDao.insert(Relation(folderId = SavedSitesNames.FAVORITES_DESKTOP_ROOT, entityId = "entityId"))
         syncStateFlow.value = SyncState.READY
         savedSitesSettingsStore.favoritesDisplayMode = NATIVE
@@ -184,7 +184,7 @@ class RealFavoritesDisplayModeSettingsRepositoryTest {
     }
 
     @Test
-    fun whenSyncEnabledAndUnifiedModeThenDeleteFolderIsAllFolders() = runTest {
+    fun `getDeleteFolder - sync enabled and unified mode - is all folders`() = runTest {
         syncStateFlow.value = SyncState.READY
         savedSitesSettingsStore.favoritesDisplayMode = UNIFIED
         assertTrue(testee.getDeleteFolder("entityId").size == 3)

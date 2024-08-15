@@ -18,7 +18,7 @@ class AppTPRMFMatchingAttributeTest {
     private val attribute = AppTPRMFMatchingAttribute(appTrackingProtection)
 
     @Test
-    fun evaluateWithWrongAttributeThenNull() = runTest {
+    fun `evaluate - wrong attribute - null`() = runTest {
         whenever(appTrackingProtection.isOnboarded()).thenReturn(false)
         assertNull(attribute.evaluate(FakeMatchingAttribute))
 
@@ -27,7 +27,7 @@ class AppTPRMFMatchingAttributeTest {
     }
 
     @Test
-    fun evaluateWithAppTPMatchingAttributeThenValue() = runTest {
+    fun `evaluate - AppTP matching attribute - correct value`() = runTest {
         whenever(appTrackingProtection.isOnboarded()).thenReturn(false)
         assertTrue(attribute.evaluate(AppTPMatchingAttribute(false))!!)
 
@@ -42,14 +42,14 @@ class AppTPRMFMatchingAttributeTest {
     }
 
     @Test
-    fun mapAppTPMatchingAttributeKeyThenReturnAppTPMatchingAttribute() = runTest {
+    fun `map - AppTPMatchingAttributeKey - return AppTPMatchingAttribute`() = runTest {
         assertNull(attribute.map("atpOnboarded", JsonMatchingAttribute(value = null)))
         assertEquals(AppTPMatchingAttribute(true), attribute.map("atpOnboarded", JsonMatchingAttribute(value = true)))
         assertEquals(AppTPMatchingAttribute(false), attribute.map("atpOnboarded", JsonMatchingAttribute(value = false)))
     }
 
     @Test
-    fun mapNoAppTPMatchingAttributeKeyThenReturnNull() = runTest {
+    fun `map - no AppTP matching attribute key - return null`() = runTest {
         assertNull(attribute.map("wrong", JsonMatchingAttribute(value = null)))
         assertNull(attribute.map("wrong", JsonMatchingAttribute(value = true)))
         assertNull(attribute.map("wrong", JsonMatchingAttribute(value = false)))

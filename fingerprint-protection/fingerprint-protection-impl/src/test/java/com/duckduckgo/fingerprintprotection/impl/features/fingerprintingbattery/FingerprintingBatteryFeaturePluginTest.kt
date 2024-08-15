@@ -39,19 +39,19 @@ class FingerprintingBatteryFeaturePluginTest {
     }
 
     @Test
-    fun whenFeatureNameDoesNotMatchFingerprintingBatteryThenReturnFalse() {
+    fun `store - feature name does not match fingerprinting battery - return false`() {
         FingerprintProtectionFeatureName.values().filter { it != FEATURE_NAME }.forEach {
             assertFalse(testee.store(it.value, JSON_STRING))
         }
     }
 
     @Test
-    fun whenFeatureNameMatchesFingerprintingBatteryThenReturnTrue() {
+    fun `store - feature name matches fingerprinting battery - return true`() {
         assertTrue(testee.store(FEATURE_NAME_VALUE, JSON_STRING))
     }
 
     @Test
-    fun whenFeatureNameMatchesFingerprintingBatteryThenUpdateAll() {
+    fun `store - feature name matches fingerprinting battery - update all`() {
         testee.store(FEATURE_NAME_VALUE, JSON_STRING)
         val captor = argumentCaptor<FingerprintingBatteryEntity>()
         verify(mockFingerprintingBatteryRepository).updateAll(captor.capture())

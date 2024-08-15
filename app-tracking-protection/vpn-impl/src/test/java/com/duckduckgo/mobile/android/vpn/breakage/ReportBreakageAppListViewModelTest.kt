@@ -50,7 +50,7 @@ class ReportBreakageAppListViewModelTest {
     }
 
     @Test
-    fun whenOnSubmitBreakageAndNoSelectedItemThenEmitNoCommand() = runTest {
+    fun `onSubmitBreakage - no selected item - emit no command`() = runTest {
         viewModel.commands().test {
             viewModel.onSubmitBreakage()
 
@@ -60,7 +60,7 @@ class ReportBreakageAppListViewModelTest {
     }
 
     @Test
-    fun whenOnSubmitBreakageAndAppSelectedThenEmitLaunchBreakageFormCommand() = runTest {
+    fun `onSubmitBreakage - app selected - emit launch breakage form command`() = runTest {
         viewModel.commands().test {
             val expectedItem = InstalledApp(packageName = "com.android.ddg", name = "ddg", isSelected = true)
             viewModel.onAppSelected(expectedItem)
@@ -72,7 +72,7 @@ class ReportBreakageAppListViewModelTest {
     }
 
     @Test
-    fun whenGetInstalledAppsAndNoInstalledAppsThenEmitNoItem() = runTest {
+    fun `getInstalledApps - no installed apps - emit no item`() = runTest {
         whenever(trackingProtectionAppsRepository.getAppsAndProtectionInfo()).thenReturn(protectedAppsChannel.receiveAsFlow())
         viewModel.getInstalledApps().test {
             expectNoEvents()
@@ -80,7 +80,7 @@ class ReportBreakageAppListViewModelTest {
     }
 
     @Test
-    fun whenGetInstalledAppsThenEmitState() = runTest {
+    fun `getInstalledApps - emit state`() = runTest {
         whenever(trackingProtectionAppsRepository.getAppsAndProtectionInfo()).thenReturn(protectedAppsChannel.receiveAsFlow())
         viewModel.getInstalledApps().test {
             protectedAppsChannel.send(listOf(appWithoutIssues))
@@ -95,7 +95,7 @@ class ReportBreakageAppListViewModelTest {
     }
 
     @Test
-    fun whenGetInstalledAppsAndSelectedAppThenEmitState() = runTest {
+    fun `getInstalledApps - selected app - emit state`() = runTest {
         whenever(trackingProtectionAppsRepository.getAppsAndProtectionInfo()).thenReturn(protectedAppsChannel.receiveAsFlow())
         viewModel.getInstalledApps().test {
             viewModel.onAppSelected(InstalledApp(packageName = appWithIssues.packageName, name = appWithIssues.name))
@@ -112,7 +112,7 @@ class ReportBreakageAppListViewModelTest {
     }
 
     @Test
-    fun whenGetInstalledAppsAndUnknownSelectedAppThenEmitState() = runTest {
+    fun `getInstalledApps - unknown selected app - emit state`() = runTest {
         whenever(trackingProtectionAppsRepository.getAppsAndProtectionInfo()).thenReturn(protectedAppsChannel.receiveAsFlow())
         viewModel.getInstalledApps().test {
             viewModel.onAppSelected(InstalledApp(packageName = "unknown.package.name", name = appWithIssues.name))
@@ -129,7 +129,7 @@ class ReportBreakageAppListViewModelTest {
     }
 
     @Test
-    fun whenOnBreakageSubmittedNoExtraInfoThenEmitSendBreakageInfoCommand() = runTest {
+    fun `onBreakageSubmitted - no extra info - emit send breakage info command`() = runTest {
         viewModel.commands().test {
             val selectedApp = InstalledApp("com.package.com", name = "AppName")
             viewModel.onAppSelected(selectedApp)
@@ -145,7 +145,7 @@ class ReportBreakageAppListViewModelTest {
     }
 
     @Test
-    fun whenOnBreakageSubmittedWithExtraInfoThenEmitSendBreakageInfoCommand() = runTest {
+    fun `onBreakageSubmitted - with extra info - emit send breakage info command`() = runTest {
         viewModel.commands().test {
             val selectedApp = InstalledApp("com.package.com", name = "AppName")
             viewModel.onAppSelected(selectedApp)

@@ -73,7 +73,7 @@ internal class AppearanceViewModelTest {
     }
 
     @Test
-    fun whenInitialisedThenViewStateEmittedWithDefaultValues() = runTest {
+    fun `viewState - initialised - default values emitted`() = runTest {
         testee.viewState().test {
             val value = awaitItem()
 
@@ -85,13 +85,13 @@ internal class AppearanceViewModelTest {
     }
 
     @Test
-    fun whenThemeSettingsClickedThenPixelSent() {
+    fun `userRequestedToChangeTheme - pixel sent`() {
         testee.userRequestedToChangeTheme()
         verify(mockPixel).fire(AppPixelName.SETTINGS_THEME_OPENED)
     }
 
     @Test
-    fun whenThemeSettingsClickedThenCommandIsLaunchThemeSettingsIsSent() = runTest {
+    fun `userRequestedToChangeTheme - command is launch theme settings`() = runTest {
         testee.commands().test {
             testee.userRequestedToChangeTheme()
 
@@ -102,7 +102,7 @@ internal class AppearanceViewModelTest {
     }
 
     @Test
-    fun whenChangeIconRequestedThenCommandIsChangeIconAndPixelSent() = runTest {
+    fun `userRequestedToChangeIcon - command is change icon and pixel sent`() = runTest {
         testee.commands().test {
             testee.userRequestedToChangeIcon()
 
@@ -114,7 +114,7 @@ internal class AppearanceViewModelTest {
     }
 
     @Test
-    fun whenThemeChangedThenDataStoreIsUpdatedAndUpdateThemeCommandIsSent() = runTest {
+    fun `onThemeSelected - theme changed - dataStore updated and update theme command sent`() = runTest {
         testee.commands().test {
             givenThemeSelected(DuckDuckGoTheme.LIGHT)
             testee.onThemeSelected(DuckDuckGoTheme.DARK)
@@ -128,28 +128,28 @@ internal class AppearanceViewModelTest {
     }
 
     @Test
-    fun whenThemeChangedToLightThenLightThemePixelIsSent() {
+    fun `onThemeSelected - theme changed to light - light theme pixel sent`() {
         givenThemeSelected(DuckDuckGoTheme.DARK)
         testee.onThemeSelected(DuckDuckGoTheme.LIGHT)
         verify(mockPixel).fire(AppPixelName.SETTINGS_THEME_TOGGLED_LIGHT)
     }
 
     @Test
-    fun whenThemeChangedToDarkThenDarkThemePixelIsSent() {
+    fun `onThemeSelected - theme changed to dark - dark theme pixel sent`() {
         givenThemeSelected(DuckDuckGoTheme.LIGHT)
         testee.onThemeSelected(DuckDuckGoTheme.DARK)
         verify(mockPixel).fire(AppPixelName.SETTINGS_THEME_TOGGLED_DARK)
     }
 
     @Test
-    fun whenThemeChangedToSystemDefaultThenSystemDefaultThemePixelIsSent() {
+    fun `onThemeSelected - theme changed to system default - system default theme pixel sent`() {
         givenThemeSelected(DuckDuckGoTheme.LIGHT)
         testee.onThemeSelected(DuckDuckGoTheme.SYSTEM_DEFAULT)
         verify(mockPixel).fire(AppPixelName.SETTINGS_THEME_TOGGLED_SYSTEM_DEFAULT)
     }
 
     @Test
-    fun whenThemeChangedButThemeWasAlreadySetThenDoNothing() = runTest {
+    fun `onThemeSelected - theme already set - do nothing`() = runTest {
         testee.commands().test {
             givenThemeSelected(DuckDuckGoTheme.LIGHT)
             testee.onThemeSelected(DuckDuckGoTheme.LIGHT)

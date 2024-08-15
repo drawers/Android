@@ -31,104 +31,104 @@ import org.junit.runner.RunWith
 class WebNavigationStateComparisonTest {
 
     @Test
-    fun whenPreviousStateAndLatestStateSameThenCompareReturnsUnchanged() {
+    fun `compare - previous state and latest state same - returns unchanged`() {
         val state = buildState("http://foo.com", "http://subdomain.foo.com")
         assertEquals(Unchanged, state.compare(state))
     }
 
     @Test
-    fun whenPreviousStateAndLatestStateEqualThenCompareReturnsUnchanged() {
+    fun `compare - previous state and latest state equal - returns unchanged`() {
         val previousState = buildState("http://foo.com", "http://subdomain.foo.com")
         val latestState = buildState("http://foo.com", "http://subdomain.foo.com")
         assertEquals(Unchanged, latestState.compare(previousState))
     }
 
     @Test
-    fun whenPreviousStateIsNullAndLatestContainsAnOriginalUrlACurrentUrlAndTitleThenCompareReturnsNewPageWithTitle() {
+    fun `compare - previous state is null and latest contains original URL, current URL, and title - returns new page with title`() {
         val previousState = null
         val latestState = buildState("http://latest.com", "http://subdomain.latest.com", "Title")
         assertEquals(NewPage("http://subdomain.latest.com", "Title"), latestState.compare(previousState))
     }
 
     @Test
-    fun whenPreviousStateIsNullAndLatestContainsAnOriginalUrlACurrentUrlAndNoTitleThenCompareReturnsNewPageWithoutTitle() {
+    fun `compare - previous state is null and latest contains original URL and no title - returns new page without title`() {
         val previousState = null
         val latestState = buildState("http://latest.com", "http://subdomain.latest.com")
         assertEquals(NewPage("http://subdomain.latest.com", null), latestState.compare(previousState))
     }
 
     @Test
-    fun whenPreviousContainsNoOriginalOrCurrentUrlAndLatestContainsAnOriginalAndCurrentUrlThenCompareReturnsNewPage() {
+    fun `compare - previous contains no original or current URL and latest contains both - returns new page`() {
         val previousState = buildState(null, null)
         val latestState = buildState("http://latest.com", "http://subdomain.latest.com")
         assertEquals(NewPage("http://subdomain.latest.com", null), latestState.compare(previousState))
     }
 
     @Test
-    fun whenPreviousContainsNoOriginalUrlAndACurrentUrlAndLatestContainsAnOriginalAndCurrentUrlThenCompareReturnsNewPage() {
+    fun `compare - previous state no original URL and current URL, latest state original and current URL - returns new page`() {
         val previousState = buildState(null, "http://subdomain.previous.com")
         val latestState = buildState("http://latest.com", "http://subdomain.latest.com")
         assertEquals(NewPage("http://subdomain.latest.com", null), latestState.compare(previousState))
     }
 
     @Test
-    fun whenPreviousContainsAnOriginalUrlAndNoCurrentUrlAndLatestContainsAnOriginalAndCurrentUrlThenCompareReturnsNewPage() {
+    fun `compare - previous contains original URL and no current URL, latest contains original and current URL - returns new page`() {
         val previousState = buildState("http://previous.com", null)
         val latestState = buildState("http://latest.com", "http://subdomain.latest.com")
         assertEquals(NewPage("http://subdomain.latest.com", null), latestState.compare(previousState))
     }
 
     @Test
-    fun whenPreviousContainsAnOriginalUrlAndCurrentUrlAndLatestContainsADifferentOriginalUrlThenCompareReturnsNewPage() {
+    fun `compare - different original url - returns new page`() {
         val previousState = buildState("http://previous.com", "http://subdomain.previous.com")
         val latestState = buildState("http://latest.com", "http://subdomain.latest.com")
         assertEquals(NewPage("http://subdomain.latest.com", null), latestState.compare(previousState))
     }
 
     @Test
-    fun whenPreviousContainsAnOriginalUrlAndCurrentUrlAndLatestContainsSameOriginalUrlAndDifferentCurrentUrlDomainThenCompareReturnsNewPage() {
+    fun `compare - same original URL different current URL domain - returns new page`() {
         val previousState = buildState("http://same.com", "http://subdomain.previous.com")
         val latestState = buildState("http://same.com", "http://subdomain.latest.com")
         assertEquals(NewPage("http://subdomain.latest.com", null), latestState.compare(previousState))
     }
 
     @Test
-    fun whenPrevContainsAnOriginalUrlAndCurrentUrlAndLatestContainsSameOriginalUrlAndDifferentCurrentUrlWithSameHostThenCompareReturnsUrlUpdated() {
+    fun `compare - same original url and different current url with same host - url updated`() {
         val previousState = buildState("http://same.com", "http://same.com/previous")
         val latestState = buildState("http://same.com", "http://same.com/latest")
         assertEquals(UrlUpdated("http://same.com/latest"), latestState.compare(previousState))
     }
 
     @Test
-    fun whenPreviousContainsAnOriginalUrlAndCurrentUrlAndLatestStateContainsNoOriginalUrlAndNoCurrentUrlThenCompareReturnsPageCleared() {
+    fun `compare - previous contains original and current URL, latest contains none - returns page cleared`() {
         val previousState = buildState("http://previous.com", "http://subdomain.previous.com")
         val latestState = buildState(null, null)
         assertEquals(PageCleared, latestState.compare(previousState))
     }
 
     @Test
-    fun whenPreviousContainsAnOriginalUrlAndCurrentUrlAndLatestStateContainsNoOriginalUrlAndACurrentUrlThenCompareReturnsPageCleared() {
+    fun `compare - previous contains original URL and current URL, latest contains no original URL and a current URL - returns page cleared`() {
         val previousState = buildState("http://previous.com", "http://subdomain.previous.com")
         val latestState = buildState(null, "http://subdomain.latest.com")
         assertEquals(PageCleared, latestState.compare(previousState))
     }
 
     @Test
-    fun whenLatestStateIsEmptyNavigationCompareReturnsPageNavigationCleared() {
+    fun `compare - latest state is empty navigation - page navigation cleared`() {
         val previousState = buildState("http://previous.com", "http://subdomain.previous.com")
         val latestState = EmptyNavigationState(previousState)
         assertEquals(PageNavigationCleared, latestState.compare(previousState))
     }
 
     @Test
-    fun whenPreviousContainsAnOriginalUrlAndCurrentUrlAndLatestContainsSameOriginalUrlAndNoCurrentUrlThenCompareReturnsOther() {
+    fun `compare - same original URL and no current URL - returns other`() {
         val previousState = buildState("http://same.com", "http://subdomain.previous.com")
         val latestState = buildState("http://same.com", null)
         assertEquals(Other, latestState.compare(previousState))
     }
 
     @Test
-    fun whenPreviousContainsAnOriginalUrlAndCurrentUrlAndLatestStateContainsDifferentOriginalUrlAndNoCurrentUrlThenCompareReturnsOther() {
+    fun `compare - different original URL and no current URL - returns other`() {
         val previousState = buildState("http://previous.com", "http://subdomain.previous.com")
         val latestState = buildState("http://latest.com", null)
         assertEquals(Other, latestState.compare(previousState))

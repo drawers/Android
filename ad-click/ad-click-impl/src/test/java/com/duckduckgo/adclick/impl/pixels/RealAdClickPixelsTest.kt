@@ -56,7 +56,7 @@ class RealAdClickPixelsTest {
     }
 
     @Test
-    fun whenFireAdClickActivePixelCalledWithNullExemptionThenReturnFalse() {
+    fun `fireAdClickActivePixel - null exemption - return false`() {
         val exemption = null
 
         val result = testee.fireAdClickActivePixel(exemption)
@@ -65,7 +65,7 @@ class RealAdClickPixelsTest {
     }
 
     @Test
-    fun whenFireAdClickActivePixelCalledWithNonNullExemptionAndPixelAlreadyFiredThenReturnFalse() {
+    fun `fireAdClickActivePixel - non-null exemption and pixel already fired - return false`() {
         val exemption = Exemption(
             hostTldPlusOne = "ad_domain",
             navigationExemptionDeadline = 0L,
@@ -79,7 +79,7 @@ class RealAdClickPixelsTest {
     }
 
     @Test
-    fun whenFireAdClickActivePixelCalledWithNonNullExemptionAndPixelNotAlreadyFiredThenFirePixelAndReturnTrue() {
+    fun `fireAdClickActivePixel - non-null exemption and pixel not already fired - fire pixel and return true`() {
         val exemption = Exemption(
             hostTldPlusOne = "ad_domain",
             navigationExemptionDeadline = 0L,
@@ -94,7 +94,7 @@ class RealAdClickPixelsTest {
     }
 
     @Test
-    fun whenFireAdClickDetectedPixelCalledWithSavedAdDomainSameAsUrlAdDomainThenPixelSentWithMatchedParam() {
+    fun `fireAdClickDetectedPixel - saved ad domain same as url ad domain - pixel sent with matched param`() {
         val savedAdDomain = "ad_domain"
         val urlAdDomain = "ad_domain"
         val heuristicEnabled = true
@@ -113,7 +113,7 @@ class RealAdClickPixelsTest {
     }
 
     @Test
-    fun whenFireAdClickDetectedPixelCalledWithSavedAdDomainDifferentThanUrlAdDomainThenPixelSentWithMismatchParam() {
+    fun `fireAdClickDetectedPixel - saved ad domain different than URL ad domain - pixel sent with mismatch param`() {
         val savedAdDomain = "ad_domain"
         val urlAdDomain = "other_domain"
         val heuristicEnabled = true
@@ -132,7 +132,7 @@ class RealAdClickPixelsTest {
     }
 
     @Test
-    fun whenFireAdClickDetectedPixelCalledWithSavedAdDomainAndNoUrlAdDomainThenPixelSentWithSerpOnlyParam() {
+    fun `fireAdClickDetectedPixel - no url ad domain - pixel sent with serp only param`() {
         val savedAdDomain = "ad_domain"
         val urlAdDomain = ""
         val heuristicEnabled = true
@@ -151,7 +151,7 @@ class RealAdClickPixelsTest {
     }
 
     @Test
-    fun whenFireAdClickDetectedPixelCalledWithNoSavedAdDomainAndUrlAdDomainThenPixelSentWithHeuristicOnlyParam() {
+    fun `fireAdClickDetectedPixel - no saved ad domain and url ad domain - pixel sent with heuristic only param`() {
         val savedAdDomain = ""
         val urlAdDomain = "ad_domain"
         val heuristicEnabled = true
@@ -170,7 +170,7 @@ class RealAdClickPixelsTest {
     }
 
     @Test
-    fun whenFireAdClickDetectedPixelCalledWithNoSavedAdDomainAndNoUrlAdDomainThenPixelSentWithNoneParam() {
+    fun `fireAdClickDetectedPixel - no saved ad domain and no url ad domain - pixel sent with none param`() {
         val savedAdDomain = ""
         val urlAdDomain = ""
         val heuristicEnabled = true
@@ -189,7 +189,7 @@ class RealAdClickPixelsTest {
     }
 
     @Test
-    fun whenFireAdClickDetectedPixelCalledWithDisabledHeuristicDetectionThenPixelSentWithCorrectParam() {
+    fun `fireAdClickDetectedPixel - disabled heuristic detection - pixel sent with correct param`() {
         val savedAdDomain = ""
         val urlAdDomain = ""
         val heuristicEnabled = false
@@ -208,7 +208,7 @@ class RealAdClickPixelsTest {
     }
 
     @Test
-    fun whenFireAdClickDetectedPixelCalledWithDisabledDomainDetectionThenPixelSentWithCorrectParam() {
+    fun `fireAdClickDetectedPixel - disabled domain detection - pixel sent with correct param`() {
         val savedAdDomain = ""
         val urlAdDomain = ""
         val heuristicEnabled = true
@@ -227,7 +227,7 @@ class RealAdClickPixelsTest {
     }
 
     @Test
-    fun whenUpdateCountPixelCalledThenSharedPrefUpdated() {
+    fun `updateCountPixel - sharedPref updated`() {
         val key = "${AdClickPixelName.AD_CLICK_PAGELOADS_WITH_AD_ATTRIBUTION.pixelName}_count"
         assertEquals(0, prefs.getInt(key, 0))
 
@@ -238,7 +238,7 @@ class RealAdClickPixelsTest {
     }
 
     @Test
-    fun whenFireCountPixelCalledForZeroCountThenPixelNotSent() {
+    fun `fireCountPixel - zero count - pixel not sent`() {
         val key = "${AdClickPixelName.AD_CLICK_PAGELOADS_WITH_AD_ATTRIBUTION.pixelName}_count"
         assertEquals(0, prefs.getInt(key, 0))
 
@@ -253,7 +253,7 @@ class RealAdClickPixelsTest {
     }
 
     @Test
-    fun whenFireCountPixelCalledForNonZeroCountAndCurrentTimeNotSetThenPixelSent() {
+    fun `fireCountPixel - non-zero count and current time not set - pixel sent`() {
         val key = "${AdClickPixelName.AD_CLICK_PAGELOADS_WITH_AD_ATTRIBUTION.pixelName}_count"
         testee.updateCountPixel(AdClickPixelName.AD_CLICK_PAGELOADS_WITH_AD_ATTRIBUTION)
         assertEquals(1, prefs.getInt(key, 0))
@@ -269,7 +269,7 @@ class RealAdClickPixelsTest {
     }
 
     @Test
-    fun whenFireCountPixelCalledForNonZeroCountAndCurrentTimeBeforeTimestampThenPixelNotSent() {
+    fun `fireCountPixel - non-zero count and time before timestamp - pixel not sent`() {
         val key = "${AdClickPixelName.AD_CLICK_PAGELOADS_WITH_AD_ATTRIBUTION.pixelName}_count"
         val timestampKey = "${AdClickPixelName.AD_CLICK_PAGELOADS_WITH_AD_ATTRIBUTION.pixelName}_timestamp"
         val now = Instant.now().toEpochMilli()
@@ -288,7 +288,7 @@ class RealAdClickPixelsTest {
     }
 
     @Test
-    fun whenFireCountPixelCalledForNonZeroCountAndCurrentTimeAfterTimestampThenPixelSent() {
+    fun `fireCountPixel - non-zero count and time after timestamp - pixel sent`() {
         val key = "${AdClickPixelName.AD_CLICK_PAGELOADS_WITH_AD_ATTRIBUTION.pixelName}_count"
         val timestampKey = "${AdClickPixelName.AD_CLICK_PAGELOADS_WITH_AD_ATTRIBUTION.pixelName}_timestamp"
         val now = Instant.now().toEpochMilli()

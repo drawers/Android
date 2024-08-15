@@ -79,14 +79,14 @@ internal class CredentialsSyncDataProviderTest {
     )
 
     @Test
-    fun whenInitialSyncAndNoDataThenReturnEmptyList() = runTest {
+    fun `getChanges - initial sync and no data - return empty list`() = runTest {
         val result = testee.getChanges()
 
         assertTrue(result.isEmpty())
     }
 
     @Test
-    fun whenInitialSyncAndDataThenAllChanges() = runTest {
+    fun `getChanges - initial sync and data - all changes`() = runTest {
         givenLocalCredentials(
             CredentialsFixtures.twitterCredentials,
             CredentialsFixtures.spotifyCredentials,
@@ -100,7 +100,7 @@ internal class CredentialsSyncDataProviderTest {
     }
 
     @Test
-    fun whenModifiedSinceExistsThenSendChangesWithServerTimeSince() = runTest {
+    fun `getChanges - modified since exists - send changes with server time since`() = runTest {
         credentialsSyncStore.clientModifiedSince = "2022-01-01T00:00:00Z"
         credentialsSyncStore.serverModifiedSince = "2022-08-30T00:00:00Z"
 
@@ -117,7 +117,7 @@ internal class CredentialsSyncDataProviderTest {
     }
 
     @Test
-    fun whenSendingDataThenStartTimeUpdated() = runTest {
+    fun `getChanges - sending data - start time updated`() = runTest {
         credentialsSyncStore.startTimeStamp = "0"
         givenLocalCredentials(
             CredentialsFixtures.twitterCredentials,
@@ -130,7 +130,7 @@ internal class CredentialsSyncDataProviderTest {
     }
 
     @Test
-    fun whenNullPropertyThenIncludeNullInJson() = runTest {
+    fun `getChanges - null property - include null in json`() = runTest {
         credentialsSyncStore.serverModifiedSince = "0"
 
         givenLocalCredentials(

@@ -38,7 +38,7 @@ class NetpControllerRequestInterceptorTest {
     }
 
     @Test
-    fun whenInterceptNotNetPUrlThenDoNothing() {
+    fun `intercept - not NetP URL - do nothing`() {
         val chain = FakeChain("https://this.is.not.the.url/servers")
 
         val headers = interceptor.intercept(chain).headers
@@ -47,7 +47,7 @@ class NetpControllerRequestInterceptorTest {
     }
 
     @Test
-    fun whenInterceptServersCallThenAddAuthHeader() {
+    fun `intercept - servers call - add auth header`() {
         val chain = FakeChain("https://staging.netp.duckduckgo.com/servers")
 
         val headers = interceptor.intercept(chain).headers
@@ -58,7 +58,7 @@ class NetpControllerRequestInterceptorTest {
     }
 
     @Test
-    fun whenInterceptRegisterCallThenAddAuthHeader() {
+    fun `intercept - register call - add auth header`() {
         val chain = FakeChain("https://staging.netp.duckduckgo.com/register")
 
         val headers = interceptor.intercept(chain).headers
@@ -69,7 +69,7 @@ class NetpControllerRequestInterceptorTest {
     }
 
     @Test
-    fun whenInterceptServersCallInternalBuildThenAddAuthAndDebugHeaders() {
+    fun `intercept - internal build - add auth and debug headers`() {
         whenever(appBuildConfig.flavor).thenReturn(BuildFlavor.INTERNAL)
 
         val chain = FakeChain("https://staging.netp.duckduckgo.com/servers")
@@ -95,7 +95,7 @@ class NetpControllerRequestInterceptorTest {
     }
 
     @Test
-    fun whenInterceptServersCallPlayBuildThenAddAuthHeader() {
+    fun `intercept - play build - add auth header`() {
         whenever(appBuildConfig.flavor).thenReturn(BuildFlavor.PLAY)
 
         val chain = FakeChain("https://staging.netp.duckduckgo.com/servers")
@@ -124,7 +124,7 @@ class NetpControllerRequestInterceptorTest {
     // Here starts the tests for the subscriptions
     // ----------------------------------------------------------------------------------------------------------------------------------
     @Test
-    fun whenUrlIsServersAndFlavorIsPlayThenOnlyAddTokenToHeader() = runTest {
+    fun `intercept - url is servers and flavor is play - only add token to header`() = runTest {
         val fakeChain = FakeChain(url = "https://controller.netp.duckduckgo.com/servers")
         whenever(appBuildConfig.flavor).thenReturn(PLAY)
         whenever(subscriptions.getAccessToken()).thenReturn("token123")
@@ -136,7 +136,7 @@ class NetpControllerRequestInterceptorTest {
     }
 
     @Test
-    fun whenUrlIsLocationsAndFlavorIsPlayThenOnlyAddTokenToHeader() = runTest {
+    fun `intercept - url is locations and flavor is play - only add token to header`() = runTest {
         val fakeChain = FakeChain(url = "https://controller.netp.duckduckgo.com/locations")
         whenever(appBuildConfig.flavor).thenReturn(PLAY)
         whenever(subscriptions.getAccessToken()).thenReturn("token123")
@@ -148,7 +148,7 @@ class NetpControllerRequestInterceptorTest {
     }
 
     @Test
-    fun whenUrlIsRegisterAndFlavorIsPlayThenOnlyAddTokenToHeader() = runTest {
+    fun `intercept - url is register and flavor is play - only add token to header`() = runTest {
         val fakeChain = FakeChain(url = "https://staging1.netp.duckduckgo.com/register")
         whenever(appBuildConfig.flavor).thenReturn(PLAY)
         whenever(subscriptions.getAccessToken()).thenReturn("token123")
@@ -160,7 +160,7 @@ class NetpControllerRequestInterceptorTest {
     }
 
     @Test
-    fun whenUrlIsNotNetPAndFlavorIsInternalThenDoNothingWithHeaders() = runTest {
+    fun `intercept - url is not NetP and flavor is internal - do nothing with headers`() = runTest {
         val fakeChain = FakeChain(url = "https://improving.duckduckgo.com/t/m_netp_ev_enabled_android_phone?atb=v336-7&appVersion=5.131.0&test=1")
 
         interceptor.intercept(fakeChain).run {
@@ -170,7 +170,7 @@ class NetpControllerRequestInterceptorTest {
     }
 
     @Test
-    fun whenUrlIsNetPAndFlavorIsInternalThenAddTokenAndDebugCodeToHeader() = runTest {
+    fun `intercept - url is netp and flavor is internal - add token and debug code to header`() = runTest {
         val fakeChain = FakeChain(url = "https://controller.netp.duckduckgo.com/servers")
         whenever(appBuildConfig.flavor).thenReturn(INTERNAL)
         whenever(subscriptions.getAccessToken()).thenReturn("token123")

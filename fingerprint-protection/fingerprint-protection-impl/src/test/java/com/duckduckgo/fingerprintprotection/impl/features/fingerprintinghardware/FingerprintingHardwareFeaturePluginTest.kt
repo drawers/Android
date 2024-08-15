@@ -39,19 +39,19 @@ class FingerprintingHardwareFeaturePluginTest {
     }
 
     @Test
-    fun whenFeatureNameDoesNotMatchFingerprintingHardwareThenReturnFalse() {
+    fun `store - feature name does not match fingerprinting hardware - return false`() {
         FingerprintProtectionFeatureName.values().filter { it != FEATURE_NAME }.forEach {
             assertFalse(testee.store(it.value, JSON_STRING))
         }
     }
 
     @Test
-    fun whenFeatureNameMatchesFingerprintingHardwareThenReturnTrue() {
+    fun `store - feature name matches fingerprinting hardware - return true`() {
         assertTrue(testee.store(FEATURE_NAME_VALUE, JSON_STRING))
     }
 
     @Test
-    fun whenFeatureNameMatchesFingerprintingHardwareThenUpdateAll() {
+    fun `store - feature name matches fingerprinting hardware - update all`() {
         testee.store(FEATURE_NAME_VALUE, JSON_STRING)
         val captor = argumentCaptor<FingerprintingHardwareEntity>()
         verify(mockFingerprintingHardwareRepository).updateAll(captor.capture())

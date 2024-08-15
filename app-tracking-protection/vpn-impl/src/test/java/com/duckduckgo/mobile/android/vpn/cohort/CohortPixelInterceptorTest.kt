@@ -67,7 +67,7 @@ class CohortPixelInterceptorTest {
     }
 
     @Test
-    fun whenCohortNotSetPixelDropped() {
+    fun `intercept - cohort not set - pixel dropped`() {
         Assert.assertNull(cohortStore.getCohortStoredLocalDate())
 
         val pixelUrl = String.format(PIXEL_TEMPLATE, "m_atp_ev_restart_c")
@@ -78,7 +78,7 @@ class CohortPixelInterceptorTest {
     }
 
     @Test
-    fun whenCohortSetPixelFired() {
+    fun `intercept - cohort set - pixel fired`() {
         val date = LocalDate.now().plusDays(3)
         cohortStore.setCohortLocalDate(date)
 
@@ -92,7 +92,7 @@ class CohortPixelInterceptorTest {
     }
 
     @Test
-    fun whenCohortSetPixelFiredCohortRemovedForException() {
+    fun `intercept - cohort set - pixel fired and cohort removed for exception`() {
         val date = LocalDate.now().plusDays(3)
         cohortStore.setCohortLocalDate(date)
 

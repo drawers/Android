@@ -37,7 +37,7 @@ class SurveyRepositoryTest {
     }
 
     @Test
-    fun whenSurveyUrlIsNullThenSurveyIsNotEligible() {
+    fun `isUserEligibleForSurvey - survey URL is null - not eligible`() {
         val survey = Survey(
             surveyId = "id",
             status = Survey.Status.SCHEDULED,
@@ -49,7 +49,7 @@ class SurveyRepositoryTest {
     }
 
     @Test
-    fun whenLocaleIsNotAllowedThenSurveyIsNotEligible() {
+    fun `isUserEligibleForSurvey - locale not allowed - not eligible`() {
         whenever(appBuildConfig.deviceLocale).thenReturn(Locale.JAPAN)
         val survey = Survey(
             surveyId = "id",
@@ -62,7 +62,7 @@ class SurveyRepositoryTest {
     }
 
     @Test
-    fun whenRequiredDaysInstalledNullThenSurveyIsNotEligible() {
+    fun `isUserEligibleForSurvey - required days installed null - not eligible`() {
         val survey = Survey(
             surveyId = "id",
             status = Survey.Status.SCHEDULED,
@@ -74,7 +74,7 @@ class SurveyRepositoryTest {
     }
 
     @Test
-    fun whenRequiredDaysInstalledMinusOneThenSurveyIsEligible() {
+    fun `isUserEligibleForSurvey - required days installed minus one - survey is eligible`() {
         whenever(userBrowserProperties.daysSinceInstalled()).thenReturn(0)
         val survey = Survey(
             surveyId = "id",
@@ -87,7 +87,7 @@ class SurveyRepositoryTest {
     }
 
     @Test
-    fun whenRetentionDayBellowRequiredDaysThenUserIsEligibleForSurvey() {
+    fun `isUserEligibleForSurvey - retention day below required days - user is eligible`() {
         whenever(userBrowserProperties.daysSinceInstalled()).thenReturn(0)
         val survey = Survey(
             surveyId = "id",
@@ -100,7 +100,7 @@ class SurveyRepositoryTest {
     }
 
     @Test
-    fun whenLocaleIsNotAllowedAndRequiredDaysInstalledMetThenSurveyIsNotEligible() {
+    fun `isUserEligibleForSurvey - locale not allowed and required days installed met - not eligible`() {
         whenever(appBuildConfig.deviceLocale).thenReturn(Locale.JAPAN)
         whenever(userBrowserProperties.daysSinceInstalled()).thenReturn(0)
         val survey = Survey(
@@ -114,7 +114,7 @@ class SurveyRepositoryTest {
     }
 
     @Test
-    fun whenLocaleIsCanadaAndRequiredDaysInstalledMetThenSurveyIsEligible() {
+    fun `isUserEligibleForSurvey - locale is Canada and required days installed met - survey is eligible`() {
         whenever(appBuildConfig.deviceLocale).thenReturn(Locale.CANADA)
         whenever(userBrowserProperties.daysSinceInstalled()).thenReturn(0)
         val survey = Survey(
@@ -128,7 +128,7 @@ class SurveyRepositoryTest {
     }
 
     @Test
-    fun whenLocaleIsUKAndRequiredDaysInstalledMetThenSurveyIsEligible() {
+    fun `isUserEligibleForSurvey - UK locale and required days installed met - survey is eligible`() {
         whenever(appBuildConfig.deviceLocale).thenReturn(Locale.UK)
         whenever(userBrowserProperties.daysSinceInstalled()).thenReturn(0)
         val survey = Survey(
@@ -142,7 +142,7 @@ class SurveyRepositoryTest {
     }
 
     @Test
-    fun whenRequiredDaysInstalledIsNullAndRetentionDaysBelowDefaultDaysThenReturnMinus1() {
+    fun `remainingDaysForShowingSurvey - required days installed is null and retention days below default - return minus 1`() {
         whenever(userBrowserProperties.daysSinceInstalled()).thenReturn(4)
         val survey = Survey(
             surveyId = "id",
@@ -156,7 +156,7 @@ class SurveyRepositoryTest {
     }
 
     @Test
-    fun whenRequiredDaysInstalledIsNullAndRetentionDaysAboveDefaultDaysThenReturn0() {
+    fun `remainingDaysForShowingSurvey - required days installed is null and retention days above default - return 0`() {
         whenever(userBrowserProperties.daysSinceInstalled()).thenReturn(31)
         val survey = Survey(
             surveyId = "id",
@@ -170,7 +170,7 @@ class SurveyRepositoryTest {
     }
 
     @Test
-    fun whenRequiredDaysInstalledIsMinus1AndNotFirstDayThenRemainingDaysToSurveyIsZero() {
+    fun `remainingDaysForShowingSurvey - required days installed is minus 1 and not first day - remaining days is zero`() {
         whenever(userBrowserProperties.daysSinceInstalled()).thenReturn(4)
         val survey = Survey(
             surveyId = "id",
@@ -184,7 +184,7 @@ class SurveyRepositoryTest {
     }
 
     @Test
-    fun whenRequiredDaysInstalledAndDaysInstallNotEnoughThenShouldNotShowSurvey() {
+    fun `shouldShowSurvey - days installed not enough - should not show survey`() {
         whenever(userBrowserProperties.daysSinceInstalled()).thenReturn(2)
         val survey = Survey(
             surveyId = "id",
@@ -198,7 +198,7 @@ class SurveyRepositoryTest {
     }
 
     @Test
-    fun whenRetentionDaysIsAboveRequiredDaysInstalledThenShouldNotShowSurvey() {
+    fun `shouldShowSurvey - retention days above required - should not show survey`() {
         whenever(userBrowserProperties.daysSinceInstalled()).thenReturn(4)
         val survey = Survey(
             surveyId = "id",
@@ -212,7 +212,7 @@ class SurveyRepositoryTest {
     }
 
     @Test
-    fun whenSurveyStatusIsDoneThenShouldNotShowSurvey() {
+    fun `shouldShowSurvey - survey status is done - should not show survey`() {
         whenever(userBrowserProperties.daysSinceInstalled()).thenReturn(4)
         val survey = Survey(
             surveyId = "id",
@@ -225,7 +225,7 @@ class SurveyRepositoryTest {
     }
 
     @Test
-    fun getScheduledSurveyReturnsLastSurvey() {
+    fun `getScheduledSurvey - returns last survey`() {
         val survey = Survey(
             surveyId = "1",
             status = Survey.Status.SCHEDULED,
@@ -242,7 +242,7 @@ class SurveyRepositoryTest {
     }
 
     @Test
-    fun givenExistingSurveyWhenCheckingIfSurveyExistThenReturnTrue() {
+    fun `surveyExists - existing survey - return true`() {
         val survey = Survey(
             surveyId = "id",
             status = Survey.Status.SCHEDULED,
@@ -255,7 +255,7 @@ class SurveyRepositoryTest {
     }
 
     @Test
-    fun givenNonExistingSurveyWhenCheckingIfSurveyExistThenReturnFalse() {
+    fun `surveyExists - non-existing survey - return false`() {
         assertFalse(surveyRepository.surveyExists("id"))
     }
 }

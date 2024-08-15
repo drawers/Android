@@ -68,7 +68,7 @@ class RealVoiceSearchAvailabilityTest {
     }
 
     @Test
-    fun whenDeviceHasValidConfigThenIsVoiceSearchSupportedTrue() {
+    fun `isVoiceSearchSupported - valid config - true`() {
         setupRemoteConfig(voiceSearchEnabled = true, minSdk = 30, excludedManufacturers = emptyArray(), excludedLocales = emptyArray())
         setupDeviceConfig(manufacturer = "Google", sdkInt = 31, languageTag = "en-US", isOnDeviceSpeechRecognitionAvailable = true)
         setupUserSettings(true)
@@ -77,7 +77,7 @@ class RealVoiceSearchAvailabilityTest {
     }
 
     @Test
-    fun whenDeviceHasValidConfigAndLanguageIsNotSupportedThenIsVoiceSearchSupportedFalse() {
+    fun `isVoiceSearchSupported - language not supported - false`() {
         whenever(languageSupportChecker.isLanguageSupported()).thenReturn(false)
 
         setupRemoteConfig(voiceSearchEnabled = true, minSdk = 30, excludedManufacturers = emptyArray(), excludedLocales = emptyArray())
@@ -88,7 +88,7 @@ class RealVoiceSearchAvailabilityTest {
     }
 
     @Test
-    fun whenDeviceHasValidConfigAndMinVersionIsNullThenIsVoiceSearchSupportedTrue() {
+    fun `isVoiceSearchSupported - valid config and min version is null - true`() {
         setupRemoteConfig(voiceSearchEnabled = true, minSdk = null, excludedManufacturers = emptyArray(), excludedLocales = emptyArray())
         setupDeviceConfig(manufacturer = "Google", sdkInt = 31, languageTag = "en-US", isOnDeviceSpeechRecognitionAvailable = true)
         setupUserSettings(true)
@@ -97,7 +97,7 @@ class RealVoiceSearchAvailabilityTest {
     }
 
     @Test
-    fun whenDeviceHasInvalidLanguageThenIsVoiceSearchSupportedFalse() {
+    fun `isVoiceSearchSupported - device has invalid language - false`() {
         setupRemoteConfig(voiceSearchEnabled = true, minSdk = 30, excludedManufacturers = emptyArray(), excludedLocales = arrayOf("en-UK"))
         setupDeviceConfig(manufacturer = "Google", sdkInt = 31, languageTag = "en-UK", isOnDeviceSpeechRecognitionAvailable = true)
         setupUserSettings(true)
@@ -106,7 +106,7 @@ class RealVoiceSearchAvailabilityTest {
     }
 
     @Test
-    fun whenDeviceHasInvalidSdkThenIsVoiceSearchSupportedFalse() {
+    fun `isVoiceSearchSupported - device has invalid SDK - false`() {
         setupRemoteConfig(voiceSearchEnabled = true, minSdk = 33, excludedManufacturers = emptyArray(), excludedLocales = emptyArray())
         setupDeviceConfig(manufacturer = "Google", sdkInt = 31, languageTag = "en-UK", isOnDeviceSpeechRecognitionAvailable = true)
         setupUserSettings(true)
@@ -115,7 +115,7 @@ class RealVoiceSearchAvailabilityTest {
     }
 
     @Test
-    fun whenDeviceHasNoSupportForOnDeviceSpeechRecognitionThenIsVoiceSearchSupportedFalse() {
+    fun `isVoiceSearchSupported - no support for on-device speech recognition - false`() {
         setupRemoteConfig(voiceSearchEnabled = true, minSdk = 30, excludedManufacturers = emptyArray(), excludedLocales = emptyArray())
         setupDeviceConfig(manufacturer = "Google", sdkInt = 31, languageTag = "en-US", isOnDeviceSpeechRecognitionAvailable = false)
         setupUserSettings(true)
@@ -124,7 +124,7 @@ class RealVoiceSearchAvailabilityTest {
     }
 
     @Test
-    fun whenManufacturerIsInExcludedManufacturersListThenIsVoiceSearchSupportedFalse() {
+    fun `isVoiceSearchSupported - manufacturer in excluded list - false`() {
         setupRemoteConfig(voiceSearchEnabled = true, minSdk = 30, excludedManufacturers = arrayOf("Google"), excludedLocales = emptyArray())
         setupDeviceConfig(manufacturer = "Google", sdkInt = 31, languageTag = "en-US", isOnDeviceSpeechRecognitionAvailable = true)
         setupUserSettings(true)
@@ -133,7 +133,7 @@ class RealVoiceSearchAvailabilityTest {
     }
 
     @Test
-    fun whenVoiceSearchNotSupportedThenShouldShowVoiceSearchFalse() {
+    fun `shouldShowVoiceSearch - voice search not supported - false`() {
         setupRemoteConfig(voiceSearchEnabled = true, minSdk = 30, excludedManufacturers = emptyArray(), excludedLocales = emptyArray())
         setupDeviceConfig(manufacturer = "Google", sdkInt = 31, languageTag = "en-US", isOnDeviceSpeechRecognitionAvailable = false)
         setupUserSettings(true)
@@ -149,7 +149,7 @@ class RealVoiceSearchAvailabilityTest {
     }
 
     @Test
-    fun whenVoiceSearchSupportedAndIsEditingUrlAndUserDisabledThenShouldShowVoiceSearchFalse() {
+    fun `shouldShowVoiceSearch - voice search supported and is editing URL and user disabled - false`() {
         setupRemoteConfig(voiceSearchEnabled = true, minSdk = 30, excludedManufacturers = emptyArray(), excludedLocales = emptyArray())
         setupDeviceConfig(manufacturer = "Google", sdkInt = 31, languageTag = "en-US", isOnDeviceSpeechRecognitionAvailable = true)
         setupUserSettings(false)
@@ -165,7 +165,7 @@ class RealVoiceSearchAvailabilityTest {
     }
 
     @Test
-    fun whenVoiceSearchSupportedAndIsEditingUrlWithUnchangedQueryThenShouldShowVoiceSearchTrue() {
+    fun `shouldShowVoiceSearch - voice search supported and editing unchanged url - true`() {
         setupRemoteConfig(voiceSearchEnabled = true, minSdk = 30, excludedManufacturers = emptyArray(), excludedLocales = emptyArray())
         setupDeviceConfig(manufacturer = "Google", sdkInt = 31, languageTag = "en-US", isOnDeviceSpeechRecognitionAvailable = true)
 
@@ -182,7 +182,7 @@ class RealVoiceSearchAvailabilityTest {
     }
 
     @Test
-    fun whenVoiceSearchSupportedAndIsEditingUrlWithEmptyQueryThenShouldShowVoiceSearchTrue() {
+    fun `shouldShowVoiceSearch - editing URL with empty query - true`() {
         setupRemoteConfig(voiceSearchEnabled = true, minSdk = 30, excludedManufacturers = emptyArray(), excludedLocales = emptyArray())
         setupDeviceConfig(manufacturer = "Google", sdkInt = 31, languageTag = "en-US", isOnDeviceSpeechRecognitionAvailable = true)
         setupUserSettings(true)
@@ -198,7 +198,7 @@ class RealVoiceSearchAvailabilityTest {
     }
 
     @Test
-    fun whenVoiceSearchSupportedAndIsEditingUrlWithChangedQueryThenShouldShowVoiceSearchTrue() {
+    fun `shouldShowVoiceSearch - voice search supported and editing url with changed query - should show voice search true`() {
         setupRemoteConfig(voiceSearchEnabled = true, minSdk = 30, excludedManufacturers = emptyArray(), excludedLocales = emptyArray())
         setupDeviceConfig(manufacturer = "Google", sdkInt = 31, languageTag = "en-US", isOnDeviceSpeechRecognitionAvailable = true)
 
@@ -215,7 +215,7 @@ class RealVoiceSearchAvailabilityTest {
     }
 
     @Test
-    fun whenVoiceSearchSupportedAndUrlShownInAddressBarWithNoFocusThenShouldShowVoiceSearchFalse() {
+    fun `shouldShowVoiceSearch - voice search supported and url shown in address bar with no focus - should show voice search false`() {
         setupRemoteConfig(voiceSearchEnabled = true, minSdk = 30, excludedManufacturers = emptyArray(), excludedLocales = emptyArray())
         setupDeviceConfig(manufacturer = "Google", sdkInt = 31, languageTag = "en-US", isOnDeviceSpeechRecognitionAvailable = true)
         setupUserSettings(true)
@@ -231,7 +231,7 @@ class RealVoiceSearchAvailabilityTest {
     }
 
     @Test
-    fun whenVoiceSearchSupportedAndUrlShownInAddressBarWithFocusAndEmptyUnchangedQueryThenShouldShowVoiceSearchTrue() {
+    fun `shouldShowVoiceSearch - voice search supported and url shown with focus and empty unchanged query - true`() {
         setupRemoteConfig(voiceSearchEnabled = true, minSdk = 30, excludedManufacturers = emptyArray(), excludedLocales = emptyArray())
         setupDeviceConfig(manufacturer = "Google", sdkInt = 31, languageTag = "en-US", isOnDeviceSpeechRecognitionAvailable = true)
         setupUserSettings(true)
@@ -247,7 +247,7 @@ class RealVoiceSearchAvailabilityTest {
     }
 
     @Test
-    fun whenVoiceSearchSupportedAndUrlShownInAddressBarWithFocusAndEmptyChangedQueryThenShouldShowVoiceSearchTrue() {
+    fun `shouldShowVoiceSearch - voice search supported and url shown with focus and empty changed query - true`() {
         setupRemoteConfig(voiceSearchEnabled = true, minSdk = 30, excludedManufacturers = emptyArray(), excludedLocales = emptyArray())
         setupDeviceConfig(manufacturer = "Google", sdkInt = 31, languageTag = "en-US", isOnDeviceSpeechRecognitionAvailable = true)
         setupUserSettings(true)
@@ -263,7 +263,7 @@ class RealVoiceSearchAvailabilityTest {
     }
 
     @Test
-    fun whenVoiceSearchSupportedAndUrlShownInAddressBarWithFocusAndNonEmptyChangedQueryThenShouldShowVoiceSearchFalse() {
+    fun `shouldShowVoiceSearch - voice search supported and url shown with focus and non-empty changed query - false`() {
         setupRemoteConfig(voiceSearchEnabled = true, minSdk = 30, excludedManufacturers = emptyArray(), excludedLocales = emptyArray())
         setupDeviceConfig(manufacturer = "Google", sdkInt = 31, languageTag = "en-US", isOnDeviceSpeechRecognitionAvailable = true)
         setupUserSettings(true)
@@ -279,7 +279,7 @@ class RealVoiceSearchAvailabilityTest {
     }
 
     @Test
-    fun whenVoiceSearchSupportedAndUrlEmptyThenShouldShowVoiceSearchTrue() {
+    fun `shouldShowVoiceSearch - voice search supported and url empty - true`() {
         setupRemoteConfig(voiceSearchEnabled = true, minSdk = 30, excludedManufacturers = emptyArray(), excludedLocales = emptyArray())
         setupDeviceConfig(manufacturer = "Google", sdkInt = 31, languageTag = "en-US", isOnDeviceSpeechRecognitionAvailable = true)
         setupUserSettings(true)
@@ -295,7 +295,7 @@ class RealVoiceSearchAvailabilityTest {
     }
 
     @Test
-    fun whenVoiceSearchSupportedAndUrlEmptyWithNoFocusThenShouldShowVoiceSearchTrue() {
+    fun `shouldShowVoiceSearch - voice search supported and url empty with no focus - true`() {
         setupRemoteConfig(voiceSearchEnabled = true, minSdk = 30, excludedManufacturers = emptyArray(), excludedLocales = emptyArray())
         setupDeviceConfig(manufacturer = "Google", sdkInt = 31, languageTag = "en-US", isOnDeviceSpeechRecognitionAvailable = true)
         setupUserSettings(true)
@@ -311,7 +311,7 @@ class RealVoiceSearchAvailabilityTest {
     }
 
     @Test
-    fun whenFeatureIsDisabledThenShouldShowVoiceSearchFalse() {
+    fun `shouldShowVoiceSearch - feature disabled - false`() {
         setupRemoteConfig(voiceSearchEnabled = false, minSdk = 30, excludedManufacturers = emptyArray(), excludedLocales = emptyArray())
         setupDeviceConfig(manufacturer = "Google", sdkInt = 31, languageTag = "en-US", isOnDeviceSpeechRecognitionAvailable = true)
         setupUserSettings(true)
@@ -327,7 +327,7 @@ class RealVoiceSearchAvailabilityTest {
     }
 
     @Test
-    fun whenVoiceSearchSupportedAndSERPShownThenShouldShowVoiceSearchTrue() {
+    fun `shouldShowVoiceSearch - voice search supported and SERP shown - true`() {
         setupRemoteConfig(voiceSearchEnabled = true, minSdk = 30, excludedManufacturers = emptyArray(), excludedLocales = emptyArray())
         setupDeviceConfig(manufacturer = "Google", sdkInt = 31, languageTag = "en-US", isOnDeviceSpeechRecognitionAvailable = true)
         setupUserSettings(true)
@@ -343,7 +343,7 @@ class RealVoiceSearchAvailabilityTest {
     }
 
     @Test
-    fun whenVoiceSearchSupportedAndIsEditingSERPWithUnchangedQueryThenShouldShowVoiceSearchTrue() {
+    fun `shouldShowVoiceSearch - voice search supported and editing SERP with unchanged query - true`() {
         setupRemoteConfig(voiceSearchEnabled = true, minSdk = 30, excludedManufacturers = emptyArray(), excludedLocales = emptyArray())
         setupDeviceConfig(manufacturer = "Google", sdkInt = 31, languageTag = "en-US", isOnDeviceSpeechRecognitionAvailable = true)
         setupUserSettings(true)
@@ -359,7 +359,7 @@ class RealVoiceSearchAvailabilityTest {
     }
 
     @Test
-    fun whenVoiceSearchSupportedAndIsEditingSERPWithChangedQueryThenShouldShowVoiceSearchFalse() {
+    fun `shouldShowVoiceSearch - editing SERP with changed query - false`() {
         setupRemoteConfig(voiceSearchEnabled = true, minSdk = 30, excludedManufacturers = emptyArray(), excludedLocales = emptyArray())
         setupDeviceConfig(manufacturer = "Google", sdkInt = 31, languageTag = "en-US", isOnDeviceSpeechRecognitionAvailable = true)
         setupUserSettings(true)
@@ -375,7 +375,7 @@ class RealVoiceSearchAvailabilityTest {
     }
 
     @Test
-    fun whenVoiceSearchSupportedAndIsEditingSERPWithEmptyQueryThenShouldShowVoiceSearchTrue() {
+    fun `shouldShowVoiceSearch - editing SERP with empty query - shows voice search`() {
         setupRemoteConfig(voiceSearchEnabled = true, minSdk = 30, excludedManufacturers = emptyArray(), excludedLocales = emptyArray())
         setupDeviceConfig(manufacturer = "Google", sdkInt = 31, languageTag = "en-US", isOnDeviceSpeechRecognitionAvailable = true)
         setupUserSettings(true)
@@ -391,7 +391,7 @@ class RealVoiceSearchAvailabilityTest {
     }
 
     @Test
-    fun whenModelIsPixel6ThenDefaultUserSettingsTrue() {
+    fun `isVoiceSearchAvailable - model is Pixel 6 - default user settings true`() {
         setupRemoteConfig(voiceSearchEnabled = true, minSdk = 30, excludedManufacturers = emptyArray(), excludedLocales = emptyArray())
         setupDeviceConfig(manufacturer = "Google", sdkInt = 31, languageTag = "en-US", isOnDeviceSpeechRecognitionAvailable = true)
         whenever(voiceSearchRepository.getHasAcceptedRationaleDialog()).thenReturn(true)
@@ -402,7 +402,7 @@ class RealVoiceSearchAvailabilityTest {
     }
 
     @Test
-    fun whenDeviceHadNotPreviouslyAcceptedVoiceRationaleThenDefaultUserSettingsFalse() {
+    fun `isVoiceSearchAvailable - not accepted voice rationale - default user settings false`() {
         setupRemoteConfig(voiceSearchEnabled = true, minSdk = 30, excludedManufacturers = emptyArray(), excludedLocales = emptyArray())
         setupDeviceConfig(manufacturer = "Google", sdkInt = 31, languageTag = "en-US", isOnDeviceSpeechRecognitionAvailable = true)
         whenever(voiceSearchRepository.getHasAcceptedRationaleDialog()).thenReturn(false)

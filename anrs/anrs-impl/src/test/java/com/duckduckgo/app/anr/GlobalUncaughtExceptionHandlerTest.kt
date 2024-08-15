@@ -49,7 +49,7 @@ class GlobalUncaughtExceptionHandlerTest {
     }
 
     @Test
-    fun whenExceptionIsNotInIgnoreListThenCrashRecordedInDatabase() = runTest {
+    fun `uncaughtException - exception not in ignore list - crash recorded in database`() = runTest {
         testee.uncaughtException(Thread.currentThread(), NullPointerException("Deliberate"))
         advanceUntilIdle()
 
@@ -58,7 +58,7 @@ class GlobalUncaughtExceptionHandlerTest {
     }
 
     @Test
-    fun whenExceptionIsNotInIgnoreListThenDefaultExceptionHandlerCalled() = runTest {
+    fun `uncaughtException - exception not in ignore list - default exception handler called`() = runTest {
         val exception = NullPointerException("Deliberate")
         testee.uncaughtException(Thread.currentThread(), exception)
         advanceUntilIdle()
@@ -68,7 +68,7 @@ class GlobalUncaughtExceptionHandlerTest {
     }
 
     @Test
-    fun whenExceptionIsInterruptedIoExceptionThenCrashNotRecorded() = runTest {
+    fun `uncaughtException - interrupted IO exception - crash not recorded`() = runTest {
         val exception = InterruptedIOException("Deliberate")
         testee.uncaughtException(Thread.currentThread(), exception)
         advanceUntilIdle()
@@ -78,7 +78,7 @@ class GlobalUncaughtExceptionHandlerTest {
     }
 
     @Test
-    fun whenExceptionIsInterruptedExceptionThenCrashNotRecorded() = runTest {
+    fun `uncaughtException - interrupted exception - crash not recorded`() = runTest {
         val exception = InterruptedException("Deliberate")
         testee.uncaughtException(Thread.currentThread(), exception)
         advanceUntilIdle()

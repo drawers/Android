@@ -49,7 +49,7 @@ class AppLifecycleSyncObserverTest {
     )
 
     @Test
-    fun whenAppStartedAndSyncDisabledThenNothingHappens() = runTest {
+    fun `onStart - sync disabled - nothing happens`() = runTest {
         whenever(mockDeviceSyncState.isUserSignedInOnDevice()).thenReturn(false)
 
         testee.onStart(mockLifecycleOwner)
@@ -58,7 +58,7 @@ class AppLifecycleSyncObserverTest {
     }
 
     @Test
-    fun whenAppStartedAndSyncEnabledThenSyncIsTriggered() = runTest {
+    fun `onStart - sync enabled - sync is triggered`() = runTest {
         whenever(mockDeviceSyncState.isUserSignedInOnDevice()).thenReturn(true)
 
         testee.onStart(mockLifecycleOwner)

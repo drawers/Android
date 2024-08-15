@@ -60,7 +60,7 @@ internal class EnterCodeViewModelTest {
     )
 
     @Test
-    fun whenUIStartsThenViewStateIsIdle() = runTest {
+    fun `viewState - UI starts - is idle`() = runTest {
         testee.viewState().test {
             val item = awaitItem()
             assertTrue(item.authState is Idle)
@@ -69,7 +69,7 @@ internal class EnterCodeViewModelTest {
     }
 
     @Test
-    fun whenUserClicksOnPasteCodeThenClipboardIsPasted() = runTest {
+    fun `onPasteCodeClicked - clipboard is pasted`() = runTest {
         whenever(clipboard.pasteFromClipboard()).thenReturn(jsonRecoveryKeyEncoded)
 
         testee.onPasteCodeClicked()
@@ -78,7 +78,7 @@ internal class EnterCodeViewModelTest {
     }
 
     @Test
-    fun whenUserClicksOnPasteCodeWithRecoveryCodeThenProcessCode() = runTest {
+    fun `onPasteCodeClicked - recovery code in clipboard - process code`() = runTest {
         whenever(clipboard.pasteFromClipboard()).thenReturn(jsonRecoveryKeyEncoded)
         whenever(syncAccountRepository.processCode(jsonRecoveryKeyEncoded)).thenReturn(Success(true))
 
@@ -92,7 +92,7 @@ internal class EnterCodeViewModelTest {
     }
 
     @Test
-    fun whenUserClicksOnPasteCodeWithConnectCodeThenProcessCode() = runTest {
+    fun `onPasteCodeClicked - paste code with connect code - process code`() = runTest {
         whenever(clipboard.pasteFromClipboard()).thenReturn(jsonConnectKeyEncoded)
         whenever(syncAccountRepository.processCode(jsonConnectKeyEncoded)).thenReturn(Success(true))
 
@@ -106,7 +106,7 @@ internal class EnterCodeViewModelTest {
     }
 
     @Test
-    fun whenPastedInvalidCodeThenAuthStateError() = runTest {
+    fun `onPasteCodeClicked - pasted invalid code - authState error`() = runTest {
         whenever(clipboard.pasteFromClipboard()).thenReturn("invalid code")
         whenever(syncAccountRepository.processCode("invalid code")).thenReturn(Error(code = INVALID_CODE.code))
 
@@ -120,7 +120,7 @@ internal class EnterCodeViewModelTest {
     }
 
     @Test
-    fun whenProcessCodeButUserSignedInThenShowError() = runTest {
+    fun `onPasteCodeClicked - user signed in - show error`() = runTest {
         whenever(clipboard.pasteFromClipboard()).thenReturn(jsonRecoveryKeyEncoded)
         whenever(syncAccountRepository.processCode(jsonRecoveryKeyEncoded)).thenReturn(Error(code = ALREADY_SIGNED_IN.code))
 
@@ -134,7 +134,7 @@ internal class EnterCodeViewModelTest {
     }
 
     @Test
-    fun whenProcessCodeAndLoginFailsThenShowError() = runTest {
+    fun `onPasteCodeClicked - process code and login fails - show error`() = runTest {
         whenever(clipboard.pasteFromClipboard()).thenReturn(jsonRecoveryKeyEncoded)
         whenever(syncAccountRepository.processCode(jsonRecoveryKeyEncoded)).thenReturn(Error(code = LOGIN_FAILED.code))
 
@@ -148,7 +148,7 @@ internal class EnterCodeViewModelTest {
     }
 
     @Test
-    fun whenProcessCodeAndConnectFailsThenShowError() = runTest {
+    fun `onPasteCodeClicked - process code and connect fails - show error`() = runTest {
         whenever(clipboard.pasteFromClipboard()).thenReturn(jsonConnectKeyEncoded)
         whenever(syncAccountRepository.processCode(jsonConnectKeyEncoded)).thenReturn(Error(code = CONNECT_FAILED.code))
 
@@ -162,7 +162,7 @@ internal class EnterCodeViewModelTest {
     }
 
     @Test
-    fun whenProcessCodeAndCreateAccountFailsThenShowError() = runTest {
+    fun `onPasteCodeClicked - process code and create account fails - show error`() = runTest {
         whenever(clipboard.pasteFromClipboard()).thenReturn(jsonRecoveryKeyEncoded)
         whenever(syncAccountRepository.processCode(jsonRecoveryKeyEncoded)).thenReturn(Error(code = CREATE_ACCOUNT_FAILED.code))
 
@@ -176,7 +176,7 @@ internal class EnterCodeViewModelTest {
     }
 
     @Test
-    fun whenProcessCodeAndGenericErrorThenDoNothing() = runTest {
+    fun `onPasteCodeClicked - process code and generic error - do nothing`() = runTest {
         whenever(clipboard.pasteFromClipboard()).thenReturn(jsonRecoveryKeyEncoded)
         whenever(syncAccountRepository.processCode(jsonRecoveryKeyEncoded)).thenReturn(Error(code = GENERIC_ERROR.code))
 

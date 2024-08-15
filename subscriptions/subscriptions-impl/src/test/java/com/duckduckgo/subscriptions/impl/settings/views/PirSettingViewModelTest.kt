@@ -32,7 +32,7 @@ class PirSettingViewModelTest {
     }
 
     @Test
-    fun whenOnPirThenCommandSent() = runTest {
+    fun `onPir - command sent`() = runTest {
         viewModel.commands().test {
             viewModel.onPir()
             assertTrue(awaitItem() is OpenPir)
@@ -41,13 +41,13 @@ class PirSettingViewModelTest {
     }
 
     @Test
-    fun whenOnPirThenPixelSent() = runTest {
+    fun `onPir - pixel sent`() = runTest {
         viewModel.onPir()
         verify(pixelSender).reportAppSettingsPirClick()
     }
 
     @Test
-    fun whenOnResumeIfEntitlementPresentEmitViewState() = runTest {
+    fun `onCreate - entitlement present - emit viewState`() = runTest {
         whenever(subscriptions.getEntitlementStatus()).thenReturn(flowOf(listOf(PIR)))
 
         viewModel.onCreate(mock())
@@ -59,7 +59,7 @@ class PirSettingViewModelTest {
     }
 
     @Test
-    fun whenOnResumeIfEntitlementNotPresentEmitViewState() = runTest {
+    fun `onResume - entitlement not present - emit viewState`() = runTest {
         whenever(subscriptions.getEntitlementStatus()).thenReturn(flowOf(emptyList()))
 
         viewModel.onResume(mock())

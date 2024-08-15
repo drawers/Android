@@ -28,88 +28,88 @@ class QueryParamReferrerParserTest {
     private val testee: QueryParamReferrerParser = QueryParamReferrerParser()
 
     @Test
-    fun whenReferrerDoesNotContainTargetThenNoReferrerFound() {
+    fun `parse - referrer does not contain target - no referrer found`() {
         verifyReferrerNotFound(testee.parse("ABC"))
     }
 
     @Test
-    fun whenReferrerContainsTargetAndLongSuffixThenShortenedReferrerFound() {
+    fun `parse - referrer contains target and long suffix - shortened referrer found`() {
         val result = testee.parse("DDGRAABC")
         verifyCampaignReferrerFound("AB", result)
     }
 
     @Test
-    fun whenReferrerContainsTargetAndTwoCharSuffixThenReferrerFound() {
+    fun `parse - referrer contains target and two char suffix - referrer found`() {
         val result = testee.parse("DDGRAXY")
         verifyCampaignReferrerFound("XY", result)
     }
 
     @Test
-    fun whenReferrerContainsTargetAndOneCharSuffixThenNoReferrerFound() {
+    fun `parse - referrer contains target and one char suffix - no referrer found`() {
         val result = testee.parse("DDGRAX")
         verifyReferrerNotFound(result)
     }
 
     @Test
-    fun whenReferrerContainsTargetButNoSuffixThenNoReferrerFound() {
+    fun `parse - referrer contains target but no suffix - no referrer found`() {
         val result = testee.parse("DDGRAX")
         verifyReferrerNotFound(result)
     }
 
     @Test
-    fun whenReferrerIsEmptyThenNoReferrerFound() {
+    fun `parse - referrer is empty - no referrer found`() {
         verifyReferrerNotFound(testee.parse(""))
     }
 
     @Test
-    fun whenReferrerContainsTargetAsFirstParamThenReferrerFound() {
+    fun `parse - referrer contains target as first param - referrer found`() {
         val result = testee.parse("key1=DDGRAAB&key2=foo&key3=bar")
         verifyCampaignReferrerFound("AB", result)
     }
 
     @Test
-    fun whenReferrerContainsTargetAsLastParamThenReferrerFound() {
+    fun `parse - referrer contains target as last param - referrer found`() {
         val result = testee.parse("key1=foo&key2=bar&key3=DDGRAAB")
         verifyCampaignReferrerFound("AB", result)
     }
 
     @Test
-    fun whenReferrerContainsTargetWithDifferentCaseThenNoReferrerFound() {
+    fun `parse - referrer contains target with different case - no referrer found`() {
         verifyReferrerNotFound(testee.parse("ddgraAB"))
     }
 
     @Test
-    fun whenReferrerContainsEuAuctionSearchChoiceDataThenEuActionReferrerFound() {
+    fun `parse - referrer contains EU auction search choice data - EU auction referrer found`() {
         val result = testee.parse("$INSTALLATION_SOURCE_KEY=$INSTALLATION_SOURCE_EU_SEARCH_CHOICE_AUCTION_VALUE")
         assertTrue(result is EuAuctionSearchChoiceReferrerFound)
     }
 
     @Test
-    fun whenReferrerContainsBothEuAuctionSearchChoiceAndCampaignReferrerDataThenEuActionReferrerFound() {
+    fun `parse - referrer contains both EU auction search choice and campaign referrer data - EU auction referrer found`() {
         val result = testee.parse("key1=DDGRAAB&key2=foo&key3=bar&$INSTALLATION_SOURCE_KEY=$INSTALLATION_SOURCE_EU_SEARCH_CHOICE_AUCTION_VALUE")
         assertTrue(result is EuAuctionSearchChoiceReferrerFound)
     }
 
     @Test
-    fun whenReferrerContainsInstallationSourceKeyButNotMatchingValueThenNoReferrerFound() {
+    fun `parse - referrer contains installation source key but not matching value - no referrer found`() {
         val result = testee.parse("$INSTALLATION_SOURCE_KEY=bar")
         verifyReferrerNotFound(result)
     }
 
     @Test
-    fun whenReferrerContainsInstallationSourceKeyAndNoEuAuctionValueButHasCampaignReferrerDataThenCampaignReferrerFound() {
+    fun `parse - referrer contains installation source key and campaign referrer data - campaign referrer found`() {
         val result = testee.parse("key1=DDGRAAB&key2=foo&key3=bar&$INSTALLATION_SOURCE_KEY=bar")
         verifyCampaignReferrerFound("AB", result)
     }
 
     @Test
-    fun whenReferrerContainsEuAuctionBrowserChoiceDataThenEuActionReferrerFound() {
+    fun `parse - referrer contains EU auction browser choice data - EU auction referrer found`() {
         val result = testee.parse("$INSTALLATION_SOURCE_KEY=$INSTALLATION_SOURCE_EU_BROWSER_CHOICE_AUCTION_VALUE")
         assertTrue(result is EuAuctionBrowserChoiceReferrerFound)
     }
 
     @Test
-    fun whenReferrerContainsBothEuAuctionBrowserChoiceAndCampaignReferrerDataThenEuActionReferrerFound() {
+    fun `parse - referrer contains both EU auction browser choice and campaign referrer data - EU auction referrer found`() {
         val result = testee.parse("key1=DDGRAAB&key2=foo&key3=bar&$INSTALLATION_SOURCE_KEY=$INSTALLATION_SOURCE_EU_BROWSER_CHOICE_AUCTION_VALUE")
         assertTrue(result is EuAuctionBrowserChoiceReferrerFound)
     }

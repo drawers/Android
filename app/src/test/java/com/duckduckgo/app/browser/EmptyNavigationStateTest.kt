@@ -23,7 +23,7 @@ import org.junit.Test
 class EmptyNavigationStateTest {
 
     @Test
-    fun whenEmptyNavigationStateFromNavigationStateThenBrowserPropertiesAreTheSame() {
+    fun `EmptyNavigationState - empty navigation state - browser properties are the same`() {
         val previousState = buildState("originalUrl", "currentUrl", "titlle")
         val emptyNavigationState = EmptyNavigationState(previousState)
 
@@ -33,7 +33,7 @@ class EmptyNavigationStateTest {
     }
 
     @Test
-    fun whenEmptyNavigationStateFromNavigationStateThenNavigationPropertiesAreCleared() {
+    fun `EmptyNavigationState - from navigation state - navigation properties are cleared`() {
         val emptyNavigationState = EmptyNavigationState(buildState("originalUrl", "currentUrl", "titlle"))
 
         assertEquals(emptyNavigationState.stepsToPreviousPage, 0)

@@ -55,7 +55,7 @@ class UrlFileDownloaderTest {
     }
 
     @Test
-    fun whenDownloadFileSuccessfulThenCallOnStartInProgressAndSuccessCallbacks() = runTest {
+    fun `downloadFile - download successful - call onStart, inProgress, and success callbacks`() = runTest {
         val pendingFileDownload = buildPendingDownload("https://example.com/file.txt")
         val filename = "file.txt"
         val downloadCallback = mock<DownloadCallback>()
@@ -70,7 +70,7 @@ class UrlFileDownloaderTest {
     }
 
     @Test
-    fun whenDownloadFileFailedAsCancelledThenCallOnCancelCallback() = runTest {
+    fun `downloadFile - download cancelled - call onCancel callback`() = runTest {
         val pendingFileDownload = buildPendingDownload("https://example.com/file.txt")
         val filename = "file.txt"
         val downloadCallback = mock<DownloadCallback>()
@@ -91,7 +91,7 @@ class UrlFileDownloaderTest {
     }
 
     @Test
-    fun whenDownloadFileFailedAsWriteErrorThenCallOnCancelCallback() = runTest {
+    fun `downloadFile - write error - call onCancel callback`() = runTest {
         val pendingFileDownload = buildPendingDownload("https://example.com/file.txt")
         val filename = "file.txt"
         val downloadCallback = mock<DownloadCallback>()
@@ -112,7 +112,7 @@ class UrlFileDownloaderTest {
     }
 
     @Test
-    fun whenDownloadFileFailedAsErrorThenCallOnErrorCallback() = runTest {
+    fun `downloadFile - download file failed as error - call onError callback`() = runTest {
         val pendingFileDownload = buildPendingDownload("https://example.com/file.txt")
         val filename = "file.txt"
         val downloadCallback = mock<DownloadCallback>()
@@ -130,7 +130,7 @@ class UrlFileDownloaderTest {
     }
 
     @Test
-    fun whenDownloadFileSucceedsAsCancelledThenCallOnCancelCallback() = runTest {
+    fun `downloadFile - download succeeds as cancelled - call onCancel callback`() = runTest {
         val pendingFileDownload = buildPendingDownload("https://example.com/file.txt")
         val filename = "file.txt"
         val downloadCallback = mock<DownloadCallback>()
@@ -151,7 +151,7 @@ class UrlFileDownloaderTest {
     }
 
     @Test
-    fun whenDownloadFileSucceedsAsFailedToWriteThenCallOnErrorCallback() = runTest {
+    fun `downloadFile - failed to write - call onError callback`() = runTest {
         val pendingFileDownload = buildPendingDownload("https://example.com/file.txt")
         val filename = "file.txt"
         val downloadCallback = mock<DownloadCallback>()

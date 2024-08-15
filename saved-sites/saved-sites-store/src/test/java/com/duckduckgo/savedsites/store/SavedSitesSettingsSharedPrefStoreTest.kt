@@ -35,19 +35,19 @@ class SavedSitesSettingsSharedPrefStoreTest {
     }
 
     @Test
-    fun whenGetFavoritesDisplayModeThenReturnStoredValue() = runTest {
+    fun `favoritesDisplayMode - return stored value`() = runTest {
         prefs.edit().putString(KEY_FAVORITES_DISPLAY_MODE, NATIVE.value).commit()
 
         assertEquals(NATIVE, testee.favoritesDisplayMode)
     }
 
     @Test
-    fun whenNoValueThenReturnNative() = runTest {
+    fun `favoritesDisplayMode - no value - return native`() = runTest {
         assertEquals(NATIVE, testee.favoritesDisplayMode)
     }
 
     @Test
-    fun whenValueChangedThenFlowEmitsNewValue() = runTest {
+    fun `favoritesFormFactorModeFlow - value changed - emits new value`() = runTest {
         prefs.edit().putString(KEY_FAVORITES_DISPLAY_MODE, NATIVE.value).commit()
         testee.favoritesFormFactorModeFlow().test {
             assertEquals(NATIVE, awaitItem())

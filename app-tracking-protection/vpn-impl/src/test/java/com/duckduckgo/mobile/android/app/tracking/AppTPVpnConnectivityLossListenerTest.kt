@@ -49,7 +49,7 @@ class AppTPVpnConnectivityLossListenerTest {
     }
 
     @Test
-    fun onVpnConnectivityLossThenRestartAppTPThirdConsecutiveTime() = runTest {
+    fun `onVpnConnectivityLoss - third consecutive time - restart app tracking protection`() = runTest {
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
         whenever(appTrackingProtection.isEnabled()).thenReturn(true)
 
@@ -83,7 +83,7 @@ class AppTPVpnConnectivityLossListenerTest {
     }
 
     @Test
-    fun whenRestartOnConnectivityLossIsDisabledThenNoop() = runTest {
+    fun `onVpnConnectivityLoss - restart on connectivity loss disabled - noop`() = runTest {
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
         whenever(appTrackingProtection.isEnabled()).thenReturn(true)
         appTpRemoteFeatures.restartOnConnectivityLoss().setEnabled(Toggle.State(enable = false))
@@ -100,7 +100,7 @@ class AppTPVpnConnectivityLossListenerTest {
     }
 
     @Test
-    fun onVpnConnectivityLossNetPEnabledThenNoop() = runTest {
+    fun `onVpnConnectivityLoss - NetP enabled - noop`() = runTest {
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
         whenever(appTrackingProtection.isEnabled()).thenReturn(true)
 
@@ -116,7 +116,7 @@ class AppTPVpnConnectivityLossListenerTest {
     }
 
     @Test
-    fun onVpnConnectivityLossAppTPDisabledThenNoop() = runTest {
+    fun `onVpnConnectivityLoss - appTP disabled - noop`() = runTest {
         whenever(networkProtectionState.isEnabled()).thenReturn(true)
         whenever(appTrackingProtection.isEnabled()).thenReturn(false)
 
@@ -132,7 +132,7 @@ class AppTPVpnConnectivityLossListenerTest {
     }
 
     @Test
-    fun onVpnConnectedResetsConnectivityLossCounter() = runTest {
+    fun `onVpnConnected - resets connectivity loss counter`() = runTest {
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
         whenever(appTrackingProtection.isEnabled()).thenReturn(true)
 
@@ -145,7 +145,7 @@ class AppTPVpnConnectivityLossListenerTest {
     }
 
     @Test
-    fun onVpnStartedResetsConnectivityLossCounter() = runTest {
+    fun `onVpnStarted - resets connectivity loss counter`() = runTest {
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
         whenever(appTrackingProtection.isEnabled()).thenReturn(true)
 
@@ -159,7 +159,7 @@ class AppTPVpnConnectivityLossListenerTest {
     }
 
     @Test
-    fun onVpnReconfiguredResetsConnectivityLossCounter() = runTest {
+    fun `onVpnReconfigured - resets connectivity loss counter`() = runTest {
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
         whenever(appTrackingProtection.isEnabled()).thenReturn(true)
 
@@ -172,7 +172,7 @@ class AppTPVpnConnectivityLossListenerTest {
     }
 
     @Test
-    fun onVpnStartingDoesNotAffectNormalBehavior() = runTest {
+    fun `onVpnStarting - does not affect normal behavior`() = runTest {
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
         whenever(appTrackingProtection.isEnabled()).thenReturn(true)
 
@@ -185,7 +185,7 @@ class AppTPVpnConnectivityLossListenerTest {
     }
 
     @Test
-    fun onVpnStartFailedDoesNotAffectNormalBehavior() = runTest {
+    fun `onVpnStartFailed - does not affect normal behavior`() = runTest {
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
         whenever(appTrackingProtection.isEnabled()).thenReturn(true)
 
@@ -198,7 +198,7 @@ class AppTPVpnConnectivityLossListenerTest {
     }
 
     @Test
-    fun onVpnStoppedResetsConnectivityLossCounter() = runTest {
+    fun `onVpnStopped - resets connectivity loss counter`() = runTest {
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
         whenever(appTrackingProtection.isEnabled()).thenReturn(true)
 

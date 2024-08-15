@@ -43,7 +43,7 @@ internal class AdClickDailyReportingWorkerTest {
     }
 
     @Test
-    fun whenDoWorkThenCallFireCountPixelWithCorrectParamNameAndReturnSuccess() =
+    fun `doWork - call fireCountPixel with correct param name - return success`() =
         runTest {
             val worker = TestListenableWorkerBuilder<AdClickDailyReportingWorker>(context = context).build()
             worker.adClickPixels = mockAdClickPixels

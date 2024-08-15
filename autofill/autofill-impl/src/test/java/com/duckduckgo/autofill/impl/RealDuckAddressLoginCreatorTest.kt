@@ -47,28 +47,28 @@ class RealDuckAddressLoginCreatorTest {
     )
 
     @Test
-    fun whenAutofillCapabilitiesRestrictSavingThenNoLoginCreated() = runTest {
+    fun `createLoginForPrivateDuckAddress - autofill capabilities restrict saving - no login created`() = runTest {
         whenever(autofillCapabilityChecker.canSaveCredentialsFromWebView(URL)).thenReturn(false)
         testee.createLoginForPrivateDuckAddress(DUCK_ADDRESS, TAB_ID, URL)
         verifyNotSavedOrUpdated()
     }
 
     @Test
-    fun whenNoAutoSavedLoginIdThenNewLoginSaved() = runTest {
+    fun `createLoginForPrivateDuckAddress - no auto-saved login id - new login saved`() = runTest {
         configureReadyToAutoSave()
         testee.createLoginForPrivateDuckAddress(DUCK_ADDRESS, TAB_ID, URL)
         verifyLoginSaved()
     }
 
     @Test
-    fun whenAutoSavedLoginIdSetButNoMatchingLoginFoundThenNewLoginSaved() = runTest {
+    fun `createLoginForPrivateDuckAddress - no matching login found - new login saved`() = runTest {
         configureReadyToAutoSave()
         testee.createLoginForPrivateDuckAddress(DUCK_ADDRESS, TAB_ID, URL)
         verifyLoginSaved()
     }
 
     @Test
-    fun whenAutoSavedLoginFoundAndDetailsAlreadyMatchThenNotSavedOrUpdated() = runTest {
+    fun `createLoginForPrivateDuckAddress - auto-saved login found and details match - not saved or updated`() = runTest {
         val existingLogin = aLogin(id = 1, username = DUCK_ADDRESS)
         configureReadyToAutoSave()
         whenever(automaticSavedLoginsMonitor.getAutoSavedLoginId(TAB_ID)).thenReturn(1)
@@ -79,7 +79,7 @@ class RealDuckAddressLoginCreatorTest {
     }
 
     @Test
-    fun whenAutoSavedLoginFoundAndUsernameDifferentThenLoginUpdated() = runTest {
+    fun `createLoginForPrivateDuckAddress - auto-saved login found and username different - login updated`() = runTest {
         val existingLogin = aLogin(id = 1, username = "different-username")
         whenever(neverSavedSiteRepository.isInNeverSaveList(any())).thenReturn(false)
         whenever(autofillCapabilityChecker.canSaveCredentialsFromWebView(URL)).thenReturn(true)
@@ -91,7 +91,7 @@ class RealDuckAddressLoginCreatorTest {
     }
 
     @Test
-    fun whenSiteIsInNeverSaveListThenDoNotAutoSaveALogin() = runTest {
+    fun `createLoginForPrivateDuckAddress - site in never save list - do not auto save login`() = runTest {
         configureReadyToAutoSave()
         whenever(neverSavedSiteRepository.isInNeverSaveList(URL)).thenReturn(true)
         testee.createLoginForPrivateDuckAddress(DUCK_ADDRESS, TAB_ID, URL)
@@ -99,7 +99,7 @@ class RealDuckAddressLoginCreatorTest {
     }
 
     @Test
-    fun whenSiteIsNotInNeverSaveListThenAutoSaveALogin() = runTest {
+    fun `createLoginForPrivateDuckAddress - site not in never save list - auto save login`() = runTest {
         configureReadyToAutoSave()
         whenever(neverSavedSiteRepository.isInNeverSaveList(any())).thenReturn(false)
         testee.createLoginForPrivateDuckAddress(DUCK_ADDRESS, TAB_ID, URL)

@@ -95,7 +95,7 @@ class SurveyViewModelTest {
     }
 
     @Test
-    fun whenViewStartedThenSurveyLoaded() {
+    fun `start - view started - survey loaded`() {
         val url = "https://survey.com"
         val captor = argumentCaptor<Command.LoadSurvey>()
 
@@ -105,7 +105,7 @@ class SurveyViewModelTest {
     }
 
     @Test
-    fun whenSurveyStartedThenParametersAddedToUrl() {
+    fun `start - survey started - parameters added to url`() {
         whenever(mockStatisticsStore.atb).thenReturn(Atb("123"))
         whenever(mockStatisticsStore.variant).thenReturn("abc")
         whenever(mockAppInstallStore.installTimestamp).thenReturn(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(2))
@@ -128,7 +128,7 @@ class SurveyViewModelTest {
     }
 
     @Test
-    fun whenSurveyStartedFromNotificationThenSourceIsPushAndDayActiveIsYesterday() = runTest {
+    fun `start - survey from notification - source is push and day active is yesterday`() = runTest {
         whenever(mockStatisticsStore.atb).thenReturn(Atb("123"))
         whenever(mockStatisticsStore.variant).thenReturn("abc")
         whenever(mockAppInstallStore.installTimestamp).thenReturn(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(2))
@@ -152,7 +152,7 @@ class SurveyViewModelTest {
     }
 
     @Test
-    fun whenSurveyStartedAndInAppTpRetentionStudyThenParametersAddedToUrl() {
+    fun `start - in-app TP retention study - parameters added to URL`() {
         whenever(mockStatisticsStore.atb).thenReturn(Atb("123"))
         whenever(mockStatisticsStore.variant).thenReturn("abc")
         whenever(mockAppInstallStore.installTimestamp).thenReturn(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(2))
@@ -175,19 +175,19 @@ class SurveyViewModelTest {
     }
 
     @Test
-    fun whenSurveyFailsToLoadThenErrorShown() {
+    fun `onSurveyFailedToLoad - error shown`() {
         testee.onSurveyFailedToLoad()
         verify(mockCommandObserver).onChanged(Command.ShowError)
     }
 
     @Test
-    fun whenSurveyLoadedThenSurveyIsShown() {
+    fun `onSurveyLoaded - survey is shown`() {
         testee.onSurveyLoaded()
         verify(mockCommandObserver).onChanged(Command.ShowSurvey)
     }
 
     @Test
-    fun whenSurveyCompletedThenViewIsClosedAndRecordIsUpdatedAnd() {
+    fun `onSurveyCompleted - survey completed - view closed and record updated`() {
         testee.start(Survey("", "https://survey.com", null, SCHEDULED), testSource)
         testee.onSurveyCompleted()
         verify(mockSurveyRepository).updateSurvey(Survey("", "https://survey.com", null, DONE))
@@ -195,14 +195,14 @@ class SurveyViewModelTest {
     }
 
     @Test
-    fun whenSurveyCompletedThenSurveyNotificationIsCleared() {
+    fun `onSurveyCompleted - survey notification is cleared`() {
         testee.start(Survey("", "https://survey.com", null, SCHEDULED), testSource)
         testee.onSurveyCompleted()
         verify(mockSurveyRepository).clearSurveyNotification()
     }
 
     @Test
-    fun whenSurveyDismissedThenViewIsClosedAndRecordIsNotUpdated() {
+    fun `onSurveyDismissed - view closed - record not updated`() {
         testee.start(Survey("", "https://survey.com", null, SCHEDULED), testSource)
         testee.onSurveyDismissed()
         verify(mockSurveyRepository, never()).updateSurvey(any())

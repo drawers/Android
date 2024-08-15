@@ -54,7 +54,7 @@ class RealShareableCredentialsUrlGeneratorTest {
     }
 
     @Test
-    fun whenSiteInOmnidirectionalListThenAllRelatedSitesReturned() = runTest {
+    fun `generateShareableUrls - site in omnidirectional list - all related sites returned`() = runTest {
         val config = config(
             omnidirectionalRules = listOf(
                 omnidirectionalRule(listOf("foo.com", "example.com", "bar.com")),
@@ -73,7 +73,7 @@ class RealShareableCredentialsUrlGeneratorTest {
     }
 
     @Test
-    fun whenSiteInOmnidirectionalListMultipleTimesThenOnlyReturnedOnce() = runTest {
+    fun `generateShareableUrls - site in omnidirectional list multiple times - only returned once`() = runTest {
         val config = config(
             omnidirectionalRules = listOf(
                 omnidirectionalRule(listOf("foo.com", "example.com", "bar.com")),
@@ -92,7 +92,7 @@ class RealShareableCredentialsUrlGeneratorTest {
     }
 
     @Test
-    fun whenSiteInUnidirectionalToRuleThenOfferedFromUrl() = runTest {
+    fun `generateShareableUrls - site in unidirectional rule - offered from URL`() = runTest {
         val config = config(
             unidirectionalRules = listOf(
                 unidirectionalRule(
@@ -106,7 +106,7 @@ class RealShareableCredentialsUrlGeneratorTest {
     }
 
     @Test
-    fun whenSiteInUnidirectionalFromRuleThenNotOfferedToUrl() = runTest {
+    fun `generateShareableUrls - site in unidirectional from rule - not offered to URL`() = runTest {
         val config = config(
             unidirectionalRules = listOf(
                 unidirectionalRule(
@@ -120,7 +120,7 @@ class RealShareableCredentialsUrlGeneratorTest {
     }
 
     @Test
-    fun whenSiteInMultipleUnidirectionalListThenReturnedOnce() = runTest {
+    fun `generateShareableUrls - site in multiple unidirectional list - returned once`() = runTest {
         val config = config(
             unidirectionalRules = listOf(
                 unidirectionalRule(
@@ -139,7 +139,7 @@ class RealShareableCredentialsUrlGeneratorTest {
     }
 
     @Test
-    fun whenFromUnidirectionalListHasMultipleSitesThenAllReturned() = runTest {
+    fun `generateShareableUrls - multiple sites in unidirectional list - all returned`() = runTest {
         val config = config(
             unidirectionalRules = listOf(
                 unidirectionalRule(
@@ -169,7 +169,7 @@ class RealShareableCredentialsUrlGeneratorTest {
     }
 
     @Test
-    fun whenMatchesFromOmnidirectionalAndUnidirectionalThenReturnedOnce() = runTest {
+    fun `generateShareableUrls - matches from omnidirectional and unidirectional - returned once`() = runTest {
         val config = config(
             omnidirectionalRules = listOf(
                 omnidirectionalRule(listOf("example.com", "expected.com")),
@@ -186,14 +186,14 @@ class RealShareableCredentialsUrlGeneratorTest {
     }
 
     @Test
-    fun whenFullUncleanedUrlGivenThenStillMatches() = runTest {
+    fun `generateShareableUrls - full uncleaned URL - still matches`() = runTest {
         val config = config(omnidirectionalRules = listOf(omnidirectionalRule(listOf("example.com", "expected.com"))))
         val result = testee.generateShareableUrls("https://example.com/hello/world", config)
         result.assertMatches(listOf("expected.com"))
     }
 
     @Test
-    fun whenConfigIsEmptyThenNoSitesReturned() = runTest {
+    fun `generateShareableUrls - config is empty - no sites returned`() = runTest {
         val config = emptyLists()
         val result = testee.generateShareableUrls("example.com", config)
         result.assertMatches(emptyList())

@@ -21,7 +21,7 @@ import org.junit.Test
 
 class DeviceShieldPixelNamesTest {
     @Test
-    fun allAppTrackingProtectionPixelsShallBePrefixed() {
+    fun `allAppTrackingProtectionPixels - prefixed`() {
         DeviceShieldPixelNames.values().map { it.pixelName }.forEach { pixel ->
             assertTrue(pixel.startsWith("m_atp") || pixel.startsWith("m_vpn"))
         }
